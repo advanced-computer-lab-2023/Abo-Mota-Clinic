@@ -1,0 +1,47 @@
+.navbar{
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 0 8px rgba(0,0,0,.1);
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.avatar{
+  background-color: var(--main-color);
+  box-shadow: inset 2px 2px 2px 4px rgba(0,0,0,.5);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+}
+
+.logo{
+  color: var(--main-color);
+  font-size: 3.2rem;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.navbar-link{
+  text-decoration: none;
+  color: var(--main-color);
+  font-size: 2rem;
+}
+
+.buttons{
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 16px;
+}
+
+.left, .right{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
