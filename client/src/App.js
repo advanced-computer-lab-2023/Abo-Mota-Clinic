@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Patient from "./patient/Patient";
 import Doctor from "./doctor/Doctor";
 import Admin from "./admin/Admin";
-import SignUp from "./SignUp";
+
+import NavBar from "./shared/Components/NavBar";
 
 // Admin
 import Packages from "./admin/pages/Packages";
@@ -15,6 +16,7 @@ import ViewPatientAppointments from "./patient/pages/ViewPatientAppointments";
 import ViewDoctors from "./patient/pages/ViewDoctors";
 import ViewFamilyMembers from "./patient/pages/ViewFamilyMembers";
 import ViewPrescriptions from "./patient/pages/ViewPrescriptions";
+import RegisterScreen from "./patient/pages/RegisterScreen";
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -23,9 +25,9 @@ import ViewDoctorPatients from "./doctor/pages/ViewDoctorPatients";
 function App() {
 	return (
 		<div>
-			<BrowserRouter>
+				<NavBar />
 				<Routes>
-					<Route path="/" element={<SignUp />} />
+					<Route path="/" element={<RegisterScreen />} />
 					<Route path="/patient" element={<Patient />}>
 						<Route path="appointments" element={<ViewPatientAppointments />} />
 						<Route path="doctors" element={<ViewDoctors />} />
@@ -45,7 +47,6 @@ function App() {
 						<Route path="viewUsers" element={<ViewUsers />} />
 					</Route>
 				</Routes>
-			</BrowserRouter>
 		</div>
 	);
 }

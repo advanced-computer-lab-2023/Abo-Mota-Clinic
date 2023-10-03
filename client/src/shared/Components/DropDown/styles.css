@@ -1,0 +1,32 @@
+.dropdown-container{
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 30px;
+  margin: 0px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0,1);
+  display: inline-block;
+  width: 20vw;
+}
+
+label{
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: gray;
+}
+
+.dropdown-select{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #fff;
+  border: none;
+  border-bottom: 2px solid silver;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.dropdown-select:focus{
+  outline: none;
+  border-color: var(--main-color);
+}
+ 
