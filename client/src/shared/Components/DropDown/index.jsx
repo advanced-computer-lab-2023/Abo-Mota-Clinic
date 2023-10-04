@@ -1,6 +1,6 @@
 import './styles.css';
 
-const DropDown = ({ options, onChange, value, name, label }) => {
+const DropDownn = ({ options, onChange, value, name, label }) => {
   return (
     <div className="dropdown-container">
     <label>{label}</label>
@@ -17,4 +17,4 @@ const DropDown = ({ options, onChange, value, name, label }) => {
   );
 }
 
-export default DropDown;
+export default DropDownn;

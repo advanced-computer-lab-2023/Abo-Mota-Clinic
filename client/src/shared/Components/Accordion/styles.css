@@ -1,0 +1,65 @@
+.accordion-container{
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
+}
+
+.accordion-header{
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--main-color);
+
+}
+
+.accordion-subheader{
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.accordion-price{
+  align-self: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.accordion{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+  padding: 15px;
+  cursor: pointer;
+}
+
+.accordion-extension{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.open{
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.accordion-entry{
+  font-size: 1.5rem;
+}
+
+.accordion-key{
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.accordion-image{
+  width: 400px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 20px;
+  align-self: center;
+}
+
+.extension-header{
+  font-size: 2rem;
+  font-weight: bold;
+}
