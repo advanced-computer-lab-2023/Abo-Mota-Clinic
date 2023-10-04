@@ -1,9 +1,9 @@
-import Button from "../../../shared/Components/Button";
+import Button from "../../../shared/components/Button";
 import { useState } from "react";
-import Input from "../../../shared/Components/InputField";
+import Input from "../../../shared/components/InputField";
 import './RegisterStyles.css';
-import DropDown from "../../../shared/Components/DropDown";
-import DateInput from "../../../shared/Components/DateInput";
+import DropDownn from "../../../shared/components/DropDown";
+import DateInput from "../../../shared/components/DateInput";
 import logo from '../../../shared/assets/logo.png';
 import { Link } from "react-router-dom";
 
@@ -31,20 +31,20 @@ const RegisterScreen = () => {
         Your health is our priority
         </div>
           <form action="post" onSubmit={handleSubmit}>
-            <Input label="Username*" type="text" id="user-username" required/>
-            <Input label="Email*" type="email" id="user-email" required/>
-            <Input label="First Name*" type="text" id="user-first" required/>
-            <Input label="Last Name*" type="text" id="user-last" required/>
-            <DateInput label="Date of Birth*" type="date" id="dob"/>
-            <DropDown value={gender} options={genders} onChange={handleOptionChange}  label='Gender*' name="gender" required/>
+            <Input className="register-input" label="Username*" type="text" id="user-username" required/>
+            <Input className="register-input" label="Email*" type="email" id="user-email" required/>
+            <Input className="register-input" label="First Name*" type="text" id="user-first" required/>
+            <Input className="register-input" label="Last Name*" type="text" id="user-last" required/>
+            <DateInput className="register-input" label="Date of Birth*" type="date" id="dob"/>
+            <DropDownn value={gender} options={genders} onChange={handleOptionChange}  label='Gender*' name="gender" required/>
             {/* <RadioButton options={genders} onChange={handleOptionChange} selectedOption={radio} name="gender"/> */}
-            <Input label="Phone Number*" type="tel" id="user-contact" required/>
-            <Input label="Password*" type="password" id="password" required />
+            <Input className="register-input" label="Phone Number*" type="tel" id="user-contact" required/>
+            <Input className="register-input" label="Password*" type="password" id="password" required />
             <h2 className="emergency-label">Emergency Contact info:</h2>
-            <Input label="First Name*" type="text" id="em-first" required/>
-            <Input label="Last Name*" type="text" id="em-last" required/>
-            <Input label="Phone Number*" type="tel" id="em-contact" required/>
-            <Input label="Username" type="tel" id="em-username"/>
+            <Input className="register-input" label="First Name*" type="text" id="em-first" required/>
+            <Input className="register-input" label="Last Name*" type="text" id="em-last" required/>
+            <Input className="register-input" label="Phone Number*" type="tel" id="em-contact" required/>
+            <Input className="register-input" label="Username" type="tel" id="em-username"/>
             <div className="button-register-container"><Button type="submit" label="Register"/></div>
             <div className="link-register-container"><Link className="link-register">Already have an account?</Link></div>
           </form>

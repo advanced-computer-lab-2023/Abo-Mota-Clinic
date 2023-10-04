@@ -3,7 +3,7 @@ import Patient from "./patient/Patient";
 import Doctor from "./doctor/Doctor";
 import Admin from "./admin/Admin";
 
-import NavBar from "./shared/Components/NavBar";
+import NavBar from "./shared/components/NavBar";
 
 // Admin
 import Packages from "./admin/pages/Packages";
