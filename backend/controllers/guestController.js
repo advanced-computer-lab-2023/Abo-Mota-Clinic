@@ -34,7 +34,7 @@ const registerDoctor = async (req, res) => {
 		const doctorExists = await Doctor.findOne({ 
 			$and: [
 				{ $or: [{ username }, { nationalId }, { email }] },
-				{ registerStatus: { $in: ['approved', 'pending'] } }
+				{ registrationStatus: { $in: ['approved', 'pending'] } }
 			] 
 		});
 
@@ -45,20 +45,20 @@ const registerDoctor = async (req, res) => {
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
 
-		const medicalLicenseFile = req.files['medicalLicense'][0];
-		const medicalDegreeFile = req.files['medicalDegree'][0];
+		// const medicalLicenseFile = req.files['medicalLicense'][0];
+		// const medicalDegreeFile = req.files['medicalDegree'][0];
 
 		const newDoctor = await Doctor.create({
 			...req.body,
 			password: hashedPassword,
-			medicalLicense: {
-				data: medicalLicenseFile.buffer,
-				contentType: medicalLicenseFile.mimetype
-			},
-			medicalDegree: {
-				data: medicalDegreeFile.buffer,
-				contentType: medicalDegreeFile.mimetype
-			}
+			// medicalLicense: {
+			// 	data: medicalLicenseFile.buffer,
+			// 	contentType: medicalLicenseFile.mimetype
+			// },
+			// medicalDegree: {
+			// 	data: medicalDegreeFile.buffer,
+			// 	contentType: medicalDegreeFile.mimetype
+			// }
 		});
 
 		return res.status(200).json({ success: true, message: "Application is submitted successfully" });

@@ -3,7 +3,11 @@ const { Schema } = mongoose;
 
 const appointmentSchema = new Schema({
 	date: Date,
-	status: String,
+	status: {
+		type: String,
+		enum: ["completed", "upcoming", "cancelled"],
+		default: "upcoming",
+	},
 	doctor: {
 		type: Schema.Types.ObjectId,
 		ref: "Doctor",

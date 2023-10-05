@@ -2,6 +2,9 @@ const Admin = require("../models/ClinicAdmin");
 const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor");
 const HealthPackage = require("../models/HealthPackage");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
 
 // View All Packages
 const getPackages = async (req, res) => {
@@ -15,12 +18,16 @@ const updatePackage = async (req, res) => {
 		const { id } = req.params;
 		const filter = { _id: id };
 
-		const packageExists = await HealthPackage.findOne(filter);
-		if (!packageExists) {
-			throw new Error("This package does not exist");
-		}
+		// const packageExists = await HealthPackage.findOne(filter);
+		// if (!packageExists) {
+		// 	throw new Error("This package does not exist");
+		// }
 		const update = req.body;
 		const updatedPackage = await HealthPackage.updateOne(filter, update);
+		if(updatedPackage.modifiedCount === 0) {
+			throw new Error("Package not found");
+		}
+		
 		res.status(200).json(updatedPackage);
 	} catch (error) {
 		res.status(404).json({ error: error.message });
@@ -65,56 +72,62 @@ const deletePackage = async (req, res) => {
 // Add an Admin
 const addAdmin = async (req, res) => {
 	try {
-		const adminData = req.body;
+		const { username, password } =  req.body;
 
-		const existingAdmin = await Admin.findOne({ email: adminData.username });
+		const existingAdmin = await Admin.findOne({ username: username.toLowerCase() });
 
 		if (existingAdmin) {
 			res.status(400).json({ error: "Admin with this username already exists" });
 		}
+		
+		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-		const newAdmin = new Admin(adminData);
-		await newAdmin.save();
+		const newAdmin = await Admin.create({
+			...req.body,
+			username: username.toLowerCase(),
+			password: hashedPassword
+		});
 
 		res.status(200).json({ message: "Admin added successfully", admin: newAdmin });
 	} catch (error) {
-		res.status(500).json({ error: "Failed to add the admin" });
+		res.status(500).json({ error: error.message });
 	}
 };
 
-// Delete a specific Admin
+// Delete a specific Admin - tested initially
 const deleteAdmin = async (req, res) => {
 	try {
 		const { id } = req.params;
+		const filter = { _id: id };
+		const admin = await Admin.findOne(filter);
 
-		const admin = await Admin.findOne({ _id: id });
+		if (!admin) {
+			throw new Error("Admin not found")
+		} 
 
-		if (admin) {
-			await admin.remove();
-			res.status(200).json({ message: "Admin deleted successfully" });
-		} else {
-			res.status(404).json({ error: "Admin not found" });
-		}
+		const deletedAdminResponse = await Admin.deleteOne(filter);
+		res.status(200).json(deletedAdminResponse);
+
 	} catch (error) {
-		res.status(500).json({ error: "Failed to delete the admin" });
+		res.status(500).json({ error: error.message });
 	}
 };
 
-// Delete a specific Patient
+// Delete a specific Patient - tested initially
 const deletePatient = async (req, res) => {
 	try {
 		const { id } = req.params;
+		const filter = { _id: id };
+		const patient = await Patient.findOne(filter);
 
-		const patient = await Patient.findOne({ _id: id });
-
-		if (patient) {
-			await patient.remove();
-			res.status(200).json({ message: "Patient deleted successfully" });
-		} else {
-			res.status(404).json({ error: "Patient not found" });
-		}
+		if (!patient) {
+			throw new Error( "Patient not found" );
+		} 
+		
+		const deletedPatientResponse = await Patient.deleteOne(filter);
+		res.status(200).json(deletedPatientResponse);
 	} catch (error) {
-		res.status(500).json({ error: "Failed to delete the patient" });
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -122,28 +135,28 @@ const deletePatient = async (req, res) => {
 const deleteDoctor = async (req, res) => {
 	try {
 		const { id } = req.params;
+		const filter = { _id: id };
+		const doctor = await Doctor.findOne(filter);
 
-		const doctor = await Doctor.findOne({ _id: id });
-
-		if (doctor) {
-			await doctor.remove();
-			res.status(200).json({ message: "Doctor deleted successfully" });
-		} else {
-			res.status(404).json({ error: "Doctor not found" });
-		}
+		if (!doctor) {
+			throw new Error("Doctor not found" );
+		} 
+		
+		const deletedDoctorResponse = await Doctor.deleteOne(filter);
+		res.status(200).json(deletedDoctorResponse);
 	} catch (error) {
-		res.status(500).json({ error: "Failed to delete the doctor" });
+		res.status(500).json({ error: error.message });
 	}
 };
 
 // Get all doctor applications
 const getApplications = async (req, res) => {
 	try {
-		const applications = await Doctor.find({ registrationStatus: "pending"}).toArray();
+		const applications = await Doctor.find({ registrationStatus: "pending"});
 		res.status(200).json(applications);
 	} catch (error) {
-		console.log("Error fetching doctor applications");
-		res.status(500).json({ error: "Could not find any applications" });
+		// console.log("Error fetching doctor applications");
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -151,11 +164,13 @@ const getApplications = async (req, res) => {
 const getApplicationInfo = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const application = await Doctor.findOne({ _id: id });
-
+		const application = await Doctor.findOne({$and: [{ _id: id }, {registrationStatus: "pending"}]});
+		if(!application) {
+			throw new Error("Application not found");
+		}
 		res.status(200).json(application);
 	} catch (error) {
-		res.status(500).json({ error: "Could not retrieve application" });
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -163,17 +178,17 @@ const getApplicationInfo = async (req, res) => {
 const handleApplication = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const { status } = req.body;
+		const { registrationStatus } = req.body;
 		const filter = { _id: id };
-		const update = { $set: { registrationStatus: status } };
+		const update = { registrationStatus };
 
 		const handledApplication = await Doctor.updateOne(filter, update);
-
-		res
-			.status(200)
-			.json({ response: "Successfully handled application", application: handledApplication });
+		if(handledApplication.modifiedCount === 0) {
+			throw new Error("Application not found");
+		}
+		res.status(200).json({ response: "Successfully handled application", application: handledApplication });
 	} catch (error) {
-		res.status(500).json({ error: "Could not update application status" });
+		res.status(500).json({ error: error.message });
 	}
 };
 

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const { Schema } = mongoose;
-
+// ADDDDD NATOINALID PICTURE ATTRIBUTE YALLA
 const patientSchema = new Schema({
 	name: String,
 	username: String,
