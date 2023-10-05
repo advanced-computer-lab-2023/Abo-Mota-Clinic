@@ -169,9 +169,11 @@ const handleApplication = async (req, res) => {
 		const filter = { _id: id };
 		const update = { $set: { registrationStatus: status } };
 
-		const handledApplication = Doctor.updateOne(filter, update);
+		const handledApplication = await Doctor.updateOne(filter, update);
 
-		res.status(200).json({ response: "Successfully handled application" });
+		res
+			.status(200)
+			.json({ response: "Successfully handled application", application: handledApplication });
 	} catch (error) {
 		res.status(500).json({ error: "Could not update application status" });
 	}
