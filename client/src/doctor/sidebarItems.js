@@ -1,4 +1,12 @@
+import Avatar from '@mui/joy/Avatar';
+
+
+
 export const items = [
+	{
+		name: <Avatar variant="soft" />,
+		to: "profile"
+	},
 	{
 		name: "Patients",
 		to: "patients",
@@ -7,4 +15,5 @@ export const items = [
 		name: "Appointments",
 		to: "appointments",
 	},
+	
 ];

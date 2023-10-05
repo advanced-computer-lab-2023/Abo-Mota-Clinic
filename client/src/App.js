@@ -3,7 +3,7 @@ import Patient from "./patient/Patient";
 import Doctor from "./doctor/Doctor";
 import Admin from "./admin/Admin";
 
-import NavBar from "./shared/components/NavBar";
+import NavBar from "./shared/Components/NavBar";
 
 // Admin
 import Packages from "./admin/pages/Packages";
@@ -21,6 +21,8 @@ import RegisterScreen from "./patient/pages/RegisterScreen";
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
 import ViewDoctorPatients from "./doctor/pages/ViewDoctorPatients";
+import EditMyProfile from "./doctor/pages/EditMyProfile";
+
 
 function App() {
 	return (
@@ -37,6 +39,7 @@ function App() {
 					<Route path="/doctor" element={<Doctor />}>
 						<Route path="appointments" element={<ViewDoctorAppointments />} />
 						<Route path="patients" element={<ViewDoctorPatients />} />
+						<Route path='profile' element={<EditMyProfile />}/>
 					</Route>
 
 					<Route path="/admin" element={<Admin />}>
