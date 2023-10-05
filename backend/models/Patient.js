@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
-const Joi = require('joi');
+const Joi = require("joi");
 
 const { Schema } = mongoose;
-
-
 
 const patientSchema = new Schema({
 	name: String,
@@ -37,10 +35,9 @@ const patientSchema = new Schema({
 			type: Schema.Types.ObjectId,
 			ref: "Prescription",
 		},
-	]
+	],
 });
 
 const Patient = mongoose.model("Patient", patientSchema);
-
 
 module.exports = Patient;

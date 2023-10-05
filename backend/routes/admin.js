@@ -2,41 +2,49 @@ const express = require("express");
 const router = express.Router();
 const {
 	getPackages,
-    updatePackage,
-    addPackage,
-    deletePackage,
-    getApplicationInfo,
-    addAdmin,
-    deleteAdmin,
-    deletePatient,
-    deleteDoctor
-}= require('../controllers/adminController');
+	updatePackage,
+	addPackage,
+	deletePackage,
+	getApplications,
+	getApplicationInfo,
+	handleApplication,
+	addAdmin,
+	deleteAdmin,
+	deletePatient,
+	deleteDoctor,
+} = require("../controllers/adminController");
 
 // View All Packages
-router.get("/getPackages", getPackages);
+router.get("/packages", getPackages);
 
 // Update Package
-router.patch("/updatePackage/:id", updatePackage);
+router.patch("/packages/:id", updatePackage);
 
 // Add Package
-router.post("/addPackage", addPackage);
+router.post("/packages", addPackage);
 
 // Delete Package
-router.delete("/deletePackage/:id", deletePackage);
+router.delete("/packages/:id", deletePackage);
 
-// View Doctor Application Info
-router.get("/viewDoctorInfo", getApplicationInfo);
+// Get all doctor applications
+router.get("/applications", getApplications);
 
-// Add an Admin
-router.post("/addAdmin", addAdmin);
+// View doctor application info
+router.get("/applications/:id", getApplicationInfo);
+
+// Handle doctor application
+router.patch("/applications/:id", handleApplication);
+
+// Add an admin
+router.post("/admins", addAdmin);
 
 // Delete a specific Admin
-router.delete("/deleteAdmin/:id", deleteAdmin);
+router.delete("/admins/:id", deleteAdmin);
 
-// Delete a specific Patient
-router.delete("/deletePatient/:id", deletePatient);
+// Delete a specific patient
+router.delete("/patients/:id", deletePatient);
 
-// Delete a specific Doctor
-router.delete("/deleteDoctor/:id", deleteDoctor);
+// Delete a specific doctor
+router.delete("/doctors/:id", deleteDoctor);
 
 module.exports = router;

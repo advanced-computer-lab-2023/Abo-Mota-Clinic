@@ -1,27 +1,27 @@
 const express = require("express");
-const { 
+const {
 	getPrescriptions,
 	getFamilyMembers,
-    addFamilyMember,
-    getDoctors,
-    getAppointments
-} = require('../controllers/patientController');
+	addFamilyMember,
+	getDoctors,
+	getAppointments,
+} = require("../controllers/patientController");
 
 const router = express.Router();
 
 // Get all patient prescriptions
-router.get("/getPrescriptions", getPrescriptions);
+router.get("/prescriptions", getPrescriptions);
 
 // Get all patient's registered family members
-router.get("/getFamily", getFamilyMembers);
+router.get("/family", getFamilyMembers);
 
 // Register a patient's family member
-router.post("/addFamilyMember", addFamilyMember);
+router.post("/family", addFamilyMember);
 
 // Get all doctors
-router.get("/getDoctors", getDoctors);
+router.get("/doctors", getDoctors);
 
 // Get all appointments
-router.get("/getAppointments", getAppointments);
+router.get("/appointments", getAppointments);
 
 module.exports = router;
