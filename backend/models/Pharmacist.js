@@ -15,4 +15,5 @@ const pharmacistSchema = new Schema({
 	pharmacyDegree: Buffer,
 });
 
-mongoose.model("Pharmacist", pharmacistSchema);
+const Pharmacist = mongoose.model("Pharmacist", pharmacistSchema);
+module.exports = Pharmacist;

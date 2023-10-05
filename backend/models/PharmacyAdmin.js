@@ -8,4 +8,5 @@ const pharmacyAdminSchema = new Schema({
 	email: String,
 });
 
-mongoose.model("PharmacyAdmin", pharmacyAdminSchema);
+const PharmacyAdmin = mongoose.model("PharmacyAdmin", pharmacyAdminSchema);
+module.exports = PharmacyAdmin;

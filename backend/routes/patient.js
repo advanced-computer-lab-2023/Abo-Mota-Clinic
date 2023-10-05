@@ -1,30 +1,27 @@
 const express = require("express");
+const { 
+	getPrescriptions,
+	getFamilyMembers,
+    addFamilyMember,
+    getDoctors,
+    getAppointments
+} = require('../controllers/patientController');
 
 const router = express.Router();
 
 // Get all patient prescriptions
-router.get("/getPrescriptions", (req, res) => {
-	res.json({ pres: "panadol" });
-});
+router.get("/getPrescriptions", getPrescriptions);
 
 // Get all patient's registered family members
-router.get("/getFamily", (req, res) => {
-	res.json({ family: "lol&&2shrooos" });
-});
+router.get("/getFamily", getFamilyMembers);
 
 // Register a patient's family member
-router.post("/addFamilyMember", (req, res) => {
-	res.json({ addedFamily: "member" });
-});
+router.post("/addFamilyMember", addFamilyMember);
 
 // Get all doctors
-router.get("/getDoctors", (req, res) => {
-	res.json({ allDoctors: "doctor" });
-});
+router.get("/getDoctors", getDoctors);
 
 // Get all appointments
-router.get("/getAppointments", (req, res) => {
-	res.json({ allAppointments: "appointment" });
-});
+router.get("/getAppointments", getAppointments);
 
 module.exports = router;

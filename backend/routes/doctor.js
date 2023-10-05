@@ -1,20 +1,19 @@
 const express = require("express");
+const {
+	editDetails,
+    getDoctorAppointments,
+    getDoctorPatients
+} = require('../controllers/doctorController');
 
 const router = express.Router();
 
 // Edit Email, Affiliation, Rate
-router.patch("/editDetails/:id", (req, res) => {
-	res.json({ email: "updated" });
-});
+router.patch("/editDetails/:id", editDetails);
 
 // View All Doctor's Appointments
-router.get("/getAppointments", (req, res) => {
-	res.json({ allAppointments: "doctorappointment" });
-});
+router.get("/getAppointments", getDoctorAppointments);
 
 // View All Doctor's Patients
-router.get("/getPatients", (req, res) => {
-	res.json({ allMyPatients: "lol" });
-});
+router.get("/getPatients", getDoctorPatients);
 
 module.exports = router;

@@ -20,6 +20,12 @@ const doctorSchema = new Schema({
 			ref: "Patient",
 		},
 	],
+	prescriptions: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Prescription",
+		},
+	],
 	appointments: [
 		{
 			type: Schema.Types.ObjectId,
@@ -28,4 +34,5 @@ const doctorSchema = new Schema({
 	],
 });
 
-mongoose.model("Doctor", doctorSchema);
+const Doctor = mongoose.model("Doctor", doctorSchema);
+module.exports = Doctor;

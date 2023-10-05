@@ -13,6 +13,11 @@ const prescriptionSchema = new Schema({
 			ref: "Medicine",
 		},
 	],
+	patient: {
+		type: Schema.Types.ObjectId,
+		ref: "Patient",
+	},
 });
 
-mongoose.model("Prescription", prescriptionSchema);
+const Prescription = mongoose.model("Prescription", prescriptionSchema);
+module.exports = Prescription;

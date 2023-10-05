@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
+const Joi = require('joi');
+
 const { Schema } = mongoose;
+
+
 
 const patientSchema = new Schema({
 	name: String,
@@ -9,6 +13,13 @@ const patientSchema = new Schema({
 	dob: Date,
 	gender: String,
 	mobile: String,
+	nationalId: String,
+	familyMembers: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Patient",
+		},
+	],
 	emergencyContacts: [
 		{
 			type: Map,
@@ -21,6 +32,15 @@ const patientSchema = new Schema({
 			ref: "HealthPackage",
 		},
 	],
+	prescriptions: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Prescription",
+		},
+	]
 });
 
-mongoose.model("Patient", patientSchema);
+const Patient = mongoose.model("Patient", patientSchema);
+
+
+module.exports = Patient;

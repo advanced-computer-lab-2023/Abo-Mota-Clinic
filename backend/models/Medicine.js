@@ -10,4 +10,5 @@ const medicineSchema = new Schema({
 	image: String, //url
 });
 
-mongoose.model("Medicine", medicineSchema);
+const Medicine = mongoose.model("Medicine", medicineSchema);
+module.exports = Medicine;

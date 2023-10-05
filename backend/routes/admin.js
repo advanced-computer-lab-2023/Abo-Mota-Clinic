@@ -1,40 +1,34 @@
 const express = require("express");
-
 const router = express.Router();
+const {
+	getPackages,
+    updatePackage,
+    getApplicationInfo,
+    addAdmin,
+    deleteAdmin,
+    deletePatient,
+    deleteDoctor
+}= require('../controllers/adminController');
 
 // View All Packages
-router.get("/packages", (req, res) => {
-	res.json({ message: "alyraafatlolito" });
-});
+router.get("/getPackages", getPackages);
 
 // Update Package
-router.patch("/packages/:id", (req, res) => {
-	const packageId = req.params.id;
-});
+router.patch("/packages/:id", updatePackage);
 
 // View Doctor Application Info
-router.get("/viewDoctorInfo", (req, res) => {
-	res.json({ message: "lebito" });
-});
+router.get("/viewDoctorInfo", getApplicationInfo);
 
 // Add an Admin
-router.post("/addAdmin", (req, res) => {
-	res.json({ message: "addAdmin" });
-});
+router.post("/addAdmin", addAdmin);
 
 // Delete a specific Admin
-router.delete("/deleteAdmin/:userId", (req, res) => {
-	const userId = req.params.userId;
-});
+router.delete("/deleteAdmin/:userId", deleteAdmin);
 
 // Delete a specific Patient
-router.delete("/deletePatient/:userId", (req, res) => {
-	const userId = req.params.userId;
-});
+router.delete("/deletePatient/:userId", deletePatient);
 
 // Delete a specific Doctor
-router.delete("/deleteDoctor/:userId", (req, res) => {
-	const userId = req.params.userId;
-});
+router.delete("/deleteDoctor/:userId", deleteDoctor);
 
 module.exports = router;

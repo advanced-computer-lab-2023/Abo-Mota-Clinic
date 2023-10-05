@@ -10,4 +10,5 @@ const healthPackageSchema = new Schema({
 	name: String,
 });
 
-mongoose.model("HealthPackage", healthPackageSchema);
+const HealthPackage = mongoose.model("HealthPackage", healthPackageSchema);
+module.exports = HealthPackage;
