@@ -1,9 +1,9 @@
-import Button from "../../../shared/components/Button";
+import Button from "../../../shared/Components/Button";
 import { useState } from "react";
-import Input from "../../../shared/components/InputField";
+import Input from "../../../shared/Components/InputField";
 import './RegisterStyles.css';
-import DropDownn from "../../../shared/components/DropDown";
-import DateInput from "../../../shared/components/DateInput";
+import DropDownn from "../../../shared/Components/DropDown";
+import DateInput from "../../../shared/Components/DateInput";
 import logo from '../../../shared/assets/logo.png';
 import { Link } from "react-router-dom";
 
