@@ -1,6 +1,7 @@
 const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor");
 const Appointment = require("../models/Appointment");
+const Prescription = require("../models/Prescription");
 
 // Get all patient prescriptions
 const getPrescriptions = async (req, res) => {
