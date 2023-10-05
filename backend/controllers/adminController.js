@@ -139,9 +139,7 @@ const deleteDoctor = async (req, res) => {
 // Get all doctor applications
 const getApplications = async (req, res) => {
 	try {
-		const applications = await Doctor.find({
-			$or: [{ registrationStatus: "pending" }, { registrationStatus: "declined" }],
-		}).toArray();
+		const applications = await Doctor.find({ registrationStatus: "pending"}).toArray();
 		res.status(200).json(applications);
 	} catch (error) {
 		console.log("Error fetching doctor applications");
