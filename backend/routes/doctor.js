@@ -5,6 +5,7 @@ const {
 	getDoctorPatients,
 } = require("../controllers/doctorController");
 
+
 const router = express.Router();
 
 // Edit Email, Affiliation, Rate (?)

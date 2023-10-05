@@ -30,25 +30,35 @@ const registerPatient = async (req, res) => {
 const registerDoctor = async (req, res) => {
 	try {
 		const { username, nationalId, password, email } = req.body;
-		// 1. Check if the user already exists
+
 		const doctorExists = await Doctor.findOne({ 
 			$and: [
 				{ $or: [{ username }, { nationalId }, { email }] },
 				{ registerStatus: { $in: ['approved', 'pending'] } }
 			] 
 		});
-		
+
 		if (doctorExists) {
 			throw new Error("Doctor with these credentials already exists");
 		}
-
-		// 2. Hash the password
+		
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-		// 3. Create a new user instance and save it
+
+		const medicalLicenseFile = req.files['medicalLicense'][0];
+		const medicalDegreeFile = req.files['medicalDegree'][0];
+
 		const newDoctor = await Doctor.create({
 			...req.body,
 			password: hashedPassword,
+			medicalLicense: {
+				data: medicalLicenseFile.buffer,
+				contentType: medicalLicenseFile.mimetype
+			},
+			medicalDegree: {
+				data: medicalDegreeFile.buffer,
+				contentType: medicalDegreeFile.mimetype
+			}
 		});
 
 		return res.status(200).json({ success: true, message: "Application is submitted successfully" });

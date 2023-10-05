@@ -12,8 +12,14 @@ const doctorSchema = new Schema({
 	speciality: String,
 	educationalBackground: String,
 	nationalId: Buffer,
-	medicalLicense: Buffer,
-	medicalDegree: Buffer,
+	medicalLicense: {
+		type: Buffer,
+		contentType: String
+	},
+	medicalDegree: {
+		type: Buffer,
+		contentType: String
+	},
 	registerStatus: {
 		type: String,
 		enum: ["pending", "approved", "rejected"],
