@@ -25,7 +25,6 @@ import ViewDoctorPatients from "./doctor/pages/ViewDoctorPatients";
 function App() {
 	return (
 		<div>
-				<NavBar />
 				<Routes>
 					<Route path="/" element={<RegisterScreen />} />
 					<Route path="/patient" element={<Patient />}>

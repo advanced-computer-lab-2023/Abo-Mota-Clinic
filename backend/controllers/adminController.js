@@ -1,16 +1,67 @@
 const Admin = require('../models/ClinicAdmin');
 const Patient = require('../models/Patient');
 const Doctor = require('../models/Doctor');
-
+const HealthPackage = require('../models/HealthPackage');
 
 // View All Packages
 const getPackages = async (req, res) => {
-    
+    const packages = await HealthPackage.find({});
+    res.status(200).json(packages);
 }
 
 // Update Package
 const updatePackage = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const filter = {_id:id};
+
+        const packageExists = await HealthPackage.findOne(filter);
+        if (!packageExists) {
+            throw new Error('This package does not exist');
+        }
+        const update = req.body;
+        const updatedPackage = await HealthPackage.updateOne(filter, update);
+        res.status(200).json(updatedPackage);
+    } catch(error){
+        res.status(404).json({ error: error.message });
+    }
+        
+}
+
+// add Package
+const addPackage = async (req, res) => {
+    try{
+        const { name } = req.body;
+        // Check if the package already exists
+        //$or: [{ name }]
+        const packageExists = await HealthPackage.findOne({ name:name.toLowerCase() });
+        if (packageExists) {
+          throw new Error('A package with this name already exists');
+        }
+        const addedPackage = {
+            ...req.body,
+            name:name.toLowerCase()
+        }
+        const package = await HealthPackage.create(addedPackage);
+        
+        res.status(200).json(package);
+    }catch(error){
+        res.status(404).json({ error: error.message });
+    }
     
+}
+
+// delete Package
+const deletePackage = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const filter = {_id:id};
+
+        const deletedPackage = await HealthPackage.deleteOne(filter);
+        res.status(200).json(deletedPackage);
+    } catch(error){
+        res.status(404).json({ error: error.message });
+    }
 }
 
 // View Doctor Application Info
@@ -43,10 +94,10 @@ const addAdmin = async (req, res) => {
 // Delete a specific Admin
 const deleteAdmin = async (req, res) => {
     try {
-        const { adminId } = req.body;
+        const { id } = req.params;
 
         
-        const admin = await Admin.findOne({ adminId: adminId }); 
+        const admin = await Admin.findOne({ _id: id }); 
 
       
         if (admin) {
@@ -63,10 +114,10 @@ const deleteAdmin = async (req, res) => {
 // Delete a specific Patient
 const deletePatient = async (req, res) => {
     try {
-        const { patientId } = req.body;
+        const { id } = req.params;
 
         
-        const patient = await Patient.findOne({ patientId: patientId });
+        const patient = await Patient.findOne({ _id: id });
 
     
         if (patient) {
@@ -83,10 +134,10 @@ const deletePatient = async (req, res) => {
 // Delete a specific Doctor
 const deleteDoctor = async (req, res) => {
     try {
-        const { doctorId } = req.body;
+        const { id } = req.params;
 
         
-        const doctor = await Doctor.findOne({ doctorId: doctorId });
+        const doctor = await Doctor.findOne({ _id: id });
 
         
         if (doctor) {
@@ -103,6 +154,8 @@ const deleteDoctor = async (req, res) => {
 module.exports={
     getPackages,
     updatePackage,
+    addPackage,
+    deletePackage,
     getApplicationInfo,
     addAdmin,
     deleteAdmin,
