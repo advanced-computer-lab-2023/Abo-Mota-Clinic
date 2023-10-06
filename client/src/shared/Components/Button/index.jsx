@@ -1,7 +1,7 @@
 import './styles.css';
-const Button = ({type, label}) => {
+const Button = ({buttonClass, type, label}) => {
   return (
-      <button className="custom-button" type={type}>{label}</button>
+      <button className={buttonClass} type={type}>{label}</button>
   );
 };
 

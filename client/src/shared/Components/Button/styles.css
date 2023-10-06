@@ -17,3 +17,16 @@
   flex-grow: 1;
   margin: 0px 20px;
 }
+
+.package-button {
+  background-color: black; /* Set the background color to black */
+  color: white; /* Set the text color to white */
+  padding: 10px 15px; /* Add padding to the button */
+  border: none; /* Remove the border */
+  border-radius: 10px; /* Add border-radius for round edges */
+  text-align: center; /* Center-align the text */
+  text-decoration: none; /* Remove underlines from links */
+  font-size: 15px; /* Set the font size */
+  cursor: pointer; /* Show a pointer cursor on hover */
+  min-width: 110px;
+}

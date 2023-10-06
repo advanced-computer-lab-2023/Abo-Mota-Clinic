@@ -15,4 +15,8 @@ export const items = [
 		name: "View Users",
 		to: "viewUsers",
 	},
+	{
+		name: "Handle Users",
+		to: "handleUsers",
+	}
 ];
