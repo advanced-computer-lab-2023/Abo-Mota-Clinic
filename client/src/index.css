@@ -4,7 +4,7 @@
   --main-color: blue;
 }
 html{
-  /* font-size: 62.5%; 16 px * 62.5% = 10 px */
+  font-size: 62.5%; /* 16 px * 62.5% = 10 px */
 }
 
 body{
