@@ -10,7 +10,6 @@ import Packages from "./admin/pages/Packages";
 import Applications from "./admin/pages/Applications";
 import ManageUsers from "./admin/pages/ManageUsers";
 
-
 // Patient
 import ViewPatientAppointments from "./patient/pages/ViewPatientAppointments";
 import ViewDoctors from "./patient/pages/ViewDoctors";
@@ -24,25 +23,24 @@ import ViewDoctorPatients from "./doctor/pages/ViewDoctorPatients";
 import EditMyProfile from "./doctor/pages/EditMyProfile";
 import RegisterForm from "./doctor/pages/RegisterForm";
 
-
 function App() {
 	return (
 		<div>
-				<Routes>
-					<Route path="/" element={<RegisterForm />} />
-					<Route path="/patient" element={<Patient />}>
-						<Route path="appointments" element={<ViewPatientAppointments />} />
-						<Route path="doctors" element={<ViewDoctors />} />
-						<Route path="prescriptions" element={<ViewPrescriptions />} />
-						<Route path="familyMembers" element={<ViewFamilyMembers />} />
-					</Route>
+			<Routes>
+				<Route path="/" element={<RegisterScreen />} />
+				<Route path="/patient" element={<Patient />}>
+					<Route path="appointments" element={<ViewPatientAppointments />} />
+					<Route path="doctors" element={<ViewDoctors />} />
+					<Route path="prescriptions" element={<ViewPrescriptions />} />
+					<Route path="familyMembers" element={<ViewFamilyMembers />} />
+				</Route>
 
-					<Route path="/doctor" element={<Doctor />}>
-						<Route path="appointments" element={<ViewDoctorAppointments />} />
-						<Route path="patients" element={<ViewDoctorPatients />} />
-						<Route path='profile' element={<EditMyProfile />}/>
-						<Route path='registerForm' element={<RegisterForm />}/>
-					</Route>
+				<Route path="/doctor" element={<Doctor />}>
+					<Route path="appointments" element={<ViewDoctorAppointments />} />
+					<Route path="patients" element={<ViewDoctorPatients />} />
+					<Route path="profile" element={<EditMyProfile />} />
+					<Route path="registerForm" element={<RegisterForm />} />
+				</Route>
 
 					<Route path="/admin" element={<Admin />}>
 						<Route path="applications" element={<Applications />} />

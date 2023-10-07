@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const { Schema } = mongoose;
-// ADDDDD NATOINALID PICTURE ATTRIBUTE YALLA
+// ADDDDD NATIONALID PICTURE ATTRIBUTE YALLA
 const patientSchema = new Schema({
 	name: String,
 	username: String,
@@ -13,9 +13,16 @@ const patientSchema = new Schema({
 	mobile: String,
 	nationalId: String,
 	familyMembers: [
+		// {
+		// 	type: Schema.Types.ObjectId,
+		// 	ref: "Patient",
+		// },
 		{
-			type: Schema.Types.ObjectId,
-			ref: "Patient",
+			_id: {
+				type: Schema.Types.ObjectId,
+				ref: "Patient",
+			},
+			relationToPatient: String, // Add your extra attribute here
 		},
 	],
 	emergencyContacts: [
@@ -34,6 +41,12 @@ const patientSchema = new Schema({
 		{
 			type: Schema.Types.ObjectId,
 			ref: "Prescription",
+		},
+	],
+	appointments: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Appointment",
 		},
 	],
 });

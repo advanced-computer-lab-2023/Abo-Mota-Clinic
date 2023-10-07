@@ -22,6 +22,7 @@ mongoose
 		console.error("Error connecting to MongoDB", err);
 	});
 
+require("./models/index");
 // middleware
 app.use((req, res, next) => {
 	console.log(req.path, req.method);

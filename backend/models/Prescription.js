@@ -17,6 +17,11 @@ const prescriptionSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Patient",
 	},
+	status: {
+		type: String,
+		enum: ["filled", "unfilled"],
+		default: "unfilled",
+	},
 });
 
 const Prescription = mongoose.model("Prescription", prescriptionSchema);
