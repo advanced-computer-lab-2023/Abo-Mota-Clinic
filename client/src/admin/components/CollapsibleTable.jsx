@@ -13,8 +13,9 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
-// Add a CSS class to increase the font size
+import { Link } from "react-router-dom";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 function createData(id, name, hourlyRate, affiliation) {
   return {
@@ -23,9 +24,9 @@ function createData(id, name, hourlyRate, affiliation) {
     hourlyRate,
     affiliation,
     medicalBackground: {
-      education: 'lol',
-      degree: '11091700',
-      license: 'lol',
+      education: 'German University in Cairo',
+      degree: 'View Degree',
+      license: 'View License',
     },
   };
 }
@@ -89,16 +90,26 @@ function Row(props) {
                 Medical Background
               </Typography>
               <div>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" style={{display: 'flex', alignItems: 'center', gap: '105px'}}>
                   <p style={{fontWeight: 'bold'}}>Education</p>
-                  Education {row.medicalBackground.education}
+                  {row.medicalBackground.education}
                 </Typography>
-                <Typography variant="subtitle1">
-                  Medical Degree {row.medicalBackground.degree}
+                <Typography variant="subtitle1" style={{display: 'flex', alignItems: 'center', gap: '80px'}}>
+                  <p style={{fontWeight: 'bold'}}>Medical Degree</p>
+                  <Link to={`${row.medicalBackground.degree}`}>View Degree</Link>
                 </Typography>
-                <Typography variant="subtitle1">
-                  Medical License: {row.medicalBackground.license}
+                <Typography variant="subtitle1" style={{display: 'flex', alignItems: 'center', gap: '77px'}}>
+                  <p style={{fontWeight: 'bold'}}>Medical License</p>
+                  <Link to={`${row.medicalBackground.license}`}>View License</Link>
                 </Typography>
+                <div style={{display: 'flex', gap: '20px', marginLeft: '250px'}}>
+                    <Button variant="outlined" color="success">
+                      Approve
+                    </Button>
+                    <Button variant="outlined" color="error">
+                      Reject
+                    </Button>
+                </div>
               </div>
             </Box>
           </Collapse>
@@ -151,11 +162,12 @@ export default function CollapsibleTable() {
             <TableCell style={{
               fontSize: '16px',
               align: 'center'
-            }}>Hourly Rate</TableCell>
+            }}>Affiliation</TableCell>
             <TableCell style={{
               fontSize: '16px',
               align: 'center'
-            }}>Affiliation</TableCell>
+            }}>Hourly Rate</TableCell>
+            
           </TableRow>
         </TableHead>
         <TableBody>
