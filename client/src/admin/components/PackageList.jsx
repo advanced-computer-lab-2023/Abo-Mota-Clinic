@@ -1,4 +1,4 @@
-import './styles.css'
+import '../styles.css';
 import Package from './PackageShow'
 
 function PackageList({packages, editPackage, deletePackage}) {

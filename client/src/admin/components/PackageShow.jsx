@@ -1,5 +1,5 @@
 import { FiCheck, FiEdit2, FiX } from "react-icons/fi";
-import './styles.css';
+import '../styles.css';
 import { useState } from "react";
 
 function Package({id, name, discounts, cost, onEdit, onDelete}) {

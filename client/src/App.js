@@ -8,11 +8,7 @@ import NavBar from "./shared/Components/NavBar";
 // Admin
 import Packages from "./admin/pages/Packages";
 import Applications from "./admin/pages/Applications";
-import ViewAdmins from "./admin/pages/ViewAdmins";
-import ViewUsers from "./admin/pages/ViewUsers";
-import HandleUsers from "./admin/pages/HandleUsers";
-import AddAdmin from "./admin/pages/AddAdmin";
-import RemoveUser from "./admin/pages/RemoveUser";
+import ManageUsers from "./admin/pages/ManageUsers";
 
 
 // Patient
@@ -51,11 +47,7 @@ function App() {
 					<Route path="/admin" element={<Admin />}>
 						<Route path="applications" element={<Applications />} />
 						<Route path="packages" element={<Packages />} />
-						<Route path="viewAdmins" element={<ViewAdmins />} />
-						<Route path="viewUsers" element={<ViewUsers />} />
-						<Route path="handleUsers" element={<HandleUsers />}/>
-						<Route path="addAdmin" element={<AddAdmin />} />
-						<Route path="removeUser" element={<RemoveUser />} />
+						<Route path="manageUsers" element={<ManageUsers />} />
 					</Route>
 				</Routes>
 		</div>

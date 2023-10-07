@@ -32,25 +32,6 @@
     margin-bottom: 20px;
 }
 
-.icon{
-    margin-right: 10px;
-    font-size: 17px;
-    cursor: pointer;
-}
-
-.x-icon {
-    margin-left: 250px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.plus-icon {
-  cursor: pointer;
-  font-size: 50px;
-  margin-top: 150px;
-  margin-left: 120px;
-}
-
 .card-bottom {
     font-size: 15px;
     display: flex;
@@ -79,4 +60,45 @@
   font-size: 15px; 
   cursor: pointer; 
   min-width: 110px;
+}
+
+.admin-button {
+  background-color: black;
+  color: white;
+  padding: 10px 15px;
+  border: none; 
+  border-radius: 10px;
+  text-align: center; 
+  font-size: 15px; 
+  cursor: pointer; 
+  min-width: 110px;
+  margin-left: 80px;
+  margin-top: 50px;
+}
+
+.icon{
+  margin-right: 10px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.x-icon {
+  margin-left: 250px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.plus-icon {
+cursor: pointer;
+font-size: 50px;
+margin-top: 150px;
+margin-left: 120px;
+}
+
+.user-plus-icon {
+  cursor: pointer;
+  font-size: 100px;
+  margin-top: 100px;
+  margin-left: 100px;
+
 }
