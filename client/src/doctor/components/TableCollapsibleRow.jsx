@@ -7,6 +7,12 @@ import Sheet from '@mui/joy/Sheet';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Fragment } from "react";
+import Box from '@mui/material/Box';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
+
+
+
 
 
 function createData(id, name, appointment, information) {
@@ -64,38 +70,71 @@ function Row(props) {
                 variant="soft"
                 sx={{ p: 1, pl: 6, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)', marginBottom: '1px' }}
                 >
-                <Typography level="body-lg" component="div">
-                    Information
-                </Typography>
-                <Table
-                    borderAxis="bothBetween"
-                    size="sm"
-                    aria-label="purchases"
-                    sx={{
-                    '& > thead > tr > th:nth-child(n + 3), & > tbody > tr > td:nth-child(n + 3)':
-                        { textAlign: 'left' },
-                    '--TableCell-paddingX': '0.5rem',
-                    }}
-                >
-                    <thead>
-                    <tr>
-                        <th>Full Name</th>
-                        <th>Patient Id</th>
-                        <th>Phone Number</th>
-                        <th>DOB</th>
-                        <th>Gender</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr key={row.key}>
-                        <th scope="row">{row.information.fullName}</th>
-                        <td>{row.information.patientId}</td>
-                        <td>{row.information.phoneNumber}</td>
-                        <td>{row.information.dob}</td>
-                        <td>{row.information.gender}</td>
-                        </tr>
-                    </tbody>
-                </Table>
+                  {/* <Typography level="body-lg" component="div">
+                      Information
+                  </Typography> */}
+                  {/* <Table
+                      borderAxis="bothBetween"
+                      size="sm"
+                      aria-label="purchases"
+                      sx={{
+                      '& > thead > tr > th:nth-child(n + 3), & > tbody > tr > td:nth-child(n + 3)':
+                          { textAlign: 'left' },
+                      '--TableCell-paddingX': '0.5rem',
+                      }}
+                  >
+                      <thead>
+                      <tr>
+                          <th>Full Name</th>
+                          <th>Patient Id</th>
+                          <th>Phone Number</th>
+                          <th>DOB</th>
+                          <th>Gender</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr key={row.key}>
+                          <th scope="row">{row.information.fullName}</th>
+                          <td>{row.information.patientId}</td>
+                          <td>{row.information.phoneNumber}</td>
+                          <td>{row.information.dob}</td>
+                          <td>{row.information.gender}</td>
+                          </tr>
+                      </tbody>
+                  </Table> */}
+
+                  <Box sx={{ margin: 1 }}>
+                    <Typography level="body-lg" component="div" style={{marginBottom: "18px"}}>
+                        Information
+                    </Typography>
+                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                      <div>
+                        <Typography variant="subtitle1">
+                          <span style={{ fontWeight: 'bold' }}>Full Name:</span> {row.information.fullName}
+                        </Typography>
+                        <Typography variant="subtitle1">
+                          <span style={{ fontWeight: 'bold' }}>Patient Id:</span> {row.information.patientId}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography variant="subtitle1">
+                          <span style={{ fontWeight: 'bold' }}>Phone Number:</span> {row.information.phoneNumber}
+                        </Typography>
+                        <Typography variant="subtitle1">
+                          <span style={{ fontWeight: 'bold' }}>Date of Birth:</span> {row.information.dob}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography variant="subtitle1">
+                          <span style={{ fontWeight: 'bold' }}>Gender:</span> {row.information.gender}
+                        </Typography>
+                        <Typography variant="subtitle1">
+                          <span style={{ fontWeight: 'bold' }}>Emergency Contact:</span> {row.information.emergency}
+                        </Typography>
+                      </div>
+
+                    </div>
+                  </Box>
                 </Sheet>
             )}
             {/* </td> */}
@@ -185,7 +224,7 @@ export default function TableCollapsibleRow({data, config}) {
     console.log(rows)
 
     return (
-        <Sheet>
+        <TableContainer component={Paper} style={{ width: '100%', marginLeft: '10px' }}>
           <Table
             aria-label="collapsible table"
             sx={{
@@ -208,10 +247,10 @@ export default function TableCollapsibleRow({data, config}) {
             </thead>
             <tbody>
               {rows.map((row, index) => (
-                <Row key={row.name} row={row} initialOpen={index === 0} />
+                <Row key={row.name} row={row} initialOpen={index === -1} />
               ))}
             </tbody>
           </Table>
-        </Sheet>
+        </TableContainer>
       );
 }

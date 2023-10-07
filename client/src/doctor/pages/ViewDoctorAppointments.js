@@ -140,7 +140,7 @@ function ViewDoctorAppointments() {
 						Clear Selected Date
        				</Button>
 					
-					<Textarea name="Soft" placeholder="Search Patient Name…" variant="soft" />
+					<Textarea name="Soft" placeholder="Search Patient Name…" variant="outlined" />
 					
 				</div>
 			</div>
