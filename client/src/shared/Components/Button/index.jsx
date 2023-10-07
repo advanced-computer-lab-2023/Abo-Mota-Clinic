@@ -1,5 +1,5 @@
 import './styles.css';
-const Button = ({type, children, ...probs}) => {
+const Button = ({buttonClass, type, children, ...probs}) => {
   const childs = children ? children : '';
   return (
     <div className='button-container'>
