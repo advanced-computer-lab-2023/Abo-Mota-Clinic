@@ -1,8 +1,8 @@
-import '../../shared/Components/Package/styles.css'
+import '../components/styles.css';
 import { useState } from "react";
 import {nanoid} from "nanoid";
-import PackageCreate from "../../shared/Components/Package/PackageCreate";
-import PackageList from "../../shared/Components/Package/PackageList";
+import PackageCreate from '../components/PackageCreate';
+import PackageList from '../components/PackageList';
 
 function Packages(){
     const silverDiscounts = [
