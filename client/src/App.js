@@ -31,7 +31,7 @@ function App() {
 	return (
 		<div>
 			<Routes>
-				<Route path="/" element={<RegisterForm />} />
+				<Route path="/" element={<RegisterScreen />} />
 				<Route path="/patient" element={<Patient />}>
 					<Route path="appointments" element={<ViewPatientAppointments />} />
 					<Route path="doctors" element={<ViewDoctors />} />

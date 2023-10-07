@@ -16,11 +16,12 @@ function ViewDoctorPatients() {
 			appointment: "10/5/2023",
 			information:
 			{
-			  fullName: 'Sara Amr' ,
+			  fullName: 'Sara Amr Elshafie' ,
 			  patientId: '11091700',
 			  phoneNumber: '010245663235',
 			  dob: "5/1/2002",
 			  gender: "F",
+			  emergency: "010215412"
 			  
 			},
 		},
@@ -35,6 +36,7 @@ function ViewDoctorPatients() {
 			  phoneNumber: '010245663235',
 			  dob: "5/1/2002",
 			  gender: "F",
+			  emergency: "010215412"
 			  
 			},
 		},
@@ -44,11 +46,12 @@ function ViewDoctorPatients() {
 			appointment: "20/10/2023",
 			information:
 			{
-			  fullName: 'Sara Amr' ,
+			  fullName: 'Sara Amr Elshafie' ,
 			  patientId: '11091700',
 			  phoneNumber: '010245663235',
 			  dob: "5/1/2002",
 			  gender: "F",
+			  emergency: "010215412"
 			  
 			},
 		},
@@ -58,11 +61,12 @@ function ViewDoctorPatients() {
 			appointment: "10/24/2023",
 			information:
 			{
-			  fullName: 'Sara Amr' ,
+			  fullName: 'Sara Amr Elshafie' ,
 			  patientId: '11091700',
 			  phoneNumber: '010245663235',
 			  dob: "5/1/2002",
 			  gender: "F",
+			  emergency: "010215412"
 			  
 			},
 		},
@@ -131,17 +135,17 @@ function ViewDoctorPatients() {
 	
 
 	return (
-		<div classpatient='ml-5'>
-			<div>
+		<div className='ml-8'>
+			<form style={{marginBottom: "10px", marginLeft: "10px"}}>
 				
-				<Textarea name="Soft" placeholder="Search Patient Name…" variant="soft" />
+				<Textarea name="Soft" placeholder="Search Patient Name…" variant="soft" style={{marginBottom: "10px"}}/>
 				<Button size="md" variant='soft' color="neutral" onClick={handleViewApp}>
-						View Upcoming Appointments
+					View Upcoming Appointments
        			</Button>
 				<Button size="md" variant='soft' color="neutral" onClick={handleViewAll}>
 					View All Patients
        			</Button>
-			</div>
+			</form>
 
 			<TableCollapsibleRow data={renderedPatients}/>
 		</div>

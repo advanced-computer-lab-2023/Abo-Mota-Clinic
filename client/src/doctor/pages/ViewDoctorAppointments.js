@@ -107,6 +107,10 @@ function ViewDoctorAppointments() {
 					<DatePickerMaterialUI value={selectedDate} onChange={handleDateChange} />
 					<Button size="md" variant="soft" color="neutral" onClick={clearSelectedDate}>
 						Clear Selected Date
+       				</Button>
+					
+					<Textarea name="Soft" placeholder="Search Patient Name…" variant="outlined" />
+					
 					</Button>
 
 					<Textarea name="Soft" placeholder="Search Patient Name…" variant="soft" />
