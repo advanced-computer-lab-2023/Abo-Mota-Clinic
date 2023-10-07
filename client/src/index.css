@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;1,900&display=swap");
 
-:root{
-  --main-color: blue;
+:root {
+	--main-color: blue;
 }
-html{
-  font-size: 62.5%; /* 16 px * 62.5% = 10 px */
-}
+/* html {
+	font-size: 62.5%; 16 px * 62.5% = 10 px
+} */
 
-body{
-  margin: 0px;
-  background: #eee;
-  font-family: Besley, serif;
+body {
+	margin: 0px;
+	background: #eee;
+	font-family: Besley, serif;
 }
