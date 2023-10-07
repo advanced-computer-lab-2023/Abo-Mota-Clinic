@@ -1,10 +1,11 @@
 import './styles.css';
 
-const DropDownn = ({ options, onChange, value, name, label }) => {
+const DropDown = ({ options, id, error, touch,  label, ...probs }) => {
+  // console.log(probs.onChange);
   return (
     <div className="dropdown-container">
     <label>{label}</label>
-      <select className="dropdown-select" name={name} onChange={onChange} value={value} required>
+      <select id={id} className="dropdown-select" {...probs}>
       {options.map((option, index) => {
         return (
           <option key={index} value={option}>
@@ -13,8 +14,9 @@ const DropDownn = ({ options, onChange, value, name, label }) => {
         );
       })}
     </select>
+    {error && touch ? <div className="input-error"> {error} </div>: null}
     </div>
   );
 }
 
-export default DropDownn;
+export default DropDown;

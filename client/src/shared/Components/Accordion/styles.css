@@ -63,3 +63,23 @@
   font-size: 2rem;
   font-weight: bold;
 }
+.accordion-button-container{
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  height: 60px;
+}
+
+.accordion-button{
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px;
+  display: flex;
+  border-radius: 10px;
+  width: 100px;
+  height: 60px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
