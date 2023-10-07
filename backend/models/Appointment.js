@@ -5,8 +5,8 @@ const appointmentSchema = new Schema({
 	date: Date,
 	status: {
 		type: String,
-		enum: ["completed", "upcoming", "cancelled"],
-		default: "upcoming",
+		enum: ["completed", "upcoming", "cancelled", "unbooked"],
+		default: "unbooked",
 	},
 	doctor: {
 		type: Schema.Types.ObjectId,

@@ -14,11 +14,11 @@ const doctorSchema = new Schema({
 	nationalId: String,
 	medicalLicense: {
 		type: Buffer,
-		contentType: String
+		contentType: String,
 	},
 	medicalDegree: {
 		type: Buffer,
-		contentType: String
+		contentType: String,
 	},
 	registrationStatus: {
 		type: String,

@@ -31,19 +31,18 @@ const registerDoctor = async (req, res) => {
 	try {
 		const { username, nationalId, password, email } = req.body;
 
-		const doctorExists = await Doctor.findOne({ 
+		const doctorExists = await Doctor.findOne({
 			$and: [
 				{ $or: [{ username }, { nationalId }, { email }] },
-				{ registrationStatus: { $in: ['approved', 'pending'] } }
-			] 
+				{ registrationStatus: { $in: ["approved", "pending"] } },
+			],
 		});
 
 		if (doctorExists) {
 			throw new Error("Doctor with these credentials already exists");
 		}
-		
-		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
 		// const medicalLicenseFile = req.files['medicalLicense'][0];
 		// const medicalDegreeFile = req.files['medicalDegree'][0];
@@ -61,7 +60,9 @@ const registerDoctor = async (req, res) => {
 			// }
 		});
 
-		return res.status(200).json({ success: true, message: "Application is submitted successfully" });
+		return res
+			.status(200)
+			.json({ success: true, message: "Application is submitted successfully" });
 	} catch (error) {
 		return res.status(404).json({ success: false, message: error.message });
 	}
