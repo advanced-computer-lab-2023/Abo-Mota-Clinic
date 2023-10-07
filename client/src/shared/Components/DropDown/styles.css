@@ -6,6 +6,7 @@
   box-shadow: 0px 0px 10px rgba(0,0,0,0,1);
   display: inline-block;
   width: 20vw;
+  flex-grow: 1;
 }
 
 label{

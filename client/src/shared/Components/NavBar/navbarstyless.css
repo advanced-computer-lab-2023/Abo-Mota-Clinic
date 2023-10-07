@@ -10,8 +10,7 @@
   z-index: 1000;
 }
 
-.avatar{
-  background-color: var(--main-color);
+.navbar-logo{
   box-shadow: inset 2px 2px 2px 4px rgba(0,0,0,.5);
   border-radius: 50%;
   width: 48px;

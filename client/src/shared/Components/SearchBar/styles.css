@@ -26,3 +26,7 @@
 .search-bar:focus{
   outline: none;
 }
+
+.search-bar-medicine{
+  flex-grow: 15;
+}

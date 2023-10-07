@@ -1,19 +1,29 @@
 .custom-button{
-  display: inline-block;
-  padding: 10px 20px;
-  align-self: center;
   font-size: 1.5rem;
   font-weight: bold;
-  text-align: center;
-  text-decoration: none;
-  border: 2px solid var(--main-color);
-  border-radius: 5px;
-  background-color: var(--main-color);
-  display: block;
-  color: #fff;
-  align-self: center;
-  cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  margin: 0px 0px 0px 0px;
   flex-grow: 1;
-  margin: 0px 20px;
+  text-align: center;
+  border: 2px solid var(--main-color);
+  border-radius: 10px;
+  background-color: var(--main-color);
+  color: #fff;
+  cursor: pointer;
+  align-self: stretch;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.button-container{
+  display: flex;
+  flex-grow: 1;
+  max-width: 200px;
+  padding: 12px;
+}
+
+.button-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+  align-items: center;
 }

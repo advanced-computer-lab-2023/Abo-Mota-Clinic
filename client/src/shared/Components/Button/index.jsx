@@ -1,7 +1,14 @@
 import './styles.css';
-const Button = ({type, label}) => {
+const Button = ({type, children, ...probs}) => {
+  const childs = children ? children : '';
   return (
-      <button className="custom-button" type={type}>{label}</button>
+    <div className='button-container'>
+      <button className="custom-button" type={type} {...probs} >
+          <div className='button-content'>
+            {childs}
+          </div>
+      </button>
+    </div>
   );
 };
 
