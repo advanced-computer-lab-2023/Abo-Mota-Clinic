@@ -137,7 +137,7 @@ const RegisterForm = () => {
     <div className="registesr-div">
       <div className="register-portal">
         <div className="register-part">
-          <Header header="Welcome to Abo Mouta Pharmacy!" subheader="We are glad you want to join us!"/>
+          <Header header="Welcome to Abo Mouta Clinic!" subheader="We are glad you want to join us!"/>
           {DoctorForm}
         </div>
         <div className="logo-div"> <img className="register-logo" src={logo} alt="logo"/> </div>
