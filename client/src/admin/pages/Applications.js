@@ -3,7 +3,7 @@ import CollapsibleTable from "../components/CollapsibleTable";
 
 function Applications() {
 	return (
-		<div>
+		<div style={{width: "100%"}}>
 			<CollapsibleTable />
 		</div>
 	)
