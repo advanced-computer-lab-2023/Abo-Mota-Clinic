@@ -1,0 +1,15 @@
+.app-header{
+  color: var(--main-color);
+  font-size: 4rem;
+  font-weight: 900;
+  font-style: italic;
+  padding-left: 10px;
+}
+
+.app-subheader{
+  color: silver;
+  font-size: 2rem;
+  font-weight: 400;
+  text-align: start;
+  padding-left: 15px;
+}

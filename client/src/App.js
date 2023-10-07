@@ -26,13 +26,14 @@ import RegisterScreen from "./patient/pages/RegisterScreen";
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
 import ViewDoctorPatients from "./doctor/pages/ViewDoctorPatients";
 import EditMyProfile from "./doctor/pages/EditMyProfile";
+import RegisterForm from "./doctor/pages/RegisterForm";
 
 
 function App() {
 	return (
 		<div>
 				<Routes>
-					<Route path="/" element={<RegisterScreen />} />
+					<Route path="/" element={<RegisterForm />} />
 					<Route path="/patient" element={<Patient />}>
 						<Route path="appointments" element={<ViewPatientAppointments />} />
 						<Route path="doctors" element={<ViewDoctors />} />
@@ -44,6 +45,7 @@ function App() {
 						<Route path="appointments" element={<ViewDoctorAppointments />} />
 						<Route path="patients" element={<ViewDoctorPatients />} />
 						<Route path='profile' element={<EditMyProfile />}/>
+						<Route path='registerForm' element={<RegisterForm />}/>
 					</Route>
 
 					<Route path="/admin" element={<Admin />}>
