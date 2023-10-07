@@ -38,13 +38,14 @@ router.patch("/applications/:id", handleApplication);
 // Add an admin
 router.post("/admins", addAdmin);
 
+// DELETES TBD IF PARAMS IN URL
 // Delete a specific Admin
-router.delete("/admins/:id", deleteAdmin);
+router.delete("/admins", deleteAdmin);
 
 // Delete a specific patient
-router.delete("/patients/:id", deletePatient);
+router.delete("/patients", deletePatient);
 
 // Delete a specific doctor
-router.delete("/doctors/:id", deleteDoctor);
+router.delete("/doctors", deleteDoctor);
 
 module.exports = router;

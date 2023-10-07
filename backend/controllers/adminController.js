@@ -5,7 +5,6 @@ const HealthPackage = require("../models/HealthPackage");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-
 // View All Packages
 const getPackages = async (req, res) => {
 	const packages = await HealthPackage.find({});
@@ -24,10 +23,10 @@ const updatePackage = async (req, res) => {
 		// }
 		const update = req.body;
 		const updatedPackage = await HealthPackage.updateOne(filter, update);
-		if(updatedPackage.modifiedCount === 0) {
+		if (updatedPackage.modifiedCount === 0) {
 			throw new Error("Package not found");
 		}
-		
+
 		res.status(200).json(updatedPackage);
 	} catch (error) {
 		res.status(404).json({ error: error.message });
@@ -72,20 +71,20 @@ const deletePackage = async (req, res) => {
 // Add an Admin
 const addAdmin = async (req, res) => {
 	try {
-		const { username, password } =  req.body;
+		const { username, password } = req.body;
 
 		const existingAdmin = await Admin.findOne({ username: username.toLowerCase() });
 
 		if (existingAdmin) {
 			res.status(400).json({ error: "Admin with this username already exists" });
 		}
-		
+
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
 		const newAdmin = await Admin.create({
 			...req.body,
 			username: username.toLowerCase(),
-			password: hashedPassword
+			password: hashedPassword,
 		});
 
 		res.status(200).json({ message: "Admin added successfully", admin: newAdmin });
@@ -94,20 +93,22 @@ const addAdmin = async (req, res) => {
 	}
 };
 
+// REVISE DELETES, DELETE WITH USERNAME?
 // Delete a specific Admin - tested initially
 const deleteAdmin = async (req, res) => {
 	try {
-		const { id } = req.params;
-		const filter = { _id: id };
+		// const { id } = req.params;
+		// const filter = { _id: id };
+		const { username } = req.body;
+		const filter = { username: username };
 		const admin = await Admin.findOne(filter);
 
 		if (!admin) {
-			throw new Error("Admin not found")
-		} 
+			throw new Error("Admin not found");
+		}
 
 		const deletedAdminResponse = await Admin.deleteOne(filter);
 		res.status(200).json(deletedAdminResponse);
-
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -116,14 +117,16 @@ const deleteAdmin = async (req, res) => {
 // Delete a specific Patient - tested initially
 const deletePatient = async (req, res) => {
 	try {
-		const { id } = req.params;
-		const filter = { _id: id };
+		// const { id } = req.params;
+		// const filter = { _id: id };
+		const { username } = req.body;
+		const filter = { username: username };
 		const patient = await Patient.findOne(filter);
 
 		if (!patient) {
-			throw new Error( "Patient not found" );
-		} 
-		
+			throw new Error("Patient not found");
+		}
+
 		const deletedPatientResponse = await Patient.deleteOne(filter);
 		res.status(200).json(deletedPatientResponse);
 	} catch (error) {
@@ -134,14 +137,16 @@ const deletePatient = async (req, res) => {
 // Delete a specific Doctor
 const deleteDoctor = async (req, res) => {
 	try {
-		const { id } = req.params;
-		const filter = { _id: id };
+		// const { id } = req.params;
+		// const filter = { _id: id };
+		const { username } = req.body;
+		const filter = { username: username, registrationStatus: "approved" };
 		const doctor = await Doctor.findOne(filter);
 
 		if (!doctor) {
-			throw new Error("Doctor not found" );
-		} 
-		
+			throw new Error("Doctor not found");
+		}
+
 		const deletedDoctorResponse = await Doctor.deleteOne(filter);
 		res.status(200).json(deletedDoctorResponse);
 	} catch (error) {
@@ -152,7 +157,7 @@ const deleteDoctor = async (req, res) => {
 // Get all doctor applications
 const getApplications = async (req, res) => {
 	try {
-		const applications = await Doctor.find({ registrationStatus: "pending"});
+		const applications = await Doctor.find({ registrationStatus: "pending" });
 		res.status(200).json(applications);
 	} catch (error) {
 		// console.log("Error fetching doctor applications");
@@ -164,8 +169,10 @@ const getApplications = async (req, res) => {
 const getApplicationInfo = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const application = await Doctor.findOne({$and: [{ _id: id }, {registrationStatus: "pending"}]});
-		if(!application) {
+		const application = await Doctor.findOne({
+			$and: [{ _id: id }, { registrationStatus: "pending" }],
+		});
+		if (!application) {
 			throw new Error("Application not found");
 		}
 		res.status(200).json(application);
@@ -182,11 +189,25 @@ const handleApplication = async (req, res) => {
 		const filter = { _id: id };
 		const update = { registrationStatus };
 
-		const handledApplication = await Doctor.updateOne(filter, update);
-		if(handledApplication.modifiedCount === 0) {
-			throw new Error("Application not found");
+		if (registrationStatus !== "approved" && registrationStatus !== "rejected") {
+			throw new Error("Registration can either be approved or rejected");
 		}
-		res.status(200).json({ response: "Successfully handled application", application: handledApplication });
+
+		if (registrationStatus === "rejected") {
+			const rejectedApplication = await Doctor.deleteOne(filter);
+			res.status(200).json({
+				message: "Successfully rejected and removed application from collection",
+				application: rejectedApplication,
+			});
+		} else {
+			const handledApplication = await Doctor.updateOne(filter, update);
+			if (handledApplication.modifiedCount === 0) {
+				throw new Error("Application not found");
+			}
+			res
+				.status(200)
+				.json({ response: "Successfully handled application", application: handledApplication });
+		}
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
