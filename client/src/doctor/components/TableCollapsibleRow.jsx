@@ -177,7 +177,7 @@ export default function TableCollapsibleRow({data}) {
 
     const rows = data.map((rowData) => {
         // return createData(rowData.id, rowData.name, rowData.appointment, rowData.information)
-        return createData(rowData.id, rowData.name, rowData.mobile, rowData.formattedDob, rowData.gender, rowData.emergencyContacts.name)
+        return createData(rowData.id, rowData.name, rowData.mobile, rowData.formattedDob, rowData.gender, rowData.emergencyContact.name)
 
     })
 
