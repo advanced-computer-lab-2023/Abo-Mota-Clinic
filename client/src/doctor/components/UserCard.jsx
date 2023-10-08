@@ -173,13 +173,8 @@ export default function UserCard() {
                         <MdEdit />
                     </IconButton>
                 </div>
-<<<<<<< HEAD:client/src/doctor/components/UserCard.jsx
-              {isEditRate? <Textarea name="Soft" placeholder="Enter New Rate…" variant="outlined" onChange={handleRateChange} value={rateValue} />
-                :<Typography fontWeight="lg">{renderedData.HourlyRate}</Typography>}
-=======
               {isEditRate? <Textarea name="Soft" placeholder="Enter New Rate…" variant="outlined" onChange={handleRateChange} value={rateValue}/>
                 :<Typography fontWeight="lg">{data.rate}</Typography>}
->>>>>>> 78bb37832d498fdee3bd2fd2064cfb8081c7aa1f:client/src/doctor/components/UserCard.js
             </div>
             <div>
                 <div style={{display: "flex", alignItems: "center"}}>
