@@ -4,11 +4,17 @@
   box-shadow: 0 0 8px rgba(0,0,0,.1);
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 8px;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
+
+.navbar-home{
+  display: flex;
+  align-items: center;
+  gap: 2px;}
 
 .navbar-logo{
   box-shadow: inset 2px 2px 2px 4px rgba(0,0,0,.5);

@@ -3,9 +3,10 @@
 :root {
 	--main-color: blue;
 }
-/* html {
-	font-size: 62.5%; 16 px * 62.5% = 10 px
-} */
+
+html {
+	font-size: 62.5%; /* 16 px * 62.5% = 10 px */ 
+}
 
 body {
 	margin: 0px;

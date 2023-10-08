@@ -1,18 +1,28 @@
 import { Link } from 'react-router-dom';
 import './navbarstyless.css';
 import logo from '../../assets/logo.png';
-import {GiHamburgerMenu} from 'react-icons/gi';
+import {AiOutlineHome} from 'react-icons/ai';
+import SideBar from '../SideBar';
+import { useState } from 'react';
 
-const NavBar = () => {
+const NavBar = ({links}) => {
+  const [sideBarOpen, setSideBarOpen] = useState(false);
   return (
     <div className='navbar'>
       <div className='left'>
-        <GiHamburgerMenu size={20} className='hamburger'/>
-        <img src={logo} alt="logo" className='navbar-logo'/>
+        <SideBar open={sideBarOpen} setOpen={setSideBarOpen} links={links}/>
       </div>
+      <img src={logo} alt="logo" className='navbar-logo'/>
+
         <ul className='buttons'>
-          <li><Link to="/" className='navbar-link'>Register</Link></li>
-          <li><Link to="/home" className='navbar-link'>Home</Link></li>
+          <li>
+            <Link to="/home" className='navbar-link'>
+              <div className='navbar-home'>
+                <AiOutlineHome size={20}/>
+                Home 
+              </div>
+            </Link>
+          </li>
           <li><Link to="/home" className='navbar-link'>Join Us</Link></li>
         </ul>
       {/* <div className='right'>
