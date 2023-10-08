@@ -14,7 +14,6 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Link } from "react-router-dom";
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
 function createData(id, name, hourlyRate, affiliation) {

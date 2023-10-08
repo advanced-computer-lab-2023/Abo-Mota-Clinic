@@ -1,4 +1,4 @@
-import '../components/styles.css';
+import '../styles.css';
 import { useState } from "react";
 import {nanoid} from "nanoid";
 import PackageCreate from '../components/PackageCreate';

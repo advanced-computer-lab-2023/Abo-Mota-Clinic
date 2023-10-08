@@ -1,4 +1,4 @@
-import './styles.css';
+import '../styles.css';
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
