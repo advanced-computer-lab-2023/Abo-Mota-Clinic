@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import {FiUserPlus} from 'react-icons/fi';
+import { useAddAdminMutation } from '../../store';
 
 const modalStyle = {
   display: 'flex',
@@ -15,13 +16,14 @@ const modalPaperStyle = {
   backgroundColor: 'white',
   boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
   padding: '16px',
-  minWidth: '300px',
+  minWidth: '300px'
 };
 
 function AddAdminModal() {
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [addAdmin, results] = useAddAdminMutation();
 
   const handleOpen = () => {
     setOpen(true);
@@ -38,9 +40,10 @@ function AddAdminModal() {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-
+  
   const handleSubmit = () => {
     // Handle form submission here
+    addAdmin({username, password});
     setUsername('');
     setPassword('');
     setOpen(false);

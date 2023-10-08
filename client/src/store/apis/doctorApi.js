@@ -30,9 +30,6 @@ const doctorApi = createApi({
             query : (doctor) => {
                 return {
                     url: '/appointments',
-                    // params: {
-                    //     albumId: album.id, 
-                    // },
                     method: 'GET'
                 }
             }

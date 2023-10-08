@@ -56,16 +56,71 @@ const adminApi = createApi({
             method: "DELETE",
           };
         },
+      }),
+      fetchApplications : builder.query({
+        providesTags: (result, error) => {
+          const tags = result.map((doctor) => {
+            return { type: "Package", id: doctor._id };
+          });
+          tags.push({ type: "Package", id: 123 });
+          return tags;
+        },
+        query : () => {
+          return {
+            url: "/applications",
+            method: "GET",
+          };
+        },
+      }),
+      addAdmin : builder.mutation({
+        query: (admin)=>{
+          return {
+            url: '/admins',
+            body: admin,
+            method: 'POST'
+          }
+        }
+      }),
+      removeAdmin : builder.mutation({
+        query : (admin)=>{
+          return{
+            url:'/admins',
+            body:admin,
+            method: 'DELETE'
+          }
+        }
+      }),
+      removePatient : builder.mutation({
+        query: (patient)=>{
+          return {
+            url: '/patients',
+            body: patient,
+            method: 'DELETE'
+          }
+        }
+      }),
+      removeDoctor: builder.mutation({
+        query: (doctor)=>{
+          return{
+            url: '/doctors',
+            body: doctor,
+            method: 'DELETE'
+          }
+        }
       })
-      
     };
   },
 });
 
 export const {
   useFetchPackagesQuery,
+  useFetchApplicationsQuery,
   useUpdatePackageMutation,
   useAddPackageMutation,
   useDeletePackageMutation,
+  useAddAdminMutation,
+  useRemoveAdminMutation,
+  useRemoveDoctorMutation,
+  useRemovePatientMutation
 } = adminApi;
 export { adminApi };
