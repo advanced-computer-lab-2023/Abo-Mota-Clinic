@@ -25,18 +25,18 @@ const patientSchema = new Schema({
 			relationToPatient: String, // Add your extra attribute here
 		},
 	],
-	emergencyContacts: 
-		{
-			name: String,
-			mobile: String,
-			relation: String,
-		},
-	healthPackages: [
-		{
+	emergencyContact: {
+		name: String,
+		mobile: String,
+		relation: String,
+	},
+	healthPackage: {
+		package: {
 			type: Schema.Types.ObjectId,
 			ref: "HealthPackage",
 		},
-	],
+		endDate: Date
+	},
 	prescriptions: [
 		{
 			type: Schema.Types.ObjectId,

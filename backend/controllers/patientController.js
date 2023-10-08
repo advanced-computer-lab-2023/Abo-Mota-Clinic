@@ -3,10 +3,33 @@ const Doctor = require("../models/Doctor");
 const Appointment = require("../models/Appointment");
 const Prescription = require("../models/Prescription");
 
+
+const getPatient = async (req,res) => {
+	try{
+		const patient = await Patient.findOne({}).populate("healthPackage.package");
+		res.status(200).json(patient);
+	} catch(error){
+		res.status(500).json({ error: error.message });
+	}
+	
+}
+
 // Get all patient prescriptions
 const getPrescriptions = async (req, res) => {
 	try {
-		const patient = Patient.findOne({}).populate("prescriptions");
+		const patient = await Patient.findOne({}).populate({
+			path: "prescriptions",
+			populate: [
+				{
+					path: "medicines",
+					model: "Medicine"
+				},
+				{
+					path: "doctor",
+					model: "Doctor"
+				}
+			]
+		});
 		res.status(200).json(patient.prescriptions);
 	} catch (error) {
 		res.status(500).json({ error: "Failed to retrieve prescriptions" });
@@ -66,6 +89,7 @@ const getAppointments = async (req, res) => {
 };
 
 module.exports = {
+	getPatient,
 	getPrescriptions,
 	getFamilyMembers,
 	addFamilyMember,

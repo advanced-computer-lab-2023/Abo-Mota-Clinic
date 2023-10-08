@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const doctorApi = createApi({
     reducerPath: 'doctorApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_API_URL,
+        baseUrl: `${process.env.REACT_APP_API_URL}/api/doctor`,
     }),
     endpoints(builder){
        return {
@@ -14,7 +14,7 @@ const doctorApi = createApi({
             },
             query: () => {
                 return {
-                    url: '/api/doctor',
+                    url: '/',
                     method: 'GET'
                 }
             }
@@ -29,7 +29,7 @@ const doctorApi = createApi({
             },
             query : (doctor) => {
                 return {
-                    url: '/api/doctor/appointments',
+                    url: '/appointments',
                     // params: {
                     //     albumId: album.id, 
                     // },
@@ -47,7 +47,7 @@ const doctorApi = createApi({
             },
             query : (doctor) => {
                 return {
-                    url: '/api/doctor/patients',
+                    url: '/patients',
                     // params: {
                     //     albumId: album.id, 
                     // },
@@ -61,7 +61,7 @@ const doctorApi = createApi({
             },
             query : ({ email , rate, affiliation })=>{
                 return {
-                    url: '/api/doctor',
+                    url: '/',
                     body: {
                         email,
                         rate,

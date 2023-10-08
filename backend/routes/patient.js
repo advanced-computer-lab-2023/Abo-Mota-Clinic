@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+	getPatient,
 	getPrescriptions,
 	getFamilyMembers,
 	addFamilyMember,
@@ -8,6 +9,9 @@ const {
 } = require("../controllers/patientController");
 
 const router = express.Router();
+
+// Get Patient
+router.get("/", getPatient);
 
 // Get all patient prescriptions
 router.get("/prescriptions", getPrescriptions);

@@ -9,7 +9,6 @@ import Sheet from '@mui/joy/Sheet';
 import Textarea from '@mui/joy/Textarea';
 import IconButton from '@mui/joy/IconButton';
 import { MdEdit } from "react-icons/md";
-import { useSelector } from "react-redux";
 import {useFetchDoctorQuery, useUpdateDoctorMutation} from '../../store';
 
 
@@ -27,11 +26,6 @@ export default function UserCard() {
     const [affilValue, setAffilValue] = React.useState("");
 
     
-
-   
-
-
-
 
     const handleEditEmail = () => {
         setIsEditEmail(true);

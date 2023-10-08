@@ -5,7 +5,7 @@ import './index.css';
 import { BrowserRouter } from "react-router-dom";
 import { Provider} from 'react-redux';
 import { store } from './store/index';
-import restProvider from 'ra-data-simple-rest'
+// import restProvider from 'ra-data-simple-rest'
 const el = document.getElementById("root");
 const root = ReactDOM.createRoot(el);
 // const dataProvider = restProvider("http://localhost:5000");
