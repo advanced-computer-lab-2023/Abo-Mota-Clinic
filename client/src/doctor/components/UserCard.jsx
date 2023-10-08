@@ -171,7 +171,7 @@ export default function UserCard({data}) {
                         <MdEdit />
                     </IconButton>
                 </div>
-              {isEditRate? <Textarea name="Soft" placeholder="Enter New Rate…" variant="outlined" onChange={handleRateChange} value={rateValue}/>
+              {isEditRate? <Textarea name="Soft" placeholder="Enter New Rate…" variant="outlined" onChange={handleRateChange} value={rateValue} />
                 :<Typography fontWeight="lg">{renderedData.HourlyRate}</Typography>}
             </div>
             <div>
