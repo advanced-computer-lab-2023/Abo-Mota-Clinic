@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require('cors');
 
 // express app
 const app = express();
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 	next();
 });
 app.use(express.json());
+app.use(cors({origin: 'http://localhost:3000'}));
 
 // routes
 app.use("/api/patient", patientRouter);

@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+	getDoctorProfile,
 	editDetails,
 	getDoctorAppointments,
 	getDoctorPatients,
@@ -8,8 +9,11 @@ const {
 
 const router = express.Router();
 
+// Get Doctor's Details 
+router.get("/", getDoctorProfile);
+
 // Edit Email, Affiliation, Rate (?)
-router.patch("/:id", editDetails);
+router.patch("/", editDetails);
 
 // View All Doctor's Appointments
 router.get("/appointments", getDoctorAppointments);

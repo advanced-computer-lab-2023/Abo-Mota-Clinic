@@ -1,6 +1,23 @@
 const Doctor = require("../models/Doctor");
 const Medicine = require("../models/Medicine");
 
+
+// Get Doctor's Profile
+const getDoctorProfile = async (req, res) => {
+	try {
+		const doctor = await Doctor.findOne({})
+		// .populate({
+		// 	path: "appointments",
+		// 	populate: {
+		// 		path: "patient",
+		// 		model: "Patient",
+		// 	},
+		// });
+		res.status(200).json(doctor);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
 // Edit Email, Affiliation, Rate
 const editDetails = async (req, res) => {
 	try {
@@ -21,7 +38,7 @@ const editDetails = async (req, res) => {
 			throw new Error("You can only edit email, affiliation and rate");
 		}
 
-		const updatedDoctor = await Doctor.updateOne(filter, update);
+		const updatedDoctor = await Doctor.updateOne({_id:doctorExists._id}, update);
 		// if(updatedDoctor.modifiedCount === 0) {
 		// 	throw new Error("Doctor not found");
 		// }
@@ -89,6 +106,7 @@ const getDoctorPatients = async (req, res) => {
 };
 
 module.exports = {
+	getDoctorProfile,
 	editDetails,
 	getDoctorAppointments,
 	getDoctorPatients,

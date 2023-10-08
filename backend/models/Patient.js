@@ -25,12 +25,12 @@ const patientSchema = new Schema({
 			relationToPatient: String, // Add your extra attribute here
 		},
 	],
-	emergencyContacts: [
+	emergencyContacts: 
 		{
-			type: Map,
-			of: String,
+			name: String,
+			mobile: String,
+			relation: String,
 		},
-	],
 	healthPackages: [
 		{
 			type: Schema.Types.ObjectId,
@@ -49,7 +49,15 @@ const patientSchema = new Schema({
 			ref: "Appointment",
 		},
 	],
-});
+}, { toJSON: { virtuals: true } });
+
+const options = {
+    year: 'numeric', month: '2-digit', day: '2-digit'
+};
+
+patientSchema.virtual('formattedDob').get(function() {
+	return new Intl.DateTimeFormat('en-US', options).format(this.dob);
+  });
 
 const Patient = mongoose.model("Patient", patientSchema);
 
