@@ -53,21 +53,31 @@ const RegisterScreen = () => {
             {...formik.getFieldProps('userName')}
             />
             <Input 
-            label="First Name*" 
-            type="text" 
-            id="firstName"
-            error={formik.errors.firstName}
-            touch= {formik.touched.firstName}
-            {...formik.getFieldProps('firstName')}
-            /> 
+              label="NationalID*" 
+              type="text" 
+              id="nationalId"
+              error={formik.errors.nationalId}
+              touch= {formik.touched.nationalId}
+              {...formik.getFieldProps('nationalId')}
+              />  
+          </div>
+          <div className='form-container'>
             <Input 
-            label="Last Name*" 
-            type="text" 
-            id="lastName"
-            error={formik.errors.lastName}
-            touch= {formik.touched.lastName}
-            {...formik.getFieldProps('lastName')}
-            />   
+              label="First Name*" 
+              type="text" 
+              id="firstName"
+              error={formik.errors.firstName}
+              touch= {formik.touched.firstName}
+              {...formik.getFieldProps('firstName')}
+              /> 
+              <Input 
+              label="Last Name*" 
+              type="text" 
+              id="lastName"
+              error={formik.errors.lastName}
+              touch= {formik.touched.lastName}
+              {...formik.getFieldProps('lastName')}
+              />      
           </div>
           <div className="form-container">
             <DateInput 
@@ -201,7 +211,9 @@ const clientSchema = yup.object().shape({
 
   emergencyContactMobileNumber: yup.string().matches(/^[0-9]{11}$/, 'Mobile number must be exactly 11 digits').required('Please enter a valid mobile number'),
 
-  emergencyContactRelation: yup.string().min(2, 'Relation must be at least 2 characters long').max(100, 'Relation must be at most 100 characters long').required('Please specify the relation to patient')
+  emergencyContactRelation: yup.string().min(2, 'Relation must be at least 2 characters long').max(100, 'Relation must be at most 100 characters long').required('Please specify the relation to patient'),
+
+  nationalId: yup.string().matches(/^[0-9]{14}$/, 'National ID must be exactly 14 digits').required('Please enter a valid national ID')
 });
 
 const clientInitialValues = {
@@ -217,7 +229,8 @@ const clientInitialValues = {
   emergencyContactFirstName: '',
   emergencyContactLastName: '',
   emergencyContactMobileNumber: '',
-  emergencyContactRelation: ''
+  emergencyContactRelation: '',
+  nationalId: '',
 };
 
 
