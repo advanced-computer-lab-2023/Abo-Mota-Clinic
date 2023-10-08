@@ -14,11 +14,11 @@ const doctorSchema = new Schema({
 	nationalId: String,
 	medicalLicense: {
 		type: Buffer,
-		contentType: String
+		contentType: String,
 	},
 	medicalDegree: {
 		type: Buffer,
-		contentType: String
+		contentType: String,
 	},
 	registrationStatus: {
 		type: String,
@@ -43,7 +43,15 @@ const doctorSchema = new Schema({
 			ref: "Appointment",
 		},
 	],
-});
+}, { toJSON: { virtuals: true } });
+
+const options = {
+    year: 'numeric', month: '2-digit', day: '2-digit'
+};
+
+doctorSchema.virtual('formattedDob').get(function() {
+	return new Intl.DateTimeFormat('en-US', options).format(this.dob);
+  });
 
 const Doctor = mongoose.model("Doctor", doctorSchema);
 module.exports = Doctor;

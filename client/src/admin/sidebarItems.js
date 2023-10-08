@@ -8,15 +8,7 @@ export const items = [
 		to: "applications",
 	},
 	{
-		name: "View Admins",
-		to: "viewAdmins",
-	},
-	{
-		name: "View Users",
-		to: "viewUsers",
-	},
-	{
-		name: "Handle Users",
-		to: "handleUsers",
+		name: "Manage Users",
+		to: "manageUsers",
 	}
 ];

@@ -12,15 +12,15 @@ import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 
 
-
-
-
-function createData(id, name, appointment, information) {
-  return {
+function createData(id, name, mobile, formattedDob, gender,emergencyContactsName) {
+  return{
     id,
     name,
-    appointment,
-    information,
+    // appointment,
+    mobile,
+    formattedDob,
+    gender,
+    emergencyContactsName,
     healthRecord: [
         {
           Record: "Heart Condition" ,
@@ -56,7 +56,7 @@ function Row(props) {
         </td >
         <th scope="row">{row.id}</th>
         <td>{row.name}</td>
-        <td>{row.appointment}</td>
+        {/* <td>{row.appointment}</td> */}
       </tr>
       <tr>
 
@@ -70,66 +70,34 @@ function Row(props) {
                 variant="soft"
                 sx={{ p: 1, pl: 6, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)', marginBottom: '1px' }}
                 >
-                  {/* <Typography level="body-lg" component="div">
-                      Information
-                  </Typography> */}
-                  {/* <Table
-                      borderAxis="bothBetween"
-                      size="sm"
-                      aria-label="purchases"
-                      sx={{
-                      '& > thead > tr > th:nth-child(n + 3), & > tbody > tr > td:nth-child(n + 3)':
-                          { textAlign: 'left' },
-                      '--TableCell-paddingX': '0.5rem',
-                      }}
-                  >
-                      <thead>
-                      <tr>
-                          <th>Full Name</th>
-                          <th>Patient Id</th>
-                          <th>Phone Number</th>
-                          <th>DOB</th>
-                          <th>Gender</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr key={row.key}>
-                          <th scope="row">{row.information.fullName}</th>
-                          <td>{row.information.patientId}</td>
-                          <td>{row.information.phoneNumber}</td>
-                          <td>{row.information.dob}</td>
-                          <td>{row.information.gender}</td>
-                          </tr>
-                      </tbody>
-                  </Table> */}
-
+  
                   <Box sx={{ margin: 1 }}>
                     <Typography level="body-lg" component="div" style={{marginBottom: "18px"}}>
                         Information
                     </Typography>
                     <div style={{display: "flex", justifyContent: "space-between"}}>
                       <div>
-                        <Typography variant="subtitle1">
-                          <span style={{ fontWeight: 'bold' }}>Full Name:</span> {row.information.fullName}
+                        <Typography variant="caption">
+                          <span style={{ fontWeight: 'bold' }}>Full Name:</span> {row.name}
                         </Typography>
-                        <Typography variant="subtitle1">
-                          <span style={{ fontWeight: 'bold' }}>Patient Id:</span> {row.information.patientId}
-                        </Typography>
-                      </div>
-                      <div>
-                        <Typography variant="subtitle1">
-                          <span style={{ fontWeight: 'bold' }}>Phone Number:</span> {row.information.phoneNumber}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                          <span style={{ fontWeight: 'bold' }}>Date of Birth:</span> {row.information.dob}
+                        <Typography variant="caption">
+                          <span style={{ fontWeight: 'bold' }}>Patient Id:</span> {row.id}
                         </Typography>
                       </div>
                       <div>
-                        <Typography variant="subtitle1">
-                          <span style={{ fontWeight: 'bold' }}>Gender:</span> {row.information.gender}
+                        <Typography variant="caption">
+                          <span style={{ fontWeight: 'bold' }}>Phone Number:</span> {row.mobile}
                         </Typography>
-                        <Typography variant="subtitle1">
-                          <span style={{ fontWeight: 'bold' }}>Emergency Contact:</span> {row.information.emergency}
+                        <Typography variant="caption">
+                          <span style={{ fontWeight: 'bold' }}>Date of Birth:</span> {row.formattedDob}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography variant="caption">
+                          <span style={{ fontWeight: 'bold' }}>Gender:</span> {row.gender}
+                        </Typography>
+                        <Typography variant="caption">
+                          <span style={{ fontWeight: 'bold' }}>Emergency Contact:</span> {row.emergencyContactsName}
                         </Typography>
                       </div>
 
@@ -204,24 +172,16 @@ function Row(props) {
 //   }).isRequired,
 // };
 
-// const rows = [
 
-//   createData(1,'Sara', '10/5/2023'),
-//   createData(2,'Omar', '10/20/2023'),
-//   createData(3,'Ahmed', '8/5/2023'),
-//   createData(4,'Boni', '10/15/2023'),
-//   createData(5,'Malak', '11/5/2023'),
-
-
-// ];
-
-export default function TableCollapsibleRow({data, config}) {
+export default function TableCollapsibleRow({data}) {
 
     const rows = data.map((rowData) => {
-        return createData(rowData.id, rowData.name, rowData.appointment, rowData.information)
+        // return createData(rowData.id, rowData.name, rowData.appointment, rowData.information)
+        return createData(rowData.id, rowData.name, rowData.mobile, rowData.formattedDob, rowData.gender, rowData.emergencyContacts.name)
+
     })
 
-    console.log(rows)
+    // console.log(rows)
 
     return (
         <TableContainer component={Paper} style={{ width: '100%', marginLeft: '10px' }}>

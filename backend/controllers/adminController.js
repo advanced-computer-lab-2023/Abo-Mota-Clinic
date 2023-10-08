@@ -26,7 +26,6 @@ const updatePackage = async (req, res) => {
 		if (updatedPackage.modifiedCount === 0) {
 			throw new Error("Package not found");
 		}
-
 		res.status(200).json(updatedPackage);
 	} catch (error) {
 		res.status(404).json({ error: error.message });
@@ -37,8 +36,6 @@ const updatePackage = async (req, res) => {
 const addPackage = async (req, res) => {
 	try {
 		const { name } = req.body;
-		// Check if the package already exists
-		//$or: [{ name }]
 		const packageExists = await HealthPackage.findOne({ name: name.toLowerCase() });
 		if (packageExists) {
 			throw new Error("A package with this name already exists");

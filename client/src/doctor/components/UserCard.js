@@ -9,9 +9,14 @@ import Sheet from '@mui/joy/Sheet';
 import Textarea from '@mui/joy/Textarea';
 import IconButton from '@mui/joy/IconButton';
 import { MdEdit } from "react-icons/md";
+import {useFetchDoctorQuery, useUpdateDoctorMutation} from '../../store';
 
 
-export default function UserCard({data}) {
+export default function UserCard() {
+    
+    // console.log(data);
+    const {data,error,isFetching} = useFetchDoctorQuery();
+    const [updateDoctor, result] = useUpdateDoctorMutation();
     const [isEditEmail, setIsEditEmail] = React.useState(false);
     const [isEditRate, setIsEditRate] = React.useState(false);
     const [isEditAffiliation, setIsEditAffiliation] = React.useState(false);
@@ -20,10 +25,7 @@ export default function UserCard({data}) {
     const [rateValue, setRateValue] = React.useState("");
     const [affilValue, setAffilValue] = React.useState("");
 
-    const [renderedData, setRenderedData] = React.useState(data);
-
-    // let renderedData = data;
-
+    
 
     const handleEditEmail = () => {
         setIsEditEmail(true);
@@ -39,19 +41,20 @@ export default function UserCard({data}) {
         setIsEditEmail(false)
         setIsEditRate(false);
         setIsEditAffiliation(false);
+        const updated = {email: data.email, affiliation: data.affiliation, rate: data.rate, id: data.id};
+        if(emailValue !== ""){
+          updated.email = emailValue;
+        }
+            
+        if(rateValue !== ""){
+          updated.rate = parseInt(rateValue);
+        }
 
-        //send the values in the text area to the backend to update and get the updated data
-
-        if(emailValue !== "")
-            setRenderedData({...data, Email: emailValue});
-
-        if(rateValue !== "")
-            setRenderedData({...data, HourlyRate: rateValue});
-
-        if(affilValue !== "")
-            setRenderedData({...data, Affiliation: affilValue});
-
-
+        if(affilValue !== ""){
+          updated.affiliation = affilValue;
+        }
+        console.log(updated);
+        updateDoctor(updated);
     }
 
     const handleEmailChange = (event) => {
@@ -119,7 +122,6 @@ export default function UserCard({data}) {
             minWidth:
               'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
           },
-          // make the card resizable for demo
           overflow: 'auto',
           resize: 'horizontal',
         }}
@@ -134,10 +136,10 @@ export default function UserCard({data}) {
         </AspectRatio>
         <CardContent>
           <Typography fontSize="xl" fontWeight="lg">
-            {renderedData.Name}
+            {data.name}
           </Typography>
           <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
-            {renderedData.Speciality}
+            {data.speciality}
           </Typography>
           <Sheet
             sx={{
@@ -160,7 +162,7 @@ export default function UserCard({data}) {
                     </IconButton>
                 </div>
               {isEditEmail? <Textarea name="Soft" placeholder="Enter New Mail…" variant="outlined" onChange={handleEmailChange} value={emailValue}/> 
-                : <Typography fontWeight="lg">{renderedData.Email}</Typography>}
+                : <Typography fontWeight="lg">{data.email}</Typography>}
             </div>
             <div>
                 <div style={{display: "flex", alignItems: "center"}}>
@@ -171,8 +173,13 @@ export default function UserCard({data}) {
                         <MdEdit />
                     </IconButton>
                 </div>
+<<<<<<< HEAD:client/src/doctor/components/UserCard.jsx
               {isEditRate? <Textarea name="Soft" placeholder="Enter New Rate…" variant="outlined" onChange={handleRateChange} value={rateValue} />
                 :<Typography fontWeight="lg">{renderedData.HourlyRate}</Typography>}
+=======
+              {isEditRate? <Textarea name="Soft" placeholder="Enter New Rate…" variant="outlined" onChange={handleRateChange} value={rateValue}/>
+                :<Typography fontWeight="lg">{data.rate}</Typography>}
+>>>>>>> 78bb37832d498fdee3bd2fd2064cfb8081c7aa1f:client/src/doctor/components/UserCard.js
             </div>
             <div>
                 <div style={{display: "flex", alignItems: "center"}}>
@@ -184,7 +191,7 @@ export default function UserCard({data}) {
                     </IconButton>
                 </div>
               {isEditAffiliation? <Textarea name="Soft" placeholder="Enter New Affiliation…" variant="outlined" onChange={handleAffilChange} value={affilValue} /> 
-                :<Typography fontWeight="lg">{renderedData.Affiliation}</Typography>}
+                :<Typography fontWeight="lg">{data.affiliation}</Typography>}
             </div>
           </Sheet>
           <Box sx={{ display: 'flex', gap: 1.5, '& > button': { flex: 1 } }}>

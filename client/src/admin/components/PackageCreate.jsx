@@ -1,45 +1,49 @@
-import './styles.css';
+import '../styles.css';
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
+import {useAddPackageMutation} from '../../store';
 
-function PackageCreate({createPackage}){
+
+function PackageCreate(){
+
+    const [createPackage, results]= useAddPackageMutation();
     const[create, setCreate] = useState(false);
     const initialDiscount = [
         {type: 'doctor', content: ''},
         {type: 'medicine', content: ''},
         {type: 'family', content: ''}
     ]
-    const [updatedPackage, setUpdatedPackage] = useState({name: '', discounts: initialDiscount, cost: 0});
+    const [updatedPackage, setUpdatedPackage] = useState({
+        pricePerYear: 0,
+        doctorDiscount: 0,
+        pharmacyDiscount: 0,
+        familyDiscount :0,
+        name: ''});
 
     const handleNameChange = (event) => {
         setUpdatedPackage({...updatedPackage, name: event.target.value});
     }
 
     const handleCostChange = (event) => {
-        setUpdatedPackage({...updatedPackage, cost: parseInt(event.target.value)});
+        setUpdatedPackage({...updatedPackage, pricePerYear: parseInt(event.target.value)});
     }
 
     const handleD1Change = (event) => {
-        const updatedDiscounts = [...updatedPackage.discounts];
-        updatedDiscounts[0] = { ...updatedDiscounts[0], content: event.target.value };
-        setUpdatedPackage({ ...updatedPackage, discounts: updatedDiscounts });
+        setUpdatedPackage({ ...updatedPackage, doctorDiscount: event.target.value });
       };
       
       const handleD2Change = (event) => {
-        const updatedDiscounts = [...updatedPackage.discounts];
-        updatedDiscounts[1] = { ...updatedDiscounts[1], content: event.target.value };
-        setUpdatedPackage({ ...updatedPackage, discounts: updatedDiscounts });
+        setUpdatedPackage({ ...updatedPackage, pharmacyDiscount: event.target.value });
       };
       
       const handleD3Change = (event) => {
-        const updatedDiscounts = [...updatedPackage.discounts];
-        updatedDiscounts[2] = { ...updatedDiscounts[2], content: event.target.value };
-        setUpdatedPackage({ ...updatedPackage, discounts: updatedDiscounts });
+        setUpdatedPackage({ ...updatedPackage, familyDiscount: event.target.value });
       };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(updatedPackage);
         createPackage(updatedPackage);
         setCreate(false);
         setUpdatedPackage({id: nanoid(), name: '', discounts: initialDiscount, cost: 0})
@@ -57,14 +61,14 @@ function PackageCreate({createPackage}){
                     <input className="input" value={updatedPackage.name} onChange={handleNameChange}/>
                     <hr className="card-hr" />
                     <label>Discount 1</label>
-                    <input className="input" value={updatedPackage.discounts[0].content} onChange={handleD1Change}/>
+                    <input className="input" value={updatedPackage.doctorDiscount||''} onChange={handleD1Change}/>
                     <label>Discount 2</label>
-                    <input className="input" value={updatedPackage.discounts[1].content} onChange={handleD2Change}/>
+                    <input className="input" value={updatedPackage.pharmacyDiscount || ''} onChange={handleD2Change}/>
                     <label>Discount 3</label>
-                    <input className="input" value={updatedPackage.discounts[2].content} onChange={handleD3Change}/>
+                    <input className="input" value={updatedPackage.familyDiscount|| ''} onChange={handleD3Change}/>
                     <hr className="card-hr" />
                     <label>Cost</label>
-                    <input className="input" type="number" value={updatedPackage.cost || ''} onChange={handleCostChange}/>
+                    <input className="input" type="number" value={updatedPackage.pricePerYear || ''} onChange={handleCostChange}/>
                     <button className="package-button">Done</button>
                 </form>
             </div>

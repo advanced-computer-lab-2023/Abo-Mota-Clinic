@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 const Sidebar = ({ items }) => {
 	return (
 		<>
-			<aside class="menu">
+			<aside className="menu">
 				{/* <p class="menu-label">General</p> */}
-				<ul class="menu-list">
-					{items.map((item) => {
+				<ul className="menu-list">
+					{items.map((item,i) => {
 						return (
-							<li>
+							<li key={i}>
 								<Link to={item.to}>{item.name}</Link>
 							</li>
 						);

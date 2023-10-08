@@ -1,4 +1,4 @@
-import '../components/styles.css';
+import '../styles.css';
 import { useState } from "react";
 import {nanoid} from "nanoid";
 import PackageCreate from '../components/PackageCreate';
@@ -44,10 +44,7 @@ function Packages(){
 
 	const [packages, setPackages] = useState(initialPackages);
 
-    const handleCreate = (updatedPackage) => {
-        const updatedPackages = [...packages, {id: nanoid(), name: updatedPackage.name, discounts: updatedPackage.discounts, cost: updatedPackage.cost}];
-        setPackages(updatedPackages);
-    }
+    
 
     const handleDelete = (id) => {
         const updatedPackages = packages.filter((p) => p.id!==id);
@@ -66,8 +63,8 @@ function Packages(){
 
 
     return <div className="card-list">
-        <PackageList packages={packages} editPackage={handleEdit} deletePackage={handleDelete}/>
-        <PackageCreate createPackage={handleCreate} />
+        <PackageList  />
+        <PackageCreate />
     </div>
 }
 
