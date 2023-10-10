@@ -36,7 +36,7 @@ const RegisterScreen = () => {
     
 
     setIsLoading(true);
-    registerPatient(patient);
+    await registerPatient(patient);
     console.log(results);
     // await new Promise(resolve => setTimeout(resolve, 3000));
     // Remove the above await and insert code for backend registeration here.
