@@ -1,0 +1,33 @@
+* Family
+--------
+
+1. Add family members using name, National ID, age, gender and relation to the patient.
+2. View registered family members.
+
+* Doctors
+---------
+
+1. View a list of all doctors along with their speciality, session price (based on subscribed health package if any)
+2. Search for a doctor by name and/or speciality
+3. Filter a doctor by speciality and/or availability on a certain date and at a specific time
+4. Select a doctor from the search/filter results 
+5. View all details of selected doctor including specilaty, affiliation (hospital), educational background
+
+// Display doctor data ("clickable" cards ?)
+// Search bar to search by name
+// Dropdown to filter by speciality and/or availability
+// Make each card clickable and redirects to each doctor's page
+
+* Appointments
+--------------
+
+1. View all appointments
+2. Filter appointments by date/status
+
+* Prescriptions
+---------------
+
+1. View a list of all my perscriptions
+2. filter prescriptions based on date or doctor or filled or unfilled
+3. select a prescription from my list of perscriptions
+
