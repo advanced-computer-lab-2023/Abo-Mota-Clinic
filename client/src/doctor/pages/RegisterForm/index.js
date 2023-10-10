@@ -8,17 +8,33 @@ import * as yup from 'yup';
 import Header from "../../../shared/Components/Header";
 import { Formik } from "formik";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
+import { useRegisterDoctorMutation } from "../../../store";
 import DropDown from "../../../shared/Components/DropDown"
 
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const [registerDoctor, results] = useRegisterDoctorMutation();
   const handleSubmit = async (values, { resetForm }) => {
     // values contains all the data needed for registeration
     console.log(values);
+    const doctor = {
+      dob: values.dateOfBirth,
+      email: values.email,
+      name: `${values.firstName} ${values.lastName}`,
+      // gender: values.gender,
+      // mobile: values.mobileNumber,
+      // nationalId: values.nationalId,
+      username: values.userName,
+      password: values.password,
+      rate: values.hourlyRate,
+      affiliation: values.affiliation,
+      educationalBackground: values.educationalBackground
+    }
+    console.log(doctor);
     setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // await new Promise(resolve => setTimeout(resolve, 3000));
+    registerDoctor(doctor);
     // Remove the above await and insert code for backend registeration here.
     setIsLoading(false);
     resetForm({ values: '' });

@@ -8,6 +8,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import {FiUserMinus} from 'react-icons/fi';
+import { useRemoveAdminMutation, useRemovePatientMutation,useRemoveDoctorMutation } from '../../store';
+
 
 const modalStyle = {
   display: 'flex',
@@ -26,6 +28,9 @@ function RemoveUserModal() {
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
+  const [removeAdmin, res]= useRemoveAdminMutation();
+  const [removePatient, res2]= useRemovePatientMutation();
+  const [removeDoctor, res3] = useRemoveDoctorMutation();
 
   const handleOpen = () => {
     setOpen(true);
@@ -44,10 +49,23 @@ function RemoveUserModal() {
   };
 
   const handleSubmit = () => {
-    // Handle form submission here
-    setUsername('');
-    setRole('');
-    setOpen(false);
+    if(role!=='')
+    {
+      if(role==='Admin')
+        removeAdmin({username});
+      else if(role==='Doctor')
+        removeDoctor({username})
+      else
+        removePatient({username});
+
+      console.log(res3);
+      setUsername('');
+      setRole('');
+      setOpen(false);
+    }
+    console.log(role);
+    
+    
   };
 
   return (

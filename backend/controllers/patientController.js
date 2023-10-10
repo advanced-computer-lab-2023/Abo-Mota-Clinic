@@ -81,7 +81,13 @@ const getDoctors = async (req, res) => {
 // Get all appointments
 const getAppointments = async (req, res) => {
 	try {
-		const patient = await Patient.findOne({}).populate("appointments");
+		const patient = await Patient.findOne({}).populate({
+			path:"appointments",
+			populate: {
+				path: 'doctor',
+				model: 'Doctor'
+			}
+		});
 		res.status(200).json(patient.appointments);
 	} catch (error) {
 		res.status(500).json({ error: "Failed to retrieve appointments" });
