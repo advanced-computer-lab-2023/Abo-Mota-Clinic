@@ -3,16 +3,14 @@ const Doctor = require("../models/Doctor");
 const Appointment = require("../models/Appointment");
 const Prescription = require("../models/Prescription");
 
-
-const getPatient = async (req,res) => {
-	try{
+const getPatient = async (req, res) => {
+	try {
 		const patient = await Patient.findOne({}).populate("healthPackage.package");
 		res.status(200).json(patient);
-	} catch(error){
+	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
-	
-}
+};
 
 // Get all patient prescriptions
 const getPrescriptions = async (req, res) => {
@@ -22,17 +20,17 @@ const getPrescriptions = async (req, res) => {
 			populate: [
 				{
 					path: "medicines",
-					model: "Medicine"
+					model: "Medicine",
 				},
 				{
 					path: "doctor",
-					model: "Doctor"
-				}
-			]
+					model: "Doctor",
+				},
+			],
 		});
 		res.status(200).json(patient.prescriptions);
 	} catch (error) {
-		res.status(500).json({ error: "Failed to retrieve prescriptions" });
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -44,7 +42,7 @@ const getFamilyMembers = async (req, res) => {
 		// ???
 		res.status(200).json(patient.familyMembers);
 	} catch (error) {
-		res.status(500).json({ error: "Failed to retrieve family members" });
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -62,7 +60,7 @@ const addFamilyMember = async (req, res) => {
 			{ _id: loggedIn._id },
 			{ familyMembers: loggedIn.familyMembers }
 		);
-		res.status(200).json({ message: updated });
+		res.status(200).json(updated);
 	} catch (error) {
 		res.status(500).json({ error: "Failed to add family member" });
 	}
@@ -82,11 +80,11 @@ const getDoctors = async (req, res) => {
 const getAppointments = async (req, res) => {
 	try {
 		const patient = await Patient.findOne({}).populate({
-			path:"appointments",
+			path: "appointments",
 			populate: {
-				path: 'doctor',
-				model: 'Doctor'
-			}
+				path: "doctor",
+				model: "Doctor",
+			},
 		});
 		res.status(200).json(patient.appointments);
 	} catch (error) {

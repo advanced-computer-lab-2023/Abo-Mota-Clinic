@@ -1,11 +1,10 @@
 const Doctor = require("../models/Doctor");
 const Medicine = require("../models/Medicine");
 
-
 // Get Doctor's Profile
 const getDoctorProfile = async (req, res) => {
 	try {
-		const doctor = await Doctor.findOne({})
+		const doctor = await Doctor.findOne({});
 		// .populate({
 		// 	path: "appointments",
 		// 	populate: {
@@ -38,7 +37,7 @@ const editDetails = async (req, res) => {
 			throw new Error("You can only edit email, affiliation and rate");
 		}
 
-		const updatedDoctor = await Doctor.updateOne({_id:doctorExists._id}, update);
+		const updatedDoctor = await Doctor.updateOne({ _id: doctorExists._id }, update);
 		// if(updatedDoctor.modifiedCount === 0) {
 		// 	throw new Error("Doctor not found");
 		// }
