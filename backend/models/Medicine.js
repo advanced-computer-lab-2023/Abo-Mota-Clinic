@@ -8,6 +8,7 @@ const medicineSchema = new Schema({
 	price: Number,
 	quantity: Number,
 	image: String, //url
+	medicinalUse: String
 });
 
 const Medicine = mongoose.model("Medicine", medicineSchema);
