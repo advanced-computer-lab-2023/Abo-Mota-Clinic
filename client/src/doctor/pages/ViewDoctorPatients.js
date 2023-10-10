@@ -103,18 +103,6 @@ function ViewDoctorPatients() {
 			setIsFiltered(false);
 		}
 
-		// function parseDate(dateString) {
-		// 	// Split the date string to check for '-' or '/'
-		// 	const parts = dateString.split(/-|\//);
-		// 	if (parts.length === 3) {
-		// 	  // Check if the first part is greater than 12 to distinguish between DD-MM-YYYY and MM-DD-YYYY
-		// 	  const isDDMMYYYY = parseInt(parts[0], 10) > 12;
-		// 	  const [day, month, year] = isDDMMYYYY ? parts : [parts[1], parts[0], parts[2]];
-		// 	  return new Date(year, month - 1, day); // Month is 0-based, so subtract 1
-		// 	}
-		// 	return null;
-		// }
-
 		let renderedPatients = isFiltered? 	patients.filter((patient) => {
 				
 
@@ -122,18 +110,20 @@ function ViewDoctorPatients() {
 
 			const today = new Date();
 			// const appointmentDate = new Date(patient.appointment);
-			const appointmentDate = patient.appointment;
-			
+			const appointmentsList = patient.appointments;
 
-		
-			console.log(`Dates: ${appointmentDate === today}`)
-			console.log(`TODAY: ${today}`)
-			console.log(`PDATE: ${appointmentDate}`)
-			console.log(typeof today)
+			const upcomingAppointments = appointmentsList.filter((appointment) => {
+				 const appointmentDate = new Date(appointment.formattedDate.split(",")[0]);
+				 console.log(appointmentDate);
+				 console.log(today);
+				 console.log(isAfter(appointmentDate, today));
+				return isSameDay(appointmentDate, today) || isAfter(appointmentDate, today); 
+			});
 			
+			// patient.appointments = [...upcomingAppointments];
 			
 			// return appointmentDate >= today;
-			return isSameDay(appointmentDate, today) || isAfter(appointmentDate, today);
+			return upcomingAppointments.length > 0;
 
 		}) : patients;
 

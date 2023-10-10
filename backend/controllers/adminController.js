@@ -119,7 +119,7 @@ const deletePatient = async (req, res) => {
 		const { username } = req.body;
 		const filter = { username: username };
 		const patient = await Patient.findOne(filter);
-
+		
 		if (!patient) {
 			throw new Error("Patient not found");
 		}

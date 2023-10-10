@@ -10,6 +10,10 @@ import Textarea from '@mui/joy/Textarea';
 import IconButton from '@mui/joy/IconButton';
 import { MdEdit } from "react-icons/md";
 import {useFetchDoctorQuery, useUpdateDoctorMutation} from '../../store';
+import Input from '@mui/joy/Input';
+import { NumericFormat } from 'react-number-format';
+
+
 
 
 export default function UserCard() {
@@ -68,6 +72,32 @@ export default function UserCard() {
     const handleAffilChange = (event) => {
         setAffilValue(event.target.value)
     }
+
+    const NumericFormatAdapter = React.forwardRef(function NumericFormatAdapter(
+      props,
+      ref,
+    ) {
+      const { onChange, ...other } = props;
+    
+      return (
+        <NumericFormat
+          {...other}
+          getInputRef={ref}
+          onValueChange={(values) => {
+            onChange({
+              target: {
+                name: props.name,
+                value: values.value,
+              },
+            });
+          }}
+          thousandSeparator
+          valueIsNumericString
+          prefix="$"
+          suffix='/h'
+        />
+      );
+    });
 
     
 
@@ -139,7 +169,7 @@ export default function UserCard() {
             {data.name}
           </Typography>
           <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
-            {data.speciality}
+            {data.specialty}
           </Typography>
           <Sheet
             sx={{
@@ -161,7 +191,8 @@ export default function UserCard() {
                         <MdEdit />
                     </IconButton>
                 </div>
-              {isEditEmail? <Textarea name="Soft" placeholder="Enter New Mail…" variant="outlined" onChange={handleEmailChange} value={emailValue}/> 
+              {isEditEmail? <Input name="Soft" placeholder="Enter New Mail…" variant="outlined" 
+                            onChange={handleEmailChange} value={emailValue} type="email" /> 
                 : <Typography fontWeight="lg">{data.email}</Typography>}
             </div>
             <div>
@@ -173,8 +204,13 @@ export default function UserCard() {
                         <MdEdit />
                     </IconButton>
                 </div>
-              {isEditRate? <Textarea name="Soft" placeholder="Enter New Rate…" variant="outlined" onChange={handleRateChange} value={rateValue}/>
-                :<Typography fontWeight="lg">{data.rate}</Typography>}
+              {isEditRate? <Input name="Soft" placeholder="Enter New Rate…" variant="outlined" onChange={handleRateChange} value={rateValue} 
+                        slotProps={{
+                        input: {
+                          component: NumericFormatAdapter,
+                        },
+                      }}/>
+                :<Typography fontWeight="lg">${data.rate}/h</Typography>}
             </div>
             <div>
                 <div style={{display: "flex", alignItems: "center"}}>
@@ -185,7 +221,7 @@ export default function UserCard() {
                         <MdEdit />
                     </IconButton>
                 </div>
-              {isEditAffiliation? <Textarea name="Soft" placeholder="Enter New Affiliation…" variant="outlined" onChange={handleAffilChange} value={affilValue} /> 
+              {isEditAffiliation? <Input name="Soft" placeholder="Enter New Affiliation…" variant="outlined" onChange={handleAffilChange} value={affilValue} /> 
                 :<Typography fontWeight="lg">{data.affiliation}</Typography>}
             </div>
           </Sheet>
