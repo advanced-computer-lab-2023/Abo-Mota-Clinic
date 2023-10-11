@@ -13,6 +13,10 @@ import {useFetchDoctorQuery, useUpdateDoctorMutation} from '../../store';
 import Input from '@mui/joy/Input';
 import { NumericFormat } from 'react-number-format';
 
+import emailValidator from 'email-validator';
+import Toast from '../../patient/components/Toast';
+
+
 
 
 
@@ -28,6 +32,9 @@ export default function UserCard() {
     const [emailValue, setEmailValue] = React.useState("");
     const [rateValue, setRateValue] = React.useState("");
     const [affilValue, setAffilValue] = React.useState("");
+
+    const [open, setOpen] = React.useState(false);
+
 
     
 
@@ -47,7 +54,12 @@ export default function UserCard() {
         setIsEditAffiliation(false);
         const updated = {email: data.email, affiliation: data.affiliation, rate: data.rate, id: data.id};
         if(emailValue !== ""){
-          updated.email = emailValue;
+          if(!validateEmail(emailValue)){
+              setOpen(true);
+              return;
+          }
+          else
+            updated.email = emailValue;
         }
             
         if(rateValue !== ""){
@@ -57,7 +69,7 @@ export default function UserCard() {
         if(affilValue !== ""){
           updated.affiliation = affilValue;
         }
-        console.log(updated);
+
         updateDoctor(updated);
     }
 
@@ -99,21 +111,30 @@ export default function UserCard() {
       );
     });
 
-    
+    const validateEmail = (email) => {
+      return emailValidator.validate(email);
+    };
 
-
+    const onToastClose = (event, reason) => {
+      if (reason === 'clickaway')
+        return;
+  
+      setOpen(false)
+    };
+  
+  
 
   return (
     <Box
       sx={{
         width: '100%',
-        position: 'relative',
+        // position: 'relative',
         overflow: { xs: 'auto', sm: 'initial' },
       }}
     >
       <Box
         sx={{
-          position: 'absolute',
+          // position: 'absolute',
           display: 'block',
           width: '1px',
           bgcolor: 'warning.300',
@@ -147,13 +168,9 @@ export default function UserCard() {
         sx={{
           width: '100%',
           flexWrap: 'wrap',
-          [`& > *`]: {
-            '--stack-point': '500px',
-            minWidth:
-              'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
-          },
-          overflow: 'auto',
-          resize: 'horizontal',
+         
+          overflow: 'hidden',
+          // resize: 'horizontal',
         }}
       >
         <AspectRatio flex ratio="1" maxHeight={182} sx={{ minWidth: 182 }}>
@@ -165,10 +182,10 @@ export default function UserCard() {
           />
         </AspectRatio>
         <CardContent>
-          <Typography fontSize="xl" fontWeight="lg">
+          <Typography level='h1' fontWeight="lg">
             {data.name}
           </Typography>
-          <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
+          <Typography level="body-lg" fontWeight="lg" textColor="text.tertiary">
             {data.specialty}
           </Typography>
           <Sheet
@@ -184,7 +201,7 @@ export default function UserCard() {
           >
             <div>
                 <div style={{display: "flex", alignItems: "center"}}>
-                    <Typography level="body-xs" fontWeight="lg">
+                    <Typography level="body-lg" fontWeight="lg" textColor="text.tertiary">
                         Email
                     </Typography>
                     <IconButton onClick={handleEditEmail}>
@@ -197,7 +214,7 @@ export default function UserCard() {
             </div>
             <div>
                 <div style={{display: "flex", alignItems: "center"}}>
-                    <Typography level="body-xs" fontWeight="lg">
+                    <Typography level="body-lg" fontWeight="lg" textColor="text.tertiary">
                         Hourly Rate
                     </Typography>
                     <IconButton onClick={handleEditRate}>
@@ -209,12 +226,13 @@ export default function UserCard() {
                         input: {
                           component: NumericFormatAdapter,
                         },
+                        
                       }}/>
                 :<Typography fontWeight="lg">${data.rate}/h</Typography>}
             </div>
             <div>
                 <div style={{display: "flex", alignItems: "center"}}>
-                    <Typography level="body-xs" fontWeight="lg">
+                    <Typography level="body-lg" fontWeight="lg" textColor="text.tertiary">
                         Affiliation 
                     </Typography>
                     <IconButton onClick={handleEditAffiliation}>
@@ -232,6 +250,8 @@ export default function UserCard() {
           </Box>
         </CardContent>
       </Card>
+
+      <Toast open={open} onClose={onToastClose} variant="soft" color="danger" message="Enter Email in something@something.com Format" duration={4000}/>
     </Box>
   );
 }
