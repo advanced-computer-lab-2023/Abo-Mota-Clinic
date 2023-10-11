@@ -12,7 +12,7 @@ import Link from "@mui/joy/Link";
 
 
 
-const PatientTest = ({ name, specialty, rate, educationalBackground, affiliation }) => {
+const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliation }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
 
   return (
@@ -38,7 +38,7 @@ const PatientTest = ({ name, specialty, rate, educationalBackground, affiliation
           // p: 5,
           // make the card resizable for demo
           overflow: 'auto',
-          resize: 'vertical',
+          // resize: 'vertical',
         }}
       >
 
@@ -252,7 +252,7 @@ const PatientTest = ({ name, specialty, rate, educationalBackground, affiliation
   );
 };
 
-export default PatientTest;
+export default DoctorProfile;
 
 // const appointments = ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM"]
 

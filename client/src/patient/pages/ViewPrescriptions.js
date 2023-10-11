@@ -18,7 +18,7 @@ export default function ViewPrescriptions() {
   const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
   const [config, setConfig] = useState({});
 
-  console.log(config);
+  console.log("Config", config);
 
   const [filterConfig, setFilterConfig] = useState({});
 
@@ -40,70 +40,50 @@ export default function ViewPrescriptions() {
       )
     });
 
-    doctorNames = data.map(pres => pres.doctor.name);
+    doctorNames = [...new Set(data.map((pres) => pres.doctor.name))];
   }
 
   return (
     <div className="w-full ml-20 mr-20 mt-10">
       <Box className="flex space-x-4">
-        {/* <FormControl id="multiple-limit-tags">
-          <FormLabel>Specialties</FormLabel>
-          <FilterSelect placeholder="Doctors" onChange={onFilterChange("doctor", [filterConfig, setFilterConfig])}>
-            {doctorNames}
-          </FilterSelect>
-        </ FormControl> */}
 
         <FormControl id="multiple-limit-tags">
           <FormLabel>Doctor name</FormLabel>
           <Autocomplete
             // multiple
             id="tags-default"
-            placeholder="Specialties"
+            placeholder="Name"
             loading={isFetching}
             options={doctorNames}
-            endDecorator={
-              isFetching ? (
-                <CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
-              ) : null
-            }
+            // endDecorator={
+            //   isFetching ? (
+            //     <CircularProgress thickness={2} size="sm" sx={{ bgcolor: 'background.surface' }} />
+            //   ) : null
+            // }
             onChange={(event, newValue) => {
-              setConfig({ ...config, name: newValue })
-              console.log(newValue);
+              setConfig({ ...config, "doctor.name": newValue })
+              console.log("New value:", newValue);
             }}
-          // value={values}
-          // getOptionLabel={(option) => option.title}
-          // defaultValue={[top100Films[13]]}
           />
         </ FormControl>
 
-
-        {/* <FilterSelect placeholder="Status" onChange={onFilterChange("status", [filterConfig, setFilterConfig])}>
-          {["Filled", "Unfilled"]}
-        </FilterSelect> */}
-
         <FormControl id="multiple-limit-tags">
-          <FormLabel>Specialties</FormLabel>
+          <FormLabel>Status</FormLabel>
           <Autocomplete
             multiple
             id="tags-default"
             placeholder="Status"
             loading={isFetching}
             options={["Filled", "Unfilled"]}
-            endDecorator={
-              isFetching ? (
-                <CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
-              ) : null
-            }
+            // endDecorator={
+            //   isFetching ? (
+            //     <CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
+            //   ) : null
+            // }
             limitTags={2}
-            // value={value}
             onChange={(event, newValue) => {
               setConfig({ ...config, status: newValue })
-              // console.log(newValue);
-              // setValues(newValue);
             }}
-          // value={values}
-          // getOptionLabel={(option) => option.title}
-          // defaultValue={[top100Films[13]]}
           />
         </ FormControl>
       </Box>
