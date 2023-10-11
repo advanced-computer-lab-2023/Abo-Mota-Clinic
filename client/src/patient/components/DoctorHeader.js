@@ -77,7 +77,7 @@ function DoctorHeader({ doctor: { name, specialty }, status, formattedDate, onTo
               expanded ? <BiChevronUp fontSize={18}/> : <BiChevronDown fontSize={18} />
             }
           >
-            DETAILS
+            VIEW MORE
           </Button>
         </Box>
       </Stack>
