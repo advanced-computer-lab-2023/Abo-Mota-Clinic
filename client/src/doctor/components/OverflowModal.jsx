@@ -11,20 +11,25 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import ModalOverflow from '@mui/joy/ModalOverflow';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
+import Divider from '@mui/joy/Divider';
 
-export default function OverFlowModal() {
+
+export default function OverFlowModal({list, buttonLabel, ModalTitle, isAppointment, isContact}) {
   const [layout, setLayout] = React.useState(undefined);
   const [scroll, setScroll] = React.useState(true);
+  console.log(list)
   return (
     <React.Fragment>
         <Button
-          variant="outlined"
+          variant="soft"
           color="neutral"
           onClick={() => {
             setLayout('center');
           }}
+          style={{color: "#757474" , padding:"0px"}}
+          size='md'
         >
-          Center
+          {buttonLabel}
         </Button>
       <Modal
         open={!!layout}
@@ -33,29 +38,28 @@ export default function OverFlowModal() {
         }}
       >
         <ModalOverflow>
-          <ModalDialog aria-labelledby="modal-dialog-overflow" layout={layout}>
+          <ModalDialog aria-labelledby="modal-dialog-overflow" layout={layout} size="lg">
             <ModalClose />
-            <Typography id="modal-dialog-overflow" level="h2">
-              Overflow content
+            <Typography id="modal-dialog-overflow" level="h2" style={{marginLeft: "8px"}}>
+              {ModalTitle}
             </Typography>
-            <FormControl
-              orientation="horizontal"
-              sx={{ bgcolor: 'background.level2', p: 1, borderRadius: 'sm' }}
-            >
-              <FormLabel>Long content</FormLabel>
-              <Switch
-                checked={scroll}
-                onChange={(event) => setScroll(event.target.checked)}
-                sx={{ ml: 'auto' }}
-              />
-            </FormControl>
-            {scroll && (
+        
+            {scroll && !isContact && (
               <List>
-                {[...Array(100)].map((item, index) => (
-                  <ListItem key={index}>Item number ({index})</ListItem>
-                ))}
+                {list.map((item, index) => {
+                  return isAppointment? <ListItem key={index}> <span style={{ fontWeight: 'bold' }}>Date:</span> {item.formattedDate.split(",")[0]}  <span style={{ fontWeight: 'bold' }}>Time:</span> {item.formattedDate.split(",")[1]}</ListItem> :
+                  <ListItem key={index} style={{marginBottom: "15px"}}><span style={{ fontWeight: 'bold' }}>Record:</span> {item.Record}  <span style={{ fontWeight: 'bold' }}>Date:</span> {item.Date}</ListItem>
+                })}
               </List>
             )}
+
+            {isContact && (
+              <div style={{marginLeft: "8px"}}>
+                <div><span style={{ fontWeight: 'bold' }}>Name: </span> {list.name}</div>
+                <div><span style={{ fontWeight: 'bold' }}>Mobile: </span> {list.mobile}</div>
+                <div><span style={{ fontWeight: 'bold' }}>Relation: </span> {list.relation}</div>
+              </div>
+              )}
           </ModalDialog>
         </ModalOverflow>
       </Modal>

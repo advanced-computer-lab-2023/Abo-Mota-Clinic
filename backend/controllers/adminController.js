@@ -7,8 +7,13 @@ const saltRounds = 10;
 
 // View All Packages
 const getPackages = async (req, res) => {
-	const packages = await HealthPackage.find({});
-	res.status(200).json(packages);
+	try {
+		const filter = { isActivated: true };
+		const packages = await HealthPackage.find(filter);
+		res.status(200).json(packages);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 
 // Update Package
@@ -28,14 +33,15 @@ const updatePackage = async (req, res) => {
 		}
 		res.status(200).json(updatedPackage);
 	} catch (error) {
-		res.status(404).json({ error: error.message });
+		res.status(500).json({ error: error.message });
 	}
 };
 
 // add Package
 const addPackage = async (req, res) => {
 	try {
-		const { name } = req.body;
+		const { name, pricePerYear, doctorDiscount, pharmacyDiscount, familyDiscount, isActivated } =
+			req.body;
 		const packageExists = await HealthPackage.findOne({ name: name.toLowerCase() });
 		if (packageExists) {
 			throw new Error("A package with this name already exists");
@@ -48,7 +54,7 @@ const addPackage = async (req, res) => {
 
 		res.status(200).json(package);
 	} catch (error) {
-		res.status(404).json({ error: error.message });
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -58,10 +64,12 @@ const deletePackage = async (req, res) => {
 		const { id } = req.params;
 		const filter = { _id: id };
 
-		const deletedPackage = await HealthPackage.deleteOne(filter);
-		res.status(200).json(deletedPackage);
+		const deactivated = await HealthPackage.updateOne(filter, { isActivated: false });
+
+		// const deletedPackage = await HealthPackage.deleteOne(filter);
+		res.status(200).json(deactivated);
 	} catch (error) {
-		res.status(404).json({ error: error.message });
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -73,7 +81,7 @@ const addAdmin = async (req, res) => {
 		const existingAdmin = await Admin.findOne({ username: username.toLowerCase() });
 
 		if (existingAdmin) {
-			res.status(400).json({ error: "Admin with this username already exists" });
+			res.status(500).json({ error: "Admin with this username already exists" });
 		}
 
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -84,7 +92,7 @@ const addAdmin = async (req, res) => {
 			password: hashedPassword,
 		});
 
-		res.status(200).json({ message: "Admin added successfully", admin: newAdmin });
+		res.status(200).json(newAdmin);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -119,7 +127,7 @@ const deletePatient = async (req, res) => {
 		const { username } = req.body;
 		const filter = { username: username };
 		const patient = await Patient.findOne(filter);
-
+		
 		if (!patient) {
 			throw new Error("Patient not found");
 		}
@@ -192,18 +200,13 @@ const handleApplication = async (req, res) => {
 
 		if (registrationStatus === "rejected") {
 			const rejectedApplication = await Doctor.deleteOne(filter);
-			res.status(200).json({
-				message: "Successfully rejected and removed application from collection",
-				application: rejectedApplication,
-			});
+			res.status(200).json(rejectedApplication);
 		} else {
 			const handledApplication = await Doctor.updateOne(filter, update);
 			if (handledApplication.modifiedCount === 0) {
 				throw new Error("Application not found");
 			}
-			res
-				.status(200)
-				.json({ response: "Successfully handled application", application: handledApplication });
+			res.status(200).json(handledApplication);
 		}
 	} catch (error) {
 		res.status(500).json({ error: error.message });

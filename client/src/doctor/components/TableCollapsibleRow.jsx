@@ -10,17 +10,18 @@ import { Fragment } from "react";
 import Box from '@mui/material/Box';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
+import OverFlowModal from './OverflowModal';
 
 
-function createData(id, name, mobile, formattedDob, gender,emergencyContactsName) {
+function createData(id, name, mobile, formattedDob, gender,emergencyContact, appointments) {
   return{
     id,
     name,
-    // appointment,
+    appointments,
     mobile,
     formattedDob,
     gender,
-    emergencyContactsName,
+    emergencyContact,
     healthRecord: [
         {
           Record: "Heart Condition" ,
@@ -29,6 +30,26 @@ function createData(id, name, mobile, formattedDob, gender,emergencyContactsName
         {
             Record: "Heart Condition" ,
             Date: '11091700',
+        },
+        {
+          Record: "Heart Condition" ,
+          Date: '11091700',
+        },
+        {
+          Record: "Heart Condition" ,
+          Date: '11091700',
+        },
+        {
+          Record: "Heart Condition" ,
+          Date: '11091700',
+        },
+        {
+          Record: "Heart Condition" ,
+          Date: '11091700',
+        },
+        {
+          Record: "Heart Condition" ,
+          Date: '11091700',
         },
       ],
   };
@@ -60,7 +81,7 @@ function Row(props) {
       </tr>
       <tr>
 
-        <td style={{ height: 0, padding: 0 }} colSpan={4}>
+        <td style={{ height: 0, padding: 0 }} colSpan={3}>
 
 
             {/* INFORMATION */}
@@ -97,7 +118,16 @@ function Row(props) {
                           <span style={{ fontWeight: 'bold' }}>Gender:</span> {row.gender}
                         </Typography>
                         <Typography variant="caption">
-                          <span style={{ fontWeight: 'bold' }}>Emergency Contact:</span> {row.emergencyContactsName}
+                           <OverFlowModal list={row.emergencyContact} buttonLabel={"View Emergency Contact"} ModalTitle={"Emergency Contact"} isAppointment={false} isContact={true} />
+                        </Typography>
+                      </div>
+                      
+                      <div>
+                        <Typography variant="caption">
+                           <OverFlowModal list={row.appointments} buttonLabel={"View Appointments"} ModalTitle={"Appointments"} isAppointment={true} />
+                        </Typography>
+                        <Typography variant="caption">
+                          <OverFlowModal list={row.healthRecord} buttonLabel={"View Health Records"} ModalTitle={"Health Record"} isAppointment={false} />
                         </Typography>
                       </div>
 
@@ -111,7 +141,7 @@ function Row(props) {
             {/* HEALTH RECORD */}
 
             {/* <td style={{ height: 0, padding: 0 }} colSpan={6}> */}
-            {open && (
+            {/* {open && (
                 <Sheet
                 variant="soft"
                 sx={{ p: 1, pl: 6, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)', marginBottom: '5px' }}
@@ -146,7 +176,7 @@ function Row(props) {
                     </tbody>
                 </Table>
                 </Sheet>
-            )}
+            )} */}
         </td>
       </tr>
     </React.Fragment>
@@ -176,8 +206,7 @@ function Row(props) {
 export default function TableCollapsibleRow({data}) {
 
     const rows = data.map((rowData) => {
-        // return createData(rowData.id, rowData.name, rowData.appointment, rowData.information)
-        return createData(rowData.id, rowData.name, rowData.mobile, rowData.formattedDob, rowData.gender, rowData.emergencyContact.name)
+        return createData(rowData.id, rowData.name, rowData.mobile, rowData.formattedDob, rowData.gender, rowData.emergencyContact, rowData.appointments)
 
     })
 
@@ -202,7 +231,6 @@ export default function TableCollapsibleRow({data}) {
                 <th style={{ width: 60 }} aria-label="empty" />
                 <th>Id</th>
                 <th>Name</th>
-                <th>Appointment</th>
               </tr>
             </thead>
             <tbody>
