@@ -1,0 +1,32 @@
+.doctor-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.doctor-image {
+  max-width: 100%;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.doctor-name {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.doctor-info {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.doctor-price {
+  font-size: 20px;
+  color: #007bff;
+  margin-top: 10px;
+}

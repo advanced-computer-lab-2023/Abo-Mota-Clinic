@@ -7,6 +7,10 @@ const healthPackageSchema = new Schema({
 	pharmacyDiscount: Number,
 	familyDiscount: Number,
 	name: String,
+	isActivated: {
+		type: Boolean,
+		default: true,
+	},
 });
 
 const HealthPackage = mongoose.model("HealthPackage", healthPackageSchema);

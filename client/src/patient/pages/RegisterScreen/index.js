@@ -9,19 +9,42 @@ import Header from "../../../shared/Components/Header";
 import { Formik } from "formik";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import DropDown from "../../../shared/Components/DropDown";
-
+import { useRegisterPatientMutation } from '../../../store'
+import { useNavigate } from "react-router-dom";
 
 const RegisterScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const [registerPatient, results] = useRegisterPatientMutation();
+  const navigate = useNavigate();
   const handleSubmit = async (values, { resetForm }) => {
     // values contains all the data needed for registeration
-    console.log(values);
+    // console.log(values);
+    const patient = {
+      dob: values.dateOfBirth,
+      email: values.email,
+      name: `${values.firstName} ${values.lastName}`,
+      gender: values.gender,
+      mobile: values.mobileNumber,
+      nationalId: values.nationalId,
+      username: values.userName,
+      password: values.password,
+      emergencyContact: {
+        name: `${values.emergencyContactFirstName} ${values.emergencyContactLastName}`,
+        mobile: values.emergencyContactMobileNumber,
+        relation: values.emergencyContactRelation,
+      }
+    }
+    // console.log(patient)
+    
+
     setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await registerPatient(patient);
+    console.log(results);
+    // await new Promise(resolve => setTimeout(resolve, 3000));
     // Remove the above await and insert code for backend registeration here.
     setIsLoading(false);
     resetForm({ values: '' });
+    navigate('/patient/appointments');
 };
 
 

@@ -3,16 +3,23 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { doctorApi } from './apis/doctorApi';
 import { doctorReducer, getDoctors } from './slices/doctorSlice';
 import { adminApi } from './apis/adminApi';
+import { guestApi } from './apis/guestApi';
+import { patientApi } from './apis/patientApi';
+
 export const store = configureStore({
   reducer: {
     [doctorApi.reducerPath]: doctorApi.reducer,
+    [adminApi.reducerPath]: adminApi.reducer,
+    [guestApi.reducerPath]: guestApi.reducer,
+    [patientApi.reducerPath]: patientApi.reducer,
     doctorSlice: doctorReducer,
-    [adminApi.reducerPath]: adminApi.reducer
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
-    .concat(doctorApi.middleware)
-    .concat(adminApi.middleware)
+      .concat(doctorApi.middleware)
+      .concat(adminApi.middleware)
+      .concat(guestApi.middleware)
+      .concat(patientApi.middleware);
   },
 });
 
@@ -20,19 +27,40 @@ setupListeners(store.dispatch);
 
 
 export {
-    useFetchAppointmentsQuery,
-    useFetchPatientsQuery,
-    useFetchDoctorQuery,
-    useUpdateDoctorMutation
+  useFetchAppointmentsQuery,
+  useFetchPatientsQuery,
+  useFetchDoctorQuery,
+  useUpdateDoctorMutation
 } from './apis/doctorApi';
 
-export{
+export {
   useAddPackageMutation,
   useDeletePackageMutation,
   useFetchPackagesQuery,
-  useUpdatePackageMutation
+  useUpdatePackageMutation,
+  useFetchApplicationsQuery,
+  useAddAdminMutation,
+  useRemoveAdminMutation,
+  useRemovePatientMutation,
+  useRemoveDoctorMutation
 } from './apis/adminApi'
 
 export {
-    getDoctors
+  useRegisterDoctorMutation,
+  useRegisterPatientMutation
+} from './apis/guestApi'
+
+
+export const {
+  useFetchPatientQuery,
+  useFetchPatientAppointmentsQuery,
+  useFetchFamilyMembersQuery,
+  useAddFamilyMemberMutation,
+  useFetchPrescriptionsQuery,
+  useFetchDoctorsQuery
+} = patientApi;
+
+
+export {
+  getDoctors
 }

@@ -20,19 +20,16 @@ const doctorApi = createApi({
             }
         }),
         fetchAppointments: builder.query({
-            providesTags:(result,error,doctor)=>{
+            providesTags:(result,error)=>{
                 const tags = result.map((appointment)=>{
                     return {type:'Appointment', id:appointment._id}
                 });
-                tags.push({type:'DoctorAppointment',id:doctor._id})
+                // tags.push({type:'DoctorAppointment',id:doctor._id})
                 return tags;
             },
-            query : (doctor) => {
+            query : () => {
                 return {
                     url: '/appointments',
-                    // params: {
-                    //     albumId: album.id, 
-                    // },
                     method: 'GET'
                 }
             }

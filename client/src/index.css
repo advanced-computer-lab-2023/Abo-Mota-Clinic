@@ -1,15 +1,23 @@
-@import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;1,900&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;1,900&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 
 :root {
 	--main-color: blue;
 }
 
 html {
-	font-size: 62.5%; /* 16 px * 62.5% = 10 px */ 
+	/* font-size: 62.5%;  */
+	/* 16 px * 62.5% = 10 px */ 
 }
 
 body {
 	margin: 0px;
 	background: #eee;
-	font-family: Besley, serif;
+	/* font-family: Besley, serif; */
 }
