@@ -6,7 +6,8 @@ import IconButton from '@mui/joy/IconButton';
 import Divider from '@mui/joy/Divider';
 import Box from '@mui/joy/Box';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { BiChat } from "react-icons/bi"; import DoctorImg from '../assets/images/doctor.jpg';
+import { BiChat } from "react-icons/bi";
+import DoctorImg from '../assets/images/doctor.jpg';
 import Chip from '@mui/joy/Chip';
 import capitalize from '../utils/capitalize';
 

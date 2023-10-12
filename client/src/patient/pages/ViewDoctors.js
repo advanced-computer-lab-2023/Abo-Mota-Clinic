@@ -48,16 +48,17 @@ function ViewDoctors() {
 		let filteredData = filter(data, config);
 		filteredData = filterSearch(filteredData, doctorSearchTerm, ["name"]);
 		// filteredData = filterSearch(filteredData, specialtySearchTerm, ["specialty"]);
-		if (patient.healthPackage) {
-			discount = patient.healthPackage.package.doctorDiscount;
-		} else {
-			discount = undefined;
-		}
+		discount = 20;
+		// if (patient.healthPackage) {
+		// 	discount = patient.healthPackage.package.doctorDiscount;
+		// } else {
+		// 	discount = undefined;
+		// }
 
 		content =
 			<>
 				{filteredData.map((doctor) => {
-					const handleRedirect = () => navigate('../doctorCard', { state: doctor });
+					const handleRedirect = () => navigate('../doctorInfo', { state: doctor });
 					return <DoctorCard className="cursor-pointer" onClick={handleRedirect} {...doctor} discount={discount} />;
 				})}
 			</>;
