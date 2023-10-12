@@ -21,8 +21,7 @@ import AppointmentCard from "../components/AppointmentCard";
 
 function ViewDoctorAppointments() {
 	const [selection, setSelection] = useState([]);
-	const [selectedStartDate, setSelectedStartDate] = useState(null);
-	const [selectedEndDate, setSelectedEndDate] = useState(null);
+	const [selectedDate, setselectedDate] = useState(null);
 
 	const [searchTerm, setSearchTerm] = useState("")
 	
@@ -34,9 +33,6 @@ function ViewDoctorAppointments() {
     // const [addAlbum, results] = useAddAlbumMutation();
 
 	let filteredAppointments ;
-
-
-
 
 	const config = [
 		{ label: "ID", render: (appointment) => appointment.id },
@@ -62,19 +58,10 @@ function ViewDoctorAppointments() {
 		filteredAppointments = data.filter((appointment) => selection.includes(appointment.status));
 	}
 	
-	if (selectedStartDate && !selectedEndDate){
+	if (selectedDate){
 		filteredAppointments = filteredAppointments.filter((appointment) => {
-			const formattedSelectedDate = dayjs(selectedStartDate).format("MM/DD/YYYY");
+			const formattedSelectedDate = dayjs(selectedDate).format("MM/DD/YYYY");
 			return formattedSelectedDate === appointment.formattedDate.split(",")[0];
-		});
-	}else if(selectedStartDate && selectedEndDate){
-		filteredAppointments = filteredAppointments.filter((appointment) => {
-			const formattedSelectedStartDate = dayjs(selectedStartDate).format("MM/DD/YYYY");
-			const formattedSelectedEndDate = dayjs(selectedEndDate).format("MM/DD/YYYY");
-			const appointmentDate = appointment.formattedDate.split(",")[0];
-
-			return isSameDay(formattedSelectedStartDate, appointmentDate) || isSameDay(formattedSelectedEndDate, appointmentDate) ||
-				 (isAfter(formattedSelectedStartDate, appointmentDate) && isBefore(formattedSelectedEndDate, appointmentDate));
 		});
 	}
 			
@@ -91,17 +78,13 @@ function ViewDoctorAppointments() {
 		setSelection(selectedOptions);
 	};
 
-	const handleStartDateChange = (date) => {
-		setSelectedStartDate(date);
+	const handleDateChange = (date) => {
+		setselectedDate(date);
 	};
 
-	const handleEndDateChange = (date) => {
-		setSelectedEndDate(date);
-	}
 
 	const clearSelectedDate = () => {
-		setSelectedStartDate(null);
-		setSelectedEndDate(null);
+		setselectedDate(null);
 
 	};
 
@@ -148,12 +131,10 @@ function ViewDoctorAppointments() {
 					</ FormControl>
 
 
-
 						<div className="flex items-center justify-between mr-10 space-y-4">
 							<div className="flex items-center mb-5 mt-5" >
-								<DatePickerMaterialUI value={selectedStartDate} onChange={handleStartDateChange} />
-								-
-								<DatePickerMaterialUI value={selectedEndDate} onChange={handleEndDateChange} />
+								<DatePickerMaterialUI value={selectedDate} onChange={handleDateChange} />
+								
 							</div>
 							<Button size="md" variant="soft" color="neutral" onClick={clearSelectedDate}>
 								Clear Selected Date
