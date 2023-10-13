@@ -36,9 +36,11 @@ const colors = {
           width: '1100px',
           flexWrap: 'wrap',
           display: 'flex',
-
+          
           overflow: 'hidden',
         }}
+        className="hover:shadow-lg"
+
       >
             <AspectRatio flex ratio="1" maxHeight={150} sx={{ minWidth: 150 }}>
             <img
@@ -98,3 +100,5 @@ function capitalizeFirstLetter(string){
   // Capitalize the first letter and concatenate it with the rest of the string
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export {capitalizeFirstLetter};

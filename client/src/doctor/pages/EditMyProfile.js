@@ -10,6 +10,8 @@ export default function EditMyProfile (){
     
 
     return (
-        <UserCard />
+        <div className="ml-10 mt-5">
+            <UserCard />
+        </div>
     );
 }

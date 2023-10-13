@@ -31,8 +31,6 @@ function ViewDoctorAppointments() {
 
 	let filteredAppointments ;
 
-
-
 	const options = ["upcoming", "cancelled", "completed"];
 
 	if(isFetching)
@@ -61,7 +59,8 @@ function ViewDoctorAppointments() {
 			
 
 	filteredAppointments = filteredAppointments.filter((appointment) => {
-		return appointment.patient.name.includes(searchTerm);
+		const name = appointment.patient.name.toLowerCase();
+		return name.includes(searchTerm.toLowerCase());
 	})
 	
 

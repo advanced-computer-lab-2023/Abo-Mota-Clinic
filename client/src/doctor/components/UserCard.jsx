@@ -6,7 +6,6 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import Textarea from "@mui/joy/Textarea";
 import IconButton from "@mui/joy/IconButton";
 import { MdEdit } from "react-icons/md";
 import { useFetchDoctorQuery, useUpdateDoctorMutation } from "../../store";
@@ -54,6 +53,7 @@ export default function UserCard() {
     if (emailValue !== "") {
       if (!validateEmail(emailValue)) {
         setOpen(true);
+        setEmailValue("");
         return;
       } else updated.email = emailValue;
     }
@@ -99,13 +99,13 @@ export default function UserCard() {
         thousandSeparator
         valueIsNumericString
         prefix="$"
-        suffix="/h"
+        suffix="/hr"
       />
     );
   });
 
   const validateEmail = (email) => {
-    return emailValidator.validate(email);
+    return isEditEmail && emailValidator.validate(email);
   };
 
   const onToastClose = (event, reason) => {
@@ -117,53 +117,24 @@ export default function UserCard() {
   return (
     <Box
       sx={{
-        width: "100%",
+        
         // position: 'relative',
-        overflow: { xs: "auto", sm: "initial" },
+        // overflow: { xs: "auto", sm: "initial" },
       }}
     >
-      <Box
-        sx={{
-          // position: 'absolute',
-          display: "block",
-          width: "1px",
-          bgcolor: "warning.300",
-          left: "500px",
-          top: "-24px",
-          bottom: "-24px",
-          "&::before": {
-            top: "4px",
-            content: '"vertical"',
-            display: "block",
-            position: "absolute",
-            right: "0.5rem",
-            color: "text.tertiary",
-            fontSize: "sm",
-            fontWeight: "lg",
-          },
-          "&::after": {
-            top: "4px",
-            content: '"horizontal"',
-            display: "block",
-            position: "absolute",
-            left: "0.5rem",
-            color: "text.tertiary",
-            fontSize: "sm",
-            fontWeight: "lg",
-          },
-        }}
-      />
+      
       <Card
         orientation="horizontal"
         sx={{
-          width: "100%",
+          width: "1230px",
+          height: "330px",
           flexWrap: "wrap",
 
           overflow: "hidden",
           // resize: 'horizontal',
         }}
       >
-        <AspectRatio flex ratio="1" maxHeight={182} sx={{ minWidth: 182 }}>
+        <AspectRatio flex ratio="1" maxHeight={150} sx={{ minWidth: 240 }}>
           <img
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
             srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
@@ -184,11 +155,36 @@ export default function UserCard() {
               borderRadius: "sm",
               p: 1.5,
               my: 1.5,
-              display: "flex-column",
               gap: 2,
               "& > div": { flex: 1 },
+
             }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pr-20 mb-5"
+            
           >
+              <div>
+                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+                      National Id
+                </Typography>
+                <Typography fontWeight="lg">{data.nationalId}</Typography>
+
+              </div>
+              <div>
+                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+                      Birth Date
+                </Typography>
+                <Typography fontWeight="lg">{data.formattedDob}</Typography>
+
+              </div>
+
+              <div>
+                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+                    Educational Background
+                </Typography>
+                <Typography fontWeight="lg">{data.educationalBackground}</Typography>
+
+              </div>
+
             <div>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
@@ -206,6 +202,8 @@ export default function UserCard() {
                   onChange={handleEmailChange}
                   value={emailValue}
                   type="email"
+                  sx={{ height: 25 }}
+
                 />
               ) : (
                 <Typography fontWeight="lg">{data.email}</Typography>
@@ -232,9 +230,11 @@ export default function UserCard() {
                       component: NumericFormatAdapter,
                     },
                   }}
+                  sx={{ height: 25 }}
+
                 />
               ) : (
-                <Typography fontWeight="lg">${data.rate}/h</Typography>
+                <Typography fontWeight="lg">${data.rate}/hr</Typography>
               )}
             </div>
             <div>
@@ -253,11 +253,14 @@ export default function UserCard() {
                   variant="outlined"
                   onChange={handleAffilChange}
                   value={affilValue}
+                  sx={{ height: 25 }}
+
                 />
               ) : (
                 <Typography fontWeight="lg">{data.affiliation}</Typography>
               )}
             </div>
+           
           </Sheet>
           <Box sx={{ display: "flex", gap: 1.5, "& > button": { flex: 1 } }}>
             {isEditEmail || isEditRate || isEditAffiliation ? (
@@ -274,9 +277,12 @@ export default function UserCard() {
         onClose={onToastClose}
         variant="soft"
         color="danger"
-        message="Enter Email in something@something.com Format"
+        message="Enter Email in correct format"
         duration={4000}
       />
     </Box>
   );
 }
+
+//dob, educationalBackground, nationalID,
+

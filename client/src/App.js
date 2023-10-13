@@ -24,6 +24,7 @@ import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
 import ViewDoctorPatients from "./doctor/pages/ViewDoctorPatients";
 import EditMyProfile from "./doctor/pages/EditMyProfile";
 import RegisterForm from "./doctor/pages/RegisterForm";
+import ViewPatientInfo from "./doctor/pages/ViewPatientInfo";
 
 function App() {
 	return (
@@ -45,6 +46,7 @@ function App() {
 					<Route path="patients" element={<ViewDoctorPatients />} />
 					<Route path="profile" element={<EditMyProfile />} />
 					<Route path="registerForm" element={<RegisterForm />} />
+					<Route path="patientInfo" element={<ViewPatientInfo />} />
 				</Route>
 
 				<Route path="/admin" element={<Admin />}>
