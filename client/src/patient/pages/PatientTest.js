@@ -70,3 +70,4 @@ const appointments = {
 // sessionPrice
 // affiliation
 // education
+
