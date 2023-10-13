@@ -8,6 +8,7 @@ import { useFetchPatientsQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
 
 
+
 function ViewDoctorPatients() {
 	const [isFiltered, setIsFiltered]  = useState(false)
 	const [searchTerm, setSearchTerm] = useState("")

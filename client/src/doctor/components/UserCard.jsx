@@ -172,10 +172,10 @@ export default function UserCard() {
           />
         </AspectRatio>
         <CardContent>
-          <Typography level="h1" fontWeight="lg">
+          <Typography level="h2" fontWeight="lg">
             {data.name}
           </Typography>
-          <Typography level="body-lg" fontWeight="lg" textColor="text.tertiary">
+          <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
             {data.specialty}
           </Typography>
           <Sheet
@@ -191,7 +191,7 @@ export default function UserCard() {
           >
             <div>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <Typography level="body-lg" fontWeight="lg" textColor="text.tertiary">
+                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
                   Email
                 </Typography>
                 <IconButton onClick={handleEditEmail}>
@@ -213,7 +213,7 @@ export default function UserCard() {
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <Typography level="body-lg" fontWeight="lg" textColor="text.tertiary">
+                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
                   Hourly Rate
                 </Typography>
                 <IconButton onClick={handleEditRate}>
@@ -239,7 +239,7 @@ export default function UserCard() {
             </div>
             <div>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <Typography level="body-lg" fontWeight="lg" textColor="text.tertiary">
+                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
                   Affiliation
                 </Typography>
                 <IconButton onClick={handleEditAffiliation}>
