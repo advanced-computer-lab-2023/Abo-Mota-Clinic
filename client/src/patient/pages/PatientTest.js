@@ -20,12 +20,7 @@ const tmp2={
   "relation":"Brother"
 }
 
-const MyAccordion = () => {
-  const [expanded, setExpanded] = useState(false);
 
-  const handleToggle = () => {
-    setExpanded(!expanded);
-  };
 
   const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
 
@@ -51,6 +46,23 @@ const MyAccordion = () => {
     <MemberCard {...tmp}/>
     
   );
-};
 
-export default MyAccordion;
+
+export default PatientTest;
+
+// const appointments = ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM"]
+
+const appointments = {
+  "Thursday, October 12": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
+  "Friday, October 13": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
+  "Monday October 16": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
+  "Tuesday October 17": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
+}
+
+
+
+// name
+// specialty
+// sessionPrice
+// affiliation
+// education

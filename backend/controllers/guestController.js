@@ -21,9 +21,9 @@ const registerPatient = async (req, res) => {
 			...req.body,
 			password: hashedPassword,
 		});
-		return res.status(200).json({ success: true, message: "User registered successfully" });
+		return res.status(200).json({ newPatient });
 	} catch (error) {
-		return res.status(404).json({ success: false, message: error.message });
+		return res.status(404).json({ error: error.message });
 	}
 };
 
@@ -60,11 +60,9 @@ const registerDoctor = async (req, res) => {
 			// }
 		});
 
-		return res
-			.status(200)
-			.json({ success: true, message: "Application is submitted successfully" });
+		return res.status(200).json({ newDoctor });
 	} catch (error) {
-		return res.status(404).json({ success: false, message: error.message });
+		return res.status(500).json({ error: error.message });
 	}
 };
 

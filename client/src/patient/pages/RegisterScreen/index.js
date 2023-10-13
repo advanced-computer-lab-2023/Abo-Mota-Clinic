@@ -10,10 +10,12 @@ import { Formik } from "formik";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import DropDown from "../../../shared/Components/DropDown";
 import { useRegisterPatientMutation } from '../../../store'
+import { useNavigate } from "react-router-dom";
 
 const RegisterScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [registerPatient, results] = useRegisterPatientMutation();
+  const navigate = useNavigate();
   const handleSubmit = async (values, { resetForm }) => {
     // values contains all the data needed for registeration
     // console.log(values);
@@ -42,6 +44,7 @@ const RegisterScreen = () => {
     // Remove the above await and insert code for backend registeration here.
     setIsLoading(false);
     resetForm({ values: '' });
+    navigate('/patient/appointments');
 };
 
 

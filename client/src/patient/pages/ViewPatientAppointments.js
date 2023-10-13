@@ -22,7 +22,7 @@ export default function ViewPatientAppointments() {
   }
 
   return (
-    <Box className='w-full ml-20 mt-10 mr-20'>
+    <Box className='w-full ml-20 mt-10 mr-20 space-y-5'>
       {content} 
     </Box>
   );

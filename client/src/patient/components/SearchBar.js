@@ -24,23 +24,3 @@ function SearchBar({ onChange, placeholder, ...rest }) {
 }
 
 export default SearchBar;
-
-/*
-  select ==> override either way
-  search ==> override if select is false
-
-  {
-    "doctor_name": {
-      "term": "Dr. John Doe",
-      "select": true,
-      indicator ? select : search
-    },
-
-    "specialty": {
-      "term": "Cardiologist",
-      "select": false,
-    }
-  }
-*/
-
-// Input ==> search ??
