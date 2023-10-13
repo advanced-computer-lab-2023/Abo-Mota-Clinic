@@ -4,49 +4,53 @@ import { useFetchPrescriptionsQuery } from "../../store";
 import { Box } from "@mui/joy";
 import MemberCard from '../components/MemberCard';
 
-function PatientTest(){
-const tmp={
-  "name":"Sara",
-  "nationalId":"12345",
-  "age":"22",
-  "gender":"Female",
-  "relation":"Sister"
-};
-const tmp2={
-  "name":"Ahmed",
-  "nationalId":"12345",
-  "age":"22",
-  "gender":"male",
-  "relation":"Brother"
-}
 
-
-
-  const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
-
-  let content;
-  if (isFetching) {
-    content = <div>Loading...</div>;
-  } else if (error) {
-    content = <div> Error ... </div>;
-  }
-  else {
-    const familyMembers = [tmp, tmp2];
-
-  return (
-    <div className='flex space-x-6'>
-      {familyMembers.map((familyMember) => (
-        <MemberCard key={familyMember.name} {...familyMember} />
-      ))}
-    </div>
-  );
+function PatientTest() {
+  const tmp={
+    "name":"Sara",
+    "nationalId":"12345",
+    "age":"22",
+    "gender":"Female",
+    "relation":"Sister"
   };
-  return (
-   
-    <MemberCard {...tmp}/>
-    
-  );
+  const tmp2={
+    "name":"Ahmed",
+    "nationalId":"12345",
+    "age":"22",
+    "gender":"male",
+    "relation":"Brother"
+  }
+  
+  
+  
+    const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
+  
+    let content;
+    if (isFetching) {
+      content = <div>Loading...</div>;
+    } else if (error) {
+      content = <div> Error ... </div>;
+    }
+    else {
+      const familyMembers = [tmp, tmp2];
+  
+    return (
+      <div className='flex space-x-6'>
+        {familyMembers.map((familyMember) => (
+          <MemberCard key={familyMember.name} {...familyMember} />
+        ))}
+      </div>
+    );
+    };
+    return (
+     
+      <MemberCard {...tmp}/>
+      
+    );
 }
+
+
+
 
 export default PatientTest;
 

@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import Table from "../components/Table";
 import Button from '@mui/joy/Button';
 import { isAfter, isSameDay } from 'date-fns'; // Import date-fns functions
 import TableCollapsibleRow from "../components/TableCollapsibleRow";
 import { useSelector } from "react-redux";
 import { useFetchPatientsQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
+import PatientCard from "../components/PatientCard";
+import { useNavigate } from 'react-router-dom';
+
 
 
 function ViewDoctorPatients() {
@@ -15,8 +17,8 @@ function ViewDoctorPatients() {
 	const doctor = useSelector((state) => state.doctorSlice);
 	const { data, error , isFetching } = useFetchPatientsQuery(doctor);
 	const patients = data;
-	console.log(patients)
 
+	const navigate = useNavigate();
 
 
 		const handleViewApp = () =>{
@@ -57,7 +59,13 @@ function ViewDoctorPatients() {
 		
 
 		renderedPatients = renderedPatients.filter((patient) => {
-			return patient.name.includes(searchTerm);
+			const name = patient.name.toLowerCase();
+			return name.includes(searchTerm.toLowerCase());
+		})
+
+		const content = renderedPatients.map((patient) => {
+			const handleRedirect = () => navigate('../patientInfo', { state: patient });
+			return <PatientCard patient={patient} onClick={handleRedirect} className="items-center mb-5"/>
 		})
 
 	
@@ -66,20 +74,25 @@ function ViewDoctorPatients() {
 		<div>
 			{isFetching && <div>Loading...</div>}
 			{!isFetching &&
-			<div className='ml-8'>
-			<form style={{marginBottom: "10px", marginLeft: "10px"}}>
-				
-				<SearchBar placeholder="Search for patients..." onChange={(value) => setSearchTerm(value)}/>							
-				<Button size="md" variant='soft' color="neutral" onClick={handleViewApp}>
-					View Upcoming Appointments
-       			</Button>
-				<Button size="md" variant='soft' color="neutral" onClick={handleViewAll}>
-					View All Patients
-       			</Button>
-			</form>
+			<div className="ml-20 flex flex-col space-y-4 w-full">
+				<div className="flex justify-between items-center space-x-4 w-full mt-10">
+											
+					<Button size="md" variant='soft' color="neutral" onClick={handleViewApp}>
+						View Upcoming Appointments
+					</Button>
+					<Button size="md" variant='soft' color="neutral" onClick={handleViewAll}>
+						View All Patients
+					</Button>
+					<SearchBar placeholder="Search for patients..." onChange={(value) => setSearchTerm(value)}/>	
+				</div>
 
-			<TableCollapsibleRow data={renderedPatients}/>
-		</div>}
+				<div className="flex flex-wrap space-x-5">
+					{content}
+				</div>
+
+			
+			</div>
+			}
 		</div>
 		
 	);

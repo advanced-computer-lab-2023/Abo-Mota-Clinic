@@ -1,28 +1,25 @@
-import React, { useEffect } from "react";
-import Table from "../components/Table";
+import React from "react";
 import { useState } from "react";
 import "@fontsource/inter";
-import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import DatePickerMaterialUI from "../components/DatePickerMaterialUI";
 import dayjs from "dayjs";
 import Button from "@mui/joy/Button";
-import Textarea from "@mui/joy/Textarea";
 import { useFetchAppointmentsQuery, useFetchDoctorQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
-import { isAfter, isSameDay, isBefore } from 'date-fns'; // Import date-fns functions
+import { isAfter, isSameDay, isBefore, set, parseISO } from 'date-fns'; // Import date-fns functions
 import { Autocomplete } from "@mui/joy";
 import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
 import CircularProgress from '@mui/joy/CircularProgress';
 import AppointmentCard from "../components/AppointmentCard";
+import { DatePicker, Space } from 'antd';
+const { RangePicker } = DatePicker;
 
 
 
 function ViewDoctorAppointments() {
 	const [selection, setSelection] = useState([]);
-	const [selectedStartDate, setSelectedStartDate] = useState(null);
-	const [selectedEndDate, setSelectedEndDate] = useState(null);
+	const [selectedDateRange, setSelectedDateRange] = useState(null);
 
 	const [searchTerm, setSearchTerm] = useState("")
 	
@@ -31,28 +28,10 @@ function ViewDoctorAppointments() {
 	
 	
 	console.log(data);
-    // const [addAlbum, results] = useAddAlbumMutation();
 
 	let filteredAppointments ;
 
-
-
-
-	const config = [
-		{ label: "ID", render: (appointment) => appointment.id },
-		{ label: "Patient", render: (appointment) => appointment.patient.name },
-		{ label: "Date", render: (appointment) => appointment.formattedDate.split(",")[0] },
-		{
-			label: "Time",
-			render: (appointment) => appointment.formattedDate.split(",")[1] ,
-		},
-		{
-			label: "Status",
-			render: (appointment) => appointment.status,
-		}
-	];
-
-	const options = ["upcoming", "cancelled", "completed", "unbooked"];
+	const options = ["upcoming", "cancelled", "completed"];
 
 	if(isFetching)
 		filteredAppointments = [];
@@ -62,48 +41,38 @@ function ViewDoctorAppointments() {
 		filteredAppointments = data.filter((appointment) => selection.includes(appointment.status));
 	}
 	
-	if (selectedStartDate && !selectedEndDate){
-		filteredAppointments = filteredAppointments.filter((appointment) => {
-			const formattedSelectedDate = dayjs(selectedStartDate).format("MM/DD/YYYY");
-			return formattedSelectedDate === appointment.formattedDate.split(",")[0];
-		});
-	}else if(selectedStartDate && selectedEndDate){
-		filteredAppointments = filteredAppointments.filter((appointment) => {
-			const formattedSelectedStartDate = dayjs(selectedStartDate).format("MM/DD/YYYY");
-			const formattedSelectedEndDate = dayjs(selectedEndDate).format("MM/DD/YYYY");
-			const appointmentDate = appointment.formattedDate.split(",")[0];
 
-			return isSameDay(formattedSelectedStartDate, appointmentDate) || isSameDay(formattedSelectedEndDate, appointmentDate) ||
-				 (isAfter(formattedSelectedStartDate, appointmentDate) && isBefore(formattedSelectedEndDate, appointmentDate));
+	if(selectedDateRange){
+		filteredAppointments = filteredAppointments.filter((appointment) => {
+			const appointmentDate = new Date(appointment.formattedDate.split(",")[0]);
+			const startDate = new Date(selectedDateRange[0]);
+			const endDate = new Date(selectedDateRange[1]);
+
+
+			const same = isSameDay(startDate,appointmentDate) || isSameDay(endDate, appointmentDate)
+			const inRange = isAfter(appointmentDate, startDate) && isBefore(appointmentDate, endDate);
+
+			return same || inRange;
+			
 		});
 	}
 			
 
 	filteredAppointments = filteredAppointments.filter((appointment) => {
-		return appointment.patient.name.includes(searchTerm);
+		const name = appointment.patient.name.toLowerCase();
+		return name.includes(searchTerm.toLowerCase());
 	})
 	
-	
-	
-	
+
 
 	const handleSelect = (selectedOptions) => {
 		setSelection(selectedOptions);
 	};
 
-	const handleStartDateChange = (date) => {
-		setSelectedStartDate(date);
-	};
 
-	const handleEndDateChange = (date) => {
-		setSelectedEndDate(date);
+	const handleDateRange = (date) => {
+		setSelectedDateRange(date);
 	}
-
-	const clearSelectedDate = () => {
-		setSelectedStartDate(null);
-		setSelectedEndDate(null);
-
-	};
 
 	let renderedAppointments = [];
 
@@ -119,49 +88,37 @@ function ViewDoctorAppointments() {
 		<div>
 			
 			{!isFetching && 
-				<div className="ml-20 flex flex-col space-y-4">
-					<div>
-						{/* <div className="mb-10">
-							<Dropdown options={options} onChange={handleSelect} value={selection} />
-							
-						</div> */}
-
-					<FormControl id="multiple-limit-tags">
-						<Autocomplete
-							
-							multiple
-							id="tags-default"
-							placeholder="Status"
-							loading={isFetching}
-							options={options}	
-							endDecorator={
-								isFetching ? (
-									<CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
-								) : null
-							}
-							limitTags={2}
-							onChange={(event, newValue) => {
-								handleSelect(newValue)
-							}}
-						
-						/>
-					</ FormControl>
+				<div className="ml-20 flex flex-col space-y-4 ">
+					
+						<div className="flex justify-between items-center space-x-4 w-full mt-10">
+							<RangePicker onChange={handleDateRange} format={"MM/DD/YYYY"}/>
 
 
+							<FormControl id="multiple-limit-tags">
+								<Autocomplete
+									
+									multiple
+									id="tags-default"
+									placeholder="Status"
+									loading={isFetching}
+									options={options}	
+									endDecorator={
+										isFetching ? (
+											<CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
+										) : null
+									}
+									limitTags={2}
+									onChange={(event, newValue) => {
+										handleSelect(newValue)
+									}}
+								
+								/>
+							</ FormControl>
 
-						<div className="flex items-center justify-between mr-10 space-y-4">
-							<div className="flex items-center mb-5 mt-5" >
-								<DatePickerMaterialUI value={selectedStartDate} onChange={handleStartDateChange} />
-								-
-								<DatePickerMaterialUI value={selectedEndDate} onChange={handleEndDateChange} />
-							</div>
-							<Button size="md" variant="soft" color="neutral" onClick={clearSelectedDate}>
-								Clear Selected Date
-							</Button>
 							
 							<SearchBar placeholder="Search for patients..." onChange={(value) => setSearchTerm(value)}/>							
 						</div>
-					</div>
+					
 					{/* <Table data={filteredAppointments} config={config} /> */}
 					{renderedAppointments}
 				</div>

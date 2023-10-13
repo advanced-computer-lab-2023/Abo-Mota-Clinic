@@ -36,9 +36,11 @@ const colors = {
           width: '1100px',
           flexWrap: 'wrap',
           display: 'flex',
-
+          
           overflow: 'hidden',
         }}
+        className="hover:shadow-lg"
+
       >
             <AspectRatio flex ratio="1" maxHeight={150} sx={{ minWidth: 150 }}>
             <img
@@ -50,33 +52,32 @@ const colors = {
             </AspectRatio>
             <CardContent>
                 <div >
-                    <Box className="flex flex-row justify-between mb-5">
-                        <Typography level='h2' fontWeight="lg">
+                    <Box className="flex flex-row justify-between mb-2">
+                        <Typography level='h3' fontWeight="lg">
                             {capitalizeFirstLetter(appointment.patient.name)}
                         </Typography>
 
                         <Chip color={colors[appointment.status]} variant='soft'>
-                            <Typography level='title-lg'>
+                            <Typography level='title-md'>
                                 {capitalizeFirstLetter(appointment.status)}
                             </Typography>
                         </Chip>
                     </Box>
                     
-
                     <Divider />
 
                     <Box className="flex flex-col space-y-2 mt-3">
-                        <Typography level="body-lg"  textColor="text.tertiary"
+                        <Typography level="body-md"  textColor="text.tertiary"
                         startDecorator={<AccessTimeIcon fontSize='10' />}
                         >
                             {appointment.formattedDate}
                         </Typography>
-                        <Typography level="body-lg"  textColor="text.tertiary"
+                        <Typography level="body-md"  textColor="text.tertiary"
                         startDecorator={<MarkunreadIcon fontSize='10' />}
                         >
                             {appointment.patient.email}
                         </Typography>
-                        <Typography level="body-lg"  textColor="text.tertiary"
+                        <Typography level="body-md"  textColor="text.tertiary"
                         startDecorator={<PhoneIcon fontSize='10' />}
                         >
                             {appointment.patient.mobile}
@@ -99,3 +100,5 @@ function capitalizeFirstLetter(string){
   // Capitalize the first letter and concatenate it with the rest of the string
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export {capitalizeFirstLetter};
