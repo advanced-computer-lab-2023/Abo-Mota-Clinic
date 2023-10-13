@@ -4,6 +4,8 @@ const Doctor = require("../models/Doctor");
 const HealthPackage = require("../models/HealthPackage");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const Appointment = require("../models/Appointment");
+const Prescription = require("../models/Prescription");
 
 // View All Packages
 const getPackages = async (req, res) => {
@@ -173,6 +175,7 @@ const deleteDoctor = async (req, res) => {
     const deletedDoctorResponse = await Doctor.deleteOne(filter);
     res.status(200).json(deletedDoctorResponse);
   } catch (error) {
+    // console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 };

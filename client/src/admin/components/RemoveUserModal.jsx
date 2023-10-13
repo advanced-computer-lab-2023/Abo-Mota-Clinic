@@ -58,7 +58,7 @@ function RemoveUserModal() {
       else if (role === "Doctor") await removeDoctor({ username });
       else await removePatient({ username });
 
-      console.log(res3);
+      console.log(res2);
       setUsername("");
       setRole("");
       setOpen(false);

@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const {
-	getPackages,
-	updatePackage,
-	addPackage,
-	deletePackage,
-	getApplications,
-	getApplicationInfo,
-	handleApplication,
-	addAdmin,
-	deleteAdmin,
-	deletePatient,
-	deleteDoctor,
+  getPackages,
+  updatePackage,
+  addPackage,
+  deletePackage,
+  getApplications,
+  getApplicationInfo,
+  handleApplication,
+  addAdmin,
+  deleteAdmin,
+  deletePatient,
+  deleteDoctor,
 } = require("../controllers/adminController");
 
 // View All Packages
