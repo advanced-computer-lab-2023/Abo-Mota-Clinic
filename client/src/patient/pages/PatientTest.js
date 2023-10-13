@@ -39,7 +39,7 @@ const MyAccordion = () => {
     const familyMembers = [tmp, tmp2];
 
   return (
-    <div>
+    <div className='flex space-x-6'>
       {familyMembers.map((familyMember) => (
         <MemberCard key={familyMember.name} {...familyMember} />
       ))}

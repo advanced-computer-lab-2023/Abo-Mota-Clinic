@@ -119,7 +119,10 @@ export default function ViewFamilyMembers() {
       content = data.map((item) => {
       
       return (
-       <MemberCard {...item}/>
+        <div className='flex space-x-6'>
+          <MemberCard {...item}/>
+        </div>
+       
       );
     });
 
