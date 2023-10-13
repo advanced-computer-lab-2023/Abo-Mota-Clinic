@@ -1,35 +1,20 @@
-import { useLocation } from 'react-router-dom';
-// import './doctor-card.css';
-
-import AspectRatio from '@mui/joy/AspectRatio';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import CardOverflow from '@mui/joy/CardOverflow';
-import Divider from '@mui/joy/Divider';
-import Typography from '@mui/joy/Typography';
-import Button from '@mui/joy/Button';
-import { CardActions, ButtonGroup } from '@mui/joy';
-import CardActionArea from '@mui/material/CardActionArea';
-import Link from '@mui/joy/Link';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import IconButton from '@mui/joy/IconButton';
-import DeleteForever from '@mui/icons-material/DeleteForever';
-import Chip from '@mui/joy/Chip';
-import ChipDelete from '@mui/joy/ChipDelete';
 import { GoArrowDown } from "react-icons/go";
-
-
+import { AspectRatio, Card, CardContent, Typography, Button, Link, Chip } from '@mui/joy';
 
 
 export default function DoctorCard({ name, specialty, rate, className, onClick, discount }) {
 
-  let price;
   // discount = undefined;
+  let price;
+  const markedUpRate = rate * 1.1;
+  const displayedDiscount = discount ? discount * 100 : 0;
+
+  console.log(markedUpRate * (1 - discount))
 
   if (discount) {
-    price = Math.ceil(rate - (rate * discount / 100));
+    price = Math.round(markedUpRate * (1 - discount));
   } else {
-    price = rate;
+    price = Math.round(markedUpRate);
   }
 
 
@@ -82,7 +67,7 @@ export default function DoctorCard({ name, specialty, rate, className, onClick, 
           {
             discount && <div className='flex space-x-1 align-center'>
               <Typography level='body-sm' sx={{ textDecoration: "line-through" }}>
-                ${rate}
+                ${Math.round(markedUpRate)}
                 <Typography fontSize="sm" textColor="text.tertiary">
                   / hr
                 </Typography>
@@ -93,7 +78,7 @@ export default function DoctorCard({ name, specialty, rate, className, onClick, 
                 color="success"
                 startDecorator={<GoArrowDown fontSize="17" style={{ "marginLeft": "-3px", "marginRight": '-4px' }} />}
               >
-                {discount}%
+                {displayedDiscount}%
                 {/* <Typography color='success' level="body-xs">
                 -20%
               </Typography> */}

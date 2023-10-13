@@ -1,16 +1,8 @@
-import { Box } from "@mui/material";
-import { AspectRatio, Card, Divider, Stack, Typography, Sheet, Button } from "@mui/joy";
-import CardContent from "@mui/joy/CardContent";
+import { AspectRatio, Card, Divider, Typography, Sheet, Button, CardContent, Tabs, TabList, TabPanel, Box, Tab} from "@mui/joy";
 import Rating from "@mui/material/Rating";
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab, { tabClasses } from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
+import { tabClasses } from '@mui/joy/Tab';
 import DoctorImg from '../assets/images/doctor.jpg';
 import { useState } from "react";
-import Link from "@mui/joy/Link";
-
-
 
 const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliation }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);

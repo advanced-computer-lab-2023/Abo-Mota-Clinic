@@ -1,39 +1,13 @@
-import * as React from "react";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
-import CardOverflow from "@mui/joy/CardOverflow";
-import Divider from "@mui/joy/Divider";
-import Typography from "@mui/joy/Typography";
-import Button from "@mui/joy/Button";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import Checkbox from "@mui/joy/Checkbox";
-import Input from "@mui/joy/Input";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
-import Add from "@mui/icons-material/Add";
-import Modal from "@mui/joy/Modal";
-import ModalDialog from "@mui/joy/ModalDialog";
-import DialogTitle from "@mui/joy/DialogTitle";
-import DialogContent from "@mui/joy/DialogContent";
-import Stack from "@mui/joy/Stack";
-import FormHelperText from "@mui/joy/FormHelperText";
-import { useState } from "react";
-import { CardActions, ButtonGroup, ModalClose } from "@mui/joy";
+import React, { useState } from "react";
 import { useFetchFamilyMembersQuery, useAddFamilyMemberMutation } from "../../store";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Alert from "@mui/joy/Alert";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { Button, FormControl, FormLabel, Input, Select, Option, Modal, ModalDialog, DialogTitle, DialogContent, Stack, ModalClose } from "@mui/joy";
+import Add from "@mui/icons-material/Add";
 import Toast from "../components/Toast";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
+
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
@@ -49,12 +23,8 @@ export default function ViewFamilyMembers() {
 
   // console.log("DEBUG", results);
 
-  console.log(data);
-
   const isAdding = results.isLoading;
   const isAddingError = results.isError;
-
-  console.log("DEBUG", isAddingError);
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);

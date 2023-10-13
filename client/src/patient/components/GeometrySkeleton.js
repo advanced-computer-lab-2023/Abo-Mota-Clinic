@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Box from '@mui/joy/Box';
 import Skeleton from '@mui/joy/Skeleton';
 
 export default function GeometrySkeleton({ transition }) {

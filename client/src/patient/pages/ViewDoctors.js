@@ -1,28 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useFetchDoctorsQuery, useFetchPatientQuery } from "../../store";
-import IconButton from '@mui/joy/IconButton';
-import CloseRounded from '@mui/icons-material/CloseRounded';
-import Input from '@mui/joy/Input';
-import Select from '@mui/joy/Select';
-import MenuItem from '@mui/joy/MenuItem';
-import Option from '@mui/joy/Option';
 import DoctorCard from "../components/DoctorCard";
-import useFilterSearchBar from "../hooks/useFilterSearchBar";
 import SearchBar from "../components/SearchBar";
-import FilterSelect from "../components/FilterSelect";
 import filter from "../utils/filter";
-import onFilterChange from "../functions/onFilterChange";
 import filterSearch from "../functions/filterSearch";
-import Skeleton from '@mui/joy/Skeleton';
 import GeometrySkeleton from '../components/GeometrySkeleton';
-import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete } from "@mui/joy";
-import CircularProgress from '@mui/joy/CircularProgress';
-import { Button } from "@mui/base";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Box from "@mui/joy/Box";
+import { Autocomplete, CircularProgress, FormControl, FormLabel, Box } from "@mui/joy";
 
 
 function ViewDoctors() {
@@ -32,8 +16,6 @@ function ViewDoctors() {
 	const navigate = useNavigate();
 	const { data, isFetching, error } = useFetchDoctorsQuery();
 	const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
-
-	console.log(patient);
 
 	let content;
 	let specialties = [];
@@ -48,12 +30,12 @@ function ViewDoctors() {
 		let filteredData = filter(data, config);
 		filteredData = filterSearch(filteredData, doctorSearchTerm, ["name"]);
 		// filteredData = filterSearch(filteredData, specialtySearchTerm, ["specialty"]);
-		discount = 20;
-		// if (patient.healthPackage) {
-		// 	discount = patient.healthPackage.package.doctorDiscount;
-		// } else {
-		// 	discount = undefined;
-		// }
+		// discount = 20;
+		if (patient.healthPackage) {
+			discount = patient.healthPackage.package.doctorDiscount;
+		} else {
+			discount = undefined;
+		}
 
 		content =
 			<>
@@ -91,9 +73,6 @@ function ViewDoctors() {
 						onChange={(event, newValue) => {
 							setConfig({ ...config, specialty: newValue })
 						}}
-					// value={values}
-					// getOptionLabel={(option) => option.title}
-					// defaultValue={[top100Films[13]]}
 					/>
 				</ FormControl>
 			</Box>

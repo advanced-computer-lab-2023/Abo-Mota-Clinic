@@ -1,26 +1,13 @@
 import { useFetchPrescriptionsQuery } from "../../store";
-import { Select } from "@mui/joy";
-import { Option } from "@mui/joy";
-import FilterSelect from "../components/FilterSelect";
 import { useState } from "react";
-import { useFilterSelect } from "../hooks/useFilterSelect";
 import filter from "../utils/filter";
-import onFilterChange from "../functions/onFilterChange";
-// import { useFilter } from "../functions/useFilter";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import { Autocomplete } from "@mui/joy";
-import CircularProgress from '@mui/joy/CircularProgress';
+import { FormControl, FormLabel, Autocomplete, Box } from "@mui/joy";
 import PrescriptionAccordion from "../components/PrescriptionAccordion";
-import Box from "@mui/joy/Box";
+
 
 export default function ViewPrescriptions() {
   const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
   const [config, setConfig] = useState({});
-
-  console.log("Config", config);
-
-  const [filterConfig, setFilterConfig] = useState({});
 
   let content;
   let doctorNames = [];
