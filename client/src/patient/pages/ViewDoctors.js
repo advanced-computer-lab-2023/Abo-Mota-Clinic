@@ -91,9 +91,7 @@ function ViewDoctors() {
 						onChange={(event, newValue) => {
 							setConfig({ ...config, specialty: newValue })
 						}}
-					// value={values}
-					// getOptionLabel={(option) => option.title}
-					// defaultValue={[top100Films[13]]}
+					
 					/>
 				</ FormControl>
 			</Box>
