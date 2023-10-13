@@ -5,10 +5,23 @@ import Sheet from '@mui/joy/Sheet';
 import Card from "@mui/joy/Card";
 import { Box } from "@mui/joy";
 import { Divider } from "@mui/material";
-import AppointmentCard from "../components/AppointmentCard";
 import MiniAppointmentCard from "../components/MiniAppointmentCard";
-import { Document, PDFViewer, pdf } from '@react-pdf/renderer';
-import { Page } from "react-pdf";
+import PdfViewer from "../components/PdfViewer";
+// import { Document, PDFViewer, pdf } from '@react-pdf/renderer';
+// import { Page } from "react-pdf";
+
+// Core viewer
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+
+// Plugins
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+
+// Import styles
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
+
+
 
 export default function ViewPatientInfo (){
     const location = useLocation();
@@ -17,6 +30,11 @@ export default function ViewPatientInfo (){
     const renderedAppointments = patient.appointments.map((appointment) =>{
         return <MiniAppointmentCard appointment={appointment}/>
     })
+
+    // Create new plugin instance
+    const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
+
 
     return (
        <div className="mt-8 ml-8 mr-8 space-y-5 items-center">
@@ -84,9 +102,13 @@ export default function ViewPatientInfo (){
                 <Divider inset="none"/>
             </Typography>
 
-            <PDFViewer>
-                <pdf src="../assests/dummy.pdf"/>
-            </PDFViewer>
+            
+
+            <PdfViewer  pdfUrl="../assets/dummy.pdf"/>
+            
+
+
+           
 
         </div>
     );
