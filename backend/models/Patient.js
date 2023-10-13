@@ -42,6 +42,7 @@ const patientSchema = new Schema(
       },
       endDate: Date,
     },
+    healthRecords: [String],
     // prescriptions: [
     //   {
     //     type: Schema.Types.ObjectId,
@@ -68,6 +69,6 @@ patientSchema.virtual("formattedDob").get(function () {
   return new Intl.DateTimeFormat("en-US", options).format(this.dob);
 });
 
-const Patient = mongoose.model("Patient", patientSchema);
+const Patient = mongoose.model("ClinicPatient", patientSchema);
 
 module.exports = Patient;
