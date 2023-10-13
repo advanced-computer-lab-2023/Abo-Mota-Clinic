@@ -59,19 +59,19 @@ function PackageCreate() {
           <label>Name</label>
           <input className="input" value={updatedPackage.name} onChange={handleNameChange} />
           <hr className="card-hr" />
-          <label>Discount 1</label>
+          <label>Pharmacy Discount</label>
           <input
             className="input"
             value={updatedPackage.doctorDiscount || ""}
             onChange={handleD1Change}
           />
-          <label>Discount 2</label>
+          <label>Doctor Discount</label>
           <input
             className="input"
             value={updatedPackage.pharmacyDiscount || ""}
             onChange={handleD2Change}
           />
-          <label>Discount 3</label>
+          <label>Family Discount</label>
           <input
             className="input"
             value={updatedPackage.familyDiscount || ""}

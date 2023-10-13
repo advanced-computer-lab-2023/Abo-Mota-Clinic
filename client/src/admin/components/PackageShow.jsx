@@ -12,17 +12,19 @@ function Package({ data }) {
 
   const renderedDiscounts = (
     <>
-      <div className="discount">
-        {data.pharmacyDiscount && <FiCheck className="icon" />}
-        {data.pharmacyDiscount}
+      <div style={{display: "flex"}}>
+        {data.pharmacyDiscount && <FiCheck className="check-icon"/>}
+        {data.pharmacyDiscount}% off any medicine ordered from pharmacy platform
       </div>
-      <div className="discount">
-        {data.doctorDiscount && <FiCheck className="icon" />}
-        {data.doctorDiscount}
+      <br/>
+      <div style={{display: "flex"}}>
+        {data.doctorDiscount && <FiCheck className="check-icon"/>}
+        {data.doctorDiscount}% off any doctor's session price
       </div>
-      <div className="discount">
-        {data.familyDiscount && <FiCheck className="icon" />}
-        {data.familyDiscount}
+      <br/>
+      <div style={{display: "flex"}}>
+        {data.familyDiscount && <FiCheck className="check-icon"/>}
+        {data.familyDiscount}% discount on the subscription of any of his family members in any package
       </div>
     </>
   );
@@ -69,11 +71,13 @@ function Package({ data }) {
 
   let content = (
     <div>
-      <FiEdit2 className="icon" onClick={handleEdit} />
-      <FiX className="x-icon" onClick={handleDelete} />
+      <div className="card-top">
+        <FiEdit2 className="edit-icon" onClick={handleEdit} />
+        <FiX className="x-icon" onClick={handleDelete} />
+      </div>
       <h2 className="card-title">{data.name}</h2>
       <hr className="card-hr" />
-      <div className="card-body">{renderedDiscounts}</div>
+      <div>{renderedDiscounts}</div>
       <hr className="card-hr" />
       <div className="card-bottom">
         <p className="cost-content">{data.pricePerYear} L.E /year</p>
