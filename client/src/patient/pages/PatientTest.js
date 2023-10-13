@@ -4,7 +4,7 @@ import { useFetchPrescriptionsQuery } from "../../store";
 import { Box } from "@mui/joy";
 import MemberCard from '../components/MemberCard';
 
-
+function PatientTest(){
 const tmp={
   "name":"Sara",
   "nationalId":"12345",
@@ -46,7 +46,7 @@ const tmp2={
     <MemberCard {...tmp}/>
     
   );
-
+}
 
 export default PatientTest;
 
@@ -66,3 +66,4 @@ const appointments = {
 // sessionPrice
 // affiliation
 // education
+

@@ -114,7 +114,7 @@ export default function ViewFamilyMembers() {
       content = data.map((item) => {
       
       return (
-        <div className='flex space-x-6'>
+        <div >
           <MemberCard {...item}/>
         </div>
        
@@ -239,15 +239,8 @@ export default function ViewFamilyMembers() {
 
   return (
     <div>
-      <div className="flex ml-5 mt-5 mb-5 flex-wrap space-y-4">{content}</div>
-      {/* 
-      <div className='mb-5'>
-        <Button onClick={() => setIsFormOpen(!isFormOpen)}> + Add family member </Button>
-      </div> */}
-
-      {/* <div>
-        {isFormOpen && form}
-      </div> */}
+      <div className="flex ml-5 mt-5 mb-5 flex-wrap space-x-6">{content}</div>
+      
 
       <div>
         <Toast {...toast} onClose={onToastClose} />
