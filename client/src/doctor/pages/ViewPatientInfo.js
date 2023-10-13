@@ -7,18 +7,8 @@ import { Box } from "@mui/joy";
 import { Divider } from "@mui/material";
 import MiniAppointmentCard from "../components/MiniAppointmentCard";
 import PdfViewer from "../components/PdfViewer";
-// import { Document, PDFViewer, pdf } from '@react-pdf/renderer';
-// import { Page } from "react-pdf";
-
-// Core viewer
-import { Viewer, Worker } from '@react-pdf-viewer/core';
-
-// Plugins
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-
-// Import styles
-import '@react-pdf-viewer/core/lib/styles/index.css';
-import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import pdf from "../assets/dummy.pdf"
+import { Tabs } from 'antd';
 
 
 
@@ -31,15 +21,20 @@ export default function ViewPatientInfo (){
         return <MiniAppointmentCard appointment={appointment}/>
     })
 
-    // Create new plugin instance
-    const defaultLayoutPluginInstance = defaultLayoutPlugin();
+    const recordItems = patient.healthRecords.map((record, index) => {
+        return {
+            key: index,
+            label: `Record ${index + 1}`,
+            children: <PdfViewer pdfUrl={pdf}/>
+        }
+    });
 
 
 
     return (
        <div className="mt-8 ml-8 mr-8 space-y-5 items-center">
             <Typography level="h2" >
-                {capitalizeFirstLetter(patient.name)}'s Medical Record
+                {capitalizeFirstLetter(patient.name.split(" ")[0])}'s Medical Record
             </Typography>
             <Box sx={{width: "1250px"}}>
                 <Card className="pl-5 pt-2 justify-content" variant="soft" size="lg">
@@ -97,18 +92,14 @@ export default function ViewPatientInfo (){
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pr-20 mb-5">
                 {renderedAppointments}
             </div>
-            <Typography level="h4" fontWeight="lg">
-                Health Record
-                <Divider inset="none"/>
-            </Typography>
+            <div>
+                <Typography level="h4" fontWeight="lg">
+                    Health Records
+                    <Divider inset="none"/>
+                </Typography>
 
-            
-
-            <PdfViewer  pdfUrl="../assets/dummy.pdf"/>
-            
-
-
-           
+                <Tabs defaultActiveKey="1" items={recordItems} size="large" />     
+            </div>     
 
         </div>
     );

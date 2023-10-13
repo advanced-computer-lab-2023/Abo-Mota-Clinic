@@ -96,9 +96,16 @@ function capitalizeFirstLetter(string){
   if (!string) {
     return string;
   }
+  let name = string.split(" ")
+  let result = "";
+
+  for( let i=0; i<name.length; i++){
+    const string = name.charAt(0).toUpperCase() + name.slice(1);
+    result = result + " " + string;
+  }
   
   // Capitalize the first letter and concatenate it with the rest of the string
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return result;
 }
 
 export {capitalizeFirstLetter};
