@@ -31,27 +31,32 @@ import Alert from '@mui/joy/Alert';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Toast from '../components/Toast';
-
+import MemberCard from "../components/MemberCard";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import filter from "../utils/filter";
+import filterSearch from "../functions/filterSearch";
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   nationalId: Yup.string().required('National ID is required'),
   age: Yup.number().required('Age is required'),
   gender: Yup.string().required('Gender is required'),
-  relation: Yup.string().required('Gender is required'),
+  relation: Yup.string().required('Relation is required'),
 });
 
 
 export default function ViewFamilyMembers() {
-
+  const [memberSearchTerm, setMemberSearchTerm] = useState("");
+  const [config, setConfig] = useState({});
   const { data, isFetching, error } = useFetchFamilyMembersQuery(0);
   const [addFamilyMember, results] = useAddFamilyMemberMutation();
 
   // console.log("DEBUG", results);
   
   console.log(data);
+  const navigate = useNavigate();
 
   const isAdding = results.isLoading;
   const isAddingError = results.isError;
@@ -111,116 +116,18 @@ export default function ViewFamilyMembers() {
   } else if (error) {
     content = <div> Error ... </div>;
   } else {
-    content = data.map((item) => {
-      const member = item["_id"];
+      content = data.map((item) => {
+      
       return (
-        <div className="rounded border justify-center align-items p-5 mr-5">
-          <p>Relative name: {member.name}</p>
-          {/* <p>Relative NID: {member.nationalId} member </p> */}
-          <p>Relative dob: {member.dob.split("T")[0]}</p>
-          {/* <p>Relative gender: {member.gender}</p> */}
-          <p>Relative relationToPatient: {item.relationToPatient}</p>
-        </div>
-      )
+       <MemberCard {...item}/>
+      );
     });
+
+    
+
+		
   }
 
-
-
-  // const form =
-  //   <Card
-  //     variant="outlined"
-  //     sx={{
-  //       maxHeight: 'max-content',
-  //       maxWidth: '100%',
-  //       mx: 'auto',
-  //       // to make the demo resizable
-  //       overflow: 'auto',
-  //       resize: 'horizontal',
-  //     }}
-  //   >
-  //     <Typography level="title-lg" startDecorator={<InfoOutlined />}>
-  //       Add family member
-  //     </Typography>
-  //     <Divider inset="none" />
-  //     <CardContent
-  //       sx={{
-  //         display: 'grid',
-  //         gridTemplateColumns: 'repeat(2, minmax(80px, 1fr))',
-  //         gap: 1.5,
-  //       }}
-  //     >
-
-  //       { /* 1. Add family members using name, National ID, age, gender and relationToPatient to the patient */}
-  //       <FormControl sx={{ gridColumn: '1/-1' }}>
-  //         <FormLabel>Name</FormLabel>
-  //         <Input value={name} placeholder="Enter full name" onChange={(e) => setName(e.target.value)} />
-  //       </FormControl>
-
-  //       <FormControl sx={{ gridColumn: '1/-1' }}>
-  //         <FormLabel>National ID</FormLabel>
-  //         <Input value={nid} placeholder="Enter NID" onChange={(e) => setNid(e.target.value)} />
-  //       </FormControl>
-
-  //       <FormControl>
-  //         <FormLabel>Age</FormLabel>
-  //         <Input value={age} type='number' placeholder="Enter age" onChange={(e) => setAge(e.target.value)} />
-  //       </FormControl>
-
-  //       <FormControl>
-  //         <FormLabel>Gender</FormLabel>
-  //         {/* <Input endDecorator={<CreditCardIcon />} /> */}
-  //         <Select value={gender} placeholder="Enter gender" onChange={(e, newValue) => setGender(newValue)}>
-  //           <Option value="m">Male</Option>
-  //           <Option value="f">Female</Option>
-  //         </Select>
-  //       </FormControl>
-
-  //       <FormControl sx={{ gridColumn: '1/-1' }}>
-  //         <FormLabel>relationToPatient</FormLabel>
-  //         <Select value={relationToPatient} placeholder="Enter relationToPatient to patient" onChange={(e, newValue) => setRelation(newValue)}>
-  //           <Option value="sibling">Sibling</Option>
-  //           <Option value="spouse">Spouse</Option>
-  //           <Option value="parent">Parent</Option>
-  //         </Select>
-  //       </FormControl>
-
-  //       {/* <FormControl>
-  //         <FormLabel>CVC/CVV</FormLabel>
-  //         <Input endDecorator={<InfoOutlined />} />
-  //       </FormControl>
-  //       <FormControl sx={{ gridColumn: '1/-1' }}>
-  //         <FormLabel>Card holder name</FormLabel>
-  //         <Input placeholder="Enter cardholder's full name" />
-  //       </FormControl>
-  //       <Checkbox label="Save card" sx={{ gridColumn: '1/-1', my: 1 }} /> */}
-  //       <CardActions sx={{ gridColumn: '1/-1' }}>
-  //         <Button loading={isAddingFamilyMember} variant="solid" color="primary" onClick={() => {
-  //           addFamilyMember({
-  //             patient_id: 4,
-  //             relative_id: 5,
-  //             relation: 'sibling'
-  //           })
-  //         }}>
-  //           Add member
-  //         </Button>
-  //       </CardActions>
-  //     </CardContent>
-  //   </Card>;
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     name: '',
-  //     nationalId: '',
-  //     age: null,
-  //     gender: null,
-  //     relation: null,
-  //   },
-  //   validationSchema: validationSchema,
-  //   onSubmit: (values) => {
-  //     // Handle form submission
-  //   },
-  // });
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -253,15 +160,13 @@ export default function ViewFamilyMembers() {
     
   };
 
-  const buttonModal = <React.Fragment>
+  const buttonModal =( <React.Fragment>
     <Button
       variant="outlined"
       color="neutral"
       startDecorator={<Add />}
       onClick={() => setIsModalOpen(true)}
-    // onClick={() => {
-    //   setToast({ ...toast, open: true, color: "success", message: "Family member added successfully!" });
-    // }}
+    
     >
       Add Family Member
     </Button>
@@ -330,7 +235,8 @@ export default function ViewFamilyMembers() {
         </form>
       </ModalDialog>
     </Modal>
-  </React.Fragment >;
+  </React.Fragment >
+  );
 
 
 
@@ -339,14 +245,7 @@ export default function ViewFamilyMembers() {
       <div className='flex ml-5 mt-5 mb-5 flex-wrap space-y-4'>
         {content}
       </div>
-      {/* 
-      <div className='mb-5'>
-        <Button onClick={() => setIsFormOpen(!isFormOpen)}> + Add family member </Button>
-      </div> */}
-
-      {/* <div>
-        {isFormOpen && form}
-      </div> */}
+     
 
       <div>
         <Toast {...toast} onClose={onToastClose} />
@@ -354,6 +253,7 @@ export default function ViewFamilyMembers() {
 
       <div>
         {buttonModal}
+       
       </div>
     </div>
   )

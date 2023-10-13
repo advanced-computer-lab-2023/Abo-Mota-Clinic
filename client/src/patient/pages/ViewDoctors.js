@@ -47,7 +47,6 @@ function ViewDoctors() {
 
 		let filteredData = filter(data, config);
 		filteredData = filterSearch(filteredData, doctorSearchTerm, ["name"]);
-		// filteredData = filterSearch(filteredData, specialtySearchTerm, ["specialty"]);
 		if (patient.healthPackage) {
 			discount = patient.healthPackage.package.doctorDiscount;
 		} else {
@@ -90,9 +89,7 @@ function ViewDoctors() {
 						onChange={(event, newValue) => {
 							setConfig({ ...config, specialty: newValue })
 						}}
-					// value={values}
-					// getOptionLabel={(option) => option.title}
-					// defaultValue={[top100Films[13]]}
+					
 					/>
 				</ FormControl>
 			</Box>
