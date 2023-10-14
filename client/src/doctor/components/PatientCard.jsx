@@ -55,7 +55,7 @@ export default function PatientCard({ patient, onClick, className}) {
                         Gender: 
                     </Typography>
                     <Typography level="body-sm">
-                        {patient.gender}
+                        {capitalizeFirstLetter(patient.gender)}
                     </Typography> 
                 </div>
 
