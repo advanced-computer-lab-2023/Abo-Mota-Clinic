@@ -43,7 +43,7 @@ export default function ViewPatientInfo (){
 
                     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-5">
                         <div>
-                            <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">Patient National Id</Typography>
+                            <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">National Id</Typography>
                             <Typography>{patient.nationalId}</Typography>
                         </div>
                         <div>

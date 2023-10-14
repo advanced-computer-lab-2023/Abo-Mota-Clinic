@@ -1,5 +1,4 @@
 import "../styles.css";
-import { nanoid } from "nanoid";
 import { useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 import { useAddPackageMutation } from "../../store";
@@ -45,7 +44,7 @@ function PackageCreate() {
     console.log(updatedPackage);
     await createPackage(updatedPackage);
     setCreate(false);
-    setUpdatedPackage({ id: nanoid(), name: "", discounts: initialDiscount, cost: 0 });
+    setUpdatedPackage({name: "", discounts: initialDiscount, cost: 0 });
   };
 
   const handleClick = () => setCreate(true);

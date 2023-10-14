@@ -3,10 +3,10 @@ import PackageCreate from '../components/PackageCreate';
 import PackageList from '../components/PackageList';
 
 function Packages(){
-    return <div className="card-list">
+    return <div className="flex m-10 flex-wrap">
         <PackageList  />
-        <PackageCreate />
     </div>
 }
 
 export default Packages;
+

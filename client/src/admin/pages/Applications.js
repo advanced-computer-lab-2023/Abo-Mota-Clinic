@@ -11,7 +11,7 @@ function Applications() {
     renderedData = <div>Loading.....</div>;
   }
 
-  return <div>{renderedData}</div>;
+  return <div className="flex flex-wrap">{renderedData}</div>;
 }
 
 export default Applications;

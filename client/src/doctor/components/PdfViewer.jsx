@@ -6,7 +6,7 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 const PdfViewer = ({ pdfUrl }) => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   return (
-    <div style={{ width: "100%", height: "800px" }}>
+    <div style={{ width: "90%", height: "700px" }}>
       <Worker
         workerUrl={`https://unpkg.com/pdfjs-dist/build/pdf.worker.min.js`}
       >
