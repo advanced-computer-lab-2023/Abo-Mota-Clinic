@@ -5,24 +5,54 @@ import { Box } from "@mui/joy";
 import MemberCard from '../components/MemberCard';
 
 
-const tmp = {
-  "name": "Sara",
-  "nationalId": "12345",
-  "age": "22",
-  "gender": "Female",
-  "relation": "Sister"
-};
-const tmp2 = {
-  "name": "Ahmed",
-  "nationalId": "12345",
-  "age": "22",
-  "gender": "male",
-  "relation": "Brother"
+function PatientTest() {
+  const tmp={
+    "name":"Sara",
+    "nationalId":"12345",
+    "age":"22",
+    "gender":"Female",
+    "relation":"Sister"
+  };
+  const tmp2={
+    "name":"Ahmed",
+    "nationalId":"12345",
+    "age":"22",
+    "gender":"male",
+    "relation":"Brother"
+  }
+  
+  
+  
+    const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
+  
+    let content;
+    if (isFetching) {
+      content = <div>Loading...</div>;
+    } else if (error) {
+      content = <div> Error ... </div>;
+    }
+    else {
+      const familyMembers = [tmp, tmp2];
+  
+    return (
+      <div className='flex space-x-6'>
+        {familyMembers.map((familyMember) => (
+          <MemberCard key={familyMember.name} {...familyMember} />
+        ))}
+      </div>
+    );
+    };
+    return (
+     
+      <MemberCard {...tmp}/>
+      
+    );
 }
 
 function PatientTest() {
 
 
+<<<<<<< HEAD
   const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
 
   let content;
@@ -50,6 +80,8 @@ function PatientTest() {
   );
 }
 
+=======
+>>>>>>> 8af9d5a5c353de85c7ddcff18eb5d83af2cc83dd
 
 export default PatientTest;
 
@@ -69,3 +101,4 @@ const appointments = {
 // sessionPrice
 // affiliation
 // education
+

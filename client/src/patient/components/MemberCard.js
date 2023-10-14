@@ -26,8 +26,9 @@ import MaleAvatar from '../assets/images/male_avatar.png'
 
 export default function MemberCard({name,nationalId,age,gender,relation,className,onClick}){
   const capitalizedGender = capitalize(gender);
+  console.log(capitalizedGender)
   const capitalizedName=capitalize(name);
-  const image = capitalizedGender === 'Female' ? FemaleAvatar:MaleAvatar;
+  const image = capitalizedGender === 'F'  ? FemaleAvatar:MaleAvatar;
 
 
     return (
@@ -66,7 +67,7 @@ export default function MemberCard({name,nationalId,age,gender,relation,classNam
             <div>
               <Typography level="body-xs">Gender</Typography>
               <Typography fontSize="lg" fontWeight="lg">
-              {capitalizedGender === 'Female' ? <FemaleIcon /> : <MaleIcon />}{capitalizedGender}
+              {capitalizedGender === 'F' ? <FemaleIcon /> : <MaleIcon />}{capitalizedGender}
                 <Typography fontSize="sm" textColor="text.tertiary">
                 </Typography>
               </Typography>

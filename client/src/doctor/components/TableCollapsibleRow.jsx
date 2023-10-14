@@ -11,6 +11,9 @@ import Box from '@mui/material/Box';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import OverFlowModal from './OverflowModal';
+import { PDFViewer, pdf } from '@react-pdf/renderer';
+
+
 
 
 function createData(id, name, mobile, formattedDob, gender,emergencyContact, appointments) {
@@ -128,6 +131,7 @@ function Row(props) {
                         </Typography>
                         <Typography variant="caption">
                           <OverFlowModal list={row.healthRecord} buttonLabel={"View Health Records"} ModalTitle={"Health Record"} isAppointment={false} />
+                          
                         </Typography>
                       </div>
 
