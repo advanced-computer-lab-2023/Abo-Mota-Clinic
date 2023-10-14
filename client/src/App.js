@@ -37,7 +37,7 @@ function App() {
 					<Route path="prescriptions" element={<ViewPrescriptions />} />
 					<Route path="familyMembers" element={<ViewFamilyMembers />} />
 					<Route path="test" element={<PatientTest />} />
-					<Route path="doctorInfo" element={<ViewDoctorProfile />} />
+					<Route path="info/:id" element={<ViewDoctorProfile />} />
 				</Route>
 				<Route path='/doctorRegistration' element={<RegisterForm />} />
 				<Route path="/doctor" element={<Doctor />}>

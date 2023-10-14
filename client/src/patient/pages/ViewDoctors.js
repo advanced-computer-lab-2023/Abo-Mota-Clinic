@@ -31,17 +31,18 @@ function ViewDoctors() {
 		filteredData = filterSearch(filteredData, doctorSearchTerm, ["name"]);
 		// filteredData = filterSearch(filteredData, specialtySearchTerm, ["specialty"]);
 		// discount = 20;
-		if (patient.healthPackage) {
-			discount = patient.healthPackage.package.doctorDiscount;
-		} else {
+
+		// if (patient.healthPackage) {
+		// 	discount = patient.healthPackage.package.doctorDiscount;
+		// } else 
 			discount = undefined;
-		}
+		
 
 		content =
 			<>
-				{filteredData.map((doctor) => {
-					const handleRedirect = () => navigate('../doctorInfo', { state: doctor });
-					return <DoctorCard className="cursor-pointer" onClick={handleRedirect} {...doctor} discount={discount} />;
+				{filteredData.map((doctor, index) => {
+					// const handleRedirect = () => navigate('../doctorInfo', { state: doctor });
+					return <DoctorCard index={index} {...doctor} discount={discount} />;
 				})}
 			</>;
 

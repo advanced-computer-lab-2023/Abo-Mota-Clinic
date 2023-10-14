@@ -1,8 +1,9 @@
 import { GoArrowDown } from "react-icons/go";
-import { AspectRatio, Card, CardContent, Typography, Button, Link, Chip } from '@mui/joy';
+import { AspectRatio, Card, CardContent, Typography, Button, Chip } from '@mui/joy';
+import { Link, Box } from '@mui/joy';
+import { Link as RouterLink } from 'react-router-dom';
 
-
-export default function DoctorCard({ name, specialty, rate, className, onClick, discount }) {
+export default function DoctorCard({ name, specialty, rate, className, discount, index }) {
 
   // discount = undefined;
   let price;
@@ -19,20 +20,12 @@ export default function DoctorCard({ name, specialty, rate, className, onClick, 
 
 
   return (
-    <Card onClick={onClick} className={className} sx={{
+    <Card className={className} sx={{
       width: 300, transition: 'transform 0.2s', '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder', transform: 'scale(1.1)' },
     }}>
       <div>
         <Typography level="title-lg">
-          <Link
-            overlay
-            underline="none"
-            href="/..doctorCard"
-            sx={{ color: 'text.primary' }}
-          >
-            Dr. {name}
-          </Link>
-
+          Dr. {name}
         </Typography>
         <Typography level="body-md">{specialty}</Typography>
       </div>
@@ -45,58 +38,48 @@ export default function DoctorCard({ name, specialty, rate, className, onClick, 
         />
       </AspectRatio>
       <CardContent orientation="horizontal">
-        <div>
-          {/* <IconButton
-            variant="plain"
-            color="neutral"
-            size="sm"
-            sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}
-          >
-            <ArrowDownwardIcon />
-          </IconButton> */}
-
-          <Typography level="body-xs">Rate</Typography>
-          <Typography fontSize="lg" fontWeight="lg">
-            ${price}
-            <Typography fontSize="sm" textColor="text.tertiary">
-              / hr
-            </Typography>
-          </Typography>
-
-
-          {
-            discount && <div className='flex space-x-1 align-center'>
-              <Typography level='body-sm' sx={{ textDecoration: "line-through" }}>
-                ${Math.round(markedUpRate)}
-                <Typography fontSize="sm" textColor="text.tertiary">
-                  / hr
-                </Typography>
+        <Box className="flex w-full justify-between">
+          <Box>
+            <Typography level="body-xs">Rate</Typography>
+            <Typography fontSize="lg" fontWeight="lg">
+              ${price}
+              <Typography fontSize="sm" textColor="text.tertiary">
+                / hr
               </Typography>
+            </Typography>
 
-              <Chip
-                variant="outlined"
-                color="success"
-                startDecorator={<GoArrowDown fontSize="17" style={{ "marginLeft": "-3px", "marginRight": '-4px' }} />}
-              >
-                {displayedDiscount}%
-                {/* <Typography color='success' level="body-xs">
+
+            {
+              discount &&
+              <div className='flex space-x-1 align-center'>
+                <Typography level='body-sm' sx={{ textDecoration: "line-through" }}>
+                  ${Math.round(markedUpRate)}
+                  <Typography fontSize="sm" textColor="text.tertiary">
+                    / hr
+                  </Typography>
+                </Typography>
+
+                <Chip
+                  variant="outlined"
+                  color="success"
+                  startDecorator={<GoArrowDown fontSize="17" style={{ "marginLeft": "-3px", "marginRight": '-4px' }} />}
+                >
+                  {displayedDiscount}%
+                  {/* <Typography color='success' level="body-xs">
                 -20%
               </Typography> */}
-              </Chip>
+                </Chip>
 
-            </div>
-          }
+              </div>
+            }
+          </Box>
 
-        </div>
-        <Button
-          variant="plain"
-          size="md"
-          color="primary"
-          aria-label="Explore Bahamas Islands"
-          sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-        >
-          BOOK
-        </Button>
+          <Button variant="plain" component={RouterLink} to={`../info/${index}`}>
+            VIEW
+          </Button>
+
+        </Box>
+
       </CardContent>
     </Card>
   );

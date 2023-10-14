@@ -5,21 +5,22 @@ import { Box } from "@mui/joy";
 import MemberCard from '../components/MemberCard';
 
 
-const tmp={
-  "name":"Sara",
-  "nationalId":"12345",
-  "age":"22",
-  "gender":"Female",
-  "relation":"Sister"
+const tmp = {
+  "name": "Sara",
+  "nationalId": "12345",
+  "age": "22",
+  "gender": "Female",
+  "relation": "Sister"
 };
-const tmp2={
-  "name":"Ahmed",
-  "nationalId":"12345",
-  "age":"22",
-  "gender":"male",
-  "relation":"Brother"
+const tmp2 = {
+  "name": "Ahmed",
+  "nationalId": "12345",
+  "age": "22",
+  "gender": "male",
+  "relation": "Brother"
 }
 
+function PatientTest() {
 
 
   const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
@@ -33,19 +34,21 @@ const tmp2={
   else {
     const familyMembers = [tmp, tmp2];
 
-  return (
-    <div className='flex space-x-6'>
-      {familyMembers.map((familyMember) => (
-        <MemberCard key={familyMember.name} {...familyMember} />
-      ))}
-    </div>
-  );
+    const content = (
+      <div className='flex space-x-6'>
+        {familyMembers.map((familyMember) => (
+          <MemberCard key={familyMember.name} {...familyMember} />
+        ))}
+      </div>
+    );
   };
+
   return (
-   
-    <MemberCard {...tmp}/>
-    
+
+    <MemberCard {...tmp} />
+
   );
+}
 
 
 export default PatientTest;
