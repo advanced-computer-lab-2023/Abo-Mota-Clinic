@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const clinicAdminSchema = new Schema({
-	name: String,
+	// name: String,
 	username: String,
 	password: String,
-	email: String,
+	// email: String,
 });
 
 const ClinicAdmin = mongoose.model("ClinicAdmin", clinicAdminSchema);

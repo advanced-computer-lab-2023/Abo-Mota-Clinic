@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import Table from '@mui/joy/Table';
 
 
-function TableMUI({data, config, keyFn}){
+function TableMUI({data, config}){
  
     const renderedHeaders = config.map( (column) => {
         if(column.header)

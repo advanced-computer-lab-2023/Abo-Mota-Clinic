@@ -9,10 +9,14 @@ import Header from "../../../shared/Components/Header";
 import { Formik } from "formik";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import { useRegisterDoctorMutation } from "../../../store";
+import DropDown from "../../../shared/Components/DropDown"
+import { useNavigate } from "react-router-dom";
+
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [registerDoctor, results] = useRegisterDoctorMutation();
+  const navigateq = useNavigate();
   const handleSubmit = async (values, { resetForm }) => {
     // values contains all the data needed for registeration
     console.log(values);
@@ -20,9 +24,9 @@ const RegisterForm = () => {
       dob: values.dateOfBirth,
       email: values.email,
       name: `${values.firstName} ${values.lastName}`,
-      // gender: values.gender,
-      // mobile: values.mobileNumber,
-      // nationalId: values.nationalId,
+      gender: values.gender,
+      mobile: values.mobileNumber,
+      nationalId: values.nationalId,
       username: values.userName,
       password: values.password,
       rate: values.hourlyRate,
@@ -32,10 +36,11 @@ const RegisterForm = () => {
     console.log(doctor);
     setIsLoading(true);
     // await new Promise(resolve => setTimeout(resolve, 3000));
-    registerDoctor(doctor);
+    await registerDoctor(doctor);
     // Remove the above await and insert code for backend registeration here.
     setIsLoading(false);
     resetForm({ values: '' });
+    navigateq('/doctor/appointments');
 };
 
 
@@ -66,6 +71,16 @@ const RegisterForm = () => {
             touch= {formik.touched.userName}
             {...formik.getFieldProps('userName')}
             />
+            <Input 
+              label="NationalID*" 
+              type="text" 
+              id="nationalId"
+              error={formik.errors.nationalId}
+              touch= {formik.touched.nationalId}
+              {...formik.getFieldProps('nationalId')}
+            />  
+            </div>
+          <div className="form-container">
             <Input 
             label="First Name*" 
             type="text" 
@@ -118,6 +133,26 @@ const RegisterForm = () => {
             touch = {formik.touched.educationalBackground}
             {...formik.getFieldProps('educationalBackground')}
             />  
+          </div>
+          <div className="form-container">
+            <Input 
+            label="Phone number*" 
+            type="tel" 
+            id="mobileNumber"
+            error={formik.errors.mobileNumber}
+            touch = {formik.touched.mobileNumber}
+            {...formik.getFieldProps('mobileNumber')}
+            />
+            <DropDown 
+            label="Gender*" 
+            type="text" 
+            id="gender"
+            error={formik.errors.gender}
+            onChange={formik.handleChange}
+            touch = {formik.touched.gender}
+            options={['male', 'female']}
+            {...formik.getFieldProps('gender')}
+            /> 
           </div>
           <div className="form-container">
           <Input 
@@ -181,6 +216,13 @@ const DoctorSchema = yup.object().shape({
   affiliation: yup.string().min(3, 'Affiliation (Hospital) must be at least 3 characters long').max(50, 'Affiliation (Hospital) must be at most 50 characters long').required('Please enter your affiliation (hospital)'),
 
   educationalBackground: yup.string().min(5, 'Educational Background is too short').max(500, 'Educational Background is too long').required('Please enter your educational background'),
+
+  gender: yup.string().oneOf(['male', 'female'], 'Invalid gender').required('Please select a gender'),
+
+  mobileNumber: yup.string().matches(/^[0-9]{11}$/, 'Mobile number must be exactly 11 digits').required('Please enter a valid mobile number'),
+
+  nationalId: yup.string().matches(/^[0-9]{14}$/, 'National ID must be exactly 14 digits').required('Please enter a valid national ID')
+
 });
 
 
@@ -194,7 +236,10 @@ const initialDoctorValues = {
   dateOfBirth: '',
   hourlyRate: '',
   affiliation: '',
-  educationalBackground: ''
+  educationalBackground: '',
+  gender: 'male',
+  mobileNumber: '',
+  nationalId: ''
 };
 
 

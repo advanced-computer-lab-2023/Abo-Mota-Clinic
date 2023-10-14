@@ -1,35 +1,36 @@
 import { FiCheck, FiEdit2, FiX } from "react-icons/fi";
-import '../styles.css';
+import "../styles.css";
 import { useState } from "react";
 import { useUpdatePackageMutation, useDeletePackageMutation } from "../../store";
 
-function Package({ data}) {
+function Package({ data }) {
   const [edit, setEdit] = useState(false);
   const [pack, setUpdatedPackage] = useState(data);
 
-  const [updatedPackage, result]= useUpdatePackageMutation();
+  const [updatedPackage, result] = useUpdatePackageMutation();
   const [deletePackage, result2] = useDeletePackageMutation();
 
-  const renderedDiscounts = 
+  const renderedDiscounts = (
     <>
-     <div  className="discount">
-      {data.pharmacyDiscount && <FiCheck className="icon" />}
-      {data.pharmacyDiscount}
-    </div>
-    <div  className="discount">
-      {data.doctorDiscount && <FiCheck className="icon" />}
-      {data.doctorDiscount}
-    </div>
-    <div className="discount">
-      {data.familyDiscount && <FiCheck className="icon" />}
-      {data.familyDiscount}
-    </div>
+      <div style={{display: "flex"}}>
+        {data.pharmacyDiscount && <FiCheck className="check-icon"/>}
+        {data.pharmacyDiscount}% off any medicine ordered from pharmacy platform
+      </div>
+      <br/>
+      <div style={{display: "flex"}}>
+        {data.doctorDiscount && <FiCheck className="check-icon"/>}
+        {data.doctorDiscount}% off any doctor's session price
+      </div>
+      <br/>
+      <div style={{display: "flex"}}>
+        {data.familyDiscount && <FiCheck className="check-icon"/>}
+        {data.familyDiscount}% discount on the subscription of any of his family members in any package
+      </div>
     </>
-   ;
-
-  const handleDelete = () => {
-    deletePackage(data);
-  }
+  );
+  const handleDelete = async () => {
+    await deletePackage(data);
+  };
   const handleEdit = () => setEdit(true);
 
   const handleSubmit = (event) => {
@@ -45,7 +46,7 @@ function Package({ data}) {
     // if(pack.familyDiscount!=='')
     //   body.familyDiscount= pack.familyDiscount;
     // if(pack.pricePerYear!=='')
-    //   body.pricePerYear= pack.pricePerYear; 
+    //   body.pricePerYear= pack.pricePerYear;
     updatedPackage(pack);
     setEdit(false);
   };
@@ -55,15 +56,12 @@ function Package({ data}) {
   };
 
   const handleDoctorDiscountChange = (event) => {
-   
     setUpdatedPackage({ ...pack, doctorDiscount: event.target.value });
   };
   const handlePharmacyDiscountChange = (event) => {
-   
     setUpdatedPackage({ ...pack, pharmacyDiscount: event.target.value });
   };
   const handleFamilyDiscountChange = (event) => {
-   
     setUpdatedPackage({ ...pack, familyDiscount: event.target.value });
   };
 
@@ -73,11 +71,13 @@ function Package({ data}) {
 
   let content = (
     <div>
-      <FiEdit2 className="icon" onClick={handleEdit} />
-      <FiX className="x-icon" onClick={handleDelete} />
+      <div className="card-top">
+        <FiEdit2 className="edit-icon" onClick={handleEdit} />
+        <FiX className="x-icon" onClick={handleDelete} />
+      </div>
       <h2 className="card-title">{data.name}</h2>
       <hr className="card-hr" />
-      <div className="card-body">{renderedDiscounts}</div>
+      <div>{renderedDiscounts}</div>
       <hr className="card-hr" />
       <div className="card-bottom">
         <p className="cost-content">{data.pricePerYear} L.E /year</p>
@@ -93,33 +93,33 @@ function Package({ data}) {
           <label>Name</label>
           <input className="input" value={pack.name} onChange={handleNameChange} />
           <hr className="card-hr" />
-            <>
-            <div >
-            <label>Doctor discount</label>
-            <input
-              className="input"
-              value={pack.doctorDiscount}
-              onChange={(event) => handleDoctorDiscountChange( event)}
-            /> 
-          </div>
-          <div >
-          <label>Pharmacy discount</label>
-          <input
-            className="input"
-            value={pack.pharmacyDiscount}
-            onChange={(event) => handlePharmacyDiscountChange( event)}
-          /> 
-        </div>
-        <div >
-        <label>Family discount</label>
-        <input
-          className="input"
-          value={pack.familyDiscount}
-          onChange={(event) => handleFamilyDiscountChange( event)}
-        /> 
-      </div>
-            </>
-          
+          <>
+            <div>
+              <label>Doctor discount</label>
+              <input
+                className="input"
+                value={pack.doctorDiscount}
+                onChange={(event) => handleDoctorDiscountChange(event)}
+              />
+            </div>
+            <div>
+              <label>Pharmacy discount</label>
+              <input
+                className="input"
+                value={pack.pharmacyDiscount}
+                onChange={(event) => handlePharmacyDiscountChange(event)}
+              />
+            </div>
+            <div>
+              <label>Family discount</label>
+              <input
+                className="input"
+                value={pack.familyDiscount}
+                onChange={(event) => handleFamilyDiscountChange(event)}
+              />
+            </div>
+          </>
+
           <hr className="card-hr" />
           <label>Cost</label>
           <input
@@ -134,7 +134,7 @@ function Package({ data}) {
     );
   }
 
-  return <div className={`card ${edit ? 'edit-mode' : ''}`}>{content}</div>;
+  return <div className={`card ${edit ? "edit-mode" : ""}`}>{content}</div>;
 }
 
 export default Package;

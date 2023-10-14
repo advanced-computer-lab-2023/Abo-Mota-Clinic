@@ -1,14 +1,17 @@
-import React, {useState} from "react";
-import CollapsibleTable from "../components/CollapsibleTable";
 import { useFetchApplicationsQuery } from "../../store";
+import ApplicationCard from "../components/ApplicationCards";
 function Applications() {
-	const {data,error, isFetching}= useFetchApplicationsQuery();
-	console.log(data);
-	return (
-		<div style={{width: "100%"}}>
-			{!isFetching && <CollapsibleTable data={data}/>}
-		</div>
-	)
+  const { data, error, isFetching } = useFetchApplicationsQuery();
+  let renderedData = null;
+  if (!isFetching) {
+    renderedData = data.map((data, index) => {
+      return <div key={index}>{!isFetching && <ApplicationCard data={data} />}</div>;
+    });
+  } else {
+    renderedData = <div>Loading.....</div>;
+  }
+
+  return <div>{renderedData}</div>;
 }
 
 export default Applications;
