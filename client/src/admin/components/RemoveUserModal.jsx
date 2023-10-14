@@ -63,7 +63,6 @@ function RemoveUserModal() {
       setRole('');
       setOpen(false);
     }
-    console.log(role);
     
     
   };
