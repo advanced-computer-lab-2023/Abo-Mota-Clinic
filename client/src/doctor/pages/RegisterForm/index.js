@@ -11,6 +11,7 @@ import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import { useRegisterDoctorMutation } from "../../../store";
 import DropDown from "../../../shared/Components/DropDown"
 import { useNavigate } from "react-router-dom";
+import NavBar from "../../../shared/Components/NavBar"
 
 
 const RegisterForm = () => {
@@ -185,6 +186,7 @@ const RegisterForm = () => {
    
   return (
     <div className="registesr-div">
+      <NavBar />
       <div className="register-portal">
         <div className="register-part">
           <Header header="Welcome to Abo Mouta Clinic!" subheader="We are glad you want to join us!"/>

@@ -11,6 +11,8 @@ import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import DropDown from "../../../shared/Components/DropDown";
 import { useRegisterPatientMutation } from "../../../store";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../../../shared/Components/NavBar"
+
 
 const RegisterScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -193,6 +195,7 @@ const RegisterScreen = () => {
 
   return (
     <div className="registesr-div">
+      <NavBar />
       <div className="register-portal">
         <div className="register-part">
           <Header header="Welcome to Abo Mouta Clinic!" subheader="" />
