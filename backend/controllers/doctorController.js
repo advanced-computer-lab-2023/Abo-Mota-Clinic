@@ -121,7 +121,7 @@ const getDoctorPatients = async (req, res) => {
     const patients = nonNullAppointments.map((appointment) => appointment.patient._doc);
     const uniquePatients = removeDuplicates(patients, "_id");
     // console.log(uniquePatients);
-    const prescriptions = await Prescription.find({ doctor: _id }).populate("medicines");
+    const prescriptions = await Prescription.find({ doctor: _id }).populate("medicines.medicine");
     const patientsWithPrescriptions = uniquePatients.map((patient) => {
       //   console.log(patient);
       const patientPrescriptions = prescriptions.filter((prescription) => {

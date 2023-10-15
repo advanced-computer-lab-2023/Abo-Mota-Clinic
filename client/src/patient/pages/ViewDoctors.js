@@ -1,39 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useFetchDoctorsQuery, useFetchPatientQuery } from "../../store";
-import IconButton from '@mui/joy/IconButton';
-import CloseRounded from '@mui/icons-material/CloseRounded';
-import Input from '@mui/joy/Input';
-import Select from '@mui/joy/Select';
-import MenuItem from '@mui/joy/MenuItem';
-import Option from '@mui/joy/Option';
 import DoctorCard from "../components/DoctorCard";
-import useFilterSearchBar from "../hooks/useFilterSearchBar";
 import SearchBar from "../components/SearchBar";
-import FilterSelect from "../components/FilterSelect";
 import filter from "../utils/filter";
-import onFilterChange from "../functions/onFilterChange";
 import filterSearch from "../functions/filterSearch";
-import Skeleton from '@mui/joy/Skeleton';
 import GeometrySkeleton from '../components/GeometrySkeleton';
-import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete } from "@mui/joy";
-import CircularProgress from '@mui/joy/CircularProgress';
-import { Button } from "@mui/base";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Box from "@mui/joy/Box";
-
+import { Autocomplete, CircularProgress, FormControl, FormLabel, Box, Link, Breadcrumbs, Typography } from "@mui/joy";
+import { Link as RouterLink } from "react-router-dom";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 
 function ViewDoctors() {
 	const [doctorSearchTerm, setDoctorSearchTerm] = useState("");
 	const [config, setConfig] = useState({});
+	const [date, setDate] = useState(null);
+	const dateFormat = "MM/DD/YYYY HH:mm A";
 
 	const navigate = useNavigate();
 	const { data, isFetching, error } = useFetchDoctorsQuery();
 	const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
-
-	console.log(patient);
 
 	let content;
 	let specialties = [];
@@ -46,20 +32,32 @@ function ViewDoctors() {
 	} else {
 
 		let filteredData = filter(data, config);
+
+		filteredData = filteredData.filter((pres) => {
+			if (date) {
+				for (const apt of pres.appointments) {
+					if (dayjs(apt.formattedDate, dateFormat).isSame(dayjs(date, dateFormat), 'minute')) {
+						return true;
+					}
+				}
+			} else
+				return true;
+		});
+
 		filteredData = filterSearch(filteredData, doctorSearchTerm, ["name"]);
 		// filteredData = filterSearch(filteredData, specialtySearchTerm, ["specialty"]);
-		discount = 20;
+		// discount = 20;
+
 		// if (patient.healthPackage) {
 		// 	discount = patient.healthPackage.package.doctorDiscount;
-		// } else {
-		// 	discount = undefined;
-		// }
+		// } else 
+		discount = undefined;
 
 		content =
 			<>
-				{filteredData.map((doctor) => {
-					const handleRedirect = () => navigate('../doctorInfo', { state: doctor });
-					return <DoctorCard className="cursor-pointer" onClick={handleRedirect} {...doctor} discount={discount} />;
+				{filteredData.map((doctor, index) => {
+					// const handleRedirect = () => navigate('../doctorInfo', { state: doctor });
+					return <DoctorCard index={index} {...doctor} discount={discount} />;
 				})}
 			</>;
 
@@ -67,8 +65,14 @@ function ViewDoctors() {
 	}
 
 	return (
-		<div className="mt-5 ml-12 w-full">
-			<Box className="header flex ml-16 mb-8 pr-10 space-x-5">
+		<div className="mt-5 ml-20 w-full">
+
+			<Breadcrumbs aria-label="breadcrumbs" className="mb-2">
+				<Link component={RouterLink} color="neutral" to="../">Home</Link>
+				<Typography>Doctors</Typography>
+			</Breadcrumbs>
+
+			<Box className="header flex mb-8 pr-10 space-x-5">
 				<FormControl id="multiple-limit-tags">
 					<FormLabel>Doctor name</FormLabel>
 					<SearchBar placeholder="Search for doctors ..." onChange={(value) => setDoctorSearchTerm(value)} />
@@ -81,7 +85,7 @@ function ViewDoctors() {
 						id="tags-default"
 						placeholder="Specialties"
 						loading={isFetching}
-						options={specialties}	
+						options={specialties}
 						endDecorator={
 							isFetching ? (
 								<CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
@@ -91,7 +95,16 @@ function ViewDoctors() {
 						onChange={(event, newValue) => {
 							setConfig({ ...config, specialty: newValue })
 						}}
-					
+					/>
+				</ FormControl>
+
+				<FormControl id="multiple-limit-tags">
+					<FormLabel>Date</FormLabel>
+					<DatePicker
+						format="MM/DD/YYYY HH:mm A"
+						onChange={(date, dateString) => setDate(date)}
+						showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+						className="h-full w-56"
 					/>
 				</ FormControl>
 			</Box>
@@ -100,7 +113,7 @@ function ViewDoctors() {
 				{(isFetching || isFetchingPatient) && <GeometrySkeleton transition="pulse" />}
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pr-20 pl-16 mb-5">
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-5">
 				{content}
 			</div>
 		</div>

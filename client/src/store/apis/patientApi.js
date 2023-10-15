@@ -92,6 +92,10 @@ const patientApi = createApi({
       }),
 
       fetchDoctors: builder.query({
+        providesTags: (result, error, patientId) => {
+          return ["Doctors"];
+        },
+
         query: () => {
           return {
             url: "/doctors",
