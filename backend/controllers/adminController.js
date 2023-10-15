@@ -85,7 +85,8 @@ const addAdmin = async (req, res) => {
 
     const existingAdmin = await Admin.findOne({ username: username.toLowerCase() });
 
-    if (existingAdmin) {
+    if (existingAdmin)
+     {
       res.status(500).json({ error: "Admin with this username already exists" });
     }
 

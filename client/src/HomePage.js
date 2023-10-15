@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 function HomePage() {
   return (
-    <div>
+    <div className="flex justify-between w-4/5">
       <Link to="patientRegistration">
         <button>Register as Patient</button>
       </Link>

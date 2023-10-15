@@ -27,9 +27,8 @@ function ViewDoctorAppointments() {
 	const { data, error, isFetching } = useFetchAppointmentsQuery();
 	
 	
-	console.log(data);
 
-	let filteredAppointments ;
+	let filteredAppointments = []
 
 	const options = ["upcoming", "cancelled", "completed"];
 
@@ -37,6 +36,7 @@ function ViewDoctorAppointments() {
 		filteredAppointments = [];
 	else if (selection.length === 0) {
 		filteredAppointments = data;
+		console.log(data);
 	} else {
 		filteredAppointments = data.filter((appointment) => selection.includes(appointment.status));
 	}
@@ -76,7 +76,7 @@ function ViewDoctorAppointments() {
 
 	let renderedAppointments = [];
 
-	if(filteredAppointments.length > 0){
+	if(filteredAppointments){
 		renderedAppointments = filteredAppointments.map((appointment, index) => {
 			return <AppointmentCard key={index} appointment={appointment}/>
 		});
@@ -119,7 +119,6 @@ function ViewDoctorAppointments() {
 							<SearchBar placeholder="Search for patients..." onChange={(value) => setSearchTerm(value)}/>							
 						</div>
 					
-					{/* <Table data={filteredAppointments} config={config} /> */}
 					{renderedAppointments}
 				</div>
 			}

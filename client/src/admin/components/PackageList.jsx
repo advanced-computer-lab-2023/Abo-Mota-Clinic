@@ -1,5 +1,6 @@
 import '../styles.css';
 import Package from './PackageShow'
+import PackageCreate from "./PackageCreate";
 import { useFetchPackagesQuery } from '../../store';
 
 
@@ -11,14 +12,18 @@ function PackageList() {
         <div>
             {isFetching && <div>Loading.....</div>}
             {!isFetching && 
-                <div>
+                <div className='flex flex-wrap'>
                     {data.map((p) => (
                         <div key={p.id}>
                             <Package data={p}/>
                         </div>
                     ))}
+                    <PackageCreate />
+
                 </div> 
+
             }
+
         </div>
     );
 }

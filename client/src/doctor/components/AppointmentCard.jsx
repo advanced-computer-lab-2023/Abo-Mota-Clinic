@@ -100,7 +100,7 @@ function capitalizeFirstLetter(string){
   let result = "";
 
   for( let i=0; i<name.length; i++){
-    const string = name.charAt(0).toUpperCase() + name.slice(1);
+    const string = name[i].charAt(0).toUpperCase() + name[i].slice(1);
     result = result + " " + string;
   }
   

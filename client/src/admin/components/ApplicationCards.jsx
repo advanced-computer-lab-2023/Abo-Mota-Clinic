@@ -29,7 +29,7 @@ const infoStyles = {
   fontSize: "16px",
   margin: "8px 0",
   color: "rgba(0, 0, 0, 0.87)", // Adjust the color to your preference
-  textTransform: "capitalize", // Capitalize the text
+  // textTransform: "capitalize", // Capitalize the text
 };
 
 const infoContainerStyles = {
@@ -74,7 +74,6 @@ export default function ApplicationCard({ data }) {
           </Avatar>
         }
         title={data.email}
-        subheader={data.speciality}
       />
       <CardMedia component="img" height="194" image={doctorPic} alt="Doctor" />
       <CardContent>
@@ -95,8 +94,8 @@ export default function ApplicationCard({ data }) {
           <div style={infoContainerStyles}>
             <Typography sx={infoStyles}>Username: {data.username}</Typography>
             {/* <Typography sx={infoStyles}>Password: {data.password}</Typography> */}
-            <Typography sx={infoStyles}>Date of Birth: {data.dob}</Typography>
-            <Typography sx={infoStyles}>Hourly Rate: {data.rate}</Typography>
+            <Typography sx={infoStyles}>Date of Birth: {data.formattedDob}</Typography>
+            <Typography sx={infoStyles}>Hourly Rate: ${data.rate}/hr</Typography>
             <Typography sx={infoStyles}>Education: {data.educationalBackground}</Typography>
           </div>
           {/* <div style={infoContainerStyles}>

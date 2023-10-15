@@ -58,15 +58,8 @@ const adminApi = createApi({
         },
       }),
       fetchApplications : builder.query({
-        providesTags: (result, error) => {
-          const tags = result.map((doctor) => {
-            return { type: "Package", id: doctor._id };
-          });
-          tags.push({ type: "Package", id: 123 });
-          return tags;
-        },
         query : () => {
-          return {
+          return{
             url: "/applications",
             method: "GET",
           };
