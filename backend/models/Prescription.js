@@ -19,6 +19,7 @@ const prescriptionSchema = new Schema(
         duration: String,
       },
     ],
+    description: String,
     patient: {
       type: Schema.Types.ObjectId,
       ref: "ClinicPatient",
@@ -28,7 +29,6 @@ const prescriptionSchema = new Schema(
       enum: ["filled", "unfilled"],
       default: "unfilled",
     },
-    description: String,
   },
   { toJSON: { virtuals: true } }
 );

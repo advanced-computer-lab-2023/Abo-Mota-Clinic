@@ -59,6 +59,7 @@ const addPackage = async (req, res) => {
 
     res.status(200).json(package);
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ error: error.message });
   }
 };
@@ -85,9 +86,9 @@ const addAdmin = async (req, res) => {
 
     const existingAdmin = await Admin.findOne({ username: username.toLowerCase() });
 
-    if (existingAdmin)
-     {
-      res.status(500).json({ error: "Admin with this username already exists" });
+    if (existingAdmin) {
+      return res.status(500).json({ error: "Admin with this username already exists" });
+      
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -111,7 +112,7 @@ const deleteAdmin = async (req, res) => {
     // const { id } = req.params;
     // const filter = { _id: id };
     const { username } = req.body;
-    const filter = { username: username };
+    const filter = { username: username.toLowerCase() };
     const admin = await Admin.findOne(filter);
 
     if (!admin) {
@@ -131,7 +132,7 @@ const deletePatient = async (req, res) => {
     // const { id } = req.params;
     // const filter = { _id: id };
     const { username } = req.body;
-    const filter = { username: username };
+    const filter = { username: username.toLowerCase() };
     const patient = await Patient.findOne(filter);
 
     if (!patient) {

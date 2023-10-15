@@ -1,6 +1,6 @@
 import { AspectRatio, Box, Typography, ListItem } from '@mui/joy';
 
-const MedicationListItem = ({ name, quantity }) => {
+const MedicationListItem = ({ medicine: { name }, dosage, frequency, duration }) => {
   return (
     <ListItem sx={{ margin: "5px" }}>
       <AspectRatio ratio="0.6" sx={{ width: 30, marginLeft: 1, marginRight: 1.5 }}>
@@ -17,7 +17,15 @@ const MedicationListItem = ({ name, quantity }) => {
         </Box>
         <Box className="justify-items-end">
           <Typography level="body-xs">Dosage</Typography>
-          <Typography level="title-sm">{quantity}</Typography>
+          <Typography level="title-sm">{dosage}</Typography>
+        </Box>
+        <Box className="justify-items-end">
+          <Typography level="body-xs">Frequency</Typography>
+          <Typography level="title-sm">{frequency}</Typography>
+        </Box>
+        <Box className="justify-items-end">
+          <Typography level="body-xs">Duration</Typography>
+          <Typography level="title-sm">{duration}</Typography>
         </Box>
       </Box>
     </ListItem>

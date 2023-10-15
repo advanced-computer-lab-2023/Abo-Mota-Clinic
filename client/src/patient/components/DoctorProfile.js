@@ -1,28 +1,26 @@
-import { Box } from "@mui/material";
-import { AspectRatio, Card, Divider, Stack, Typography, Sheet, Button } from "@mui/joy";
-import CardContent from "@mui/joy/CardContent";
+import { AspectRatio, Card, Divider, Typography, Sheet, Button, CardContent, Tabs, TabList, TabPanel, Box, Tab, Breadcrumbs, Link } from "@mui/joy";
 import Rating from "@mui/material/Rating";
-import Tabs from '@mui/joy/Tabs';
-import TabList from '@mui/joy/TabList';
-import Tab, { tabClasses } from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
+import { tabClasses } from '@mui/joy/Tab';
 import DoctorImg from '../assets/images/doctor.jpg';
 import { useState } from "react";
-import Link from "@mui/joy/Link";
-
-
+import { Link as RouterLink } from "react-router-dom";
 
 const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliation }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
 
   return (
-    <Box className="w-full ml-20 mr-20 mt-10"
+    <Box className="w-full ml-20 mr-20 mt-5"
       sx={{
         width: '100%',
         position: 'relative',
         overflow: { xs: 'auto', sm: 'initial' },
       }}
     >
+      <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
+        <Link component={RouterLink} color="neutral" to="../">Home</Link>
+        <Link component={RouterLink} color="neutral" to="../doctors">Doctors</Link>
+        <Typography>Dr. {name}</Typography>
+      </Breadcrumbs>
 
       <Card
         orientation="vertical"
