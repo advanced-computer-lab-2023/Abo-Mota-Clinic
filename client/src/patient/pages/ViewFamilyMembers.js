@@ -176,9 +176,8 @@ export default function ViewFamilyMembers() {
                   onFormChange(e, "relationToPatient", n);
                 }}
               >
-                <Option value="sibling">Sibling</Option>
-                <Option value="spouse">Spouse</Option>
-                <Option value="parent">Parent</Option>
+                <Option value="wife">Wife</Option>
+                <Option value="husband">Husband</Option>
                 <Option value="child">Child</Option>
               </Select>
             </FormControl>

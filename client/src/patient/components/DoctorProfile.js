@@ -107,7 +107,7 @@ const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliati
                     <Typography level="body-xs">
                       Consultation fee
                     </Typography>
-                    <Typography level="title-md">${rate}/hr</Typography>
+                    <Typography level="title-md">${Math.round(rate * 1.1)}/hr</Typography>
                   </Box>
                 </Box>
               </Sheet>

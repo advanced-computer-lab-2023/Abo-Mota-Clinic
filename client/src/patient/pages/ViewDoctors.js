@@ -32,26 +32,28 @@ function ViewDoctors() {
 	} else {
 
 		let filteredData = filter(data, config);
+		console.log(filteredData);
 
-		filteredData = filteredData.filter((pres) => {
-			if (date) {
-				for (const apt of pres.appointments) {
+		
+		if(date){
+			filteredData = filteredData.filter((doctor) => {
+				for (const apt of doctor.appointments) {
 					if (dayjs(apt.formattedDate, dateFormat).isSame(dayjs(date, dateFormat), 'minute')) {
 						return true;
 					}
 				}
-			} else
-				return true;
-		});
+				return false;
+			})
+		}
 
 		filteredData = filterSearch(filteredData, doctorSearchTerm, ["name"]);
 		// filteredData = filterSearch(filteredData, specialtySearchTerm, ["specialty"]);
 		// discount = 20;
 
-		// if (patient.healthPackage) {
-		// 	discount = patient.healthPackage.package.doctorDiscount;
+		if (patient.healthPackage)
+			discount = patient.healthPackage.package.doctorDiscount;
 		// } else 
-		discount = undefined;
+		// discount = undefined;
 
 		content =
 			<>
@@ -121,6 +123,5 @@ function ViewDoctors() {
 }
 
 export default ViewDoctors;
-
 
 
