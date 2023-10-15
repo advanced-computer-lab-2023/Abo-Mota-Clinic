@@ -9,10 +9,16 @@ const prescriptionSchema = new Schema({
 	},
 	medicines: [
 		{
-			type: Schema.Types.ObjectId,
-			ref: "Medicine",
+			medicine: {
+				type: Schema.Types.ObjectId,
+				ref: "Medicine",
+			},
+			dosage: Number,
+			frequency: String,
+			duration: String,
 		},
 	],
+	description: String,
 	patient: {
 		type: Schema.Types.ObjectId,
 		ref: "Patient",

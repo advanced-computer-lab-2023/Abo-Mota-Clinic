@@ -18,6 +18,7 @@ import ViewPrescriptions from "./patient/pages/ViewPrescriptions";
 import RegisterScreen from "./patient/pages/RegisterScreen";
 import PatientTest from "./patient/pages/PatientTest";
 import ViewDoctorProfile from "./patient/pages/ViewDoctorProfile";
+import PatientHome from "./patient/pages/PatientHome";
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -33,6 +34,7 @@ function App() {
 				<Route path="/" element={<HomePage />} />
 				<Route path='/patientRegistration' element={<RegisterScreen />} />
 				<Route path="/patient" element={<Patient />}>
+					<Route path="" element={<PatientHome />} /> {/* TODO: change to home page */}
 					<Route path="appointments" element={<ViewPatientAppointments />} />
 					<Route path="doctors" element={<ViewDoctors />} />
 					<Route path="prescriptions" element={<ViewPrescriptions />} />

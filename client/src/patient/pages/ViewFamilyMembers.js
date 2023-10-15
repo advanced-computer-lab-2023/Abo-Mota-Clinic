@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useFetchFamilyMembersQuery, useAddFamilyMemberMutation } from "../../store";
-import { Button, FormControl, FormLabel, Input, Select, Option, Modal, ModalDialog, DialogTitle, DialogContent, Stack, ModalClose } from "@mui/joy";
+import { Button, FormControl, FormLabel, Input, Select, Option, Modal, ModalDialog, DialogTitle, DialogContent, Stack, ModalClose, Link, Breadcrumbs, Typography, Box } from "@mui/joy";
 import Add from "@mui/icons-material/Add";
 import Toast from "../components/Toast";
 import MemberCard from "../components/MemberCard";
+import { Link as RouterLink } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -83,15 +84,11 @@ export default function ViewFamilyMembers() {
 
       return (
         <div >
-          <MemberCard {...item}/>
+          <MemberCard {...item} />
         </div>
 
       );
     });
-
-
-
-
   }
 
 
@@ -126,15 +123,6 @@ export default function ViewFamilyMembers() {
   };
 
   const buttonModal = (<React.Fragment>
-    <Button
-      variant="outlined"
-      color="neutral"
-      startDecorator={<Add />}
-      onClick={() => setIsModalOpen(true)}
-
-    >
-      Add Family Member
-    </Button>
 
     <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <ModalDialog>
@@ -206,15 +194,35 @@ export default function ViewFamilyMembers() {
   );
 
   return (
-    <div>
-      <div className="flex ml-5 mt-5 mb-5 flex-wrap space-x-6">{content}</div>
-      
+    <div className="ml-20 mr-20 mt-10 w-full">
 
+      <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
+        <Link component={RouterLink} color="neutral" to="../">Home</Link>
+        <Typography>Family</Typography>
+      </Breadcrumbs>
+
+      <div className="flex ml-5 mt-5 mb-5 flex-wrap space-x-6">{content}</div>
+
+      <Box className="w-full flex justify-end">
+        <Button
+          variant="outlined"
+          color="primary"
+          startDecorator={<Add />}
+          onClick={() => setIsModalOpen(true)}
+
+        >
+          Add Family Member
+        </Button>
+      </Box>
+      
       <div>
         <Toast {...toast} onClose={onToastClose} />
       </div>
 
-      <div>{buttonModal}</div>
+
+      <div className="">
+        {buttonModal}
+      </div>
     </div>
   );
 }

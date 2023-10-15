@@ -32,7 +32,7 @@ const getPrescriptions = async (req, res) => {
     const { _id } = await Patient.findOne({});
     const prescriptions = await Prescription.find({ patient: _id }).populate([
       {
-        path: "medicines",
+        path: "medicines.medicine",
         model: "Medicine",
       },
       {
@@ -90,8 +90,14 @@ const addFamilyMember = async (req, res) => {
 // Get all doctors
 const getDoctors = async (req, res) => {
   try {
-    const doctors = await Doctor.find({ registrationStatus: "approved" }).select("-password"); // Excluding password field from the output
-    res.status(200).json(doctors);
+    const doctors = await Doctor.find({ registrationStatus: "approved" }).select("-password");
+    const doctorsWithAppointments = await Promise.all(
+      doctors.map(async (doctor) => {
+        const appointments = await Appointment.find({ doctor: doctor._id, status: "unbooked" });
+        return { ...doctor._doc, appointments };
+      })
+    );
+    res.status(200).json(doctorsWithAppointments);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

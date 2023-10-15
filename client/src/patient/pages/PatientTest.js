@@ -1,104 +1,66 @@
-import { useState } from 'react';
-import PrescriptionAccordion from "../components/PrescriptionAccordion";
-import { useFetchPrescriptionsQuery } from "../../store";
-import { Box } from "@mui/joy";
-import MemberCard from '../components/MemberCard';
+import React, { useState } from 'react';
+import { DatePicker, Button } from 'antd';
+import dayjs from 'dayjs';
 
+const MyDatePicker = ({ handleDateCompare }) => {
 
-function PatientTest() {
-  const tmp={
-    "name":"Sara",
-    "nationalId":"12345",
-    "age":"22",
-    "gender":"Female",
-    "relation":"Sister"
-  };
-  const tmp2={
-    "name":"Ahmed",
-    "nationalId":"12345",
-    "age":"22",
-    "gender":"male",
-    "relation":"Brother"
+  const dateStr = '10/15/2023, 10:00 AM';
+  const customFormat = 'MM/DD/YYYY, HH:mm A';
+  
+  console.log(dayjs(dateStr, { format: customFormat }).format());
+  
+  const inputDate = '10/15/2023 03:00 PM';
+  
+  const parsedDate = dayjs(dateStr, { format: customFormat });
+  const parsedInputDate = dayjs(inputDate, { format: customFormat });
+  
+  let str;
+
+  if (parsedInputDate.isAfter(parsedDate)) {
+    str = 'after';
   }
-  
-  
-  
-    const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
-  
-    let content;
-    if (isFetching) {
-      content = <div>Loading...</div>;
-    } else if (error) {
-      content = <div> Error ... </div>;
-    }
-    else {
-      const familyMembers = [tmp, tmp2];
-  
-    return (
-      <div className='flex space-x-6'>
-        {familyMembers.map((familyMember) => (
-          <MemberCard key={familyMember.name} {...familyMember} />
-        ))}
-      </div>
-    );
-    };
-    return (
-     
-      <MemberCard {...tmp}/>
-      
-    );
-}
-
-function PatientTest() {
+  else if (parsedInputDate.isBefore(parsedDate))
+    str = 'before';
+  else
+    str = 'same';
 
 
-<<<<<<< HEAD
-  const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
+console.log(parsedDate.format());
+const [selectedDate, setSelectedDate] = useState(null);
 
-  let content;
-  if (isFetching) {
-    content = <div>Loading...</div>;
-  } else if (error) {
-    content = <div> Error ... </div>;
+const handleDateChange = (date, dateString) => {
+  setSelectedDate(date);
+};
+
+const compareDates = () => {
+  if (selectedDate) {
+    // Convert the selected date to a Day.js object
+    const selectedDateDayjs = dayjs(selectedDate);
+
+    // Pass the Day.js date object to the parent component for comparison
+    handleDateCompare(selectedDateDayjs);
+  } else {
+    console.log('Please select a date.');
   }
-  else {
-    const familyMembers = [tmp, tmp2];
+};
 
-    const content = (
-      <div className='flex space-x-6'>
-        {familyMembers.map((familyMember) => (
-          <MemberCard key={familyMember.name} {...familyMember} />
-        ))}
-      </div>
-    );
-  };
+return (
+  <div>
+    <DatePicker
+      format="MM-DD-YYYY HH:mm A"
+      showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+      onChange={(date, dateString) => console.log(dayjs(date))}
+    />
 
-  return (
+    { str }
 
-    <MemberCard {...tmp} />
+    <Button type="primary" onClick={compareDates}>
+      Compare Date
+    </Button>
+  </div>
+);
+};
 
-  );
-}
+export default MyDatePicker;
 
-=======
->>>>>>> 8af9d5a5c353de85c7ddcff18eb5d83af2cc83dd
-
-export default PatientTest;
-
-// const appointments = ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM"]
-
-const appointments = {
-  "Thursday, October 12": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
-  "Friday, October 13": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
-  "Monday October 16": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
-  "Tuesday October 17": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
-}
-
-
-
-// name
-// specialty
-// sessionPrice
-// affiliation
-// education
 
