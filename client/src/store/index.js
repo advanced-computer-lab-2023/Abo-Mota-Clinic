@@ -1,10 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { doctorApi } from './apis/doctorApi';
-import { doctorReducer, getDoctors } from './slices/doctorSlice';
-import { adminApi } from './apis/adminApi';
-import { guestApi } from './apis/guestApi';
-import { patientApi } from './apis/patientApi';
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { doctorApi } from "./apis/doctorApi";
+import { doctorReducer, getDoctors } from "./slices/doctorSlice";
+import { adminApi } from "./apis/adminApi";
+import { guestApi } from "./apis/guestApi";
+import { patientApi } from "./apis/patientApi";
 
 export const store = configureStore({
   reducer: {
@@ -25,13 +25,12 @@ export const store = configureStore({
 
 setupListeners(store.dispatch);
 
-
 export {
   useFetchAppointmentsQuery,
   useFetchPatientsQuery,
   useFetchDoctorQuery,
-  useUpdateDoctorMutation
-} from './apis/doctorApi';
+  useUpdateDoctorMutation,
+} from "./apis/doctorApi";
 
 export {
   useAddPackageMutation,
@@ -42,14 +41,11 @@ export {
   useAddAdminMutation,
   useRemoveAdminMutation,
   useRemovePatientMutation,
-  useRemoveDoctorMutation
-} from './apis/adminApi'
+  useRemoveDoctorMutation,
+  useHandleApplicationMutation,
+} from "./apis/adminApi";
 
-export {
-  useRegisterDoctorMutation,
-  useRegisterPatientMutation
-} from './apis/guestApi'
-
+export { useRegisterDoctorMutation, useRegisterPatientMutation } from "./apis/guestApi";
 
 export const {
   useFetchPatientQuery,
@@ -57,10 +53,7 @@ export const {
   useFetchFamilyMembersQuery,
   useAddFamilyMemberMutation,
   useFetchPrescriptionsQuery,
-  useFetchDoctorsQuery
+  useFetchDoctorsQuery,
 } = patientApi;
 
-
-export {
-  getDoctors
-}
+export { getDoctors };

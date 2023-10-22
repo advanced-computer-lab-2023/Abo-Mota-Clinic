@@ -13,6 +13,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import doctorPic from "../../shared/assets/doctor-pic.jpg";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useHandleApplicationMutation } from "../../store";
 
 const expandButtonStyles = {
   marginLeft: "auto",
@@ -52,17 +53,22 @@ const actionContainerStyles = {
 
 export default function ApplicationCard({ data }) {
   const [expanded, setExpanded] = React.useState(false);
+  // console.log(data);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  const handleAccept = () => {
-    // Handle the accept action here
+  const [handleApplication, results] = useHandleApplicationMutation();
+  const handleAccept = async () => {
+    await handleApplication({ id: data._id, registrationStatus: "approved" });
+    // console.log(data._id);
+    // console.log(results);
   };
 
-  const handleReject = () => {
+  const handleReject = async () => {
     // Handle the reject action here
+    await handleApplication({ id: data._id, registrationStatus: "rejected" });
+    // console.log(results);
   };
 
   return (

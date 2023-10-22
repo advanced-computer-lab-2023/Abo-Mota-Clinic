@@ -59,7 +59,7 @@ const addPackage = async (req, res) => {
 
     res.status(200).json(package);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 };
@@ -88,7 +88,6 @@ const addAdmin = async (req, res) => {
 
     if (existingAdmin) {
       return res.status(500).json({ error: "Admin with this username already exists" });
-      
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -232,6 +231,7 @@ const handleApplication = async (req, res) => {
       res.status(200).json(handledApplication);
     }
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 };

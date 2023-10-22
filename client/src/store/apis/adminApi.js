@@ -22,6 +22,7 @@ const adminApi = createApi({
           };
         },
       }),
+
       updatePackage: builder.mutation({
         invalidatesTags: (result, error, p) => {
           return [{ type: "Package", id: p._id }];
@@ -57,50 +58,69 @@ const adminApi = createApi({
           };
         },
       }),
-      fetchApplications : builder.query({
-        query : () => {
-          return{
+      fetchApplications: builder.query({
+        providesTags: (result, error) => {
+          const tags = result.map((p) => {
+            return { type: "Application", id: p._id };
+          });
+          tags.push({ type: "AdminApplication", id: 123 });
+          return tags;
+        },
+        query: () => {
+          return {
             url: "/applications",
             method: "GET",
           };
         },
       }),
-      addAdmin : builder.mutation({
-        query: (admin)=>{
+      handleApplication: builder.mutation({
+        invalidatesTags: (result, error, application) => {
+          return [{ type: "Application", id: application.id }];
+        },
+        query: (application) => {
           return {
-            url: '/admins',
+            url: `/applications/${application.id}`,
+            body: application,
+            method: "PATCH",
+          };
+        },
+      }),
+      addAdmin: builder.mutation({
+        query: (admin) => {
+          return {
+            url: "/admins",
             body: admin,
-            method: 'POST'
-          }
-        }
+            method: "POST",
+          };
+        },
       }),
-      removeAdmin : builder.mutation({
-        query : (admin)=>{
-          return{
-            url:'/admins',
-            body:admin,
-            method: 'DELETE'
-          }
-        }
-      }),
-      removePatient : builder.mutation({
-        query: (patient)=>{
+      removeAdmin: builder.mutation({
+        query: (admin) => {
           return {
-            url: '/patients',
+            url: "/admins",
+            body: admin,
+            method: "DELETE",
+          };
+        },
+      }),
+      removePatient: builder.mutation({
+        query: (patient) => {
+          return {
+            url: "/patients",
             body: patient,
-            method: 'DELETE'
-          }
-        }
+            method: "DELETE",
+          };
+        },
       }),
       removeDoctor: builder.mutation({
-        query: (doctor)=>{
-          return{
-            url: '/doctors',
+        query: (doctor) => {
+          return {
+            url: "/doctors",
             body: doctor,
-            method: 'DELETE'
-          }
-        }
-      })
+            method: "DELETE",
+          };
+        },
+      }),
     };
   },
 });
@@ -114,6 +134,7 @@ export const {
   useAddAdminMutation,
   useRemoveAdminMutation,
   useRemoveDoctorMutation,
-  useRemovePatientMutation
+  useRemovePatientMutation,
+  useHandleApplicationMutation,
 } = adminApi;
 export { adminApi };
