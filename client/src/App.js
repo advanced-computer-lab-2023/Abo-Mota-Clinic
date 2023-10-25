@@ -20,6 +20,7 @@ import PatientTest from "./patient/pages/PatientTest";
 import ViewDoctorProfile from "./patient/pages/ViewDoctorProfile";
 import PatientHome from "./patient/pages/PatientHome";
 import ViewWallet from "./patient/pages/ViewWallet";
+import PatientTest2 from "./patient/pages/PatientTest2";
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -43,6 +44,7 @@ function App() {
 					<Route path="test" element={<PatientTest />} />
 					<Route path="info/:id" element={<ViewDoctorProfile />} />
 					<Route path="wallet" element={<ViewWallet />} />
+					<Route path="test2" element={<PatientTest2 />} />
 				</Route>
 				<Route path='/doctorRegistration' element={<RegisterForm />} />
 				<Route path="/doctor" element={<Doctor />}>
