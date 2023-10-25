@@ -1,66 +1,79 @@
-import React, { useState } from 'react';
-import { DatePicker, Button } from 'antd';
+import { useState } from 'react';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
+import { DatePicker } from '@mui/x-date-pickers';
+import { Card, Divider, Typography, Button } from '@mui/joy';
+import { Box } from '@mui/material';
 
-const MyDatePicker = ({ handleDateCompare }) => {
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import weekday from 'dayjs/plugin/weekday'
+dayjs.extend(customParseFormat);
+dayjs.extend(weekday);
 
-  const dateStr = '10/15/2023, 10:00 AM';
-  const customFormat = 'MM/DD/YYYY, HH:mm A';
-  
-  console.log(dayjs(dateStr, { format: customFormat }).format());
-  
-  const inputDate = '10/15/2023 03:00 PM';
-  
-  const parsedDate = dayjs(dateStr, { format: customFormat });
-  const parsedInputDate = dayjs(inputDate, { format: customFormat });
-  
-  let str;
+// Create a Day.js date object
+// const date = dayjs('2023-06-05', { locale: 'en', format: 'YYYY-MM-DD' });
 
-  if (parsedInputDate.isAfter(parsedDate)) {
-    str = 'after';
-  }
-  else if (parsedInputDate.isBefore(parsedDate))
-    str = 'before';
-  else
-    str = 'same';
+// Format the date in the desired English format
+// const formattedDate = date.format('dddd Do [of] MMMM YYYY');
+
+const format = (date) => date.format('dddd Do [of] MMMM YYYY');
 
 
-console.log(parsedDate.format());
-const [selectedDate, setSelectedDate] = useState(null);
+export default function PatientTest() {
+  // const [disabledDays, setDisabledDays] = useState([dayjs("2023-10-10"), dayjs("2021-10-12")]);
 
-const handleDateChange = (date, dateString) => {
-  setSelectedDate(date);
-};
+  const disabledDays = [dayjs("2023-10-26"), dayjs("2023-10-25"), dayjs("2023-11-2"), dayjs("2023-11-3")];
+  const [date, setDate] = useState(null);
 
-const compareDates = () => {
-  if (selectedDate) {
-    // Convert the selected date to a Day.js object
-    const selectedDateDayjs = dayjs(selectedDate);
+  // const handleDateChange = (date) => {
+  //   // Disable the selected date and the next day.
+  //   setDisabledDays([date, date.add(1, 'day')]);
+  // };
 
-    // Pass the Day.js date object to the parent component for comparison
-    handleDateCompare(selectedDateDayjs);
-  } else {
-    console.log('Please select a date.');
-  }
-};
+  const timings = ["12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "7:00 PM", "8:00 PM"];
 
-return (
-  <div>
-    <DatePicker
-      format="MM-DD-YYYY HH:mm A"
-      showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
-      onChange={(date, dateString) => console.log(dayjs(date))}
-    />
+  return (
+    <div className='m-10'>
 
-    { str }
+      <Card
+        orientation="horizontal"
+        className="p-5 space-y-5"
+      >
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateCalendar
+            shouldDisableDate={(day) => disabledDays.some((disabledDay) => dayjs(disabledDay).isSame(day, 'day'))}
+            onChange={(date) => {
+              setDate(format(date));
+            }}
+            disablePast
+          />
+        </LocalizationProvider>
 
-    <Button type="primary" onClick={compareDates}>
-      Compare Date
-    </Button>
-  </div>
-);
-};
-
-export default MyDatePicker;
+        <Divider />
 
 
+        <Box className="h-72 w-80 p-5" sx={{
+          overflowY: "scroll",
+        }}>
+          <Typography level='title-md' sx={{marginBottom: 2}}>
+            {date}
+          </Typography>
+
+          <Box className="space-y-5">
+            {
+              timings.map((time) => {
+                return (
+                  <Button variant="outlined" color="primary" fullWidth disabled={Math.floor(Math.random() * 2)}>
+                    {time}
+                  </Button>
+                );
+              })
+            }
+          </Box>
+        </Box>
+      </Card>
+    </div>
+  );
+}

@@ -19,6 +19,7 @@ import RegisterScreen from "./patient/pages/RegisterScreen";
 import PatientTest from "./patient/pages/PatientTest";
 import ViewDoctorProfile from "./patient/pages/ViewDoctorProfile";
 import PatientHome from "./patient/pages/PatientHome";
+import ViewWallet from "./patient/pages/ViewWallet";
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -41,6 +42,7 @@ function App() {
 					<Route path="familyMembers" element={<ViewFamilyMembers />} />
 					<Route path="test" element={<PatientTest />} />
 					<Route path="info/:id" element={<ViewDoctorProfile />} />
+					<Route path="wallet" element={<ViewWallet />} />
 				</Route>
 				<Route path='/doctorRegistration' element={<RegisterForm />} />
 				<Route path="/doctor" element={<Doctor />}>
