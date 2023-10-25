@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-
 const doctorSchema = new Schema(
   {
     name: String,
@@ -15,11 +14,11 @@ const doctorSchema = new Schema(
     educationalBackground: String,
     nationalId: String,
     medicalLicense: {
-      type: Buffer,
+      data: Buffer,
       contentType: String,
     },
     medicalDegree: {
-      type: Buffer,
+      data: Buffer,
       contentType: String,
     },
     registrationStatus: {

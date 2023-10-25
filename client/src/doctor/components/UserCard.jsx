@@ -14,7 +14,7 @@ import { NumericFormat } from "react-number-format";
 
 import emailValidator from "email-validator";
 import Toast from "../../patient/components/Toast";
-
+import ViewLicenseAndDegree from "./ViewLicenseAndDegree";
 export default function UserCard() {
   // console.log(data);
   const { data, error, isFetching } = useFetchDoctorQuery();
@@ -116,13 +116,13 @@ export default function UserCard() {
 
   return (
     <Box
-      sx={{
-        
-        // position: 'relative',
-        // overflow: { xs: "auto", sm: "initial" },
-      }}
+      sx={
+        {
+          // position: 'relative',
+          // overflow: { xs: "auto", sm: "initial" },
+        }
+      }
     >
-      
       <Card
         orientation="horizontal"
         sx={{
@@ -157,33 +157,28 @@ export default function UserCard() {
               my: 1.5,
               gap: 2,
               "& > div": { flex: 1 },
-
             }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pr-20 mb-5"
-            
           >
-              <div>
-                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
-                      National Id
-                </Typography>
-                <Typography fontWeight="lg">{data.nationalId}</Typography>
+            <div>
+              <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+                National Id
+              </Typography>
+              <Typography fontWeight="lg">{data.nationalId}</Typography>
+            </div>
+            <div>
+              <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+                Birth Date
+              </Typography>
+              <Typography fontWeight="lg">{data.formattedDob}</Typography>
+            </div>
 
-              </div>
-              <div>
-                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
-                      Birth Date
-                </Typography>
-                <Typography fontWeight="lg">{data.formattedDob}</Typography>
-
-              </div>
-
-              <div>
-                <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
-                    Educational Background
-                </Typography>
-                <Typography fontWeight="lg">{data.educationalBackground}</Typography>
-
-              </div>
+            <div>
+              <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+                Educational Background
+              </Typography>
+              <Typography fontWeight="lg">{data.educationalBackground}</Typography>
+            </div>
 
             <div>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -203,7 +198,6 @@ export default function UserCard() {
                   value={emailValue}
                   type="email"
                   sx={{ height: 25 }}
-
                 />
               ) : (
                 <Typography fontWeight="lg">{data.email}</Typography>
@@ -231,7 +225,6 @@ export default function UserCard() {
                     },
                   }}
                   sx={{ height: 25 }}
-
                 />
               ) : (
                 <Typography fontWeight="lg">${data.rate}/hr</Typography>
@@ -254,13 +247,11 @@ export default function UserCard() {
                   onChange={handleAffilChange}
                   value={affilValue}
                   sx={{ height: 25 }}
-
                 />
               ) : (
                 <Typography fontWeight="lg">{data.affiliation}</Typography>
               )}
             </div>
-           
           </Sheet>
           <Box sx={{ display: "flex", gap: 1.5, "& > button": { flex: 1 } }}>
             {isEditEmail || isEditRate || isEditAffiliation ? (
@@ -280,9 +271,9 @@ export default function UserCard() {
         message="Enter Email in correct format"
         duration={4000}
       />
+      <ViewLicenseAndDegree data={data} />
     </Box>
   );
 }
 
 //dob, educationalBackground, nationalID,
-

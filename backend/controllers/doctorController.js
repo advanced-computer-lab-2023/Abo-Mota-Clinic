@@ -5,7 +5,9 @@ const Prescription = require("../models/Prescription");
 // Get Doctor's Profile
 const getDoctorProfile = async (req, res) => {
   try {
-    const doctor = await Doctor.findOne({});
+    const doctor = await Doctor.findOne({ _id: "65398a29854fd97d222966bf" });
+    // const doctor = await Doctor.findOne();
+    // console.log(Object.bsonsize(doctor));
     // .populate({
     // 	path: "appointments",
     // 	populate: {

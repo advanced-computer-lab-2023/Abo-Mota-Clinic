@@ -6,22 +6,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../store/index";
 
 function Doctor() {
-	const {data,error,isFetching} = useFetchDoctorQuery();
-	// console.log(data);
-	const dispatch = useDispatch();
-	
-	useEffect(() => {
-		dispatch(getDoctors(data));
-	}, []);
-	
+  const { data, error, isFetching } = useFetchDoctorQuery();
+  // console.log(data);
+  // const dispatch = useDispatch();
 
-	return (
-		<div>
-			{isFetching && <div>Loading...</div>}
-			{!isFetching && <Outline items={items} />}
-		</div>
-		
-	)
+  // useEffect(() => {
+  // 	dispatch(getDoctors(data));
+  // }, []);
+
+  return (
+    <div>
+      {isFetching && <div>Loading...</div>}
+      {!isFetching && <Outline items={items} />}
+    </div>
+  );
 }
 
 export default Doctor;
