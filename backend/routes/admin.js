@@ -1,17 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getPackages,
-  updatePackage,
-  addPackage,
-  deletePackage,
-  getApplications,
-  getApplicationInfo,
-  handleApplication,
-  addAdmin,
-  deleteAdmin,
-  deletePatient,
-  deleteDoctor,
+	getPackages,
+	updatePackage,
+	addPackage,
+	deletePackage,
+	getApplications,
+	getApplicationInfo,
+	handleApplication,
+	addAdmin,
+	deleteAdmin,
+	deletePatient,
+	deleteDoctor,
+	changePassword,
 } = require("../controllers/adminController");
 
 // View All Packages
@@ -47,5 +48,8 @@ router.delete("/patients", deletePatient);
 
 // Delete a specific doctor
 router.delete("/doctors", deleteDoctor);
+
+// Change Password
+router.patch("/changePassword", changePassword);
 
 module.exports = router;

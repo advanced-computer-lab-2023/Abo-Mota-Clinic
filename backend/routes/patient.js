@@ -6,6 +6,7 @@ const {
 	addFamilyMember,
 	getDoctors,
 	getAppointments,
+	changePassword,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -27,5 +28,8 @@ router.get("/doctors", getDoctors);
 
 // Get all appointments
 router.get("/appointments", getAppointments);
+
+// Change Password
+router.patch("/changePassword", changePassword);
 
 module.exports = router;
