@@ -5,8 +5,16 @@ import { AiOutlineHome } from "react-icons/ai";
 import SideBar from "../SideBar";
 import { useState } from "react";
 
-const NavBar = ({ links }) => {
+const NavBar = ({ links, items }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
+
+  const content = items.map((item) => {
+    return (
+      <li id={item.name}>
+        <Link to={item.to}>{item.name}</Link>
+      </li>
+    );
+  });
   return (
     <div className="navbar">
       <div className="left">
@@ -28,6 +36,7 @@ const NavBar = ({ links }) => {
             Join Us
           </Link>
         </li>
+        {content}
       </ul>
       {/* <div className='right'>
         <div className='avatar'></div>
