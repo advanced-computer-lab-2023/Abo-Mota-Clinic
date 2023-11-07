@@ -2,6 +2,7 @@ const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor");
 const Appointment = require("../models/Appointment");
 const Prescription = require("../models/Prescription");
+const HealthPackage = require("../models/HealthPackage");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -146,6 +147,16 @@ const changePassword = async (req, res) => {
 	}
 };
 
+const getPackages = async (req, res) => {
+	try {
+		const filter = { isActivated: true };
+		const packages = await HealthPackage.find(filter);
+		res.status(200).json(packages);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
 module.exports = {
 	getPatient,
 	getPrescriptions,
@@ -154,4 +165,5 @@ module.exports = {
 	getDoctors,
 	getAppointments,
 	changePassword,
+	getPackages
 };

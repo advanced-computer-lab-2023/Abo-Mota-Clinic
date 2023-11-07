@@ -7,6 +7,7 @@ const {
 	getDoctors,
 	getAppointments,
 	changePassword,
+	getPackages
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -31,5 +32,8 @@ router.get("/appointments", getAppointments);
 
 // Change Password
 router.patch("/changePassword", changePassword);
+
+// Get all packages
+router.get("/packages", getPackages)
 
 module.exports = router;
