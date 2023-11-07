@@ -82,20 +82,23 @@ const deletePackage = async (req, res) => {
 // Add an Admin
 const addAdmin = async (req, res) => {
 	try {
-		const { username, password } = req.body;
+		const { username, password, email } = req.body;
 
-		const existingAdmin = await Admin.findOne({ username: username.toLowerCase() });
+		const existingAdmin = await Admin.findOne({
+			$or: [{ username: username.toLowerCase() }, { email: email.toLowerCase() }],
+		});
 
 		if (existingAdmin) {
-			return res.status(500).json({ error: "Admin with this username already exists" });
+			return res.status(500).json({ error: "Admin with this username or email already exists" });
 		}
 
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
 		const newAdmin = await Admin.create({
-			...req.body,
+			// ...req.body,
 			username: username.toLowerCase(),
 			password: hashedPassword,
+			email: email.toLowerCase(),
 		});
 
 		res.status(200).json(newAdmin);
