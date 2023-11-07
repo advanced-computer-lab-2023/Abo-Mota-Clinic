@@ -11,8 +11,8 @@ import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import DropDown from "../../../shared/Components/DropDown";
 import { useRegisterPatientMutation } from "../../../store";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../../shared/Components/NavBar"
-
+import NavBar from "../../../shared/Components/NavBar";
+import { navBarItems } from "../../navBarItems";
 
 const RegisterScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
