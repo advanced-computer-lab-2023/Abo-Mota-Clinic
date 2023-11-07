@@ -5,7 +5,7 @@ const clinicAdminSchema = new Schema({
 	// name: String,
 	username: String,
 	password: String,
-	// email: String,
+	email: String,
 });
 
 const ClinicAdmin = mongoose.model("ClinicAdmin", clinicAdminSchema);
