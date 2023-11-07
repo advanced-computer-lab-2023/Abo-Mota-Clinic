@@ -157,6 +157,33 @@ const getPackages = async (req, res) => {
 	}
 };
 
+const getAvailableAppointments = async (req, res) => {
+	try {
+		const { doctorId } = req.body;
+		if (!doctorId) {
+			throw Error("Input a doctor ID");
+		}
+		if (!(await Doctor.findOne({ _id: doctorId }))) {
+			throw Error("Doctor doesn't exist");
+		}
+		// Add milliseconds to Date.now if we want to change the starting range of appointments
+		const currentDate = new Date(Date.now());
+		const filter = {
+			$and: [
+				{ doctor: doctorId },
+				{
+					$or: [{ patient: { $exists: false } }, { patient: null }],
+				},
+				{ date: { $gt: currentDate } },
+			],
+		};
+		const appointments = await Appointment.find(filter);
+		res.status(200).json(appointments);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
 module.exports = {
 	getPatient,
 	getPrescriptions,
@@ -165,5 +192,6 @@ module.exports = {
 	getDoctors,
 	getAppointments,
 	changePassword,
-	getPackages
+	getPackages,
+	getAvailableAppointments,
 };
