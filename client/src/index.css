@@ -1,6 +1,7 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;1,900&display=swap"); */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,6 +10,8 @@
 
 :root {
 	--main-color: blue;
+	--main-color-transparent: rgba(0, 0, 255, 0.8);
+
 }
 
 html {

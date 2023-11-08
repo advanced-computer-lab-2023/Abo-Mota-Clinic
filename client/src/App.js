@@ -32,11 +32,15 @@ import HealthPackages from "./patient/pages/HealthPackages";
 import Profile from "./patient/pages/Profile";
 import Contract from "./doctor/pages/Contract";import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
 
+// login
+import LoginForm from "./shared/pages/LoginForm";
+
 function App() {
   return (
     <div>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginForm />} />
         <Route path="/patientRegistration" element={<RegisterScreen />} />
         <Route path="/patient" element={<Patient />}>
           <Route path="" element={<PatientHome />} /> {/* TODO: change to home page */}
