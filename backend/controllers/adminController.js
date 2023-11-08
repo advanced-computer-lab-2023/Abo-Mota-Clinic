@@ -243,8 +243,9 @@ const handleApplication = async (req, res) => {
 const changePassword = async (req, res) => {
 	try {
 		const { oldPassword, newPassword } = req.body;
-		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR **
-		const loggedIn = await Admin.findOne({ username: "adfsf" });
+		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR ** DONE
+		const username = req.userData.username
+		const loggedIn = await Admin.findOne({ username});
 		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR **
 
 		const isMatch = await bcrypt.compare(oldPassword, loggedIn.password);
