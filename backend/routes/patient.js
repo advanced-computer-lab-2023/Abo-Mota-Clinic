@@ -12,6 +12,7 @@ const {
 } = require("../controllers/patientController");
 
 const router = express.Router();
+const authorize = require('../middlewares/authorization')
 
 // Get Patient
 router.get("/", getPatient);

@@ -7,6 +7,8 @@ const {
 	changePassword,
 } = require("../controllers/doctorController");
 
+const authorize = require('../middlewares/authorization')
+
 const router = express.Router();
 
 // Get Doctor's Details

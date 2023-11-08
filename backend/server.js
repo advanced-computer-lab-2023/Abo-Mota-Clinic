@@ -8,7 +8,6 @@ const patientRouter = require("./routes/patient");
 const doctorRouter = require("./routes/doctor");
 const adminRouter = require("./routes/admin");
 const guestRouter = require("./routes/guest");
-const authRouter = require("./routes/authRoutes")
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 // const bodyParser = require("body-parser");
@@ -39,7 +38,6 @@ app.use("/api/patient", patientRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
-app.use(authRouter);
 
 // listen for requests
 app.listen(process.env.PORT, () => {

@@ -4,6 +4,8 @@ const {
 	registerDoctor,
 	requestOtp,
 	forgotPassword,
+	login,
+	logout
 } = require("../controllers/guestController");
 const validatePatientRegister = require("../middlewares/validatePatientRegister");
 const multer = require("multer");
@@ -31,5 +33,8 @@ router.post("/otp", requestOtp);
 
 // verify user submitted otp
 router.post("/forgotPassword", forgotPassword);
+
+router.post("/login" , login);
+router.get("/logout", logout);
 
 module.exports = router;
