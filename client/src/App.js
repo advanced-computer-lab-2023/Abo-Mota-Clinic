@@ -31,7 +31,7 @@ import ViewPatientInfo from "./doctor/pages/ViewPatientInfo";
 import HealthPackages from "./patient/pages/HealthPackages";
 import Profile from "./patient/pages/Profile";
 import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
-
+import PatientFollowUp from "./doctor/pages/PatientFollowUp";
 function App() {
   return (
     <div>
@@ -56,6 +56,7 @@ function App() {
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />
           <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
+          <Route path="PatientFollowUp" element={<PatientFollowUp/>} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patientInfo" element={<ViewPatientInfo />} />
