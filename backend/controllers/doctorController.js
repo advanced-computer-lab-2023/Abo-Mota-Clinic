@@ -69,7 +69,7 @@ const getDoctorAppointments = async (req, res) => {
 		// // const doctor = await Doctor.findOne(filter).populate("appointments");
 		// const appointments = doctor.appointments;
 		// res.status(200).json(appointments);
-		const { _id } = await Doctor.findOne({});
+		const { _id } = await Doctor.findOne({ _id: "65398a29854fd97d222966bf" });
 		const appointments = await Appointment.find({ doctor: _id }).populate("patient");
 		res.status(200).json(appointments);
 	} catch (error) {
@@ -119,7 +119,7 @@ const getDoctorPatients = async (req, res) => {
 		// const patients = populated.patients;
 		// // console.log(populated);
 		// res.status(200).json(patients);
-		const { _id } = await Doctor.findOne({});
+		const { _id } = await Doctor.findOne({ _id: "65398a29854fd97d222966bf" });
 		const appointments = await Appointment.find({ doctor: _id }).populate("patient");
 		const nonNullAppointments = appointments.filter((appointment) => appointment.patient !== null);
 		const patients = nonNullAppointments.map((appointment) => appointment.patient._doc);
