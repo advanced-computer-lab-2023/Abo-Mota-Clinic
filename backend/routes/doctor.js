@@ -7,23 +7,23 @@ const {
 	changePassword,
 } = require("../controllers/doctorController");
 
-//const authorize = require('../middlewares/authorization')
+const authorize = require('../middlewares/authorization')
 
 const router = express.Router();
 
 // Get Doctor's Details
-router.get("/", getDoctorProfile);
+router.get("/", authorize, getDoctorProfile);
 
 // Edit Email, Affiliation, Rate (?)
-router.patch("/", editDetails);
+router.patch("/", authorize, editDetails);
 
 // View All Doctor's Appointments
-router.get("/appointments", getDoctorAppointments);
+router.get("/appointments", authorize, getDoctorAppointments);
 
 // View All Doctor's Patients
-router.get("/patients", getDoctorPatients);
+router.get("/patients", authorize, getDoctorPatients);
 
 // Change Password
-router.patch("/changePassword", changePassword);
+router.patch("/changePassword", authorize, changePassword);
 
 module.exports = router;

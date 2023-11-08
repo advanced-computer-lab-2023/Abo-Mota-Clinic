@@ -30,7 +30,9 @@ import RegisterForm from "./doctor/pages/RegisterForm";
 import ViewPatientInfo from "./doctor/pages/ViewPatientInfo";
 import HealthPackages from "./patient/pages/HealthPackages";
 import Profile from "./patient/pages/Profile";
-import Contract from "./doctor/pages/Contract";import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
+import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
+import PatientFollowUp from "./doctor/pages/PatientFollowUp";
+import Contract from "./doctor/pages/Contract";
 
 // login
 import LoginForm from "./shared/pages/LoginForm";
@@ -57,10 +59,14 @@ function App() {
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>
-          <Route path="contract" element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor/>} />
+          <Route
+            path="contract"
+            element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
+          />
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />
           <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
+          <Route path="PatientFollowUp" element={<PatientFollowUp />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patientInfo" element={<ViewPatientInfo />} />

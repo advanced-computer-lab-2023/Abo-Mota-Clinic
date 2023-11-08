@@ -32,13 +32,13 @@ const registerPatient = async (req, res) => {
 		const token = jwt.sign(
 			{
 				username: username,
-				redirect: "patient"
+				userType: "patient"
 			},
 			JWT_SECRET,
 			{expiresIn: 86400}, //expires after 1 day
 			
 		)
-		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
+		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400})
 
 
 		return res.status(200).json({ newPatient, token: "Bearer " + token });
@@ -83,13 +83,13 @@ const registerDoctor = async (req, res) => {
 		const token = jwt.sign(
 			{
 				username: username,
-				redirect: "patient"
+				userType: "doctor"
 			},
 			JWT_SECRET,
 			{expiresIn: 86400}, //expires after 1 day
 			
 		)
-		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
+		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400})
 
 		return res.status(200).json({ newDoctor ,  token: "Bearer " + token });
 	} catch (error) {
@@ -224,19 +224,19 @@ const login = async (req, res)  => {
     }
 
     let dbUserPass;
-	let redirect;
+	let userType;
     if(patientExists){
 		dbUserPass = patientExists.password;
-		redirect = "patient"
+		userType = "patient"
 
 	}
     else if(doctorExists){
 		dbUserPass = doctorExists.password;
-		redirect = "doctor"
+		userType = "doctor"
 	}
     else{
 		dbUserPass = adminExists.password;
-		redirect = "admin"
+		userType = "admin"
 	}
 
     bcrypt.compare(password, dbUserPass)
@@ -245,7 +245,7 @@ const login = async (req, res)  => {
         if(isCorrect){
             const payload = {
                 username: username,
-				redirect: redirect
+				userType: userType
             }
             //create the token
             jwt.sign(
@@ -256,11 +256,11 @@ const login = async (req, res)  => {
                     if(err) 
                         return res.json({message: err})
 
-					res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
+					res.cookie('jwt', token, {httpOnly: true, maxAge: 86400})
                     return res.status(200).json({
                         message: "Success",
                         token: "Bearer " + token,
-						redirect: redirect //use to redirect to coreect homepage
+						userType: userType //use to redirect to correct homepage
                     })
                 }
             )
@@ -278,7 +278,7 @@ const logout = (req,res) => {
         res.clearCookie('jwt');
         res.status(200).json({message: "Logged Out Successfully"})
     }catch(err){
-        res.status(500).json({message: "user already logged out"})
+        res.status(500).json({message: err.message})
     }
 }
 

@@ -7,7 +7,8 @@ const saltRounds = 10;
 // Get Doctor's Profile
 const getDoctorProfile = async (req, res) => {
 	try {
-		const doctor = await Doctor.findOne({ _id: "65398a29854fd97d222966bf" });
+		const username = req.userData.username
+		const doctor = await Doctor.findOne({ username});
 		// const doctor = await Doctor.findOne();
 		// console.log(Object.bsonsize(doctor));
 		// .populate({
@@ -27,7 +28,8 @@ const editDetails = async (req, res) => {
 	try {
 		// const { id } = req.params;
 		// const filter = { _id: id };
-		const doctorExists = await Doctor.findOne({});
+		const username = req.userData.username
+		const doctorExists = await Doctor.findOne({username});
 		if (!doctorExists || doctorExists.registrationStatus !== "approved") {
 			throw new Error("This doctor does not exist");
 		}
@@ -69,7 +71,8 @@ const getDoctorAppointments = async (req, res) => {
 		// // const doctor = await Doctor.findOne(filter).populate("appointments");
 		// const appointments = doctor.appointments;
 		// res.status(200).json(appointments);
-		const { _id } = await Doctor.findOne({});
+		const username = req.userData.username
+		const { _id } = await Doctor.findOne({username});
 		const appointments = await Appointment.find({ doctor: _id }).populate("patient");
 		res.status(200).json(appointments);
 	} catch (error) {
@@ -119,7 +122,9 @@ const getDoctorPatients = async (req, res) => {
 		// const patients = populated.patients;
 		// // console.log(populated);
 		// res.status(200).json(patients);
-		const { _id } = await Doctor.findOne({});
+		const username = req.userData.username
+
+		const { _id } = await Doctor.findOne({username});
 		const appointments = await Appointment.find({ doctor: _id }).populate("patient");
 		const nonNullAppointments = appointments.filter((appointment) => appointment.patient !== null);
 		const patients = nonNullAppointments.map((appointment) => appointment.patient._doc);
@@ -163,8 +168,10 @@ const getDoctorPatients = async (req, res) => {
 const changePassword = async (req, res) => {
 	try {
 		const { oldPassword, newPassword } = req.body;
-		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR **
-		const loggedIn = await Doctor.findOne({ username: "kjfllkfjadla" });
+		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR ** DONE
+		const username = req.userData.username
+
+		const loggedIn = await Doctor.findOne({ username });
 		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR **
 
 		const isMatch = await bcrypt.compare(oldPassword, loggedIn.password);
