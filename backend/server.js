@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
 
 // express app
 const app = express();
@@ -32,6 +34,8 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cookieParser());
+
 
 // routes
 app.use("/api/patient", patientRouter);

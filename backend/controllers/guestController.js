@@ -29,21 +29,19 @@ const registerPatient = async (req, res) => {
 			password: hashedPassword,
 		});
 
-		jwt.sign(
-			{username: username},
+		const token = jwt.sign(
+			{
+				username: username,
+				redirect: "patient"
+			},
 			JWT_SECRET,
 			{expiresIn: 86400}, //expires after 1 day
-			(err, token) => {
-				if(err) 
-					return res.json({message: err})
-				return res.json({
-					message: "Success",
-					token: "Bearer " + token
-				})
-			}
+			
 		)
+		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
 
-		return res.status(200).json({ newPatient });
+
+		return res.status(200).json({ newPatient, token: "Bearer " + token });
 	} catch (error) {
 		return res.status(404).json({ error: error.message });
 	}
@@ -82,7 +80,18 @@ const registerDoctor = async (req, res) => {
 			medicalDegree,
 		});
 
-		return res.status(200).json({ newDoctor });
+		const token = jwt.sign(
+			{
+				username: username,
+				redirect: "patient"
+			},
+			JWT_SECRET,
+			{expiresIn: 86400}, //expires after 1 day
+			
+		)
+		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
+
+		return res.status(200).json({ newDoctor ,  token: "Bearer " + token });
 	} catch (error) {
 		return res.status(500).json({ error: error.message });
 	}
@@ -238,7 +247,7 @@ const login = async (req, res)  => {
                 username: username,
 				redirect: redirect
             }
-            //create the token not yet saved in cookies
+            //create the token
             jwt.sign(
                 payload,
                 JWT_SECRET,
@@ -246,9 +255,12 @@ const login = async (req, res)  => {
                 (err, token) => {
                     if(err) 
                         return res.json({message: err})
+
+					res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
                     return res.status(200).json({
                         message: "Success",
-                        token: "Bearer " + token
+                        token: "Bearer " + token,
+						redirect: redirect //use to redirect to coreect homepage
                     })
                 }
             )
@@ -262,7 +274,12 @@ const login = async (req, res)  => {
 }
 
 const logout = (req,res) => {
-    res.send("logged out")
+    try{
+        res.clearCookie('jwt');
+        res.status(200).json({message: "Logged Out Successfully"})
+    }catch(err){
+        res.status(500).json({message: "user already logged out"})
+    }
 }
 
 
