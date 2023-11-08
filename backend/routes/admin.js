@@ -14,7 +14,7 @@ const {
 	deleteDoctor,
 	changePassword,
 } = require("../controllers/adminController");
-const authorize = require('../middlewares/authorization')
+//const authorize = require('../middlewares/authorization')
 
 // View All Packages
 router.get("/packages", getPackages);
