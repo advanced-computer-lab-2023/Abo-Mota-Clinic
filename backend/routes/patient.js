@@ -18,27 +18,27 @@ const authorize = require('../middlewares/authorization')
 router.get("/", authorize,getPatient);
 
 // Get all patient prescriptions
-router.get("/prescriptions", getPrescriptions);
+router.get("/prescriptions", authorize, getPrescriptions);
 
 // Get all patient's registered family members
-router.get("/family", getFamilyMembers);
+router.get("/family", authorize, getFamilyMembers);
 
 // Register a patient's family member
-router.post("/family", addFamilyMember);
+router.post("/family", authorize, addFamilyMember);
 
 // Get all doctors
-router.get("/doctors", getDoctors);
+router.get("/doctors", authorize, getDoctors);
 
 // Get all appointments
-router.get("/appointments", getAppointments);
+router.get("/appointments",authorize, getAppointments);
 
 // Change Password
-router.patch("/changePassword", changePassword);
+router.patch("/changePassword", authorize, changePassword);
 
 // Get all packages
-router.get("/packages", getPackages);
+router.get("/packages", authorize, getPackages);
 
 // Get available appointments
-router.get("/availableAppointments", getAvailableAppointments);
+router.get("/availableAppointments", authorize, getAvailableAppointments);
 
 module.exports = router;
