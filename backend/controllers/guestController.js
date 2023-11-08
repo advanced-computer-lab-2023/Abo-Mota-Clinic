@@ -6,7 +6,9 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const generateOTP = require("../utils/generateOtp");
 const sendEmail = require("../utils/sendEmail");
-const { OTP_SENDER_MAIL } = process.env;
+const { OTP_SENDER_MAIL, JWT_SECRET } = process.env;
+const jwt = require("jsonwebtoken");
+
 
 // initial testing complete, needs further edge cases tested
 const registerPatient = async (req, res) => {
@@ -26,6 +28,21 @@ const registerPatient = async (req, res) => {
 			...req.body,
 			password: hashedPassword,
 		});
+
+		jwt.sign(
+			{username: username},
+			JWT_SECRET,
+			{expiresIn: 86400}, //expires after 1 day
+			(err, token) => {
+				if(err) 
+					return res.json({message: err})
+				return res.json({
+					message: "Success",
+					token: "Bearer " + token
+				})
+			}
+		)
+
 		return res.status(200).json({ newPatient });
 	} catch (error) {
 		return res.status(404).json({ error: error.message });
@@ -184,9 +201,76 @@ const deleteOtp = async (email) => {
 	}
 };
 
+const login = async (req, res)  => {
+    const {username, password} = req.body;
+
+    const patientExists = await Patient.findOne({username: username});
+    const doctorExists = await Doctor.findOne({username: username});
+    const adminExists = await Admin.findOne({username: username});
+
+    if(!patientExists && !doctorExists && !adminExists){
+        return res.status(404).json({
+            message: "Invalid Username"
+        })
+    }
+
+    let dbUserPass;
+	let redirect;
+    if(patientExists){
+		dbUserPass = patientExists.password;
+		redirect = "patient"
+
+	}
+    else if(doctorExists){
+		dbUserPass = doctorExists.password;
+		redirect = "doctor"
+	}
+    else{
+		dbUserPass = adminExists.password;
+		redirect = "admin"
+	}
+
+    bcrypt.compare(password, dbUserPass)
+    .then( isCorrect => {
+        //correct creds => create jwt token 
+        if(isCorrect){
+            const payload = {
+                username: username,
+				redirect: redirect
+            }
+            //create the token not yet saved in cookies
+            jwt.sign(
+                payload,
+                JWT_SECRET,
+                {expiresIn: 86400}, //expires after 1 day
+                (err, token) => {
+                    if(err) 
+                        return res.json({message: err})
+                    return res.status(200).json({
+                        message: "Success",
+                        token: "Bearer " + token
+                    })
+                }
+            )
+        } else {
+            return res.status(404).json({
+                message: "Invalid Password!"
+            })
+        }
+    })
+    
+}
+
+const logout = (req,res) => {
+    res.send("logged out")
+}
+
+
 module.exports = {
 	registerPatient,
 	registerDoctor,
 	requestOtp,
 	forgotPassword,
+	login,
+	logout
 };
