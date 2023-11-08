@@ -31,6 +31,7 @@ import ViewPatientInfo from "./doctor/pages/ViewPatientInfo";
 import HealthPackages from "./patient/pages/HealthPackages";
 import Profile from "./patient/pages/Profile";
 import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
+import PatientFollowUp from "./doctor/pages/PatientFollowUp";
 
 function App() {
   return (
