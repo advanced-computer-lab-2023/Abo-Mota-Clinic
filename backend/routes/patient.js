@@ -9,13 +9,14 @@ const {
 	changePassword,
 	getPackages,
 	getAvailableAppointments,
+	linkFamilyMember,
 } = require("../controllers/patientController");
 
 const router = express.Router();
-const authorize = require('../middlewares/authorization')
+const authorize = require("../middlewares/authorization");
 
 // Get Patient
-router.get("/", authorize,getPatient);
+router.get("/", authorize, getPatient);
 
 // Get all patient prescriptions
 router.get("/prescriptions", authorize, getPrescriptions);
@@ -30,7 +31,7 @@ router.post("/family", authorize, addFamilyMember);
 router.get("/doctors", authorize, getDoctors);
 
 // Get all appointments
-router.get("/appointments",authorize, getAppointments);
+router.get("/appointments", authorize, getAppointments);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
@@ -41,4 +42,6 @@ router.get("/packages", authorize, getPackages);
 // Get available appointments
 router.get("/availableAppointments", authorize, getAvailableAppointments);
 
+// Link Family Member Account
+router.post("/linkFamily", authorize, linkFamilyMember);
 module.exports = router;

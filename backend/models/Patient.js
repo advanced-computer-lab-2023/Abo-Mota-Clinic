@@ -34,6 +34,17 @@ const patientSchema = new Schema(
 				nationalId: String,
 			},
 		],
+		linkedFamily: [
+			{
+				member: {
+					type: Schema.Types.ObjectId,
+					ref: "Patient",
+				},
+				relationToPatient: {
+					type: String,
+				},
+			},
+		],
 		emergencyContact: {
 			name: String,
 			mobile: String,
