@@ -38,7 +38,7 @@ const registerPatient = async (req, res) => {
 			{expiresIn: 86400}, //expires after 1 day
 			
 		)
-		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
+		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400})
 
 
 		return res.status(200).json({ newPatient, token: "Bearer " + token });
@@ -89,7 +89,7 @@ const registerDoctor = async (req, res) => {
 			{expiresIn: 86400}, //expires after 1 day
 			
 		)
-		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
+		res.cookie('jwt', token, {httpOnly: true, maxAge: 86400})
 
 		return res.status(200).json({ newDoctor ,  token: "Bearer " + token });
 	} catch (error) {
@@ -256,7 +256,7 @@ const login = async (req, res)  => {
                     if(err) 
                         return res.json({message: err})
 
-					res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000})
+					res.cookie('jwt', token, {httpOnly: true, maxAge: 86400})
                     return res.status(200).json({
                         message: "Success",
                         token: "Bearer " + token,
