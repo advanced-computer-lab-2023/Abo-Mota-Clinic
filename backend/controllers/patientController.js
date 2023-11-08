@@ -8,7 +8,8 @@ const saltRounds = 10;
 
 const getPatient = async (req, res) => {
 	try {
-		const patient = await Patient.findOne({}).populate("healthPackage.package");
+		const username = req.userData.username;
+		const patient = await Patient.findOne({username}).populate("healthPackage.package");
 		res.status(200).json(patient);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -32,7 +33,8 @@ const getPrescriptions = async (req, res) => {
 		//   ],
 		// });
 		// res.status(200).json(patient.prescriptions);
-		const { _id } = await Patient.findOne({});
+		const username = req.userData.username;
+		const { _id } = await Patient.findOne({username});
 		const prescriptions = await Prescription.find({ patient: _id }).populate([
 			{
 				path: "medicines.medicine",
@@ -52,8 +54,10 @@ const getPrescriptions = async (req, res) => {
 // Get all patient's registered family members
 const getFamilyMembers = async (req, res) => {
 	try {
+		const username = req.userData.username;
+
 		// ???
-		const patient = await Patient.findOne({});
+		const patient = await Patient.findOne({username});
 		// .populate("familyMembers._id");
 		// ???
 		res.status(200).json(patient.familyMembers);
@@ -66,7 +70,9 @@ const getFamilyMembers = async (req, res) => {
 const addFamilyMember = async (req, res) => {
 	try {
 		const { nationalId, name, gender, age, relationToPatient } = req.body;
-		const loggedIn = await Patient.findOne({});
+
+		const username = req.userData.username;
+		const loggedIn = await Patient.findOne({username});
 		loggedIn.familyMembers.push({
 			nationalId,
 			name,
@@ -74,7 +80,7 @@ const addFamilyMember = async (req, res) => {
 			age,
 			relationToPatient,
 		});
-		const updated = await Patient.updateOne({}, { familyMembers: loggedIn.familyMembers });
+		const updated = await Patient.updateOne({username}, { familyMembers: loggedIn.familyMembers });
 		// const familyMember = await Patient.findOne({ nationalId: nationalId });
 		// loggedIn.familyMembers.push({
 		// 	_id: familyMember._id,
@@ -117,7 +123,8 @@ const getAppointments = async (req, res) => {
 		//   },
 		// });
 		// res.status(200).json(patient.appointments);
-		const { _id } = await Patient.findOne({});
+		const username = req.userData.username;
+		const { _id } = await Patient.findOne({username});
 		const appointments = await Appointment.find({ patient: _id }).populate("doctor");
 		res.status(200).json(appointments);
 	} catch (error) {
@@ -128,8 +135,9 @@ const getAppointments = async (req, res) => {
 const changePassword = async (req, res) => {
 	try {
 		const { oldPassword, newPassword } = req.body;
-		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN PATIENT **
-		const loggedIn = await Patient.findOne({ username: "3ebs" });
+		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN PATIENT ** DONE
+		const username = req.userData.username;
+		const loggedIn = await Patient.findOne({ username});
 		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN PATIENT **
 
 		const isMatch = await bcrypt.compare(oldPassword, loggedIn.password);
