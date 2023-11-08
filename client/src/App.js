@@ -30,6 +30,7 @@ import RegisterForm from "./doctor/pages/RegisterForm";
 import ViewPatientInfo from "./doctor/pages/ViewPatientInfo";
 import HealthPackages from "./patient/pages/HealthPackages";
 import Profile from "./patient/pages/Profile";
+import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
         <Route path="/doctor" element={<Doctor />}>
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />
+          <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patientInfo" element={<ViewPatientInfo />} />
