@@ -1,45 +1,79 @@
-import { AspectRatio, Card, Divider, Typography, Sheet, Button, CardContent, Tabs, TabList, TabPanel, Box, Tab, Breadcrumbs, Link } from "@mui/joy";
+import {
+  AspectRatio,
+  Card,
+  Divider,
+  Typography,
+  Sheet,
+  Button,
+  CardContent,
+  Tabs,
+  TabList,
+  TabPanel,
+  Box,
+  Tab,
+  Breadcrumbs,
+  Link,
+} from "@mui/joy";
 import Rating from "@mui/material/Rating";
-import { tabClasses } from '@mui/joy/Tab';
-import DoctorImg from '../assets/images/doctor.jpg';
+import { tabClasses } from "@mui/joy/Tab";
+import DoctorImg from "../assets/images/doctor.jpg";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-
+import { FormControl, FormLabel } from "@mui/material";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+import { getDayName, getMonthName } from "../functions/DateManipulation";
+import PatientTest2 from "../pages/PatientTest2";
+import UserSelectionModal from "./UsersModal";
 const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliation }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
+  // const [config, setConfig] = useState({});
+  const [date, setDate] = useState(null);
+
+  const dateFormat = "MM/DD/YYYY";
+  let filteredData = appointments2;
+  if (date != null) {
+    filteredData = appointments2.filter(([key, value]) => {
+      return key === date.format(dateFormat);
+    });
+    // console.log(filteredData);
+  }
 
   return (
-    <Box className="w-full ml-20 mr-20 mt-5"
+    <Box
+      className="w-full ml-20 mr-20 mt-5"
       sx={{
-        width: '100%',
-        position: 'relative',
-        overflow: { xs: 'auto', sm: 'initial' },
+        width: "100%",
+        position: "relative",
+        overflow: { xs: "auto", sm: "initial" },
       }}
     >
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
-        <Link component={RouterLink} color="neutral" to="../">Home</Link>
-        <Link component={RouterLink} color="neutral" to="../doctors">Doctors</Link>
+        <Link component={RouterLink} color="neutral" to="../">
+          Home
+        </Link>
+        <Link component={RouterLink} color="neutral" to="../doctors">
+          Doctors
+        </Link>
         <Typography>Dr. {name}</Typography>
       </Breadcrumbs>
-
       <Card
         orientation="vertical"
         sx={{
-          width: '100%',
-          flexWrap: 'wrap',
+          width: "100%",
+          flexWrap: "wrap",
           [`& > *`]: {
-            '--stack-point': '500px',
+            "--stack-point": "500px",
             minWidth:
-              'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
+              "clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)",
           },
           // padding: '20px',
           // p: 5,
           // make the card resizable for demo
-          overflow: 'auto',
+          overflow: "auto",
           // resize: 'vertical',
         }}
       >
-
         <CardContent>
           <Box name="card-header" className="flex p-5">
             <AspectRatio
@@ -47,17 +81,13 @@ const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliati
               ratio="1"
               sx={{
                 width: 280,
-                borderRadius: '100%',
-                bgcolor: 'background.level2',
-                marginRight: 5
+                borderRadius: "100%",
+                bgcolor: "background.level2",
+                marginRight: 5,
                 // borderRadius: 'md',
               }}
             >
-              <img
-                src={DoctorImg}
-                loading="lazy"
-                alt="Doctor"
-              />
+              <img src={DoctorImg} loading="lazy" alt="Doctor" />
             </AspectRatio>
 
             <Box name="side-body" className="w-full">
@@ -71,42 +101,34 @@ const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliati
               <Sheet
                 sx={{
                   // bgcolor: 'background.level1',
-                  borderRadius: 'sm',
+                  borderRadius: "sm",
                   // p: 1.5,
                   my: 1.5,
-                  display: 'flex',
+                  display: "flex",
                   gap: 2,
-                  '& > div': { flex: 1 },
+                  "& > div": { flex: 1 },
                 }}
               >
                 <Box className="space-y-3">
                   <Box>
-                    <Typography level="body-xs">
-                      Affiliation
-                    </Typography>
+                    <Typography level="body-xs">Affiliation</Typography>
                     <Typography level="title-md">{affiliation}</Typography>
                   </Box>
 
                   <Box>
-                    <Typography level="body-xs">
-                      Educational background
-                    </Typography>
+                    <Typography level="body-xs">Educational background</Typography>
                     <Typography level="title-md">M.D., {educationalBackground}</Typography>
                   </Box>
                 </Box>
 
                 <Box className="space-y-3">
                   <Box>
-                    <Typography level="body-xs">
-                      Rating
-                    </Typography>
+                    <Typography level="body-xs">Rating</Typography>
                     <Rating defaultValue={4} readOnly />
                   </Box>
 
                   <Box>
-                    <Typography level="body-xs">
-                      Consultation fee
-                    </Typography>
+                    <Typography level="body-xs">Consultation fee</Typography>
                     <Typography level="title-md">${Math.round(rate * 1.1)}/hr</Typography>
                   </Box>
                 </Box>
@@ -120,18 +142,18 @@ const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliati
                 pt: 1,
                 // justifyContent: 'center',
                 [`&& .${tabClasses.root}`]: {
-                  flex: 'initial',
-                  bgcolor: 'transparent',
+                  flex: "initial",
+                  bgcolor: "transparent",
                   // '&:hover': {
                   //   bgcolor: 'transparent',
                   // },
                   [`&.${tabClasses.selected}`]: {
-                    color: 'primary.plainColor',
-                    '&::after': {
+                    color: "primary.plainColor",
+                    "&::after": {
                       height: 2,
                       borderTopLeftRadius: 3,
                       borderTopRightRadius: 3,
-                      bgcolor: 'primary.500',
+                      bgcolor: "primary.500",
                     },
                   },
                 },
@@ -143,59 +165,82 @@ const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliati
             </TabList>
             <TabPanel value={0}>
               <Typography level="body-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lectus sapien, ullamcorper et tincidunt ut, dignissim sit amet risus. Duis vitae augue cursus, tempus enim id, lacinia sapien. Phasellus tristique felis porttitor, volutpat ante eu, maximus tellus. Curabitur dignissim nunc nec ullamcorper fringilla. Pellentesque suscipit congue ante quis ornare. Quisque sit amet pellentesque risus. In eu commodo sapien, a vestibulum quam. In viverra augue et erat faucibus gravida. Vestibulum volutpat tempor lacus eu consequat. Nullam mollis condimentum finibus. Integer hendrerit tellus vel ex sodales, eu convallis turpis tempus. Praesent id turpis vel arcu volutpat aliquet sit amet malesuada lectus. Phasellus feugiat condimentum mi, id fermentum dui euismod sit amet.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lectus sapien,
+                ullamcorper et tincidunt ut, dignissim sit amet risus. Duis vitae augue cursus,
+                tempus enim id, lacinia sapien. Phasellus tristique felis porttitor, volutpat ante
+                eu, maximus tellus. Curabitur dignissim nunc nec ullamcorper fringilla. Pellentesque
+                suscipit congue ante quis ornare. Quisque sit amet pellentesque risus. In eu commodo
+                sapien, a vestibulum quam. In viverra augue et erat faucibus gravida. Vestibulum
+                volutpat tempor lacus eu consequat. Nullam mollis condimentum finibus. Integer
+                hendrerit tellus vel ex sodales, eu convallis turpis tempus. Praesent id turpis vel
+                arcu volutpat aliquet sit amet malesuada lectus. Phasellus feugiat condimentum mi,
+                id fermentum dui euismod sit amet.
               </Typography>
             </TabPanel>
             <TabPanel value={1}>
-              <Sheet className="space-y-10">
-
-                {
-                  Object.entries(appointments).map(([key, value], rowIdx) => {
+              <Box>
+                <Box sx={{ mb: 5 }}>
+                  <FormControl id="multiple-limit-tags">
+                    <FormLabel>Date</FormLabel>
+                    <DatePicker
+                      format={dateFormat}
+                      onChange={(date, dateString) => setDate(date)}
+                      showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+                      className="h-full w-56"
+                    />
+                  </FormControl>
+                </Box>
+                <Sheet className="space-y-10">
+                  {filteredData.map(([key, value], rowIdx) => {
+                    // console.log([key, value]);
+                    const dateSplit = key.split("/");
                     return (
                       <Box>
                         <Typography level="body-lg" sx={{ marginBottom: 1 }}>
-                          {key}
+                          {`${getDayName(key)}, ${getMonthName(key)} ${dateSplit[1]}`}
                         </Typography>
 
                         <Box className="flex w-full space-x-5 mr-10">
-                          {
-                            value.map((appointment, colIdx) => {
-                              const concat = `${rowIdx}${colIdx}}`
-                              return (
-                                <Button key={colIdx} onClick={() => setSelectedIdx(concat)} variant={concat !== selectedIdx ? "outlined" : "solid"} color={concat !== selectedIdx ? "neutral" : "primary"}>
-                                  {appointment}
-                                </Button>
-                              );
-                            })
-                          }
+                          {value.map((appointment, colIdx) => {
+                            const concat = `${rowIdx}${colIdx}}`;
+                            return (
+                              <Button
+                                key={colIdx}
+                                onClick={() => setSelectedIdx(concat)}
+                                variant={concat !== selectedIdx ? "outlined" : "solid"}
+                                color={concat !== selectedIdx ? "neutral" : "primary"}
+                              >
+                                {appointment}
+                              </Button>
+                            );
+                          })}
                         </Box>
                       </Box>
                     );
-                  })
-                }
+                  })}
 
-                <Box className="flex w-full justify-between">
-                  <Button variant="plain" onClick={() => setSelectedIdx(null)}>
-                    Clear selection
-                  </Button>
-                  <Button variant="outlined" color="primary">
-                    Make an appointment
-                  </Button>
-                </Box>
-              </Sheet>
+                  <Box className="flex w-full justify-between">
+                    <Button variant="plain" onClick={() => setSelectedIdx(null)}>
+                      Clear selection
+                    </Button>
+                    <Button variant="outlined" color="primary">
+                      Make an appointment
+                    </Button>
+                  </Box>
+                </Sheet>
+              </Box>
             </TabPanel>
             <TabPanel value={2}>
-              View reviews
+              <UserSelectionModal />
             </TabPanel>
           </Tabs>
         </CardContent>
       </Card>
-
+      {/* , backgroundColor: "rgba(255, 255, 255, 0.0)" */}
       <Card className="mt-10" sx={{ p: 4 }}>
         <Box>
           <Typography level="h2" fontWeight={500}>
             Available appointments
-
           </Typography>
           <Typography level="body-md">
             Appointments can be booked up to a week in advance
@@ -203,38 +248,33 @@ const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliati
         </Box>
         <Divider />
         <Sheet className="">
-          {
-            Object.entries(appointments).map(([key, value], rowIdx) => {
-              return (
-                <Box>
-                  <Typography level="body-lg" sx={{ marginBottom: 1.5 }}>
-                    {key}
-                  </Typography>
+          {Object.entries(appointments).map(([key, value], rowIdx) => {
+            return (
+              <Box>
+                <Typography level="body-lg" sx={{ marginBottom: 1.5 }}>
+                  {key}
+                </Typography>
 
-                  <Box className="flex w-full space-x-6 mr-10">
-                    {
-                      value.map((appointment, colIdx) => {
-                        const concat = `${rowIdx}${colIdx}}`
-                        return (
-                          <Button
-                            key={colIdx}
-                            onClick={() => setSelectedIdx(concat)}
-                            variant={concat !== selectedIdx ? "soft" : "solid"}
-                            color={concat !== selectedIdx ? "neutral" : "primary"}
-                            className="h-10"
-                          >
-                            {appointment}
-                          </Button>
-                        );
-                      })
-                    }
-                  </Box>
-                  {rowIdx !== Object.entries(appointments).length - 1 && <Divider sx={{ my: 2.5 }} />}
-
+                <Box className="flex w-full space-x-6 mr-10">
+                  {value.map((appointment, colIdx) => {
+                    const concat = `${rowIdx}${colIdx}}`;
+                    return (
+                      <Button
+                        key={colIdx}
+                        onClick={() => setSelectedIdx(concat)}
+                        variant={concat !== selectedIdx ? "soft" : "solid"}
+                        color={concat !== selectedIdx ? "neutral" : "primary"}
+                        className="h-10"
+                      >
+                        {appointment}
+                      </Button>
+                    );
+                  })}
                 </Box>
-              );
-            })
-          }
+                {rowIdx !== Object.entries(appointments).length - 1 && <Divider sx={{ my: 2.5 }} />}
+              </Box>
+            );
+          })}
 
           <Box className="flex w-full justify-end space-x-3">
             <Button variant="plain" onClick={() => setSelectedIdx(null)}>
@@ -245,6 +285,7 @@ const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliati
             </Button>
           </Box>
         </Sheet>
+        {/* <PatientTest2 /> */}
       </Card>
     </Box>
   );
@@ -259,9 +300,13 @@ const appointments = {
   "Friday, October 13": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
   "Monday October 16": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
   "Tuesday October 17": ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"],
-}
-
-
+};
+const appointments2 = [
+  ["11/12/2023", ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"]],
+  ["11/15/2023", ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"]],
+  ["11/16/2023", ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"]],
+  ["11/18/2023", ["10:00 AM", "12:00 AM", "2:00 PM", "4:00 PM", "6:00 PM", "8:00 PM"]],
+];
 
 // name
 // specialty

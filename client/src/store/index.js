@@ -54,6 +54,7 @@ export const {
   useAddFamilyMemberMutation,
   useFetchPrescriptionsQuery,
   useFetchDoctorsQuery,
+  useFetchPackagesPatientQuery,
 } = patientApi;
 
 export { getDoctors };

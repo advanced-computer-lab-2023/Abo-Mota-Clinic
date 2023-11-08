@@ -6,7 +6,7 @@ const pause = (duration) => {
       resolve();
     }, duration);
   });
-}
+};
 
 const patientApi = createApi({
   reducerPath: "patient",
@@ -15,7 +15,7 @@ const patientApi = createApi({
     fetchFn: async (...args) => {
       await pause(2000);
       return fetch(...args);
-    }
+    },
   }),
 
   endpoints: (builder) => {
@@ -23,7 +23,7 @@ const patientApi = createApi({
       fetchPatient: builder.query({
         query: (id) => {
           return {
-            url: '/',
+            url: "/",
             method: "GET",
           };
         },
@@ -32,9 +32,9 @@ const patientApi = createApi({
       fetchPatientAppointments: builder.query({
         query: (patient_id) => {
           return {
-            url: '/appointments/',
+            url: "/appointments/",
             params: {
-              patient_id
+              patient_id,
             },
             method: "GET",
           };
@@ -43,17 +43,19 @@ const patientApi = createApi({
 
       fetchFamilyMembers: builder.query({
         providesTags: (result, error, patientId) => {
-          return [{
-            type: "patientId",
-            value: patientId
-          }];
+          return [
+            {
+              type: "patientId",
+              value: patientId,
+            },
+          ];
         },
 
         query: (id) => {
           return {
-            url: '/family/',
+            url: "/family/",
             params: {
-              patientId: id
+              patientId: id,
             },
             method: "GET",
           };
@@ -64,15 +66,17 @@ const patientApi = createApi({
         invalidatesTags: (result, error, data) => {
           // console.log("Invalidating tag: ", { type: "patientId", id: data.patientId });
           // return [{ type: "patientId", id: data.patientId }];
-          return [{
-            type: "patientId",
-            value: data.patientId
-          }];
+          return [
+            {
+              type: "patientId",
+              value: data.patientId,
+            },
+          ];
         },
 
         query: (data) => {
           return {
-            url: '/family/',
+            url: "/family/",
             method: "POST",
             body: data,
           };
@@ -82,9 +86,9 @@ const patientApi = createApi({
       fetchPrescriptions: builder.query({
         query: (patientId) => {
           return {
-            url: '/prescriptions/',
+            url: "/prescriptions/",
             params: {
-              patientId
+              patientId,
             },
             method: "GET",
           };
@@ -102,9 +106,17 @@ const patientApi = createApi({
             method: "GET",
           };
         },
-      }), 
-    }
-  }
+      }),
+      fetchPackagesPatient: builder.query({
+        query: (patientId) => {
+          return {
+            url: "/packages",
+            method: "GET",
+          };
+        },
+      }),
+    };
+  },
 });
 
 export const {
@@ -113,6 +125,8 @@ export const {
   useFetchFamilyMembersQuery,
   useAddFamilyMemberMutation,
   useFetchPrescriptionsQuery,
-  useFetchDoctorsQuery } = patientApi;
+  useFetchDoctorsQuery,
+  useFetchPackagesPatientQuery,
+} = patientApi;
 
 export { patientApi };

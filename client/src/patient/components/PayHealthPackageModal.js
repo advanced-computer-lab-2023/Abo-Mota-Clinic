@@ -6,15 +6,7 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import {
-  FormControlLabel,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -33,8 +25,17 @@ const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(2),
   fontSize: theme.typography.pxToRem(16),
   padding: theme.spacing(1, 4),
+  color: theme.palette.primary.main,
   boxShadow: "0 2px 10px 0 rgba(0, 0, 0, 0.1)",
+  borderColor: theme.palette.primary.main,
+  borderWidth: 1,
+  borderStyle: "solid",
+  backgroundColor: theme.palette.action.hover,
+  "&:hover": {
+    backgroundColor: theme.palette.action.hover,
+  },
 }));
+
 export default function PayHealthPackageModal() {
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState("wallet");
