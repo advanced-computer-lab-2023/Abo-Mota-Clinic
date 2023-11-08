@@ -5,10 +5,10 @@ import { AiOutlineHome } from "react-icons/ai";
 import SideBar from "../SideBar";
 import { useState } from "react";
 
-const NavBar = ({ links, items }) => {
+const NavBar = ({ links = [], navBarItems = [] }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
-  const content = items.map((item) => {
+  const content = navBarItems.map((item) => {
     return (
       <li id={item.name}>
         <Link to={item.to} className="navbar-link">{item.name}</Link>

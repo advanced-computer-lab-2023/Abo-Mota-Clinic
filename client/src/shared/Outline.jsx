@@ -3,11 +3,12 @@ import Navbar from "./Components/NavBar";
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
 
-function Outline({ items, navBarItems }) {
+function Outline({ items, navBarItems = [] }) {
+  console.log(navBarItems);
   return (
     <>
       <div>
-        <Navbar items={navBarItems} />
+        <Navbar navBarItems={navBarItems} />
         <div style={{ display: "flex", width: "100vw" }}>
           <Sidebar items={items} />
           <Outlet />
