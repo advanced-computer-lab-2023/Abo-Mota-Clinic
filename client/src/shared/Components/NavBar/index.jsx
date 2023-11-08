@@ -11,7 +11,7 @@ const NavBar = ({ links, items }) => {
   const content = items.map((item) => {
     return (
       <li id={item.name}>
-        <Link to={item.to}>{item.name}</Link>
+        <Link to={item.to} className="navbar-link">{item.name}</Link>
       </li>
     );
   });

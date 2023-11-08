@@ -1,4 +1,4 @@
-import Button from "../../../shared/Components/Button";
+import Button from "../../../shared/Components/Button.js";
 import { useState } from "react";
 import Input from "../../../shared/Components/InputField";
 import './styles.css';

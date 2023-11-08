@@ -183,7 +183,8 @@ const deleteDoctor = async (req, res) => {
 
 // Get all doctor applications
 const getApplications = async (req, res) => {
-	try {
+	try 
+	{
 		const applications = await Doctor.find({ registrationStatus: "pending" });
 		res.status(200).json(applications);
 	} catch (error) {
