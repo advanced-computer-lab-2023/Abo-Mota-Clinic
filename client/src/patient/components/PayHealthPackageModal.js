@@ -36,57 +36,72 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export default function PayHealthPackageModal() {
+export default function PayHealthPackageModal({ selectedPackage, setSelectedPackage }) {
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState("wallet");
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setSelectedPackage(-1);
+    setOpen(false);
+  };
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
   return (
-    <div>
-      <StyledButton onClick={handleOpen} variant="contained" color="primary">
+    <Box>
+      <StyledButton
+        disabled={selectedPackage === undefined ? true : false}
+        onClick={handleOpen}
+        variant="contained"
+        color="primary"
+      >
         Subscribe
       </StyledButton>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Typography id="payment-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
-              Payment Methods
-            </Typography>
-            <RadioGroup
-              aria-labelledby="payment-modal-title"
-              value={selectedValue}
-              onChange={handleChange}
-              name="payment-method-radio-buttons-group"
-            >
-              <FormControlLabel value="wallet" control={<Radio />} label="Wallet" />
-              <FormControlLabel value="creditCard" control={<Radio />} label="Credit Card" />
-            </RadioGroup>
-            <Button
-              onClick={handleClose}
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2, width: "100%" }}
-            >
-              Pay
-            </Button>
-          </Box>
-        </Fade>
-      </Modal>
-    </div>
+      {selectedPackage === undefined ? null : (
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={open}
+          onClose={handleClose}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 500,
+            },
+          }}
+        >
+          <Fade in={open}>
+            <Box sx={style}>
+              <Typography id="payment-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
+                {selectedPackage === undefined
+                  ? null
+                  : `Pay for ${selectedPackage["name"]} package`}
+              </Typography>
+              <Typography id="payment-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
+                Payment Methods
+              </Typography>
+              <RadioGroup
+                aria-labelledby="payment-modal-title"
+                value={selectedValue}
+                onChange={handleChange}
+                name="payment-method-radio-buttons-group"
+              >
+                <FormControlLabel value="wallet" control={<Radio />} label="Wallet" />
+                <FormControlLabel value="creditCard" control={<Radio />} label="Credit Card" />
+              </RadioGroup>
+              <Button
+                onClick={handleClose}
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2, width: "100%" }}
+              >
+                Pay
+              </Button>
+            </Box>
+          </Fade>
+        </Modal>
+      )}
+    </Box>
   );
 }

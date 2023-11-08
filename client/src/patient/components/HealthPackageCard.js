@@ -248,7 +248,6 @@ const HealthPackageCard = ({ healthPackage, selected, setSelected, index }) => {
               </Tooltip>
             </FeatureItem>
           </FeatureList>
-          <PayHealthPackageModal />
         </CardContent>
       </CustomCard>
     </CardWrapper>

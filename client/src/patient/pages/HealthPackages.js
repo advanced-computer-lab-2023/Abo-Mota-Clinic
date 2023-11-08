@@ -3,6 +3,7 @@ import HealthPackageCard from "../components/HealthPackageCard";
 import { Box } from "@mui/material";
 import { useFetchPackagesPatientQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+import PayHealthPackageModal from "../components/PayHealthPackageModal";
 
 function HealthPackages() {
   const { data, isFetching, error } = useFetchPackagesPatientQuery();
@@ -10,18 +11,26 @@ function HealthPackages() {
   let content = <LoadingIndicator />;
   if (!isFetching && !error) {
     content = (
-      <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 2 }}>
-        {data.map((healthPackage, idx) => {
-          return (
-            <HealthPackageCard
-              key={idx}
-              healthPackage={healthPackage}
-              selected={selected}
-              setSelected={setSelected}
-              index={idx}
-            />
-          );
-        })}
+      <Box>
+        <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 2 }}>
+          {data.map((healthPackage, idx) => {
+            return (
+              <HealthPackageCard
+                key={idx}
+                healthPackage={healthPackage}
+                selected={selected}
+                setSelected={setSelected}
+                index={idx}
+              />
+            );
+          })}
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <PayHealthPackageModal
+            selectedPackage={data[selected]}
+            setSelectedPackage={setSelected}
+          />
+        </Box>
       </Box>
     );
   }
