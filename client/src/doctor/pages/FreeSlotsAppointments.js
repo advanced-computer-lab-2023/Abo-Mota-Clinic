@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import TimePicker from '@mui/lab/TimePicker';
+import DatePicker from '@mui/lab/DatePicker';
+import Stack from '@mui/material/Stack';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 
 function FreeSlotsAppointments() {
-  
   const [provider, setProvider] = useState('');
   const [timezone, setTimezone] = useState('');
-  const [date, setDate] = useState('');
-  const [startTime, setStartTime] = useState('');
+  const [date, setDate] = useState(null);
+  const [startTime, setStartTime] = useState(null);
   const [appointmentDuration, setAppointmentDuration] = useState(45);
   const [buffer, setBuffer] = useState(5);
 
-  
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     console.log({
       provider,
       timezone,
@@ -21,72 +28,72 @@ function FreeSlotsAppointments() {
       appointmentDuration,
       buffer,
     });
-    setTimezone("");
-    setDate("");
-    setStartTime("");
-    
 
-  };
 
-  const formFieldStyle = { marginBottom: '10px' };
-  const buttonStyle = {
-    marginTop: '10px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
+    setTimezone('');
+    setDate(null);
+    setStartTime(null);
   };
-  const headerStyle = { marginBottom: '20px', color: '#333', fontSize: '24px' };
 
   return (
-    <div>
-      <h1 style={headerStyle}>Free Appointment Slots</h1>
+    <Container component="main" maxWidth="sm">
+      <Typography component="h1" variant="h4" align="center" style={{ margin: '20px 0' }}>
+        Free Appointment Slots
+      </Typography>
       <form onSubmit={handleSubmit}>
-        <div style={formFieldStyle}>
-          <label>
-            Provider
-            <input type="text" value={provider} onChange={(e) => setProvider(e.target.value)} />
-          </label>
-        </div>
-        <div style={formFieldStyle}>
-          <label>
-            Timezone
-            <input type="text" value={timezone} onChange={(e) => setTimezone(e.target.value)} />
-          </label>
-        </div>
-        <div style={formFieldStyle}>
-          <label>
-            Date
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-          </label>
-        </div>
-        <div style={formFieldStyle}>
-          <label>
-            Start Time
-            <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-          </label>
-        </div>
-        <div style={formFieldStyle}>
-          <label>
-            Appointment Duration (mins)
-            <input type="number" value={appointmentDuration} onChange={(e) => setAppointmentDuration(e.target.value)} />
-          </label>
-        </div>
-        <div style={formFieldStyle}>
-          <label>
-            Buffer (mins)
-            <input type="number" value={buffer} onChange={(e) => setBuffer(e.target.value)} />
-          </label>
-        </div>
-        <div>
-          <button type="submit" style={buttonStyle}>Add Time Slots</button>
-        </div>
+        <Stack spacing={3}>
+          <TextField
+            required
+            label="Provider"
+            value={provider}
+            onChange={(e) => setProvider(e.target.value)}
+            fullWidth
+          />
+          <TextField
+            required
+            label="Timezone"
+            value={timezone}
+            onChange={(e) => setTimezone(e.target.value)}
+            fullWidth
+          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Date"
+              value={date}
+              onChange={(newDate) => setDate(newDate)}
+              renderInput={(params) => <TextField {...params} />}
+              fullWidth
+            />
+            <TimePicker
+              label="Start Time"
+              value={startTime}
+              onChange={(newTime) => setStartTime(newTime)}
+              renderInput={(params) => <TextField {...params} />}
+              fullWidth
+            />
+          </LocalizationProvider>
+          <TextField
+            required
+            type="number"
+            label="Appointment Duration (mins)"
+            value={appointmentDuration}
+            onChange={(e) => setAppointmentDuration(e.target.value)}
+            fullWidth
+          />
+          <TextField
+            required
+            type="number"
+            label="Buffer (mins)"
+            value={buffer}
+            onChange={(e) => setBuffer(e.target.value)}
+            fullWidth
+          />
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Add Time Slots
+          </Button>
+        </Stack>
       </form>
-     
-    </div>
+    </Container>
   );
 }
 
