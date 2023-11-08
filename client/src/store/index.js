@@ -45,7 +45,11 @@ export {
   useHandleApplicationMutation,
 } from "./apis/adminApi";
 
-export { useRegisterDoctorMutation, useRegisterPatientMutation } from "./apis/guestApi";
+export {
+  useRegisterDoctorMutation,
+  useRegisterPatientMutation,
+  useLoginMutation,
+} from "./apis/guestApi";
 
 export const {
   useFetchPatientQuery,
