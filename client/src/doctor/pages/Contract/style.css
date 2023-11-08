@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Recursive:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Recursive:wght@500&display=swap');
+  .Contract-Container {
+    display: flex;
+    background-color: #aaaaaa;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden; 
+    justify-content: center;
+  }
+
+  .first-contract {
+    width: 40%; 
+    border-radius: 20px;
+    height: 95%;
+    border: 2px solid #777777;
+    margin: 0 auto;
+    background-color: #ffffff;
+    z-index: 1;
+  }
+
+  .second-contract {
+    width: 40%;
+    border-radius: 20px;
+    height: 95%;
+    margin: 0 auto;
+    border: 2px solid #777777;
+    background-color: #eeeeee;
+    position: absolute;
+    bottom: 10px;
+    right: 452px;
+    z-index: 0;
+  }
+
+  .contract-title{
+    font-size: 50px;
+    font-family: 'Great Vibes', cursive;
+    font-weight: bold;
+    margin: 20px 0 0 0;
+    text-align: center;
+  }
+
+  .employee-name{
+    font-size: 20px;
+    font-family: 'Great Vibes', cursive;
+    margin: 20px 0 0 0;
+    text-align: left;
+    padding: 0px 20px 0px 20px;
+  }
+
+  .contract-paragraph{
+    text-indent: 1.5em;
+    font-family: Agbalumo, 'Times New Roman', Times, serif, sans-serif;
+
+    padding: 0px 20px 0px 20px;
+  }
+
+  .terms-title{
+    font-size: 20px;
+    font-family: 'Great Vibes', cursive;
+    margin: 20px 0 0 0;
+    padding: 0px 20px 0px 20px;
+    text-align: left;
+  }
+
+  .terms-paragraph{
+    text-indent: 1.5em;
+    font-family: Agbalumo, 'Times New Roman', Times, serif, sans-serif;
+    padding: 0px 20px 0px 20px;
+  }
+
+  .contract-signature{
+    display: flex;
+    padding: 20px;
+    justify-content: flex-end;
+  }
+
+  .contract-button{
+    background-color: #777777;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+
+  }
+
+  .contract-button:hover{
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .terms-paragraph-accept{
+    font-family: Agbalumo, 'Times New Roman', Times, serif, sans-serif;
+    padding: 0px 20px 0px 20px;
+    font-size: 10px;
+    color: #777777;
+    margin: 20px 0 0 0;
+    padding: 0px 20px 0px 20px;
+    text-align: right;
+  }
+

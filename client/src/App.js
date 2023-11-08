@@ -30,7 +30,7 @@ import RegisterForm from "./doctor/pages/RegisterForm";
 import ViewPatientInfo from "./doctor/pages/ViewPatientInfo";
 import HealthPackages from "./patient/pages/HealthPackages";
 import Profile from "./patient/pages/Profile";
-
+import Contract from "./doctor/pages/Contract";
 function App() {
   return (
     <div>
@@ -52,13 +52,13 @@ function App() {
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>
+          <Route path="contract" element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor/>} />
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patientInfo" element={<ViewPatientInfo />} />
         </Route>
-
         <Route path="/admin" element={<Admin />}>
           <Route path="applications" element={<Applications />} />
           <Route path="packages" element={<Packages />} />

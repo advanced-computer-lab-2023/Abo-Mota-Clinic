@@ -8,9 +8,9 @@ function Outline({ items, navBarItems = [] }) {
   return (
     <>
       <div>
-        <Navbar navBarItems={navBarItems} />
+        <Navbar navBarItems={navBarItems} links={items} />
         <div style={{ display: "flex", width: "100vw" }}>
-          <Sidebar items={items} />
+          {/* <Sidebar items={items} /> */}
           <Outlet />
         </div>
       </div>
