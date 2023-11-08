@@ -32,6 +32,7 @@ import HealthPackages from "./patient/pages/HealthPackages";
 import Profile from "./patient/pages/Profile";
 import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
 import PatientFollowUp from "./doctor/pages/PatientFollowUp";
+import Contract from "./doctor/pages/Contract";
 
 function App() {
   return (
@@ -54,11 +55,14 @@ function App() {
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>
-          <Route path="contract" element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor/>} />
+          <Route
+            path="contract"
+            element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
+          />
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />
           <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
-          <Route path="PatientFollowUp" element={<PatientFollowUp/>} />
+          <Route path="PatientFollowUp" element={<PatientFollowUp />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patientInfo" element={<ViewPatientInfo />} />
