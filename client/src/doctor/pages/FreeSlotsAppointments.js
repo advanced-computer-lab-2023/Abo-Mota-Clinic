@@ -22,6 +22,7 @@ function FreeSlotsAppointments() {
     setTimezone("");
     setDate("");
     setStartTime("");
+    setEndTime("");
 
 
   };
