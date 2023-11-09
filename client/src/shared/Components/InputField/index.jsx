@@ -1,6 +1,7 @@
 import { useState } from "react"
 import './styles.css';
 import {AiOutlineMail, AiFillLock} from 'react-icons/ai';
+import {BiSolidUser} from 'react-icons/bi';
 
 function Input ({label, id, error, touch, icon ,  ...probs}){
   return (
@@ -18,6 +19,7 @@ const getIcon = (s) => {
   switch (s) {
     case 'email': return <AiOutlineMail size="15"/>;
     case 'password': return <AiFillLock size="15"/>;
+    case 'username': return <BiSolidUser size="15"/>;
     default : return null;
   }
 }
