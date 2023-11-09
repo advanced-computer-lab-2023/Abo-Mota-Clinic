@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 
 function FreeSlotsAppointments() {
 
-  const [provider, setProvider] = useState('');
-  const [timezone, setTimezone] = useState('');
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
+  const [endtime, setEndTime] = useState('');
   const [appointmentDuration, setAppointmentDuration] = useState(45);
   const [buffer, setBuffer] = useState(5);
 
@@ -14,10 +13,9 @@ function FreeSlotsAppointments() {
     event.preventDefault();
 
     console.log({
-      provider,
-      timezone,
       date,
       startTime,
+      endtime,
       appointmentDuration,
       buffer,
     });
@@ -47,18 +45,6 @@ function FreeSlotsAppointments() {
       <form onSubmit={handleSubmit}>
         <div style={formFieldStyle}>
           <label>
-            Provider
-            <input type="text" value={provider} onChange={(e) => setProvider(e.target.value)} />
-          </label>
-        </div>
-        <div style={formFieldStyle}>
-          <label>
-            Timezone
-            <input type="text" value={timezone} onChange={(e) => setTimezone(e.target.value)} />
-          </label>
-        </div>
-        <div style={formFieldStyle}>
-          <label>
             Date
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
           </label>
@@ -67,6 +53,12 @@ function FreeSlotsAppointments() {
           <label>
             Start Time
             <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+          </label>
+        </div>
+        <div style={formFieldStyle}>
+          <label>
+            End Time
+            <input type="text" value={timezone} onChange={(e) => setEndTime(e.target.value)} />
           </label>
         </div>
         <div style={formFieldStyle}>
