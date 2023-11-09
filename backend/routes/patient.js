@@ -1,15 +1,15 @@
 const express = require("express");
 const {
-	getPatient,
-	getPrescriptions,
-	getFamilyMembers,
-	addFamilyMember,
-	getDoctors,
-	getAppointments,
-	changePassword,
-	getPackages,
-	getAvailableAppointments,
-	linkFamilyMember,
+  getPatient,
+  getPrescriptions,
+  getFamilyMembers,
+  addFamilyMember,
+  getDoctors,
+  getAppointments,
+  changePassword,
+  getPackages,
+  getAvailableAppointments,
+  linkFamilyMember,
 } = require("../controllers/patientController");
 
 const router = express.Router();

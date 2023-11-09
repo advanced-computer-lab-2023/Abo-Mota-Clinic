@@ -52,9 +52,9 @@ function App() {
           <Route path="prescriptions" element={<ViewPrescriptions />} />
           <Route path="familyMembers" element={<ViewFamilyMembers />} />
           <Route path="test" element={<PatientTest />} />
-          <Route path="info/:id" element={<ViewDoctorProfile />} />
+          <Route path="doctors/info/:id" element={<ViewDoctorProfile />} />
           <Route path="wallet" element={<ViewWallet />} />
-          <Route path="test2" element={<PatientTest2 />} />
+          <Route path="doctors/info/:id/test2/:doctorId" element={<PatientTest2 />} />
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
           <Route path="stripe" element={<PaymentPage />} />

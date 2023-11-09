@@ -26,7 +26,8 @@ function PaymentPage() {
   ];
 
   return (
-    <Box className="w-full mt-20 mx-32 space-y-5">
+    //w-full add this if you want full width
+    <Box className=" mt-20 mx-32 space-y-5">
       <Box sx={{ px: 5, py: 2 }} className="space-x-">
         <Typography level="h2" fontWeight={500}>
           Checkout

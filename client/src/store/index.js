@@ -5,6 +5,7 @@ import { doctorReducer, getDoctors } from "./slices/doctorSlice";
 import { adminApi } from "./apis/adminApi";
 import { guestApi } from "./apis/guestApi";
 import { patientApi } from "./apis/patientApi";
+import { stripeApi } from "./apis/stripeApi";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     [adminApi.reducerPath]: adminApi.reducer,
     [guestApi.reducerPath]: guestApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
+    [stripeApi.reducerPath]: stripeApi.reducer,
     doctorSlice: doctorReducer,
   },
   middleware: (getDefaultMiddleware) => {
@@ -19,7 +21,8 @@ export const store = configureStore({
       .concat(doctorApi.middleware)
       .concat(adminApi.middleware)
       .concat(guestApi.middleware)
-      .concat(patientApi.middleware);
+      .concat(patientApi.middleware)
+      .concat(stripeApi.middleware);
   },
 });
 
@@ -59,6 +62,9 @@ export const {
   useFetchPrescriptionsQuery,
   useFetchDoctorsQuery,
   useFetchPackagesPatientQuery,
+  useFetchAvailableAppointmentsQuery,
 } = patientApi;
+
+export const { useCreatePaymentIntentMutation, useFetchConfigQuery } = "./apis/stripeApi";
 
 export { getDoctors };

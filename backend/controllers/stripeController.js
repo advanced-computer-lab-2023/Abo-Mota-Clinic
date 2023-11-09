@@ -1,3 +1,7 @@
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2022-08-01",
+});
+
 const createPaymentIntent = async (req, res) => {
   try {
     const { beneficiary, amount } = req.body;
