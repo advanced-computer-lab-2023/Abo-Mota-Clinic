@@ -33,14 +33,10 @@ function Profile() {
           <h2 className="text-xl font-bold text-gray-900">Patient Profile</h2>
         </div>
         <PersonalInfoSection patient={patient} />
-
-        
         <div className="flex flex-wrap -mx-3 md:mx-6">
-      
           <div className="w-full md:w-1/2 px-3 md:px-6 py-4">
             <EmergencyContactCard patient={patient} />
           </div>
-
           <div className="w-full md:w-1/2 px-3 md:px-6 py-4">
             <FileUploadSection files={files} />
           </div>

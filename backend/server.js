@@ -43,6 +43,7 @@ app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
 
+
 // listen for requests
 app.listen(process.env.PORT, () => {
 	console.log(`listening on port ${process.env.PORT}`);

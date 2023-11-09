@@ -37,8 +37,7 @@ const RegisterForm = () => {
     console.log(doctor);
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 3000));
-    //await registerDoctor(doctor);
-    // Remove the above await and insert code for backend registeration here.
+    
     setIsLoading(false);
     resetForm({ values: "" });
     navigateq("/doctor/appointments");

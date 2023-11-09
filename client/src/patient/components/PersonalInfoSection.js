@@ -14,7 +14,7 @@ function  PersonalInfoSection({patient})
               src={Picture}
               alt="patient"
             />
-            {/* This span will hold the "Upload" text that appears on hover */}
+            
             <span className="absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100">
               <span className="text-sm text-white bg-black bg-opacity-75 rounded-full p-1">
                 Upload
