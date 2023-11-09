@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const multer = require("multer");
+const path = require("path");
 
 // express app
 const app = express();
@@ -42,7 +44,22 @@ app.use("/api/patient", patientRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
-app.use("/api/stripe", stripeRouter);
+
+//handle uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage });
+
+app.post("/registerDoctor", upload.single("file"), (req, res) => {
+  res.send("File uploaded");
+});
 
 // listen for requests
 app.listen(process.env.PORT, () => {
