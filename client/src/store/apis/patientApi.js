@@ -14,7 +14,7 @@ const patientApi = createApi({
     baseUrl: "http://localhost:5000/api/patient",
     fetchFn: async (...args) => {
       await pause(2000);
-      return fetch(...args);
+      return fetch(...args, {credentials: "include"});
     },
   }),
 
@@ -25,6 +25,7 @@ const patientApi = createApi({
           return {
             url: "/",
             method: "GET",
+
           };
         },
       }),
@@ -37,6 +38,7 @@ const patientApi = createApi({
               patient_id,
             },
             method: "GET",
+
           };
         },
       }),
@@ -48,6 +50,7 @@ const patientApi = createApi({
               type: "patientId",
               value: patientId,
             },
+            
           ];
         },
 
@@ -58,6 +61,7 @@ const patientApi = createApi({
               patientId: id,
             },
             method: "GET",
+
           };
         },
       }),
@@ -79,6 +83,7 @@ const patientApi = createApi({
             url: "/family/",
             method: "POST",
             body: data,
+
           };
         },
       }),
@@ -91,6 +96,7 @@ const patientApi = createApi({
               patientId,
             },
             method: "GET",
+
           };
         },
       }),
@@ -104,6 +110,7 @@ const patientApi = createApi({
           return {
             url: "/doctors",
             method: "GET",
+
           };
         },
       }),
@@ -112,6 +119,7 @@ const patientApi = createApi({
           return {
             url: "/packages",
             method: "GET",
+
           };
         },
       }),

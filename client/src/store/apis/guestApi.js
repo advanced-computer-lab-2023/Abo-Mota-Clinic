@@ -4,6 +4,7 @@ const guestApi = createApi({
   reducerPath: "guestApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_URL}/api/guest`,
+    credentials: "include",
   }),
   endpoints(builder) {
     return {
