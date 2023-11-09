@@ -228,8 +228,8 @@ const RegisterForm = () => {
   );
 };
 
-const FILE_SIZE = 160 * 1024; // e.g., 160 KB
-const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
+const FILE_SIZE = 10000 * 1024; // e.g., 160 KB
+const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
 
 const DoctorSchema = yup.object().shape({
   userName: yup.string().min(3, 'Username must be at least 3 characters long').max(50, 'Username must be at most 50 characters long').required('Please enter a valid username'),
