@@ -44,7 +44,7 @@ app.use("/api/patient", patientRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
-
+app.use("/api/stripe", stripeRouter);
 //handle uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
