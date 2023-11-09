@@ -5,6 +5,7 @@ const doctorApi = createApi({
     reducerPath: 'doctorApi',
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.REACT_APP_API_URL}/api/doctor`,
+        credentials: "include"
     }),
     endpoints(builder){
        return {
@@ -15,7 +16,7 @@ const doctorApi = createApi({
             query: () => {
                 return {
                     url: '/',
-                    method: 'GET'
+                    method: 'GET',
                 }
             }
         }),
@@ -30,7 +31,7 @@ const doctorApi = createApi({
             query : () => {
                 return {
                     url: '/appointments',
-                    method: 'GET'
+                    method: 'GET',
                 }
             }
         }),
@@ -48,7 +49,8 @@ const doctorApi = createApi({
                     // params: {
                     //     albumId: album.id, 
                     // },
-                    method: 'GET'
+                    method: 'GET',
+
                 }
             }
         }),
@@ -64,7 +66,8 @@ const doctorApi = createApi({
                         rate,
                         affiliation 
                     },
-                    method :'PATCH' 
+                    method :'PATCH',
+
                 }
             }
         },

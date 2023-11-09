@@ -4,6 +4,7 @@ const adminApi = createApi({
   reducerPath: "adminApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_URL}/api/admin`,
+    credentials: 'include'
   }),
   endpoints(builder) {
     return {
@@ -19,6 +20,7 @@ const adminApi = createApi({
           return {
             url: "/packages",
             method: "GET",
+
           };
         },
       }),
@@ -32,6 +34,7 @@ const adminApi = createApi({
             url: `/packages/${updated._id}`,
             body: updated,
             method: "PATCH",
+
           };
         },
       }),
@@ -44,6 +47,7 @@ const adminApi = createApi({
             url: "/packages",
             body,
             method: "POST",
+
           };
         },
       }),
@@ -55,6 +59,7 @@ const adminApi = createApi({
           return {
             url: `/packages/${p._id}`,
             method: "DELETE",
+
           };
         },
       }),
@@ -70,6 +75,7 @@ const adminApi = createApi({
           return {
             url: "/applications",
             method: "GET",
+
           };
         },
       }),
@@ -82,6 +88,7 @@ const adminApi = createApi({
             url: `/applications/${application.id}`,
             body: application,
             method: "PATCH",
+
           };
         },
       }),
@@ -93,6 +100,9 @@ const adminApi = createApi({
             method: "POST",
           };
         },
+        onError: (error, variables, context) => {
+          console.error("Error adding admin:", error);
+        },
       }),
       removeAdmin: builder.mutation({
         query: (admin) => {
@@ -100,6 +110,7 @@ const adminApi = createApi({
             url: "/admins",
             body: admin,
             method: "DELETE",
+
           };
         },
       }),
@@ -109,6 +120,7 @@ const adminApi = createApi({
             url: "/patients",
             body: patient,
             method: "DELETE",
+
           };
         },
       }),
