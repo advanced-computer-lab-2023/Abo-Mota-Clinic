@@ -8,7 +8,9 @@ const patientRouter = require("./routes/patient");
 const doctorRouter = require("./routes/doctor");
 const adminRouter = require("./routes/admin");
 const guestRouter = require("./routes/guest");
+const stripeRouter = require("./routes/stripe");
 const mongoose = require("mongoose");
+
 mongoose.set("strictQuery", false);
 // const bodyParser = require("body-parser");
 const MongoURI = process.env.MONGO_URI;
@@ -31,12 +33,15 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(cors({origin: 'http://localhost:3000'}));
+app.use(express.static(process.env.STATIC_DIR));
+
 
 // routes
 app.use("/api/patient", patientRouter);
 app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
+app.use("/api/stripe", stripeRouter);
 
 // listen for requests
 app.listen(process.env.PORT, () => {
