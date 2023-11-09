@@ -293,6 +293,168 @@ const linkFamilyMember = async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 };
+// Helpers for self subscription controllers
+const selfSubscribeWallet = async (user, package) => {
+	try {
+		const price = package.pricePerYear;
+		const familyDiscount = user.familyDiscount;
+		const discountedPrice = price * (1 - familyDiscount);
+		// Check if user has required funds
+		if (user.wallet >= discountedPrice) {
+			await Patient.updateOne({ _id: user._id }, { wallet: user.wallet - discountedPrice });
+		} else {
+			throw new Error("You don't have enough funds in your wallet for this subscription");
+		}
+
+		let dateInYear = new Date();
+		dateInYear.setFullYear(dateInYear.getFullYear() + 1);
+		const newPackage = {
+			package: package._id,
+			endDate: dateInYear,
+		};
+		// Finding updating all family members' family discount when their discount is less than the incoming one
+		const familyMemberIds = await user.linkedFamily.map((familyLink) => familyLink.member);
+		const updatedFamilyMembers = await Patient.updateMany(
+			{
+				_id: { $in: familyMemberIds },
+				$or: [
+					{ familyDiscount: { $lt: package.familyDiscount } },
+					{ familyDiscount: { $exists: false } }, // Handle undefined familyDiscount
+				],
+			},
+			{ $set: { familyDiscount: package.familyDiscount } }
+		);
+
+		const subscribedUser = await Patient.updateOne(
+			{ _id: user._id },
+			{ healthPackage: newPackage }
+		);
+		return subscribedUser;
+	} catch (error) {
+		throw error;
+	}
+};
+const selfSubscribeCard = async () => {};
+
+// Helpers for family subscription controllers
+const familySubscribeWallet = async (receiver, subscriber, package) => {
+	try {
+		const price = package.pricePerYear;
+		const familyDiscount = receiver.familyDiscount;
+		const discountedPrice = price * (1 - familyDiscount);
+		// Check if user has required funds
+		if (subscriber.wallet >= discountedPrice) {
+			await Patient.updateOne(
+				{ _id: subscriber._id },
+				{ wallet: subscriber.wallet - discountedPrice }
+			);
+		} else throw new Error("You don't have enough funds in your wallet for this subscription");
+
+		let dateInYear = new Date();
+		dateInYear.setFullYear(dateInYear.getFullYear() + 1);
+		const newPackage = {
+			package: package._id,
+			endDate: dateInYear,
+		};
+		// Finding updating all family members' family discount when their discount is less than the incoming one
+		const familyMemberIds = await receiver.linkedFamily.map((familyLink) => familyLink.member);
+		const updatedFamilyMembers = await Patient.updateMany(
+			{
+				_id: { $in: familyMemberIds },
+				$or: [
+					{ familyDiscount: { $lt: package.familyDiscount } },
+					{ familyDiscount: { $exists: false } }, // Handle undefined familyDiscount
+				],
+			},
+			{ $set: { familyDiscount: package.familyDiscount } }
+		);
+
+		const subscribedUser = await Patient.updateOne(
+			{ _id: receiver._id },
+			{ healthPackage: newPackage }
+		);
+		return subscribedUser;
+	} catch (error) {
+		throw error;
+	}
+};
+const familySubscribeCard = async () => {};
+
+// Controllers for Subscription
+const subscribeForMyself = async (req, res) => {
+	try {
+		const { _id, paymentType } = req.body;
+		const username = req.userData.username;
+		const loggedIn = await Patient.findOne({ username });
+
+		if (!_id || !paymentType) {
+			throw Error("Please input package id and payment type");
+		}
+
+		if (loggedIn.healthPackage.package !== null) {
+			throw Error("You are already subscribed to a package");
+		}
+
+		if (paymentType.toLowerCase() !== "wallet" && paymentType.toLowerCase() !== "card") {
+			throw Error("Payment is limited to card or wallet");
+		}
+
+		const package = await HealthPackage.findOne({ _id });
+		if (!package || !package.isActivated) {
+			throw Error("Package does not exist");
+		}
+		if (paymentType.toLowerCase() === "wallet") {
+			const subscribedUser = await selfSubscribeWallet(loggedIn, package);
+			res.status(200).json(subscribedUser);
+		} else if (paymentType.toLowerCase() === "card") {
+			// KORD MUST IMPLEMENT FUNCTION FOR STRIPE PAYMENT
+			selfSubscribeCard();
+			// KORD MUST IMPLEMENT FUNCTION FOR STRIPE PAYMENT
+		}
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
+const subscribeForFamily = async (req, res) => {
+	try {
+		const { _id, memberId, paymentType } = req.body;
+		const username = req.userData.username;
+		const loggedIn = await Patient.findOne({ username });
+		const familyMember = await Patient.findOne({ _id: memberId });
+
+		if (!_id || !memberId || !paymentType) {
+			throw Error("Please input memberId, package ID and payment type");
+		}
+
+		if (!familyMember) {
+			throw Error("This patient is not a family member");
+		}
+
+		if (paymentType.toLowerCase() !== "wallet" && paymentType.toLowerCase() !== "card") {
+			throw Error("Payment is limited to card or wallet");
+		}
+
+		if (familyMember.healthPackage.package !== null) {
+			throw Error("Your family member is already subscribed to a package");
+		}
+
+		const package = await HealthPackage.findOne({ _id });
+		if (!package || !package.isActivated) {
+			throw Error("Package does not exist");
+		}
+		if (paymentType.toLowerCase() === "wallet") {
+			const subscribedFamilyMember = await familySubscribeWallet(familyMember, loggedIn, package);
+			res.status(200).json(subscribedFamilyMember);
+		} else if (paymentType.toLowerCase() === "card") {
+			// KORD MUST IMPLEMENT FUNCTION FOR STRIPE PAYMENT
+			familySubscribeCard();
+			// KORD MUST IMPLEMENT FUNCTION FOR STRIPE PAYMENT
+		}
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
 
 module.exports = {
 	getPatient,
@@ -305,4 +467,6 @@ module.exports = {
 	getPackages,
 	getAvailableAppointments,
 	linkFamilyMember,
+	subscribeForFamily,
+	subscribeForMyself,
 };
