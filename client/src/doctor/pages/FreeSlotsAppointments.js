@@ -19,7 +19,6 @@ function FreeSlotsAppointments() {
       appointmentDuration,
       buffer,
     });
-    setTimezone("");
     setDate("");
     setStartTime("");
     setEndTime("");
@@ -59,7 +58,7 @@ function FreeSlotsAppointments() {
         <div style={formFieldStyle}>
           <label>
             End Time
-            <input type="text" value={timezone} onChange={(e) => setEndTime(e.target.value)} />
+            <input type="time" value={endtime} onChange={(e) => setEndTime(e.target.value)} />
           </label>
         </div>
         <div style={formFieldStyle}>
