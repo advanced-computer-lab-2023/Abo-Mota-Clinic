@@ -12,6 +12,7 @@ import { useRegisterDoctorMutation } from "../../../store";
 import DropDown from "../../../shared/Components/DropDown";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../../shared/Components/NavBar";
+import FileInput from "../../../shared/Components/FileInput";
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,8 +36,8 @@ const RegisterForm = () => {
     };
     console.log(doctor);
     setIsLoading(true);
-    // await new Promise(resolve => setTimeout(resolve, 3000));
-    await registerDoctor(doctor);
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    //await registerDoctor(doctor);
     // Remove the above await and insert code for backend registeration here.
     setIsLoading(false);
     resetForm({ values: "" });
@@ -51,129 +52,158 @@ const RegisterForm = () => {
     >
       {(formik) => (
         <form onSubmit={formik.handleSubmit}>
-          <div className="form-container">
-            <Input
-              label="Email*"
-              type="text"
-              id="email"
-              error={formik.errors.email}
-              touch={formik.touched.email}
-              {...formik.getFieldProps("email")}
+          {console.log(formik.values)}
+          <div className="form-container">         
+            <Input 
+            label="Email*" 
+            type="text" 
+            id="email"
+            error={formik.errors.email}
+            touch={formik.touched.email}
+            {...formik.getFieldProps('email')}
             />
           </div>
           <div className="form-container">
-            <Input
-              label="Username*"
-              type="text"
-              id="userName"
-              error={formik.errors.userName}
-              touch={formik.touched.userName}
-              {...formik.getFieldProps("userName")}
+          <Input 
+            label="Username*" 
+            type="text" 
+            id="userName"
+            error={formik.errors.userName}
+            touch= {formik.touched.userName}
+            {...formik.getFieldProps('userName')}
             />
-            <Input
-              label="NationalID*"
-              type="text"
-              id="nationalId"
-              error={formik.errors.nationalId}
-              touch={formik.touched.nationalId}
-              {...formik.getFieldProps("nationalId")}
+            <FileInput 
+            label="NationalID*" 
+            id="nationalId"
+            name="nationalId" // Ensure this is set to correctly associate with Formik's `getFieldProps`
+            error={formik.errors.nationalId}
+            touch={formik.touched.nationalId}
+            onChange={(file) => formik.setFieldValue('nationalId', file)}
+            onBlur={() => formik.setFieldTouched('nationalId', true)} // To handle touch status
             />
+
+            </div>
+            <div className="form-container">
+            <Input 
+            label="First Name*" 
+            type="text" 
+            id="firstName"
+            error={formik.errors.firstName}
+            touch= {formik.touched.firstName}
+            {...formik.getFieldProps('firstName')}
+            />  
+            <Input 
+            label="Last Name*" 
+            type="text" 
+            id="lastName"
+            error={formik.errors.lastName}
+            touch= {formik.touched.lastName}
+            {...formik.getFieldProps('lastName')}
+            />   
           </div>
           <div className="form-container">
-            <Input
-              label="First Name*"
-              type="text"
-              id="firstName"
-              error={formik.errors.firstName}
-              touch={formik.touched.firstName}
-              {...formik.getFieldProps("firstName")}
-            />
-            <Input
-              label="Last Name*"
-              type="text"
-              id="lastName"
-              error={formik.errors.lastName}
-              touch={formik.touched.lastName}
-              {...formik.getFieldProps("lastName")}
-            />
+          <DropDown 
+            label="Gender*" 
+            type="text" 
+            id="gender"
+            error={formik.errors.gender}
+            onChange={formik.handleChange}
+            touch = {formik.touched.gender}
+            options={['male', 'female']}
+            {...formik.getFieldProps('gender')}
+            /> 
+            <DateInput 
+            label="Date of Birth*" 
+            id="dob"
+            error={formik.errors.dateOfBirth}
+            touch = {formik.touched.dateOfBirth}
+            {...formik.getFieldProps('dateOfBirth')}
+            onChange={formik.handleChange}
+            /> 
+          </div>
+          <div className="form-container">           
+            <Input 
+            label="Affliation(Hospital)*" 
+            type="text" 
+            id="affiliation"
+            error={formik.errors.affiliation}
+            touch = {formik.touched.affiliation}
+            {...formik.getFieldProps('affiliation')}
+            />  
+            <Input 
+            label="Educational Background*" 
+            type="text" 
+            id="educationalBackground"
+            error={formik.errors.educationalBackground}
+            touch = {formik.touched.educationalBackground}
+            {...formik.getFieldProps('educationalBackground')}
+            />  
           </div>
           <div className="form-container">
-            <DateInput
-              label="Date of Birth*"
-              id="dob"
-              error={formik.errors.dateOfBirth}
-              touch={formik.touched.dateOfBirth}
-              {...formik.getFieldProps("dateOfBirth")}
-              onChange={formik.handleChange}
+            <Input 
+            label="Phone number*" 
+            type="tel" 
+            id="mobileNumber"
+            error={formik.errors.mobileNumber}
+            touch = {formik.touched.mobileNumber}
+            {...formik.getFieldProps('mobileNumber')}
             />
-            <Input
-              label="Hourly rate in USD*"
-              type="number"
-              id="hourlyRate"
-              error={formik.errors.hourlyRate}
-              touch={formik.touched.hourlyRate}
-              {...formik.getFieldProps("hourlyRate")}
-            />
+            <Input 
+            label="Hourly rate in USD*" 
+            type="number" 
+            id="hourlyRate"
+            error={formik.errors.hourlyRate}
+            touch = {formik.touched.hourlyRate}
+            {...formik.getFieldProps('hourlyRate')}
+            />       
           </div>
           <div className="form-container">
-            <Input
-              label="Affliation(Hospital)*"
-              type="text"
-              id="affiliation"
-              error={formik.errors.affiliation}
-              touch={formik.touched.affiliation}
-              {...formik.getFieldProps("affiliation")}
+          <Input 
+            label="Password*" 
+            type="password" 
+            id="password"
+            error={formik.errors.password}
+            touch = {formik.touched.password}
+            {...formik.getFieldProps('password')}
             />
-            <Input
-              label="Educational Background*"
-              type="text"
-              id="educationalBackground"
-              error={formik.errors.educationalBackground}
-              touch={formik.touched.educationalBackground}
-              {...formik.getFieldProps("educationalBackground")}
-            />
+            <Input 
+            label="Confirm Password*" 
+            type="password" 
+            id="confirmPassword"
+            error={formik.errors.confirmPassword}
+            touch = {formik.touched.confirmPassword}
+            {...formik.getFieldProps('confirmPassword')}
+            />  
           </div>
           <div className="form-container">
-            <Input
-              label="Phone number*"
-              type="tel"
-              id="mobileNumber"
-              error={formik.errors.mobileNumber}
-              touch={formik.touched.mobileNumber}
-              {...formik.getFieldProps("mobileNumber")}
+          <FileInput
+            label="Medical Degree*"
+            id="pharmacyDegree"
+            name="pharmacyDegree" // Ensure this is set to correctly associate with Formik's `getFieldProps`
+            error={formik.errors.pharmacyDegree}
+            touch={formik.touched.pharmacyDegree}
+            onChange={(file) => formik.setFieldValue('pharmacyDegree', file)}
+            onBlur={() => formik.setFieldTouched('pharmacyDegree', true)} // To handle touch status
             />
-            <DropDown
-              label="Gender*"
-              type="text"
-              id="gender"
-              error={formik.errors.gender}
-              onChange={formik.handleChange}
-              touch={formik.touched.gender}
-              options={["male", "female"]}
-              {...formik.getFieldProps("gender")}
-            />
-          </div>
-          <div className="form-container">
-            <Input
-              label="Password*"
-              type="password"
-              id="password"
-              error={formik.errors.password}
-              touch={formik.touched.password}
-              {...formik.getFieldProps("password")}
-            />
-            <Input
-              label="Cofirm Password*"
-              type="password"
-              id="confirmPassword"
-              error={formik.errors.confirmPassword}
-              touch={formik.touched.confirmPassword}
-              {...formik.getFieldProps("confirmPassword")}
+          <FileInput
+            label="Working Liscense*"
+            id="workingLiscense"
+            name="workingLiscense" // Ensure this is set to correctly associate with Formik's `getFieldProps`
+            error={formik.errors.workingLiscense}
+            touch={formik.touched.workingLiscense}
+            onChange={(file) => formik.setFieldValue('workingLiscense', file)}
+            onBlur={() => formik.setFieldTouched('workingLiscense', true)} // To handle touch status
             />
           </div>
           <div className="submit-add-medicine-button-container">
-            {isLoading ? <LoadingIndicator /> : <Button type="submit">Submit Form</Button>}
-          </div>
+          {isLoading ? <LoadingIndicator /> :
+            // <Link to='medicine'>
+              <Button type="submit">
+                Submit Form
+              </Button>
+            // </Link>
+          }
+        </div>
         </form>
       )}
     </Formik>
@@ -199,91 +229,114 @@ const RegisterForm = () => {
   );
 };
 
+const FILE_SIZE = 160 * 1024; // e.g., 160 KB
+const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
+
 const DoctorSchema = yup.object().shape({
-  userName: yup
-    .string()
-    .min(3, "Username must be at least 3 characters long")
-    .max(50, "Username must be at most 50 characters long")
-    .required("Please enter a valid username"),
+  userName: yup.string().min(3, 'Username must be at least 3 characters long').max(50, 'Username must be at most 50 characters long').required('Please enter a valid username'),
+  
+  firstName: yup.string().min(2, 'First Name must be at least 2 characters long').max(50, 'First Name must be at most 50 characters long').required('Please enter a valid First Name'),
+  
+  lastName: yup.string().min(2, 'Last Name must be at least 2 characters long').max(50, 'Last Name must be at most 50 characters long').required('Please enter a valid Last Name'),
 
-  firstName: yup
-    .string()
-    .min(2, "First Name must be at least 2 characters long")
-    .max(50, "First Name must be at most 50 characters long")
-    .required("Please enter a valid First Name"),
+  email: yup.string().email('Invalid email').required('Please enter a valid email address'),
 
-  lastName: yup
-    .string()
-    .min(2, "Last Name must be at least 2 characters long")
-    .max(50, "Last Name must be at most 50 characters long")
-    .required("Please enter a valid Last Name"),
+  password: yup.string().min(8, 'Password must be at least 8 characters long').matches(/[a-zA-Z]/, 'Password must contain at least one letter').matches(/[0-9]/, 'Password must contain at least one number').required('Please enter a valid password'),
 
-  email: yup.string().email("Invalid email").required("Please enter a valid email address"),
+  confirmPassword: yup.string().required('Confirm Password is required').oneOf([yup.ref('password'), null], 'Passwords must match'),
+  
+  dateOfBirth: yup.date().max(new Date(), 'Date of Birth should be in the past').required('Please enter your date of birth'),
 
-  password: yup
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .matches(/[a-zA-Z]/, "Password must contain at least one letter")
-    .matches(/[0-9]/, "Password must contain at least one number")
-    .required("Please enter a valid password"),
+  hourlyRate: yup.number().positive('Hourly rate should be a positive number').required('Please enter your hourly rate'),
 
-  confirmPassword: yup
-    .string()
-    .required("Confirm Password is required")
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
+  affiliation: yup.string().min(3, 'Affiliation (Hospital) must be at least 3 characters long').max(50, 'Affiliation (Hospital) must be at most 50 characters long').required('Please enter your affiliation (hospital)'),
 
-  dateOfBirth: yup
-    .date()
-    .max(new Date(), "Date of Birth should be in the past")
-    .required("Please enter your date of birth"),
+  gender: yup.string().oneOf(['male', 'female'], 'Invalid gender').required('Please select a gender'),
 
-  hourlyRate: yup
-    .number()
-    .positive("Hourly rate should be a positive number")
-    .required("Please enter your hourly rate"),
+  mobileNumber: yup.string().matches(/^[0-9]{11}$/, 'Mobile number must be exactly 11 digits').required('Please enter a valid mobile number'),
 
-  affiliation: yup
-    .string()
-    .min(3, "Affiliation (Hospital) must be at least 3 characters long")
-    .max(50, "Affiliation (Hospital) must be at most 50 characters long")
-    .required("Please enter your affiliation (hospital)"),
+  educationalBackground: yup.string().min(10, 'Educational Background must be at least 10 characters long').max(50, 'Educational Background must be at most 50 characters long').required('Please enter your educational background'),
 
-  educationalBackground: yup
-    .string()
-    .min(5, "Educational Background is too short")
-    .max(500, "Educational Background is too long")
-    .required("Please enter your educational background"),
-
-  gender: yup
-    .string()
-    .oneOf(["male", "female"], "Invalid gender")
-    .required("Please select a gender"),
-
-  mobileNumber: yup
-    .string()
-    .matches(/^[0-9]{11}$/, "Mobile number must be exactly 11 digits")
-    .required("Please enter a valid mobile number"),
-
+  pharmacyDegree: yup
+  .mixed()
+  .required('A file is required')
+  .test(
+    'fileFormat',
+    'Unsupported Format',
+    (value) => {
+      let file = value instanceof FileList ? value[0] : value;
+      return file && SUPPORTED_FORMATS.includes(file.type);
+    }
+  )
+  .test(
+    'fileSize',
+    'File too large',
+    (value) => {
+      let file = value instanceof FileList ? value[0] : value;
+      return file && file.size <= FILE_SIZE;
+    }
+  ),
+  
   nationalId: yup
-    .string()
-    .matches(/^[0-9]{14}$/, "National ID must be exactly 14 digits")
-    .required("Please enter a valid national ID"),
+    .mixed()
+    .required('A file is required')
+    .test(
+      'fileFormat',
+      'Unsupported Format',
+      (value) => {
+        let file = value instanceof FileList ? value[0] : value;
+        return file && SUPPORTED_FORMATS.includes(file.type);
+      }
+    )
+    .test(
+      'fileSize',
+      'File too large',
+      (value) => {
+        let file = value instanceof FileList ? value[0] : value;
+        return file && file.size <= FILE_SIZE;
+      }
+    ),
+
+    workingLiscense: yup
+    .mixed()
+    .required('A file is required')
+    .test(
+      'fileFormat',
+      'Unsupported Format',
+      (value) => {
+        let file = value instanceof FileList ? value[0] : value;
+        return file && SUPPORTED_FORMATS.includes(file.type);
+      }
+    )
+    .test(
+      'fileSize',
+      'File too large',
+      (value) => {
+        let file = value instanceof FileList ? value[0] : value;
+        return file && file.size <= FILE_SIZE;
+      }
+    )
+
 });
 
+
 const initialDoctorValues = {
-  userName: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  dateOfBirth: "",
-  hourlyRate: "",
-  affiliation: "",
-  educationalBackground: "",
-  gender: "male",
-  mobileNumber: "",
-  nationalId: "",
+  userName: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',  
+  dateOfBirth: '',
+  hourlyRate: '',
+  affiliation: '',
+  pharmacyDegree: null,
+  gender: 'male',
+  mobileNumber: '',
+  nationalId: null,
+  workingLiscense: null,
+  educationalBackground: '',
 };
+
 
 export default RegisterForm;

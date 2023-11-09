@@ -1,12 +1,15 @@
 .dropdown-container{
   margin-bottom: 20px;
   background-color: #fff;
-  padding: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
   margin: 0px;
   box-shadow: 0px 0px 10px rgba(0,0,0,0,1);
   display: inline-block;
-  width: 20vw;
+  max-width: 40%;
   flex-grow: 1;
+  height: 5rem;
 }
 
 label{

@@ -91,7 +91,8 @@
 }
 .form-container{
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+
 }
 
 .add-medicine-form{
@@ -107,4 +108,10 @@
   justify-content: flex-end;
   margin-top: 20px;
   height: 60px;
+}
+
+.register-emergency-contact-title{
+  padding-left: 30px;
+  font-weight: bold;
+  text-decoration: underline;
 }

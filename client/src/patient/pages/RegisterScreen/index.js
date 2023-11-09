@@ -65,6 +65,14 @@ const RegisterScreen = () => {
               touch={formik.touched.email}
               {...formik.getFieldProps("email")}
             />
+            <Input
+              label="Phone number*"
+              type="tel"
+              id="mobileNumber"
+              error={formik.errors.mobileNumber}
+              touch={formik.touched.mobileNumber}
+              {...formik.getFieldProps("mobileNumber")}
+            />
           </div>
           <div className="form-container">
             <Input
@@ -103,23 +111,7 @@ const RegisterScreen = () => {
             />
           </div>
           <div className="form-container">
-            <DateInput
-              label="Date of Birth*"
-              id="dob"
-              error={formik.errors.dateOfBirth}
-              touch={formik.touched.dateOfBirth}
-              {...formik.getFieldProps("dateOfBirth")}
-              onChange={formik.handleChange}
-            />
-            <Input
-              label="Phone number*"
-              type="tel"
-              id="mobileNumber"
-              error={formik.errors.mobileNumber}
-              touch={formik.touched.mobileNumber}
-              {...formik.getFieldProps("mobileNumber")}
-            />
-            <DropDown
+          <DropDown
               label="Gender*"
               type="text"
               id="gender"
@@ -128,6 +120,14 @@ const RegisterScreen = () => {
               touch={formik.touched.gender}
               options={["male", "female"]}
               {...formik.getFieldProps("gender")}
+            />
+            <DateInput
+              label="Date of Birth*"
+              id="dob"
+              error={formik.errors.dateOfBirth}
+              touch={formik.touched.dateOfBirth}
+              {...formik.getFieldProps("dateOfBirth")}
+              onChange={formik.handleChange}
             />
           </div>
           <div className="form-container">

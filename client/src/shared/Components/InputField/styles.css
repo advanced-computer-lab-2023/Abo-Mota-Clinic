@@ -23,13 +23,13 @@
   height: 100%;
   width: 100%;
   border: none;
-  font-size: 1.5rem; /* Increase the font size as needed */
+  font-size: 1rem; /* Increase the font size as needed */
   outline: none; /* Removes the highlight border on focus */
 }
 
 .input-label {
   margin-bottom: 5px; /* Add space between label and input */
-  font-size: 1.5rem; /* Make the font size of the label larger */
+  font-size: 1rem; /* Make the font size of the label larger */
   align-self: flex-end;
   cursor: pointer;
 }
@@ -37,5 +37,5 @@
 /* If you have specific styles for error messages */
 .input-error {
   color: red;
-  font-size: 1.4rem;
+  font-size: 1rem;
 }
