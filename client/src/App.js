@@ -36,6 +36,7 @@ import Contract from "./doctor/pages/Contract";
 
 // login
 import LoginForm from "./shared/pages/LoginForm";
+import PaymentPage from "./patient/pages/PaymentPage";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           <Route path="test2" element={<PatientTest2 />} />
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="stripe" element={<PaymentPage />} />
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>
