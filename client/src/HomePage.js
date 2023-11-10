@@ -9,8 +9,8 @@ function HomePage() {
       <Link to="doctorRegistration">
         <button>Register as Doctor</button>
       </Link>
-      <Link to="admin">
-        <button>Admin</button>
+      <Link to="login">
+        <button>Login</button>
       </Link>
     </div>
   );
