@@ -30,7 +30,7 @@ function ViewDoctorAppointments() {
 
 	let filteredAppointments = []
 
-	const options = ["upcoming", "cancelled", "completed"];
+	const options = ["upcoming", "cancelled", "completed", "rescheduled"];
 
 	if(isFetching)
 		filteredAppointments = [];

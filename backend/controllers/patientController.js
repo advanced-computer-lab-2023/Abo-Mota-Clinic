@@ -335,7 +335,7 @@ const selfSubscribeWallet = async (user, package) => {
 		throw error;
 	}
 };
-const selfSubscribeCard = async () => {};
+const selfSubscribeCard = async () => { };
 
 // Helpers for family subscription controllers
 const familySubscribeWallet = async (receiver, subscriber, package) => {
@@ -379,7 +379,7 @@ const familySubscribeWallet = async (receiver, subscriber, package) => {
 		throw error;
 	}
 };
-const familySubscribeCard = async () => {};
+const familySubscribeCard = async () => { };
 
 // Controllers for Subscription
 const subscribeForMyself = async (req, res) => {
@@ -500,55 +500,56 @@ const getFamilyPackages = async (req, res) => {
 };
 
 const payAppointmentByCard = async (req, res) => {
-  try {
-    const { doctor_id, deductible, credit } = req.body;
+	try {
+		const { doctor_id, deductible, credit } = req.body;
 
-    // Update the doctor's wallet by the provided amount
-    const updatedDoctor = await Doctor.findByIdAndUpdate(
-      doctor_id,
-      { $inc: { wallet: parseFloat(credit) } },
-      { new: true }
-    );
+		// Update the doctor's wallet by the provided amount
+		const updatedDoctor = await Doctor.findByIdAndUpdate(
+			doctor_id,
+			{ $inc: { wallet: parseFloat(credit) } },
+			{ new: true }
+		);
 
-    if (!updatedDoctor) {
-      return res.status(404).json({ message: 'Doctor not found' });
-    }
+		if (!updatedDoctor) {
+			return res.status(404).json({ message: 'Doctor not found' });
+		}
 
-    res.json({ message: 'Doctor wallet updated successfully', doctor: updatedDoctor });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+		res.json({ message: 'Doctor wallet updated successfully', doctor: updatedDoctor });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
 }
 
 const payAppointmentByWallet = async (req, res) => {
-  try {
-    const { doctor_id, deductible, credit } = req.body;
-    const username = req.userData.username;
-    const loggedIn = await Patient.findOne({ username });
+	try {
+		const { doctor_id, deductible, credit } = req.body;
+		const username = req.userData.username;
+		const loggedIn = await Patient.findOne({ username });
 
-    console.log(loggedIn);
+		console.log("Logged in user")
+		console.log(loggedIn);
 
-    if (loggedIn.wallet < deductible) {
-      return res.status(400).json({ message: 'Insufficient funds' });
-    }
+		if (loggedIn.wallet < deductible) {
+			return res.status(500).json({ message: 'Insufficient funds' });
+		}
 
-    const updatedPatient = await Patient.findByIdAndUpdate(
-      loggedIn._id,
-      { $inc: { wallet: -deductible } },
-      { new: true }
-    );
+		const updatedPatient = await Patient.findByIdAndUpdate(
+			loggedIn._id,
+			{ $inc: { wallet: -deductible } },
+			{ new: true }
+		);
 
-    const updatedDoctor = await Doctor.findByIdAndUpdate(
-      doctor_id,
-      { $inc: { wallet: parseFloat(credit) } },
-      { new: true }
-    );
+		const updatedDoctor = await Doctor.findByIdAndUpdate(
+			doctor_id,
+			{ $inc: { wallet: credit } },
+			{ new: true }
+		);
 
-    res.json({ message: 'Payment is successful', patient: updatedPatient, doctor: updatedDoctor });
-  }
-  catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+		res.status(200).json({ message: 'Payment is successful', patient: updatedPatient, doctor: updatedDoctor });
+	}
+	catch (err) {
+		res.status(500).json({ message: err.message });
+	}
 }
 
 const viewWallet = async (req, res) => {
@@ -566,6 +567,17 @@ const viewWallet = async (req, res) => {
 
 };
 
+const test = async (req, res) => {
+	const { mode } = req.body;
+
+	if (mode === "success") {
+		res.status(200).json({ message: "success" });
+	} else {
+		throw new Error("Insufficient funds");
+	}
+
+}
+
 module.exports = {
 	getPatient,
 	getPrescriptions,
@@ -581,8 +593,8 @@ module.exports = {
 	subscribeForMyself,
 	getMyPackage,
 	getFamilyPackages,
-  	payAppointmentByCard,
-  	payAppointmentByWallet,
-	viewWallet
-
+		payAppointmentByCard,
+		payAppointmentByWallet,
+	viewWallet,
+	test
 };

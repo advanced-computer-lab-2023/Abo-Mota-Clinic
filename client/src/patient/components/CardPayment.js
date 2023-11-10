@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import StripeForm from "../components/StripeForm";
+import StripeForm from "./StripeForm";
 import { Elements } from "@stripe/react-stripe-js";
 import axios from "axios";
 

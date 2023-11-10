@@ -16,6 +16,7 @@ const {
 	getFamilyPackages,
 	payAppointmentByCard,
 	payAppointmentByWallet,
+	test,
 	viewWallet
 } = require("../controllers/patientController");
 
@@ -70,6 +71,7 @@ router.get("/myPackage", authorize, getMyPackage);
 // Get Subscribed Family Member Packages
 router.get("/familyPackages", authorize, getFamilyPackages);
 
+router.post("/test", test);
 //Get Amount in my Wallet
 router.get('/wallet', authorize, viewWallet)
 

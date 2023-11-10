@@ -5,11 +5,27 @@ import { Button, Divider } from "@mui/joy";
 import { Typography } from "@mui/joy";
 import { usePayAppointmentByCardMutation } from "../../store";
 import { usePayAppointmentByWalletMutation } from "../../store";
+import Toast from "./Toast";
 // import './stripe.css';
 
 export default function StripeForm({ deductible, doctorCredit, doctorId }) {
   const stripe = useStripe();
   const elements = useElements();
+
+  const [toast, setToast] = useState({
+    open: false,
+    duration: 4000,
+  });
+
+  const onToastClose = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    setToast({
+      ...toast,
+      open: false,
+    });
+  };
+
 
   const [payAppointmentByCard, results] = usePayAppointmentByCardMutation();
 
@@ -35,13 +51,28 @@ export default function StripeForm({ deductible, doctorCredit, doctorId }) {
     });
 
     if (error) {
-      setMessage(error.message);
+      setToast({
+        ...toast,
+        open: true,
+        color: "danger",
+        message: "Payment unsuccessful",
+      });
+
+      console.log(error);
+
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
 
       payAppointmentByCard({
         doctor_id: doctorId,
         deductible: deductible,
         credit: doctorCredit
+      });
+
+      setToast({
+        ...toast,
+        open: true,
+        color: "success",
+        message: "Payment completed successfully!",
       });
 
       setMessage(`Payment status: ${paymentIntent.status}`);
@@ -52,13 +83,6 @@ export default function StripeForm({ deductible, doctorCredit, doctorId }) {
     setIsProcessing(false);
   };
 
-  /*
-  border: #F6F9FC solid 1px;
-  border-radius: var(--radius);
-  padding: 20px;
-  margin: 20px 0;
-  box-shadow: 0 30px 50px -20px rgb(50 50 93 / 25%), 0 30px 60px -30px rgb(0 0 0 / 30%);
-  */
 
   return (
     <form
@@ -90,7 +114,10 @@ export default function StripeForm({ deductible, doctorCredit, doctorId }) {
       <Typography level="body-sm">By clicking Pay you agree to the Terms & Conditions.</Typography>
 
       {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+      <div>
+        <Toast {...toast} onClose={onToastClose} />
+      </div>
+
     </form>
   );
 }

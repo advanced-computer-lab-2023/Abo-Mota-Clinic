@@ -1,6 +1,6 @@
 import { Box } from "@mui/joy";
 import { Typography, Divider, Button, Card } from "@mui/joy";
-import Payment from "../components/Payment";
+import CardPayment from "../components/CardPayment";
 import { FaRegCreditCard } from "react-icons/fa";
 import { IoWallet } from "react-icons/io5";
 import { useState } from "react";
@@ -8,9 +8,12 @@ import { BsClock } from "react-icons/bs";
 import { GrLocationPin } from "react-icons/gr";
 import { useFetchPatientQuery, usePayAppointmentByWalletMutation } from "../../store";
 import capitalize from "../utils/capitalize";
+import WalletPayment from "../components/WalletPayment";
 
 function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
+
+  console.log("Doctor Credit @ PaymentPage: ", doctorCredit)
 
   const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
   const [payAppointmentByWallet, results] = usePayAppointmentByWalletMutation();
@@ -21,14 +24,6 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
     return <div> Error ... </div>;
   }
 
-  const handlePayByWallet = (e) => {
-    e.preventDefault();
-    payAppointmentByWallet({
-      doctor_id: doctorId,
-      deductible: deductible,
-      credit: doctorCredit,
-    });
-  };
 
   const buttonGroup = [
     {
@@ -99,24 +94,12 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
                 ))}
               </Box>
 
-              {paymentMethod === "card" ? (
-                <Payment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
-              ) : (
-                <form onSubmit={handlePayByWallet}>
-                  <Typography level="h3" fontWeight={500}>Available Balance - ${patient.wallet}</Typography>
-                  <Button
-                    type="submit"
-                    variant="solid"
-                    // disabled={isProcessing}
-                    id="submit"
-                    sx={{ width: "100%", my: 3, borderRadius: 1 }}
-                  // onClick={handlePayByWallet}
-                  >
-                    <span id="Button-text">{"Pay"}</span>
-                  </Button>
+              {/* MAIN PAYMENT COMPONENT */}
 
-                  <Typography level="body-sm">By clicking Pay you agree to the Terms & Conditions.</Typography>
-                </form>
+              {paymentMethod === "card" ? (
+                <CardPayment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
+              ) : (
+                <WalletPayment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
               )}
             </Card>
           </Box>
