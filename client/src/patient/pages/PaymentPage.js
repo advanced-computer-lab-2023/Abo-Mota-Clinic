@@ -8,7 +8,7 @@ import { BsClock } from "react-icons/bs";
 import { GrLocationPin } from "react-icons/gr";
 import { useFetchPatientQuery, usePayAppointmentByWalletMutation } from "../../store";
 
-function PaymentPage({ patient, doctor, doctorId, date, currentTime, deductible, doctorCredit }) {
+function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
 
   const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
