@@ -79,6 +79,7 @@ export default function PatientTest2({ step = 0 }) {
       doctorId={doctorId}
       doctor={doctor[id]}
       patient={patient}
+      doctorCredit={rate}
     />
   );
 

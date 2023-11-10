@@ -30,13 +30,17 @@ import PackageCard from '../components/PackagesCard'
 export default function Subscription() {
     // Define a gradient background style
     const gradientStyle = {
-        background: 'linear-gradient(to right, #e6f1ff, #cce0ff)', // Soft blue gradient
-        color: '#333', // Dark text for better visibility
+        background: 'linear-gradient(to right, #e6f1ff, #cce0ff)', 
+        color: '#333', 
     };
     const headerStyle = {
-        textAlign: 'center', // Center the text
-        color: '#2c3e50', // Dark blue color that should fit the gradient well
+        textAlign: 'center', 
+        color: '#2c3e50', 
     };
+
+    
+
+     
 
     return (
         <section style={{ ...gradientStyle, maxWidth: '1536px', width: '100%' }} className="border-2 border-gray-300 rounded-lg mx-auto my-8 p-4">

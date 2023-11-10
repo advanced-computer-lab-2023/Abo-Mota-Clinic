@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { doctorApi } from "./apis/doctorApi";
-import { doctorReducer, getDoctors } from "./slices/doctorSlice";
 import { adminApi } from "./apis/adminApi";
 import { guestApi } from "./apis/guestApi";
 import { patientApi } from "./apis/patientApi";
@@ -14,7 +13,7 @@ export const store = configureStore({
     [guestApi.reducerPath]: guestApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
     [stripeApi.reducerPath]: stripeApi.reducer,
-    doctorSlice: doctorReducer,
+    
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
@@ -52,6 +51,7 @@ export {
   useRegisterDoctorMutation,
   useRegisterPatientMutation,
   useLoginMutation,
+  useLogoutMutation,
 } from "./apis/guestApi";
 
 export const {
@@ -65,8 +65,9 @@ export const {
   useFetchAvailableAppointmentsQuery,
   usePayAppointmentByCardMutation,
   usePayAppointmentByWalletMutation,
+  
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchConfigQuery } = "./apis/stripeApi";
 
-export { getDoctors };
+

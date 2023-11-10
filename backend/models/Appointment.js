@@ -6,7 +6,7 @@ const appointmentSchema = new Schema(
 		date: Date,
 		status: {
 			type: String,
-			enum: ["completed", "upcoming", "cancelled", "unbooked"],
+			enum: ["completed", "upcoming", "cancelled", "unbooked", "rescheduled"],
 			default: "unbooked",
 		},
 		doctor: {

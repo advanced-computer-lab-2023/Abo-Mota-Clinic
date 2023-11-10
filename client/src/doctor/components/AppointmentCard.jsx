@@ -19,7 +19,8 @@ const colors = {
     "upcoming": "warning",
     "cancelled": "danger",
     "completed": "success",
-    "unbooked": "primary"
+    "unbooked": "primary",
+    "rescheduled": "primary"
     }
 
   return (
