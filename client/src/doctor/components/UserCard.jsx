@@ -122,6 +122,7 @@ export default function UserCard() {
           // overflow: { xs: "auto", sm: "initial" },
         }
       }
+      
     >
       <Card
         orientation="horizontal"

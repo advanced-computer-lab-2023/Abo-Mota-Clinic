@@ -265,7 +265,22 @@ const scheduleFollowUp = async(req, res) => {
 	}catch(error){
 		res.status(500).json({message: error.message});
 	}
-}
+};
+
+const viewWallet = async (req, res) => {
+	
+	try{
+
+		const username = req.userData.username;
+		const loggedIn = await Doctor.findOne({username});
+
+		res.status(200).json({wallet: loggedIn.wallet});
+
+	}catch(error){
+		res.status(500).json({message: error.message});
+	}
+
+};
 
 module.exports = {
 	getDoctorProfile,
@@ -275,5 +290,6 @@ module.exports = {
 	changePassword,
 	addFreeAppointmentSlots,
 	acceptContract,
-	scheduleFollowUp
+	scheduleFollowUp,
+	viewWallet
 };

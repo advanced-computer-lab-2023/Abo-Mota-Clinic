@@ -35,7 +35,7 @@ function ViewDoctorAppointments() {
 	if(isFetching)
 		filteredAppointments = [];
 	else if (selection.length === 0) {
-		filteredAppointments = data;
+		filteredAppointments = data.filter((appointment) => appointment.patient != null);
 		console.log(data);
 	} else {
 		filteredAppointments = data.filter((appointment) => selection.includes(appointment.status));
@@ -85,7 +85,7 @@ function ViewDoctorAppointments() {
 	
 
 	return (
-		<div>
+		<div className="mx-auto">
 			
 			{!isFetching && 
 				<div className="ml-20 flex flex-col space-y-4 ">

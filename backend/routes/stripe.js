@@ -3,8 +3,10 @@ const { config, createPaymentIntent } = require("../controllers/stripeController
 const router = express.Router();
 require("dotenv").config();
 
-router.get("/config", config);
+const authorize = require("../middlewares/authorization")
 
-router.post("/create-payment-intent", createPaymentIntent);
+router.get("/config", authorize, config);
+
+router.post("/create-payment-intent", authorize, createPaymentIntent);
 
 module.exports = router;
