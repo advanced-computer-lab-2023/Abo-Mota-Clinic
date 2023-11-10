@@ -43,6 +43,7 @@ app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // listen for requests
 app.listen(process.env.PORT, () => {
