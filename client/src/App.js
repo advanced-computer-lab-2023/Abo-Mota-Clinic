@@ -21,7 +21,7 @@
   import PatientHome from "./patient/pages/PatientHome";
   import ViewWallet from "./patient/pages/ViewWallet";
   import PatientTest2 from "./patient/pages/PatientTest2";
-  import Subscription from "./patient/components/Subscription";
+  import Subscription from "./patient/pages/Subscription";
 
   // Doctor
   import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -63,13 +63,13 @@ function App() {
           <Route path="doctors/info/:id/test2/:doctorId" element={<PatientTest2 />} />
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="stripe" element={<PaymentPage />} />
+          <Route path="stripe" element={<PaymentPage />}/>
+          <Route path="profile/subscription" element={<Subscription/>}/>
+          
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>
-          <Route
-            path="contract"
-            element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
+          <Route path="contract" element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
           />
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />

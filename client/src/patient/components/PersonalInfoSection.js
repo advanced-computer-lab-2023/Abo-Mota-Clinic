@@ -1,6 +1,8 @@
 import Picture from '../assets/images/female_avatar.png'
+import Picture2 from '../assets/images/male_avatar.png'
 import Button from '../../shared/Components/Button';
 import { useNavigate } from 'react-router-dom';
+
 
 function  PersonalInfoSection({patient})
 {
@@ -8,6 +10,17 @@ function  PersonalInfoSection({patient})
   const handleViewSubscription = ()=>{
     navigate('./Subscription');
   }
+
+  const formattedDate = new Date(patient.dob).toLocaleDateString('en-GB', {
+    day: '2-digit', 
+    month: '2-digit', 
+    year: 'numeric'
+});
+
+
+  let profilePicture = Picture
+  if(patient.gender=='male')
+    profilePicture = Picture2;
     return ( 
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
@@ -17,7 +30,7 @@ function  PersonalInfoSection({patient})
           <div className="flex-shrink-0 h-20 w-20">
             <img
               className="h-20 w-20 rounded-full hover:opacity-80"
-              src={Picture}
+              src={profilePicture}
               alt="patient"
             />
             
@@ -48,7 +61,7 @@ function  PersonalInfoSection({patient})
                 </div>
                 <div className="sm:col-span-1">
                   <dt className="text-sm font-medium text-gray-500">Date of Birth</dt>
-                  <dd className="mt-1 text-sm text-gray-900">{patient.dob}</dd>
+                  <dd className="mt-1 text-sm text-gray-900">{formattedDate}</dd>
                 </div>
                 <div className="sm:col-span-1">
                   <dt className="text-sm font-medium text-gray-500">Gender</dt>
