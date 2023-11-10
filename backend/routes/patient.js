@@ -18,7 +18,8 @@ const {
 	payAppointmentByWallet,
 	viewWallet,
 	uploadMedicalHistory,
-	deleteMedicalHistory
+	deleteMedicalHistory,
+	test,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -95,6 +96,7 @@ router.get("/myPackage", authorize, getMyPackage);
 // Get Subscribed Family Member Packages
 router.get("/familyPackages", authorize, getFamilyPackages);
 
+router.post("/test", test);
 //Get Amount in my Wallet
 router.get('/wallet', authorize, viewWallet)
 
