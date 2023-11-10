@@ -12,6 +12,8 @@ const {
 	linkFamilyMember,
 	subscribeForFamily,
 	subscribeForMyself,
+	getMyPackage,
+	getFamilyPackages,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -52,4 +54,10 @@ router.post("/selfSubscribe", authorize, subscribeForMyself);
 
 // Subscribe for a family member
 router.post("/familySubscribe", authorize, subscribeForFamily);
+
+// Get Subscribed Package for myself
+router.get("/myPackage", authorize, getMyPackage);
+
+// Get Subscribed Family Member Packages
+router.get("/familyPackages", authorize, getFamilyPackages);
 module.exports = router;
