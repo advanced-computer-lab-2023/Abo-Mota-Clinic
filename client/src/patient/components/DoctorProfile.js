@@ -12,7 +12,6 @@ import {
   Box,
   Tab,
   Breadcrumbs,
-  Link,
 } from "@mui/joy";
 import Rating from "@mui/material/Rating";
 import { tabClasses } from "@mui/joy/Tab";
@@ -25,7 +24,8 @@ import dayjs from "dayjs";
 import { getDayName, getMonthName } from "../functions/DateManipulation";
 import PatientTest2 from "../pages/PatientTest2";
 import UserSelectionModal from "./UsersModal";
-const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliation }) => {
+import { Link } from "react-router-dom";
+const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affiliation }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
   // const [config, setConfig] = useState({});
   const [date, setDate] = useState(null);
@@ -285,6 +285,10 @@ const DoctorProfile = ({ name, specialty, rate, educationalBackground, affiliati
             </Button>
           </Box>
         </Sheet>
+        <Link to={`test2/${_id}`}>
+          <Button>Book more appointments</Button>
+        </Link>
+
         {/* <PatientTest2 /> */}
       </Card>
     </Box>

@@ -9,13 +9,15 @@ const sendEmail = require("../utils/sendEmail");
 const { OTP_SENDER_MAIL, JWT_SECRET } = process.env;
 const jwt = require("jsonwebtoken");
 
-
 // initial testing complete, needs further edge cases tested
 const registerPatient = async (req, res) => {
 	try {
 		const { username, nationalId, password, email } = req.body;
+		const lowerCaseUser = username.toLowerCase();
 		// 1. Check if the user already exists
-		const userExists = await Patient.findOne({ $or: [{ username }, { nationalId }, { email }] });
+		const userExists = await Patient.findOne({
+			$or: [{ username: lowerCaseUser }, { nationalId }, { email }],
+		});
 		if (userExists) {
 			throw new Error("User with these credentials already exists");
 		}
@@ -26,21 +28,23 @@ const registerPatient = async (req, res) => {
 		// 3. Create a new user instance and save it
 		const newPatient = await Patient.create({
 			...req.body,
+			username: lowerCaseUser,
 			password: hashedPassword,
 		});
 
 		const token = jwt.sign(
 			{
-				username: username,
-				userType: "patient"
+				username: lowerCaseUser,
+				userType: "patient",
 			},
 			JWT_SECRET,
-			{expiresIn: 86400}, //expires after 1 day
-			
-		)
+			{ expiresIn: 86400 } //expires after 1 day
+		);
 
-		return res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000, secure: false, path: '/' })
-					.status(200).json({ newPatient, token: "Bearer " + token });
+		return res
+			.cookie("jwt", token, { httpOnly: true, maxAge: 86400 * 1000, secure: false, path: "/" })
+			.status(200)
+			.json({ newPatient, token: "Bearer " + token });
 	} catch (error) {
 		return res.status(404).json({ error: error.message });
 	}
@@ -49,10 +53,10 @@ const registerPatient = async (req, res) => {
 const registerDoctor = async (req, res) => {
 	try {
 		const { username, nationalId, password, email } = req.body;
-
+		const lowerCaseUser = username.toLowerCase();
 		const doctorExists = await Doctor.findOne({
 			$and: [
-				{ $or: [{ username }, { nationalId }, { email }] },
+				{ $or: [{ username: lowerCaseUser }, { nationalId }, { email }] },
 				{ registrationStatus: { $in: ["approved", "pending"] } },
 			],
 		});
@@ -74,6 +78,7 @@ const registerDoctor = async (req, res) => {
 
 		const newDoctor = await Doctor.create({
 			...req.body,
+			username: lowerCaseUser,
 			password: hashedPassword,
 			medicalLicense,
 			medicalDegree,
@@ -81,16 +86,17 @@ const registerDoctor = async (req, res) => {
 
 		const token = jwt.sign(
 			{
-				username: username,
-				userType: "doctor"
+				username: lowerCaseUser,
+				userType: "doctor",
 			},
 			JWT_SECRET,
-			{expiresIn: 86400}, //expires after 1 day
-			
-		)
+			{ expiresIn: 86400 } //expires after 1 day
+		);
 
-		return res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000, secure: false, path: '/' })
-					.status(200).json({ newDoctor ,  token: "Bearer " + token });
+		return res
+			.cookie("jwt", token, { httpOnly: true, maxAge: 86400 * 1000, secure: false, path: "/" })
+			.status(200)
+			.json({ newDoctor, token: "Bearer " + token });
 	} catch (error) {
 		return res.status(500).json({ error: error.message });
 	}
@@ -209,84 +215,79 @@ const deleteOtp = async (email) => {
 	}
 };
 
-const login = async (req, res)  => {
-    const {username, password} = req.body;
+const login = async (req, res) => {
+	const { username, password } = req.body;
 
-    const patientExists = await Patient.findOne({username: username});
-    const doctorExists = await Doctor.findOne({username: username});
-    const adminExists = await Admin.findOne({username: username});
+	const patientExists = await Patient.findOne({ username: username.toLowerCase() });
+	const doctorExists = await Doctor.findOne({ username: username.toLowerCase() });
+	const adminExists = await Admin.findOne({ username: username.toLowerCase() });
 
-    if(!patientExists && !doctorExists && !adminExists){
-        return res.status(404).json({
-            message: "Invalid Username"
-        })
-    }
+	if (!patientExists && !doctorExists && !adminExists) {
+		return res.status(404).json({
+			message: "Invalid Username",
+		});
+	}
 
-    let dbUserPass;
+	let dbUserPass;
 	let userType;
-    if(patientExists){
+	if (patientExists) {
 		dbUserPass = patientExists.password;
-		userType = "patient"
-
-	}
-    else if(doctorExists){
+		userType = "patient";
+	} else if (doctorExists) {
 		dbUserPass = doctorExists.password;
-		userType = "doctor"
-	}
-    else{
+		userType = "doctor";
+	} else {
 		dbUserPass = adminExists.password;
-		userType = "admin"
+		userType = "admin";
 	}
 
-    bcrypt.compare(password, dbUserPass)
-    .then( isCorrect => {
-        //correct creds => create jwt token 
-        if(isCorrect){
-            const payload = {
-                username: username,
-				userType: userType
-            }
-            //create the token
-            jwt.sign(
-                payload,
-                JWT_SECRET,
-                {expiresIn: 86400}, //expires after 1 day
-                (err, token) => {
-                    if(err) 
-                        return res.json({message: err.message})
+	bcrypt.compare(password, dbUserPass).then((isCorrect) => {
+		//correct creds => create jwt token
+		if (isCorrect) {
+			const payload = {
+				username: username.toLowerCase(),
+				userType: userType,
+			};
+			//create the token
+			jwt.sign(
+				payload,
+				JWT_SECRET,
+				{ expiresIn: 86400 }, //expires after 1 day
+				(err, token) => {
+					if (err) return res.json({ message: err.message });
 
-					
 					// console.log(res.cookies.jwt)
-                    return res.cookie('jwt', token, {httpOnly: true, maxAge: 86400 * 1000, secure: false, path: '/' })
-								.status(200)
-								.json({
-										message: "Success",
-										token: "Bearer " + token,
-										userType: userType //use to redirect to correct homepage
-									});
-                }
-            )
-        } else {
-            return res.status(404).json({
-                message: "Invalid Password!"
-            })
-        }
-    })
-    
-}
+					return res
+						.cookie("jwt", token, {
+							httpOnly: true,
+							maxAge: 86400 * 1000,
+							secure: false,
+							path: "/",
+						})
+						.status(200)
+						.json({
+							message: "Success",
+							token: "Bearer " + token,
+							userType: userType, //use to redirect to correct homepage
+						});
+				}
+			);
+		} else {
+			return res.status(404).json({
+				message: "Invalid Password!",
+			});
+		}
+	});
+};
 
-
-
-
-const logout = (req,res) => {
-    try{
-        res.clearCookie('jwt');
-        res.status(200).json({message: "Logged Out Successfully"})
-    }catch(err){
-        res.status(500).json({message: err.message})
-    }
-}
-
+const logout = (req, res) => {
+	try {
+		res.clearCookie("jwt");
+		res.status(200).json({ message: "Logged Out Successfully" });
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+};
 
 module.exports = {
 	registerPatient,
@@ -294,5 +295,5 @@ module.exports = {
 	requestOtp,
 	forgotPassword,
 	login,
-	logout
+	logout,
 };

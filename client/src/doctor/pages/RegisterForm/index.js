@@ -178,21 +178,21 @@ const RegisterForm = () => {
           <div className="form-container">
           <FileInput
             label="Medical Degree*"
-            id="pharmacyDegree"
-            name="pharmacyDegree" // Ensure this is set to correctly associate with Formik's `getFieldProps`
+            id="medicalDegree"
+            name="medicalDegree" // Ensure this is set to correctly associate with Formik's `getFieldProps`
             error={formik.errors.pharmacyDegree}
             touch={formik.touched.pharmacyDegree}
-            onChange={(file) => formik.setFieldValue('pharmacyDegree', file)}
-            onBlur={() => formik.setFieldTouched('pharmacyDegree', true)} // To handle touch status
+            onChange={(file) => formik.setFieldValue('medicalDegree', file)}
+            onBlur={() => formik.setFieldTouched('medicalDegree', true)} // To handle touch status
             />
           <FileInput
-            label="Working Liscense*"
-            id="workingLiscense"
-            name="workingLiscense" // Ensure this is set to correctly associate with Formik's `getFieldProps`
-            error={formik.errors.workingLiscense}
-            touch={formik.touched.workingLiscense}
-            onChange={(file) => formik.setFieldValue('workingLiscense', file)}
-            onBlur={() => formik.setFieldTouched('workingLiscense', true)} // To handle touch status
+            label="Working License*"
+            id="workingLicense"
+            name="workingLicense" // Ensure this is set to correctly associate with Formik's `getFieldProps`
+            error={formik.errors.workingLicense}
+            touch={formik.touched.workingLicense}
+            onChange={(file) => formik.setFieldValue('workingLicense', file)}
+            onBlur={() => formik.setFieldTouched('workingLicense', true)} // To handle touch status
             />
           </div>
           <div className="submit-add-medicine-button-container">
@@ -229,8 +229,8 @@ const RegisterForm = () => {
   );
 };
 
-const FILE_SIZE = 160 * 1024; // e.g., 160 KB
-const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
+const FILE_SIZE = 10000 * 1024; // e.g., 160 KB
+const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
 
 const DoctorSchema = yup.object().shape({
   userName: yup.string().min(3, 'Username must be at least 3 characters long').max(50, 'Username must be at most 50 characters long').required('Please enter a valid username'),
@@ -257,7 +257,7 @@ const DoctorSchema = yup.object().shape({
 
   educationalBackground: yup.string().min(10, 'Educational Background must be at least 10 characters long').max(50, 'Educational Background must be at most 50 characters long').required('Please enter your educational background'),
 
-  pharmacyDegree: yup
+  medicalDegree: yup
   .mixed()
   .required('A file is required')
   .test(
@@ -297,7 +297,7 @@ const DoctorSchema = yup.object().shape({
       }
     ),
 
-    workingLiscense: yup
+    workingLicense: yup
     .mixed()
     .required('A file is required')
     .test(
@@ -330,11 +330,11 @@ const initialDoctorValues = {
   dateOfBirth: '',
   hourlyRate: '',
   affiliation: '',
-  pharmacyDegree: null,
+  medicalDegree: null,
   gender: 'male',
   mobileNumber: '',
   nationalId: null,
-  workingLiscense: null,
+  workingLicense: null,
   educationalBackground: '',
 };
 

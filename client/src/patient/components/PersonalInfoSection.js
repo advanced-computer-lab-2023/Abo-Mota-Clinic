@@ -1,7 +1,13 @@
 import Picture from '../assets/images/female_avatar.png'
+import Button from '../../shared/Components/Button';
+import { useNavigate } from 'react-router-dom';
 
 function  PersonalInfoSection({patient})
 {
+  const navigate = useNavigate();
+  const handleViewSubscription = ()=>{
+    navigate('./Subscription');
+  }
     return ( 
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
@@ -14,7 +20,7 @@ function  PersonalInfoSection({patient})
               src={Picture}
               alt="patient"
             />
-            {/* This span will hold the "Upload" text that appears on hover */}
+            
             <span className="absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100">
               <span className="text-sm text-white bg-black bg-opacity-75 rounded-full p-1">
                 Upload
@@ -27,6 +33,11 @@ function  PersonalInfoSection({patient})
         <div className="flex-1 min-w-0 text-center">
           <p className="text-lg font-medium text-gray-900">{patient.name}</p>
           <p className="text-sm text-gray-500 truncate">{patient.email}</p>
+        </div>
+        <div>
+          <Button onClick={handleViewSubscription}>
+            View Subscription
+          </Button>
         </div>
       </div>
             <div className="col-span-1 md:col-span-2">
