@@ -11,7 +11,6 @@ import * as Yup from "yup";
 
 // Home / Patient / View Family Members
 
-
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   nationalId: Yup.string().required('National ID is required'),

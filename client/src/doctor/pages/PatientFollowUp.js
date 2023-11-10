@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DatePicker } from "antd";
+import { FormControl, FormLabel } from '@mui/joy';
+import dayjs from "dayjs";
+
+
 
 function PatientFollowUp() {
-  const [patientId, setPatientId] = useState('');
-  const [followUpDate, setFollowUpDate] = useState('');
+  const [patientUsername, setPatientUsername] = useState('');
+  const [followUpDate, setFollowUpDate] = useState(null);
   const [notes, setNotes] = useState('');
   const navigate = useNavigate();
 
@@ -11,7 +16,7 @@ function PatientFollowUp() {
     event.preventDefault();
     try {
       
-      if (!patientId || !followUpDate) {
+      if (!patientUsername || !followUpDate) {
       
         console.error("Patient ID and follow-up date are required");
         return;
@@ -19,11 +24,11 @@ function PatientFollowUp() {
 
       
       const followUpData = {
-        patientId,
+        patientUsername,
         date: followUpDate,
         notes,
       };
-      setPatientId("");
+      setPatientUsername("");
       setFollowUpDate("");
       setNotes("");
   
@@ -57,15 +62,15 @@ function PatientFollowUp() {
         <div style={{ padding: '20px' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <label style={formFieldStyle}>
-              Patient ID:
+              Patient Username: 
               <input
                 type="text"
-                value={patientId}
-                onChange={(e) => setPatientId(e.target.value)}
+                value={patientUsername}
+                onChange={(e) => setPatientUsername(e.target.value)}
                 required
               />
             </label>
-            <label style={formFieldStyle}>
+            {/* <label style={formFieldStyle}>
               Follow Up Date:
               <input
                 type="date"
@@ -73,7 +78,17 @@ function PatientFollowUp() {
                 onChange={(e) => setFollowUpDate(e.target.value)}
                 required
               />
-            </label>
+            </label> */}
+            <FormControl id="multiple-limit-tags">
+              <FormLabel>Follow Up Date</FormLabel>
+                <DatePicker
+                  format="MM/DD/YYYY HH:mm A"
+                  onChange={(date, dateString) => {setFollowUpDate(date); console.log(date.toString())}}
+                  showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+                  className="h-full w-56"
+                />
+            </ FormControl>
+
             <label style={formFieldStyle}>
               Notes:
               <textarea

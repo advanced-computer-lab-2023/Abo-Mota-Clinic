@@ -4,7 +4,7 @@ import StripeForm from "../components/StripeForm";
 import { Elements } from "@stripe/react-stripe-js";
 import axios from "axios";
 
-function Payment() {
+function Payment({ deductible, doctorCredit, doctorId }) {
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
 
@@ -18,7 +18,7 @@ function Payment() {
   useEffect(() => {
     axios
       .post("http://localhost:5000/api/stripe/create-payment-intent", {
-        amount: 1000,
+        amount: deductible,
       })
       .then((res) => {
         setClientSecret(res.data.clientSecret);
@@ -41,7 +41,7 @@ function Payment() {
           clientSecret,
         }}
       >
-        <StripeForm />
+        <StripeForm deductible={deductible} doctorCredit={doctorCredit} doctorId={doctorId} />
       </Elements>
     </>
   );

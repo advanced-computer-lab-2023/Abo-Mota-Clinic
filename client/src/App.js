@@ -58,7 +58,7 @@ function App() {
           <Route path="prescriptions" element={<ViewPrescriptions />} />
           <Route path="familyMembers" element={<ViewFamilyMembers />} />
           <Route path="test" element={<PatientTest />} />
-          <Route path="doctors/info/:id" element={<ViewDoctorProfile />} />
+          <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
           <Route path="wallet" element={<ViewWallet />} />
           <Route path="doctors/info/:id/test2/:doctorId" element={<PatientTest2 />} />
           <Route path="healthPackages" element={<HealthPackages />} />

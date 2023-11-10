@@ -12,7 +12,10 @@ const doctorSchema = new Schema(
 		affiliation: String,
 		speciality: String,
 		educationalBackground: String,
-		nationalId: String,
+		nationalId: {
+			data: Buffer,
+			contentType: String,
+		},
 		medicalLicense: {
 			data: Buffer,
 			contentType: String,
@@ -29,6 +32,10 @@ const doctorSchema = new Schema(
 		wallet: {
 			type: Number,
 			default: 0,
+		},
+		contractApproved: {
+			type: Boolean,
+			default: false
 		},
 		// patients: [
 		// 	{

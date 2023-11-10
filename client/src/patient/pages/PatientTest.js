@@ -23,7 +23,15 @@ dayjs.extend(weekday);
 
 const format = (date) => date.format("dddd Do [of] MMMM YYYY");
 
-export default function PatientTest({ doctorId }) {
+export default function PatientTest({
+  currentTimings,
+  setCurrentTimings,
+  date,
+  setDate,
+  currentTime,
+  setCurrentTime,
+  doctorId,
+}) {
   // const [disabledDays, setDisabledDays] = useState([dayjs("2023-10-10"), dayjs("2021-10-12")]);
 
   // const enabledDays = [
@@ -32,7 +40,6 @@ export default function PatientTest({ doctorId }) {
   //   dayjs("2023-11-10"),
   //   dayjs("2023-11-09"),
   // ];
-  const [date, setDate] = useState(null);
 
   // const handleDateChange = (date) => {
   //   // Disable the selected date and the next day.
@@ -49,12 +56,9 @@ export default function PatientTest({ doctorId }) {
   //   "7:00 PM",
   //   "8:00 PM",
   // ];
-  const customTimings = {
-    "2023-11-26": ["10:00 AM", "11:00 AM", "1:00 PM"],
-    "2023-12-01": ["2:00 PM", "3:00 PM", "5:00 PM"],
-    // Add more dates and their respective timings here
-  };
-  const [currentTimings, setCurrentTimings] = useState([]);
+  // const [date, setDate] = useState(null);
+  // const [currentTime, setCurrentTime] = useState(null);
+  // const [currentTimings, setCurrentTimings] = useState([]);
 
   // Modify your onChange handler for the date picker
 
@@ -68,12 +72,12 @@ export default function PatientTest({ doctorId }) {
   // console.log(data);
   // console.log(Object.keys(currentTimings));
   const appointments = formatAppointments(data);
-  console.log(appointments);
-  console.log(data);
+  // console.log(appointments);
+  // console.log(data);
 
   const handleDateChange = (newDate) => {
     setDate(format(newDate));
-    const formattedDate = newDate.format("YYYY-MM-DD");
+    const formattedDate = newDate.format("MM/DD/YYYY");
     // console.log(formattedDate);
 
     const timingsForDate = appointments[formattedDate] || [];
@@ -86,7 +90,7 @@ export default function PatientTest({ doctorId }) {
     // console.log(enabledDays);
     return !enabledDays.some((enabledDay) => dayjs(enabledDay).isSame(day, "day"));
   };
-
+  console.log(currentTime);
   return (
     <div className="m-10">
       <Card orientation="horizontal" className="p-5 space-y-5">
@@ -112,8 +116,17 @@ export default function PatientTest({ doctorId }) {
 
           <Box className="space-y-5">
             {currentTimings.map((time) => {
+              const isSelected = time === currentTime;
               return (
-                <Button variant="outlined" color="primary" fullWidth>
+                <Button
+                  key={time}
+                  onClick={() => setCurrentTime(time)}
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  // Apply a different style or class conditionally
+                  style={isSelected ? { backgroundColor: "#ADD8E6" } : {}}
+                >
                   {time}
                 </Button>
               );

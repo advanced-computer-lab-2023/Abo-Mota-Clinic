@@ -6,9 +6,29 @@ import { IoWallet } from "react-icons/io5";
 import { useState } from "react";
 import { BsClock } from "react-icons/bs";
 import { GrLocationPin } from "react-icons/gr";
+import { useFetchPatientQuery, usePayAppointmentByWalletMutation } from "../../store";
+import capitalize from "../utils/capitalize";
 
-function PaymentPage() {
+function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
+
+  const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
+  const [payAppointmentByWallet, results] = usePayAppointmentByWalletMutation();
+
+  if (isFetchingPatient) {
+    return <div>Loading ...</div>;
+  } else if (isFetchingPatientError) {
+    return <div> Error ... </div>;
+  }
+
+  const handlePayByWallet = (e) => {
+    e.preventDefault();
+    payAppointmentByWallet({
+      doctor_id: doctorId,
+      deductible: deductible,
+      credit: doctorCredit,
+    });
+  };
 
   const buttonGroup = [
     {
@@ -27,8 +47,8 @@ function PaymentPage() {
 
   return (
     //w-full add this if you want full width
-    <Box className=" mt-20 mx-32 space-y-5">
-      <Box sx={{ px: 5, py: 2 }} className="space-x-">
+    <Box className=" mt-20 space-y-5">
+      <Box sx={{ py: 2 }} className="">
         <Typography level="h2" fontWeight={500}>
           Checkout
         </Typography>
@@ -45,11 +65,11 @@ function PaymentPage() {
               </Typography>
 
               <Typography level="body-md" startDecorator={<BsClock />}>
-                Tuesday, 31 August 2021, 10:00 AM
+                {date}, {currentTime}
               </Typography>
 
               <Typography level="body-md" startDecorator={<GrLocationPin />}>
-                Grey Sloan Memorial
+                {doctor.affiliation}
               </Typography>
             </Box>
 
@@ -80,11 +100,23 @@ function PaymentPage() {
               </Box>
 
               {paymentMethod === "card" ? (
-                <Payment />
+                <Payment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
               ) : (
-                <Box className="flex justify-center items-center h-96">
-                  <Typography level="body-lg">Wallet</Typography>
-                </Box>
+                <form onSubmit={handlePayByWallet}>
+                  <Typography level="h3" fontWeight={500}>Available Balance - ${patient.wallet}</Typography>
+                  <Button
+                    type="submit"
+                    variant="solid"
+                    // disabled={isProcessing}
+                    id="submit"
+                    sx={{ width: "100%", my: 3, borderRadius: 1 }}
+                  // onClick={handlePayByWallet}
+                  >
+                    <span id="Button-text">{"Pay"}</span>
+                  </Button>
+
+                  <Typography level="body-sm">By clicking Pay you agree to the Terms & Conditions.</Typography>
+                </form>
               )}
             </Card>
           </Box>
@@ -98,14 +130,17 @@ function PaymentPage() {
               <Typography level="title-lg">Summary</Typography>
 
               <Typography level="body-sm">
-                Subscribed health package: <span className="font-bold">Silver</span>
+                Subscribed health package:{" "}
+                <span className="font-bold">
+                  {!patient.healthPackage ? "No Package" : capitalize(patient.healthPackage.package.name)}
+                </span>
               </Typography>
 
               <Divider sx={{ my: 2 }} />
               <Box>
                 <Box className="flex justify-between">
                   <Typography level="body-sm">Consultation</Typography>
-                  <Typography level="body-sm">$30.00</Typography>
+                  <Typography level="body-sm">${doctor.rate}</Typography>
                 </Box>
 
                 <Divider sx={{ my: 2 }} />
@@ -114,13 +149,13 @@ function PaymentPage() {
                   <Typography level="body-sm" sx={{ marginBottom: 1.5 }}>
                     Subtotal
                   </Typography>
-                  <Typography level="body-sm">$30.00</Typography>
+                  <Typography level="body-sm">${doctor.rate}</Typography>
                 </Box>
                 <Box className="flex justify-between">
                   <Typography level="body-sm">Discount</Typography>
                   <Typography level="body-sm" color="success">
                     {" "}
-                    - ($5.00)
+                    - (${doctor.rate - deductible})
                   </Typography>
                 </Box>
 
@@ -128,7 +163,7 @@ function PaymentPage() {
 
                 <Box className="flex justify-between">
                   <Typography level="title-lg">Total</Typography>
-                  <Typography level="title-lg">$25.00</Typography>
+                  <Typography level="title-lg">${deductible}</Typography>
                 </Box>
               </Box>
             </Box>

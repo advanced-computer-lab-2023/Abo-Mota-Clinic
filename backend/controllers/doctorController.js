@@ -2,6 +2,7 @@ const Doctor = require("../models/Doctor");
 const Medicine = require("../models/Medicine");
 const Appointment = require("../models/Appointment");
 const Prescription = require("../models/Prescription");
+const Patient = require("../models/Patient")
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 // Get Doctor's Profile
@@ -186,10 +187,111 @@ const changePassword = async (req, res) => {
 	}
 };
 
+const acceptContract = async (req, res) => {
+	try{
+
+		const username = req.userData.username;
+
+		const doctor = await Doctor.findOne({username , registrationStatus: "approved"});
+		if(!doctor)
+			throw new Error("Doctor not approved by admin");
+
+		const updatedDoctor = await Doctor.updateOne({_id: doctor._id}, {contractApproved: true});
+		res.status(200).json({message: "Doctor accepted contract" , updatedDoctor});
+
+	}catch(error){
+		res.status(500).json({message: error.message})
+	}
+}
+
+
+
+const addFreeAppointmentSlots = async (req, res) => {
+	
+	try{
+
+		const username = req.userData.username;
+
+		const doctor = await Doctor.findOne({username , registrationStatus: "approved", contractApproved: true});
+
+		if(!doctor)
+			throw new Error("Doctor not approved by admin or didn't approve contract");
+
+
+		const {date, startTime, endTime, appointmentDuration, buffer} = req.body;
+		// Parse the date and startTime from the request body
+		const startTimeParts = startTime.split(':');
+		const startHours = parseInt(startTimeParts[0], 10) - 2;
+		const startMinutes = parseInt(startTimeParts[1], 10);
+
+		const endTimeParts = endTime.split(":");
+		const endHours = parseInt(endTimeParts[0]) - 2;
+		const endMinutes = parseInt(endTimeParts[1]);
+
+		const createdAppointments = [];
+		//assuming that the buffer and duration and in mins
+		for (let i = startHours * 60 + startMinutes; i < (endHours * 60 + endMinutes); i += appointmentDuration + buffer) {
+
+			const dateTime = new Date(date);
+			dateTime.setMinutes(i);
+			const appointment = await Appointment.create({date: dateTime, doctor: doctor._id});
+			createdAppointments.push(appointment);
+		}
+
+		res.status(200).json({message: "Appointments created successfully", appointments: createdAppointments });
+
+	}catch(error){
+		res.status(500).json({message: error.message})
+	}
+};
+
+const scheduleFollowUp = async(req, res) => {
+
+	try{
+		const username = req.userData.username;
+		const doctor = await Doctor.findOne({username});
+
+		const {patientUsername, followUpDate} = req.body;
+
+		const patient = await Patient.findOne({username: patientUsername});
+
+		if(!patient)
+			throw new Error("This patient does not exist");
+
+		const appointment = await Appointment.create({date: followUpDate, doctor: doctor._id, patient: patient._id});
+
+		res.status(200).json({message: "Follow up added successfully" , appointment});
+
+	}catch(error){
+		res.status(500).json({message: error.message});
+	}
+};
+
+const viewWallet = async (req, res) => {
+	
+	try{
+
+		const username = req.userData.username;
+		const loggedIn = await Doctor.findOne({username});
+
+		res.status(200).json({wallet: loggedIn.wallet});
+
+	}catch(error){
+		res.status(500).json({message: error.message});
+	}
+
+};
+
+
 module.exports = {
 	getDoctorProfile,
 	editDetails,
 	getDoctorAppointments,
 	getDoctorPatients,
 	changePassword,
+	addFreeAppointmentSlots,
+	acceptContract,
+	scheduleFollowUp,
+	viewWallet,
+	
 };

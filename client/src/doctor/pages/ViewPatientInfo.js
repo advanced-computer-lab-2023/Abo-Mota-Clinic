@@ -9,6 +9,9 @@ import MiniAppointmentCard from "../components/MiniAppointmentCard";
 import PdfViewer from "../components/PdfViewer";
 import pdf from "../assets/dummy.pdf"
 import { Tabs } from 'antd';
+import { useState } from "react";
+import {AiOutlinePlusCircle} from 'react-icons/ai';
+import AddHealthRecordScreen from "./AddHealthRecordScreen";
 
 
 
@@ -16,23 +19,32 @@ import { Tabs } from 'antd';
 export default function ViewPatientInfo (){
     const location = useLocation();
     const patient = location.state;
+    const [addHealthRecordOpen, setAddHealthRecordOpen] = useState(false);
 
     const renderedAppointments = patient.appointments.map((appointment) =>{
         return <MiniAppointmentCard appointment={appointment}/>
     })
 
-    const recordItems = patient.healthRecords.map((record, index) => {
-        return {
-            key: index,
-            label: `Record ${index + 1}`,
-            children: <PdfViewer pdfUrl={pdf}/>
-        }
-    });
+    const completedApps = patient.appointments.filter((appointment) => {
+        return appointment.status === "completed"
+    })
+
+    let recordItems = [];
+    if(completedApps.length !== 0){
+        recordItems = patient.healthRecords.map((record, index) => {
+            return {
+                key: index,
+                label: `Record ${index + 1}`,
+                children: <PdfViewer pdfUrl={pdf}/>
+            }
+        });
+    }
+    
 
 
 
     return (
-       <div className="mt-8 ml-8 mr-8 space-y-5 items-center">
+       <div className="mt-8 ml-8 mr-8 mb-8 space-y-5 items-center">
             <Typography level="h2" >
                 {capitalizeFirstLetter(patient.name.split(" ")[0])}'s Medical Record
             </Typography>
@@ -99,8 +111,9 @@ export default function ViewPatientInfo (){
                 </Typography>
 
                 <Tabs defaultActiveKey="1" items={recordItems} size="large" />     
-            </div>     
-
+            </div>    
+            <div onClick={() => {setAddHealthRecordOpen(true)}} className="flex items-center justify-center gap-1.5 border-2 border-black p-2.5 cursor-pointer text-center w-1/4 hover:bg-black hover:text-white hover:scale-105" > <AiOutlinePlusCircle size={18} />Add Health Record</div> 
+            {addHealthRecordOpen && <AddHealthRecordScreen closeForm={() => {setAddHealthRecordOpen(false)}}/>}
         </div>
     );
 };

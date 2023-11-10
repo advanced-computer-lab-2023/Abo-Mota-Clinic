@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment, useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -9,33 +9,78 @@ import Card from "@mui/joy/Card";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/joy/Divider";
 import DoctorImg from "../assets/images/doctor.jpg";
-
+import * as React from "react";
 import { LuStethoscope, LuCalendarClock, LuBuilding } from "react-icons/lu";
 
 import PatientTest from "./PatientTest";
 import { AspectRatio, CardContent } from "@mui/joy";
 import PaymentPage from "./PaymentPage";
 import { useParams } from "react-router-dom";
+import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+
+import { useFetchDoctorsQuery, useFetchPatientQuery } from "../../store";
 
 const steps = ["Schedule", "Appointment Overview", "Payment"];
 
 export default function PatientTest2({ step = 0 }) {
-  const [activeStep, setActiveStep] = React.useState(step);
-  const { doctorId } = useParams();
+  const [activeStep, setActiveStep] = useState(step);
+  const { doctorId, id } = useParams();
+  const [date, setDate] = useState(null);
+  const [currentTime, setCurrentTime] = useState(null);
+  const [currentTimings, setCurrentTimings] = useState([]);
+
+  const { data: doctor, isFetching: isFetchingDoctor, error: isFetchingDoctorError } = useFetchDoctorsQuery();
+  const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } =
+    useFetchPatientQuery();
+
+  if (isFetchingDoctor || isFetchingPatient) {
+    return <div>Loading ...</div>;
+  } else if (isFetchingDoctorError || isFetchingPatientError) {
+    return <div> Error ... </div>;
+  }
+  const { name, specialty, affiliation, rate } = doctor[id];
+
+  const deductible = patient.healthPackage ? rate * 1.1 * (1 - patient.healthPackage.package.doctorDiscount) : rate * 1.1;
+
   const handleNext = () => {
+    if (activeStep === 0 && !(date && currentTime)) return;
+
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
+    if (activeStep === 0) return;
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleReset = () => {
+    setDate(null);
+    setCurrentTime(null);
+    setCurrentTimings([]);
     setActiveStep(0);
   };
 
-  const scheduling = <PatientTest doctorId={doctorId} />;
-  const payment = <PaymentPage doctorId={doctorId} />;
+  const scheduling = (
+    <PatientTest
+      currentTimings={currentTimings}
+      setCurrentTimings={setCurrentTimings}
+      date={date}
+      setDate={setDate}
+      currentTime={currentTime}
+      setCurrentTime={setCurrentTime}
+      doctorId={doctorId}
+    />
+  );
+  const payment = (
+    <PaymentPage
+      deductible={deductible}
+      date={date}
+      currentTime={currentTime}
+      doctorId={doctorId}
+      doctor={doctor[id]}
+      patient={patient}
+    />
+  );
 
   const fn = (header, info) => {
     return (
@@ -78,14 +123,14 @@ export default function PatientTest2({ step = 0 }) {
               <Typography level="body-sm" sx={{ width: 90 }}>
                 Name
               </Typography>
-              <Typography level="title-sm">Dr. Jane Smith</Typography>
+              <Typography level="title-sm">Dr. {name}</Typography>
             </Box>
 
             <Box className="flex space-x-5">
               <Typography level="body-sm" sx={{ width: 90 }}>
                 Specialty
               </Typography>
-              <Typography level="title-sm">Orthopedics</Typography>
+              <Typography level="title-sm">{specialty}</Typography>
             </Box>
           </Box>
         </Box>
@@ -106,14 +151,14 @@ export default function PatientTest2({ step = 0 }) {
               <Typography level="body-sm" sx={{ width: 90 }}>
                 Date
               </Typography>
-              <Typography level="title-sm">Jun 21, 2021</Typography>
+              <Typography level="title-sm">{date}</Typography>
             </Box>
 
             <Box className="flex space-x-5">
               <Typography level="body-sm" sx={{ width: 90 }}>
                 Time
               </Typography>
-              <Typography level="title-sm">11:00 AM</Typography>
+              <Typography level="title-sm">{currentTime}</Typography>
             </Box>
           </Box>
         </Box>
@@ -129,7 +174,7 @@ export default function PatientTest2({ step = 0 }) {
             <Typography level="body-sm" sx={{ width: 90 }}>
               Location
             </Typography>
-            <Typography level="title-sm">Grey Sloan Hospital</Typography>
+            <Typography level="title-sm">{affiliation}</Typography>
           </Box>
 
           {/* <fn header="Location" info="Grey Sloan Memorial Hospital" /> */}
@@ -145,20 +190,20 @@ export default function PatientTest2({ step = 0 }) {
         <Box>
           <Box className="flex justify-between">
             <Typography level="body-sm">Consultation</Typography>
-            <Typography level="body-sm">$30</Typography>
+            <Typography level="body-sm">${rate}</Typography>
           </Box>
 
           <Divider sx={{ my: 1.5 }} />
 
           <Box className="flex justify-between">
             <Typography level="body-sm">Subtotal</Typography>
-            <Typography level="body-sm">$30</Typography>
+            <Typography level="body-sm">${rate}</Typography>
           </Box>
           <Box className="flex justify-between">
             <Typography level="body-sm">Discount</Typography>
             <Typography level="body-sm" color="success">
               {" "}
-              - ($5)
+              - $({rate - deductible})
             </Typography>
           </Box>
 
@@ -166,7 +211,7 @@ export default function PatientTest2({ step = 0 }) {
 
           <Box className="flex justify-between">
             <Typography level="title-md">Total</Typography>
-            <Typography level="title-md">$25</Typography>
+            <Typography level="title-md">${deductible}</Typography>
           </Box>
 
           <Box className="w-full" sx={{ marginTop: 15 }}>
@@ -182,7 +227,7 @@ export default function PatientTest2({ step = 0 }) {
   const stepElements = [scheduling, review, payment];
 
   return (
-    <Box sx={{ my: 5, mx: 5, width: "100%", p: 5 }}>
+    <Box sx={{ my: 5, mx: 5, width: "100%", py: 5, px: 30 }} className="">
       <Stepper activeStep={activeStep} sx={{ marginBottom: 3 }}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -197,15 +242,15 @@ export default function PatientTest2({ step = 0 }) {
       </Stepper>
 
       {activeStep === steps.length ? (
-        <React.Fragment>
+        <Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you&apos;re finished</Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button onClick={handleReset}>Reset</Button>
           </Box>
-        </React.Fragment>
+        </Fragment>
       ) : (
-        <React.Fragment>
+        <Fragment>
           {stepElements[activeStep]}
 
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
@@ -218,7 +263,7 @@ export default function PatientTest2({ step = 0 }) {
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
-        </React.Fragment>
+        </Fragment>
       )}
     </Box>
   );
