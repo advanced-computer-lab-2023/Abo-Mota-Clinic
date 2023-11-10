@@ -9,6 +9,7 @@ const {
 	acceptContract,
 	scheduleFollowUp,
 	viewWallet,
+	uploadHealthRecords,
 
 } = require("../controllers/doctorController");
 
@@ -27,6 +28,9 @@ router.get("/appointments", authorize, getDoctorAppointments);
 
 // View All Doctor's Patients
 router.get("/patients", authorize, getDoctorPatients);
+
+//Upload a Patient's health record
+router.post("/uploadHealthRecord", authorize, uploadHealthRecords)
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
