@@ -135,6 +135,47 @@ const getAppointments = async (req, res) => {
 	}
 };
 
+const uploadMedicalHistory = async (req, res) => {
+	try{
+		// const fileName = req.files.medicalHistory[0].originalname;
+		console.log(req.files);
+		const medicalHistory = {
+			data: req.files.medicalHistory[0].buffer,
+			contentType: req.files.medicalHistory[0].mimetype,
+		};
+		console.log(medicalHistory);
+		const username = req.userData.username;
+		console.log(username);
+		const patient = await Patient.findOne({ username });
+		const updated = await Patient.updateOne(
+			{ username },
+			{ medicalHistory: [...patient.medicalHistory, medicalHistory] }
+		);
+		res.status(200).json(updated);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+	
+}
+
+const deleteMedicalHistory = async (req, res) => {
+	try {
+	  const username = req.userData.username;
+	  const recordId = req.params.recordId;
+  
+	  const patient = await Patient.findOne({ username });
+  
+	  patient.medicalHistory.splice(recordId, 1);
+  
+	  await patient.save();
+  
+	  res.status(200).json(patient);
+	} catch (error) {
+	  res.status(500).json({ error: error.message });
+	}
+  };
+  
+
 const changePassword = async (req, res) => {
 	try {
 		const { oldPassword, newPassword } = req.body;
@@ -583,6 +624,7 @@ module.exports = {
 	getFamilyPackages,
   	payAppointmentByCard,
   	payAppointmentByWallet,
-	viewWallet
-
+	viewWallet,
+	uploadMedicalHistory,
+	deleteMedicalHistory,
 };
