@@ -17,13 +17,12 @@ const patientSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		familyDiscount: {
+			type: Number,
+			default: 0,
+		},
 		familyMembers: [
 			{
-				// _id: {
-				// 	type: Schema.Types.ObjectId,
-				// 	ref: "Patient",
-				// },
-				// relationToPatient: String, // Add your extra attribute here
 				name: String,
 				age: Number,
 				gender: String,
@@ -53,6 +52,7 @@ const patientSchema = new Schema(
 		healthPackage: {
 			package: {
 				type: Schema.Types.ObjectId,
+				default: null,
 				ref: "HealthPackage",
 			},
 			endDate: Date,

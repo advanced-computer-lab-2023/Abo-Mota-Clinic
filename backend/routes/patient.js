@@ -1,15 +1,17 @@
 const express = require("express");
 const {
-  getPatient,
-  getPrescriptions,
-  getFamilyMembers,
-  addFamilyMember,
-  getDoctors,
-  getAppointments,
-  changePassword,
-  getPackages,
-  getAvailableAppointments,
-  linkFamilyMember,
+	getPatient,
+	getPrescriptions,
+	getFamilyMembers,
+	addFamilyMember,
+	getDoctors,
+	getAppointments,
+	changePassword,
+	getPackages,
+	getAvailableAppointments,
+	linkFamilyMember,
+	subscribeForFamily,
+	subscribeForMyself,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -44,4 +46,10 @@ router.get("/availableAppointments", authorize, getAvailableAppointments);
 
 // Link Family Member Account
 router.post("/linkFamily", authorize, linkFamilyMember);
+
+// Subscribe for myself
+router.post("/selfSubscribe", authorize, subscribeForMyself);
+
+// Subscribe for a family member
+router.post("/familySubscribe", authorize, subscribeForFamily);
 module.exports = router;
