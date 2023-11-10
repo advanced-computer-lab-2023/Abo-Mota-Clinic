@@ -137,13 +137,8 @@ const getAppointments = async (req, res) => {
 
 const uploadMedicalHistory = async (req, res) => {
 	try{
-		// const fileName = req.files.medicalHistory[0].originalname;
-		console.log(req.files);
-		const medicalHistory = {
-			data: req.files.medicalHistory[0].buffer,
-			contentType: req.files.medicalHistory[0].mimetype,
-		};
-		console.log(medicalHistory);
+		console.log(req.file);
+		const medicalHistory = req.file.path;
 		const username = req.userData.username;
 		console.log(username);
 		const patient = await Patient.findOne({ username });
