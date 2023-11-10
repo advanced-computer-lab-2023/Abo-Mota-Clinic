@@ -18,7 +18,8 @@ import ViewLicenseAndDegree from "./ViewLicenseAndDegree";
 import { capitalizeFirstLetter } from "../components/AppointmentCard";
 
 export default function UserCard() {
-  // console.log(data);
+
+  
   const { data, error, isFetching } = useFetchDoctorQuery();
   const [updateDoctor, result] = useUpdateDoctorMutation();
   const [isEditEmail, setIsEditEmail] = React.useState(false);
@@ -120,8 +121,7 @@ export default function UserCard() {
     <Box
       sx={
         {
-          // position: 'relative',
-          // overflow: { xs: "auto", sm: "initial" },
+          
         }
       }
       
@@ -279,4 +279,3 @@ export default function UserCard() {
   );
 }
 
-//dob, educationalBackground, nationalID,
