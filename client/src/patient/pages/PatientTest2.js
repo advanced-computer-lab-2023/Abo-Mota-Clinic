@@ -35,7 +35,7 @@ export default function PatientTest2({ step = 0 }) {
   };
 
   const scheduling = <PatientTest doctorId={doctorId} />;
-  const payment = <PaymentPage />;
+  const payment = <PaymentPage doctorId={doctorId} />;
 
   const fn = (header, info) => {
     return (

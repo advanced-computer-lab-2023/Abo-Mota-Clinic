@@ -182,7 +182,7 @@ const getAvailableAppointments = async (req, res) => {
     const currentDate = new Date(Date.now());
     const filter = {
       $and: [
-        { doctor: doctorId },
+        { doctor: doctorId, status: "unbooked" },
         {
           $or: [{ patient: { $exists: false } }, { patient: null }],
         },

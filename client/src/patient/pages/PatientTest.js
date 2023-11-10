@@ -11,6 +11,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import weekday from "dayjs/plugin/weekday";
 import { useFetchAvailableAppointmentsQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+import formatAppointments from "../functions/AppointmentsAdjustment";
 dayjs.extend(customParseFormat);
 dayjs.extend(weekday);
 
@@ -56,32 +57,36 @@ export default function PatientTest({ doctorId }) {
   const [currentTimings, setCurrentTimings] = useState([]);
 
   // Modify your onChange handler for the date picker
-  const handleDateChange = (newDate) => {
-    setDate(format(newDate));
-    // Update the timings based on the selected date
-    const formattedDate = newDate.format("YYYY-MM-DD");
-    console.log(formattedDate);
 
-    const timingsForDate = customTimings[formattedDate] || []; // Fallback to an empty array if no timings found
-    setCurrentTimings(timingsForDate);
-    console.log(timingsForDate);
-  };
-
-  const shouldDisableDate = (day) => {
-    const enabledDays = Object.keys(customTimings);
-    // console.log(enabledDays);
-    return !enabledDays.some((enabledDay) => dayjs(enabledDay).isSame(day, "day"));
-  };
-
-  const { data: appointments, isFetching, error } = useFetchAvailableAppointmentsQuery(doctorId);
+  const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(doctorId);
 
   if (isFetching) {
     return <LoadingIndicator />;
   } else if (error) {
     return <div> Error ... </div>;
   }
-  // console.log(appointments);
+  // console.log(data);
   // console.log(Object.keys(currentTimings));
+  const appointments = formatAppointments(data);
+  console.log(appointments);
+  console.log(data);
+
+  const handleDateChange = (newDate) => {
+    setDate(format(newDate));
+    const formattedDate = newDate.format("YYYY-MM-DD");
+    // console.log(formattedDate);
+
+    const timingsForDate = appointments[formattedDate] || [];
+    setCurrentTimings(timingsForDate);
+    // console.log(timingsForDate);
+  };
+
+  const shouldDisableDate = (day) => {
+    const enabledDays = Object.keys(appointments);
+    // console.log(enabledDays);
+    return !enabledDays.some((enabledDay) => dayjs(enabledDay).isSame(day, "day"));
+  };
+
   return (
     <div className="m-10">
       <Card orientation="horizontal" className="p-5 space-y-5">
