@@ -7,6 +7,7 @@ import { useState } from "react";
 import { BsClock } from "react-icons/bs";
 import { GrLocationPin } from "react-icons/gr";
 import { useFetchPatientQuery, usePayAppointmentByWalletMutation } from "../../store";
+import capitalize from "../utils/capitalize";
 
 function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -46,8 +47,8 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
 
   return (
     //w-full add this if you want full width
-    <Box className=" mt-20 mx-32 space-y-5">
-      <Box sx={{ px: 5, py: 2 }} className="space-x-">
+    <Box className=" mt-20 space-y-5">
+      <Box sx={{ py: 2 }} className="">
         <Typography level="h2" fontWeight={500}>
           Checkout
         </Typography>
@@ -102,7 +103,7 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
                 <Payment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
               ) : (
                 <form onSubmit={handlePayByWallet}>
-                  <Typography level="h3" fontWeight={500}>Available Balance - ${patient.wallet}.00</Typography>
+                  <Typography level="h3" fontWeight={500}>Available Balance - ${patient.wallet}</Typography>
                   <Button
                     type="submit"
                     variant="solid"
@@ -131,7 +132,7 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
               <Typography level="body-sm">
                 Subscribed health package:{" "}
                 <span className="font-bold">
-                  {!patient.healthPackage ? "No Package" : patient.healthPackage.package.name}
+                  {!patient.healthPackage ? "No Package" : capitalize(patient.healthPackage.package.name)}
                 </span>
               </Typography>
 

@@ -227,7 +227,7 @@ export default function PatientTest2({ step = 0 }) {
   const stepElements = [scheduling, review, payment];
 
   return (
-    <Box sx={{ my: 5, mx: 5, width: "100%", p: 5 }}>
+    <Box sx={{ my: 5, mx: 5, width: "100%", py: 5, px: 30 }} className="">
       <Stepper activeStep={activeStep} sx={{ marginBottom: 3 }}>
         {steps.map((label, index) => {
           const stepProps = {};
