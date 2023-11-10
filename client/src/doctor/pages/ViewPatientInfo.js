@@ -9,6 +9,9 @@ import MiniAppointmentCard from "../components/MiniAppointmentCard";
 import PdfViewer from "../components/PdfViewer";
 import pdf from "../assets/dummy.pdf"
 import { Tabs } from 'antd';
+import { useState } from "react";
+import {AiOutlinePlusCircle} from 'react-icons/ai';
+import AddHealthRecordScreen from "./AddHealthRecordScreen";
 
 
 
@@ -16,6 +19,7 @@ import { Tabs } from 'antd';
 export default function ViewPatientInfo (){
     const location = useLocation();
     const patient = location.state;
+    const [addHealthRecordOpen, setAddHealthRecordOpen] = useState(false);
 
     const renderedAppointments = patient.appointments.map((appointment) =>{
         return <MiniAppointmentCard appointment={appointment}/>
@@ -99,8 +103,9 @@ export default function ViewPatientInfo (){
                 </Typography>
 
                 <Tabs defaultActiveKey="1" items={recordItems} size="large" />     
-            </div>     
-
+            </div>    
+            <div onClick={() => {setAddHealthRecordOpen(true)}} className="flex items-center justify-center gap-1.5 border-2 border-black p-2.5 cursor-pointer text-center w-1/4 hover:bg-black hover:text-white hover:scale-105" > <AiOutlinePlusCircle size={18} />Add Health Record</div> 
+            {addHealthRecordOpen && <AddHealthRecordScreen closeForm={() => {setAddHealthRecordOpen(false)}}/>}
         </div>
     );
 };
