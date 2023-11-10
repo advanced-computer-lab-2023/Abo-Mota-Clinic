@@ -55,15 +55,11 @@ const storage = multer.diskStorage({
   },
 });
 
-<<<<<<< HEAD
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-=======
 const upload = multer({ storage });
 
 app.post("/registerDoctor", upload.single("file"), (req, res) => {
   res.send("File uploaded");
 });
->>>>>>> 5c785c47b96c88550dcf9374cf81d6ea33837e17
 
 // listen for requests
 app.listen(process.env.PORT, () => {
