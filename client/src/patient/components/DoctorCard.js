@@ -1,16 +1,15 @@
 import { GoArrowDown } from "react-icons/go";
-import { AspectRatio, Card, CardContent, Typography, Button, Chip } from '@mui/joy';
-import { Link, Box } from '@mui/joy';
-import { Link as RouterLink } from 'react-router-dom';
+import { AspectRatio, Card, CardContent, Typography, Button, Chip } from "@mui/joy";
+import { Link, Box } from "@mui/joy";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function DoctorCard({ name, specialty, rate, className, discount, index }) {
-
   // discount = undefined;
   let price;
   const markedUpRate = rate * 1.1;
   const displayedDiscount = discount ? discount * 100 : 0;
 
-  console.log(markedUpRate * (1 - discount))
+  console.log(markedUpRate * (1 - discount));
 
   if (discount) {
     price = Math.round(markedUpRate * (1 - discount));
@@ -18,15 +17,21 @@ export default function DoctorCard({ name, specialty, rate, className, discount,
     price = Math.round(markedUpRate);
   }
 
-
   return (
-    <Card className={className} sx={{
-      width: 300, transition: 'transform 0.2s', '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder', transform: 'scale(1.1)' },
-    }}>
+    <Card
+      className={className}
+      sx={{
+        width: 300,
+        transition: "transform 0.2s",
+        "&:hover": {
+          boxShadow: "md",
+          borderColor: "neutral.outlinedHoverBorder",
+          transform: "scale(1.1)",
+        },
+      }}
+    >
       <div>
-        <Typography level="title-lg">
-          Dr. {name}
-        </Typography>
+        <Typography level="title-lg">Dr. {name}</Typography>
         <Typography level="body-md">{specialty}</Typography>
       </div>
       <AspectRatio ratio="1.1">
@@ -48,11 +53,9 @@ export default function DoctorCard({ name, specialty, rate, className, discount,
               </Typography>
             </Typography>
 
-
-            {
-              discount &&
-              <div className='flex space-x-1 align-center'>
-                <Typography level='body-sm' sx={{ textDecoration: "line-through" }}>
+            {discount && (
+              <div className="flex space-x-1 align-center">
+                <Typography level="body-sm" sx={{ textDecoration: "line-through" }}>
                   ${Math.round(markedUpRate)}
                   <Typography fontSize="sm" textColor="text.tertiary">
                     / hr
@@ -62,30 +65,30 @@ export default function DoctorCard({ name, specialty, rate, className, discount,
                 <Chip
                   variant="outlined"
                   color="success"
-                  startDecorator={<GoArrowDown fontSize="17" style={{ "marginLeft": "-3px", "marginRight": '-4px' }} />}
+                  startDecorator={
+                    <GoArrowDown
+                      fontSize="17"
+                      style={{ marginLeft: "-3px", marginRight: "-4px" }}
+                    />
+                  }
                 >
                   {displayedDiscount}%
                   {/* <Typography color='success' level="body-xs">
                 -20%
               </Typography> */}
                 </Chip>
-
               </div>
-            }
+            )}
           </Box>
 
-          <Button variant="plain" component={RouterLink} to={`../info/${index}`}>
+          <Button variant="plain" component={RouterLink} to={`info/${index}`}>
             VIEW
           </Button>
-
         </Box>
-
       </CardContent>
     </Card>
   );
 }
-
-
 
 // <Card className={className} onClick={onClick} variant="outlined" sx={{ width: 280 }}>
 //   <CardOverflow>

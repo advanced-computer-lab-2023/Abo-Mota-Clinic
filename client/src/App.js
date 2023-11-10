@@ -37,51 +37,56 @@
 
   // login
   import LoginForm from "./shared/pages/LoginForm";
+  
+  import PaymentPage from "./patient/pages/PaymentPage";
 
-  function App() {
-    return (
-      <div>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/patientRegistration" element={<RegisterScreen />} />
-          <Route path="/patient" element={<Patient />}>
-            <Route path="" element={<PatientHome />} /> {/* TODO: change to home page */}
-            <Route path="appointments" element={<ViewPatientAppointments />} />
-            <Route path="doctors" element={<ViewDoctors />} />
-            <Route path="prescriptions" element={<ViewPrescriptions />} />
-            <Route path="familyMembers" element={<ViewFamilyMembers />} />
-            <Route path="test" element={<PatientTest />} />
-            <Route path="info/:id" element={<ViewDoctorProfile />} />
-            <Route path="wallet" element={<ViewWallet />} />
-            <Route path="test2" element={<PatientTest2 />} />
-            <Route path="healthPackages" element={<HealthPackages />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="profile/Subscription" element={<Subscription/>}/>
-            
-          </Route>
-          <Route path="/doctorRegistration" element={<RegisterForm />} />
-          <Route path="/doctor" element={<Doctor />}>
-            <Route
-              path="contract"
-              element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
-            />
-            <Route path="appointments" element={<ViewDoctorAppointments />} />
-            <Route path="patients" element={<ViewDoctorPatients />} />
-            <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
-            <Route path="PatientFollowUp" element={<PatientFollowUp />} />
-            <Route path="profile" element={<EditMyProfile />} />
-            <Route path="registerForm" element={<RegisterForm />} />
-            <Route path="patientInfo" element={<ViewPatientInfo />} />
-          </Route>
-          <Route path="/admin" element={<Admin />}>
-            <Route path="applications" element={<Applications />} />
-            <Route path="packages" element={<Packages />} />
-            <Route path="manageUsers" element={<ManageUsers />} />
-          </Route>
-        </Routes>
-      </div>
-    );
-  }
+ 
+// login
+
+
+function App() {
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/patientRegistration" element={<RegisterScreen />} />
+        <Route path="/patient" element={<Patient />}>
+          <Route path="" element={<PatientHome />} /> {/* TODO: change to home page */}
+          <Route path="appointments" element={<ViewPatientAppointments />} />
+          <Route path="doctors" element={<ViewDoctors />} />
+          <Route path="prescriptions" element={<ViewPrescriptions />} />
+          <Route path="familyMembers" element={<ViewFamilyMembers />} />
+          <Route path="test" element={<PatientTest />} />
+          <Route path="doctors/info/:id" element={<ViewDoctorProfile />} />
+          <Route path="wallet" element={<ViewWallet />} />
+          <Route path="doctors/info/:id/test2/:doctorId" element={<PatientTest2 />} />
+          <Route path="healthPackages" element={<HealthPackages />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="stripe" element={<PaymentPage />} />
+        </Route>
+        <Route path="/doctorRegistration" element={<RegisterForm />} />
+        <Route path="/doctor" element={<Doctor />}>
+          <Route
+            path="contract"
+            element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
+          />
+          <Route path="appointments" element={<ViewDoctorAppointments />} />
+          <Route path="patients" element={<ViewDoctorPatients />} />
+          <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
+          <Route path="PatientFollowUp" element={<PatientFollowUp />} />
+          <Route path="profile" element={<EditMyProfile />} />
+          <Route path="registerForm" element={<RegisterForm />} />
+          <Route path="patientInfo" element={<ViewPatientInfo />} />
+        </Route>
+        <Route path="/admin" element={<Admin />}>
+          <Route path="applications" element={<Applications />} />
+          <Route path="packages" element={<Packages />} />
+          <Route path="manageUsers" element={<ManageUsers />} />
+        </Route>
+      </Routes>
+    </div>
+  );
+}
 
   export default App;

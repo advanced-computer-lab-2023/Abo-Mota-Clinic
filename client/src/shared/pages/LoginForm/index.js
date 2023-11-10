@@ -9,8 +9,12 @@ import LoadingIndicator from "../../Components/LoadingIndicator";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import { useLoginMutation } from "../../../store";
+import ForgetPasswordScreen from "../ForgetPasswordScreen";
+import OtpScreen from "../OtpScreen";
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [forgetPassword, setForgetPassword] = useState(false);
+  const [otpOpen, setOtpOpen] = useState(false);
   const navigate = useNavigate();
   const [login, results] = useLoginMutation();
   const handleSubmit = async (values, { resetForm }) => {
@@ -23,19 +27,7 @@ const LoginForm = () => {
     };
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    // await login(user);
-    // setIsLoading(false);
-    // resetForm({ values: "" });
-    // console.log(results);
-    // if (!results.isLoading) {
-    //   if (results.data?.userType === "patient") {
-    //     navigate("/patient");
-    //   } else if (results.data?.userType === "doctor") {
-    //     navigate("/doctor");
-    //   } else {
-    //     navigate("/admin");
-    //   }
-    // }
+
     try {
       const result = await login(user).unwrap();
       console.log(result);
@@ -115,11 +107,13 @@ const LoginForm = () => {
         <p className="login-word">Login</p>
         {UserForm}
         <div className="forget-password-container">
-          <button className="forget-password-button" onClick={forgetPasswordOnClick}>
+          <button className="forget-password-button" onClick={() => {setForgetPassword(true)}}>
             Forget Password?
           </button>
         </div>
       </div>
+      {forgetPassword && <ForgetPasswordScreen closeForm={() => {setForgetPassword(false)}} goToOtp={() => {setOtpOpen(true)}} />}
+      {otpOpen && <OtpScreen closeForm={() => {setOtpOpen(false)}} />}
     </div>
   );
 };
@@ -130,12 +124,11 @@ const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 const UserSchema = yup.object().shape({
   username: yup.string("Invalid username").required("Please enter a valid username"),
 
-  password: yup
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .matches(/[a-zA-Z]/, "Password must contain at least one letter")
-    .matches(/[0-9]/, "Password must contain at least one number")
-    .required("Please enter a valid password"),
+  password: yup.string(),
+  // .min(8, "Password must be at least 8 characters long")
+  // .matches(/[a-zA-Z]/, "Password must contain at least one letter")
+  // .matches(/[0-9]/, "Password must contain at least one number")
+  // .required("Please enter a valid password"),
 });
 
 const initialUserValues = {
