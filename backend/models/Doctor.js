@@ -30,6 +30,10 @@ const doctorSchema = new Schema(
 			type: Number,
 			default: 0,
 		},
+		contractApproved: {
+			type: Boolean,
+			default: false
+		},
 		// patients: [
 		// 	{
 		// 		type: Schema.Types.ObjectId,

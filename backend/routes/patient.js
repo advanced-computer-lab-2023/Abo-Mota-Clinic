@@ -1,15 +1,19 @@
 const express = require("express");
 const {
-  getPatient,
-  getPrescriptions,
-  getFamilyMembers,
-  addFamilyMember,
-  getDoctors,
-  getAppointments,
-  changePassword,
-  getPackages,
-  getAvailableAppointments,
-  linkFamilyMember,
+	getPatient,
+	getPrescriptions,
+	getFamilyMembers,
+	addFamilyMember,
+	getDoctors,
+	getAppointments,
+	changePassword,
+	getPackages,
+	getAvailableAppointments,
+	linkFamilyMember,
+	subscribeForFamily,
+	subscribeForMyself,
+	getMyPackage,
+	getFamilyPackages,
   payAppointmentByCard,
   payAppointmentByWallet
 } = require("../controllers/patientController");
@@ -52,4 +56,16 @@ router.patch("/payCard", payAppointmentByCard);
 
 // Pay appointment by wallet
 router.patch("/payWallet", authorize, payAppointmentByWallet);
+
+// Subscribe for myself
+router.post("/selfSubscribe", authorize, subscribeForMyself);
+
+// Subscribe for a family member
+router.post("/familySubscribe", authorize, subscribeForFamily);
+
+// Get Subscribed Package for myself
+router.get("/myPackage", authorize, getMyPackage);
+
+// Get Subscribed Family Member Packages
+router.get("/familyPackages", authorize, getFamilyPackages);
 module.exports = router;
