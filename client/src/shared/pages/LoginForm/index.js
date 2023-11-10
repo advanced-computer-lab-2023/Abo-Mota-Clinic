@@ -106,10 +106,19 @@ const LoginForm = () => {
         </div>
         <p className="login-word">Login</p>
         {UserForm}
-        <div className="forget-password-container">
+        <div className="flex justify-between mr-8 ml-8">
+          <div className="flex">
+            <button className="forget-password-button" onClick={() => {setForgetPassword(true)}}>
+              Register as Doctor
+            </button>
+            <button className="forget-password-button" onClick={() => {setForgetPassword(true)}}>
+              Register as Patient
+            </button>
+          </div>
           <button className="forget-password-button" onClick={() => {setForgetPassword(true)}}>
             Forget Password?
           </button>
+
         </div>
       </div>
       {forgetPassword && <ForgetPasswordScreen closeForm={() => {setForgetPassword(false)}} goToOtp={() => {setOtpOpen(true)}} />}
