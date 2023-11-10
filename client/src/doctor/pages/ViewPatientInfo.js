@@ -25,18 +25,26 @@ export default function ViewPatientInfo (){
         return <MiniAppointmentCard appointment={appointment}/>
     })
 
-    const recordItems = patient.healthRecords.map((record, index) => {
-        return {
-            key: index,
-            label: `Record ${index + 1}`,
-            children: <PdfViewer pdfUrl={pdf}/>
-        }
-    });
+    const completedApps = patient.appointments.filter((appointment) => {
+        return appointment.status === "completed"
+    })
+
+    let recordItems = [];
+    if(completedApps.length !== 0){
+        recordItems = patient.healthRecords.map((record, index) => {
+            return {
+                key: index,
+                label: `Record ${index + 1}`,
+                children: <PdfViewer pdfUrl={pdf}/>
+            }
+        });
+    }
+    
 
 
 
     return (
-       <div className="mt-8 ml-8 mr-8 space-y-5 items-center">
+       <div className="mt-8 ml-8 mr-8 mb-8 space-y-5 items-center">
             <Typography level="h2" >
                 {capitalizeFirstLetter(patient.name.split(" ")[0])}'s Medical Record
             </Typography>

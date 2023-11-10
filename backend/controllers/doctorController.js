@@ -282,6 +282,7 @@ const viewWallet = async (req, res) => {
 
 };
 
+
 module.exports = {
 	getDoctorProfile,
 	editDetails,
@@ -291,5 +292,6 @@ module.exports = {
 	addFreeAppointmentSlots,
 	acceptContract,
 	scheduleFollowUp,
-	viewWallet
+	viewWallet,
+	
 };

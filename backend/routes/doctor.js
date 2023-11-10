@@ -8,7 +8,7 @@ const {
 	addFreeAppointmentSlots,
 	acceptContract,
 	scheduleFollowUp,
-	viewWallet
+	viewWallet,
 
 } = require("../controllers/doctorController");
 
@@ -42,5 +42,8 @@ router.post("/scheduleFollowUp", authorize, scheduleFollowUp)
 
 //Get Amount in my Wallet
 router.get('/wallet', authorize, viewWallet)
+
+//View Health Records of My Patients
+// router.get("/healthRecords", authorize, viewMyPatientHealthRecords);
 
 module.exports = router;
