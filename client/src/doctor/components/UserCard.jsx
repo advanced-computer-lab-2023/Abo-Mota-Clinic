@@ -15,6 +15,8 @@ import { NumericFormat } from "react-number-format";
 import emailValidator from "email-validator";
 import Toast from "../../patient/components/Toast";
 import ViewLicenseAndDegree from "./ViewLicenseAndDegree";
+import { capitalizeFirstLetter } from "../components/AppointmentCard";
+
 export default function UserCard() {
   // console.log(data);
   const { data, error, isFetching } = useFetchDoctorQuery();
@@ -122,6 +124,7 @@ export default function UserCard() {
           // overflow: { xs: "auto", sm: "initial" },
         }
       }
+      
     >
       <Card
         orientation="horizontal"
@@ -144,7 +147,7 @@ export default function UserCard() {
         </AspectRatio>
         <CardContent>
           <Typography level="h2" fontWeight="lg">
-            {data.name}
+            {capitalizeFirstLetter(data.name)}
           </Typography>
           <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
             {data.specialty}
@@ -162,9 +165,9 @@ export default function UserCard() {
           >
             <div>
               <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
-                National Id
+                Username
               </Typography>
-              <Typography fontWeight="lg">{data.nationalId}</Typography>
+              <Typography fontWeight="lg">{data.username}</Typography>
             </div>
             <div>
               <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">

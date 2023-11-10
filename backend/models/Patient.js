@@ -57,7 +57,8 @@ const patientSchema = new Schema(
 			},
 			endDate: Date,
 		},
-		healthRecords: [String],
+		healthRecords: [{data: Buffer, contentType: String}],
+		medicalHistory: [{data: Buffer, contentType: String}],
 		// prescriptions: [
 		//   {
 		//     type: Schema.Types.ObjectId,

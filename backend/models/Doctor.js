@@ -12,7 +12,10 @@ const doctorSchema = new Schema(
 		affiliation: String,
 		speciality: String,
 		educationalBackground: String,
-		nationalId: String,
+		nationalId: {
+			data: Buffer,
+			contentType: String,
+		},
 		medicalLicense: {
 			data: Buffer,
 			contentType: String,
