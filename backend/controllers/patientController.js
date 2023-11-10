@@ -388,7 +388,7 @@ const subscribeForMyself = async (req, res) => {
 		const loggedIn = await Patient.findOne({ username });
 
 		if (!_id || !paymentType) {
-			throw Error("Please input package id and payment type");
+			throw Error("Please input package");
 		}
 
 		if (loggedIn.healthPackage.package !== null) {

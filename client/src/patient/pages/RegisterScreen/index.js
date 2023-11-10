@@ -1,7 +1,7 @@
 import Button from "../../../shared/Components/Button.js";
 import { useState } from "react";
 import Input from "../../../shared/Components/InputField";
-import "./styles.css";
+// import "./styles.css";
 import DateInput from "../../../shared/Components/DateInput";
 import logo from "../../../shared/assets/logo.png";
 import * as yup from "yup";
@@ -111,7 +111,7 @@ const RegisterScreen = () => {
             />
           </div>
           <div className="form-container">
-          <DropDown
+            <DropDown
               label="Gender*"
               type="text"
               id="gender"
