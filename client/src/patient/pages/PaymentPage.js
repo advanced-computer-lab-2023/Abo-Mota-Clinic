@@ -6,9 +6,28 @@ import { IoWallet } from "react-icons/io5";
 import { useState } from "react";
 import { BsClock } from "react-icons/bs";
 import { GrLocationPin } from "react-icons/gr";
+import { useFetchPatientQuery, usePayAppointmentByWalletMutation } from "../../store";
 
-function PaymentPage() {
+function PaymentPage({ deductible, doctorCredit, doctorId }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
+
+  const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
+  const [payAppointmentByWallet, results] = usePayAppointmentByWalletMutation();
+
+  if (isFetchingPatient) {
+    return <div>Loading ...</div>;
+  } else if (isFetchingPatientError) {
+    return <div> Error ... </div>;
+  }
+
+  const handlePayByWallet = (e) => {
+    e.preventDefault();
+    payAppointmentByWallet({
+      doctor_id: doctorId,
+      deductible: deductible,
+      credit: doctorCredit,
+    });
+  };
 
   const buttonGroup = [
     {
@@ -80,11 +99,23 @@ function PaymentPage() {
               </Box>
 
               {paymentMethod === "card" ? (
-                <Payment />
+                <Payment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
               ) : (
-                <Box className="flex justify-center items-center h-96">
-                  <Typography level="body-lg">Wallet</Typography>
-                </Box>
+                <form onSubmit={handlePayByWallet}>
+                  <Typography level="h3" fontWeight={500}>Available Balance - ${patient.wallet}.00</Typography>
+                  <Button
+                    type="submit"
+                    variant="solid"
+                    // disabled={isProcessing}
+                    id="submit"
+                    sx={{ width: "100%", my: 3, borderRadius: 1 }}
+                  // onClick={handlePayByWallet}
+                  >
+                    <span id="Button-text">{"Pay"}</span>
+                  </Button>
+
+                  <Typography level="body-sm">By clicking Pay you agree to the Terms & Conditions.</Typography>
+                </form>
               )}
             </Card>
           </Box>

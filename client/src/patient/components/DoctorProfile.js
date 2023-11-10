@@ -285,7 +285,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
             </Button>
           </Box>
         </Sheet>
-        <Link to={`test2/${_id}`}>
+        <Link to={`test2/${_id}/`}>
           <Button>Book more appointments</Button>
         </Link>
 

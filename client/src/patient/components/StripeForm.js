@@ -3,11 +3,15 @@ import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { Button, Divider } from "@mui/joy";
 import { Typography } from "@mui/joy";
+import { usePayAppointmentByCardMutation } from "../../store";
+import { usePayAppointmentByWalletMutation } from "../../store";
 // import './stripe.css';
 
-export default function StripeForm() {
+export default function StripeForm({ deductible, doctorCredit, doctorId }) {
   const stripe = useStripe();
   const elements = useElements();
+
+  const [payAppointmentByCard, results] = usePayAppointmentByCardMutation();
 
   const [message, setMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -33,6 +37,13 @@ export default function StripeForm() {
     if (error) {
       setMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
+
+      payAppointmentByCard({
+        doctor_id: doctorId,
+        deductible: deductible,
+        credit: doctorCredit
+      });
+
       setMessage(`Payment status: ${paymentIntent.status}`);
     } else {
       setMessage("Something went wrong.");

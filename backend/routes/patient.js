@@ -10,6 +10,8 @@ const {
   getPackages,
   getAvailableAppointments,
   linkFamilyMember,
+  payAppointmentByCard,
+  payAppointmentByWallet
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -44,4 +46,10 @@ router.get("/availableAppointments", authorize, getAvailableAppointments);
 
 // Link Family Member Account
 router.post("/linkFamily", authorize, linkFamilyMember);
+
+// Pay appointment by card
+router.patch("/payCard", payAppointmentByCard);
+
+// Pay appointment by wallet
+router.patch("/payWallet", authorize, payAppointmentByWallet);
 module.exports = router;

@@ -17,11 +17,27 @@ import { AspectRatio, CardContent } from "@mui/joy";
 import PaymentPage from "./PaymentPage";
 import { useParams } from "react-router-dom";
 
+import { useFetchDoctorsQuery, useFetchPatientQuery } from "../../store";
+
 const steps = ["Schedule", "Appointment Overview", "Payment"];
 
 export default function PatientTest2({ step = 0 }) {
   const [activeStep, setActiveStep] = React.useState(step);
-  const { doctorId } = useParams();
+  const { doctorId, id } = useParams();
+
+  const { data: doctor, isFetching: isFetchingDoctor, error: isFetchingDoctorError } = useFetchDoctorsQuery();
+  const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } =
+    useFetchPatientQuery();
+
+  if (isFetchingDoctor || isFetchingPatient) {
+    return <div>Loading ...</div>;
+  } else if (isFetchingDoctorError || isFetchingPatientError) {
+    return <div> Error ... </div>;
+  }
+  const { rate } = doctor[id];
+
+  const deductible = patient.healthPackage ? rate * 1.1 * (1 - patient.healthPackage.package.doctorDiscount) : rate * 1.1;
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -35,7 +51,7 @@ export default function PatientTest2({ step = 0 }) {
   };
 
   const scheduling = <PatientTest doctorId={doctorId} />;
-  const payment = <PaymentPage />;
+  const payment = <PaymentPage deductible={deductible} doctorCredit={rate} doctorId={doctorId} />;
 
   const fn = (header, info) => {
     return (
