@@ -16,7 +16,12 @@ const {
 	getFamilyPackages,
 	payAppointmentByCard,
 	payAppointmentByWallet,
-	viewWallet
+	viewWallet,
+	viewMyPackageStatus,
+	viewFamilyPackageStatus,
+	selfCancelSubscription,
+	familyCancelSubscription,
+	packageUnsubscribe,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -70,7 +75,21 @@ router.get("/myPackage", authorize, getMyPackage);
 // Get Subscribed Family Member Packages
 router.get("/familyPackages", authorize, getFamilyPackages);
 
-//Get Amount in my Wallet
-router.get('/wallet', authorize, viewWallet)
+// Get Amount in my Wallet
+router.get("/wallet", authorize, viewWallet);
 
+// Get Status of my package
+router.get("/myPackageStatus", authorize, viewMyPackageStatus);
+
+// Get status of family member
+router.get("/familyPackageStatus", authorize, viewFamilyPackageStatus);
+
+// Cancel my subscription
+router.post("/cancelMySub", authorize, selfCancelSubscription);
+
+// Cancel family member subscription
+router.post("/cancelFamilySub", authorize, familyCancelSubscription);
+
+// Unsubscribe from my package
+router.post("/unsubscribe", packageUnsubscribe);
 module.exports = router;
