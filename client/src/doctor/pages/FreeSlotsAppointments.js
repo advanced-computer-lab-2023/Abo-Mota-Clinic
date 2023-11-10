@@ -21,6 +21,8 @@ function FreeSlotsAppointments() {
       appointmentDuration,
       buffer,
     });
+    console.log(startTime + appointmentDuration + buffer)
+
     setTimezone("");
     setDate("");
     setStartTime("");

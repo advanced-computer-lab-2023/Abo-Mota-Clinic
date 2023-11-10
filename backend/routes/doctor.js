@@ -5,6 +5,10 @@ const {
 	getDoctorAppointments,
 	getDoctorPatients,
 	changePassword,
+	addFreeAppointmentSlots,
+	acceptContract,
+	scheduleFollowUp
+
 } = require("../controllers/doctorController");
 
 const authorize = require('../middlewares/authorization')
@@ -25,5 +29,15 @@ router.get("/patients", authorize, getDoctorPatients);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
+
+//Add Doctor Free Slots
+router.post("/addFreeAppointmentSlots", authorize, addFreeAppointmentSlots);
+
+//Accept Employment Contract
+router.patch("/acceptContract", authorize, acceptContract);
+
+//Add Patient Follow Up
+router.post("/scheduleFollowUp", authorize, scheduleFollowUp)
+
 
 module.exports = router;
