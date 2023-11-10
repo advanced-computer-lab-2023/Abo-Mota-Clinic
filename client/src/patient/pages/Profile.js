@@ -4,6 +4,8 @@ import PersonalInfoSection from '../components/PersonalInfoSection';
 import EmergencyContactCard from '../components/EmergencyContactCard';
 import FileUploadSection from '../../shared/Components/FileUploadSection';
 function Profile() {
+
+
   const patient = {
     name: 'Jane Moore',
     username: 'jmoore87',
@@ -28,6 +30,8 @@ function Profile() {
   return (
     <div className="bg-gray-100 min-h-screen p-8 w-full">
       
+      <>
+      
       <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-5">
         <div className="p-5 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-900">Patient Profile</h2>
@@ -43,6 +47,7 @@ function Profile() {
         </div>
         
       </div>
+      </>
     </div>
   
   );
