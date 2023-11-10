@@ -7,7 +7,7 @@ import { useState } from "react";
 import { BsClock } from "react-icons/bs";
 import { GrLocationPin } from "react-icons/gr";
 
-function PaymentPage() {
+function PaymentPage({ patient, doctor, doctorId, date, currentTime, deductible }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
 
   const buttonGroup = [
@@ -45,11 +45,11 @@ function PaymentPage() {
               </Typography>
 
               <Typography level="body-md" startDecorator={<BsClock />}>
-                Tuesday, 31 August 2021, 10:00 AM
+                {date}, {currentTime}
               </Typography>
 
               <Typography level="body-md" startDecorator={<GrLocationPin />}>
-                Grey Sloan Memorial
+                {doctor.affiliation}
               </Typography>
             </Box>
 
@@ -98,14 +98,17 @@ function PaymentPage() {
               <Typography level="title-lg">Summary</Typography>
 
               <Typography level="body-sm">
-                Subscribed health package: <span className="font-bold">Silver</span>
+                Subscribed health package:{" "}
+                <span className="font-bold">
+                  {!patient.healthPackage ? "No Package" : patient.healthPackage.package.name}
+                </span>
               </Typography>
 
               <Divider sx={{ my: 2 }} />
               <Box>
                 <Box className="flex justify-between">
                   <Typography level="body-sm">Consultation</Typography>
-                  <Typography level="body-sm">$30.00</Typography>
+                  <Typography level="body-sm">${doctor.rate}</Typography>
                 </Box>
 
                 <Divider sx={{ my: 2 }} />
@@ -114,13 +117,13 @@ function PaymentPage() {
                   <Typography level="body-sm" sx={{ marginBottom: 1.5 }}>
                     Subtotal
                   </Typography>
-                  <Typography level="body-sm">$30.00</Typography>
+                  <Typography level="body-sm">${doctor.rate}</Typography>
                 </Box>
                 <Box className="flex justify-between">
                   <Typography level="body-sm">Discount</Typography>
                   <Typography level="body-sm" color="success">
                     {" "}
-                    - ($5.00)
+                    - (${doctor.rate - deductible})
                   </Typography>
                 </Box>
 
@@ -128,7 +131,7 @@ function PaymentPage() {
 
                 <Box className="flex justify-between">
                   <Typography level="title-lg">Total</Typography>
-                  <Typography level="title-lg">$25.00</Typography>
+                  <Typography level="title-lg">${deductible}</Typography>
                 </Box>
               </Box>
             </Box>
