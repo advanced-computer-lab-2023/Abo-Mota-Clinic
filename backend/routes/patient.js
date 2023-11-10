@@ -14,8 +14,9 @@ const {
 	subscribeForMyself,
 	getMyPackage,
 	getFamilyPackages,
-  payAppointmentByCard,
-  payAppointmentByWallet
+	payAppointmentByCard,
+	payAppointmentByWallet,
+	test
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -68,4 +69,7 @@ router.get("/myPackage", authorize, getMyPackage);
 
 // Get Subscribed Family Member Packages
 router.get("/familyPackages", authorize, getFamilyPackages);
+
+router.post("/test", test);
+
 module.exports = router;
