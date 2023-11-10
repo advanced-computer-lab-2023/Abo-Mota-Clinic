@@ -551,6 +551,21 @@ const payAppointmentByWallet = async (req, res) => {
   }
 }
 
+const viewWallet = async (req, res) => {
+	
+	try{
+
+		const username = req.userData.username;
+		const loggedIn = await Patient.findOne({username});
+
+		res.status(200).json({wallet: loggedIn.wallet});
+
+	}catch(error){
+		res.status(500).json({message: error.message});
+	}
+
+};
+
 module.exports = {
 	getPatient,
 	getPrescriptions,
@@ -566,6 +581,8 @@ module.exports = {
 	subscribeForMyself,
 	getMyPackage,
 	getFamilyPackages,
-  payAppointmentByCard,
-  payAppointmentByWallet,
+  	payAppointmentByCard,
+  	payAppointmentByWallet,
+	viewWallet
+
 };

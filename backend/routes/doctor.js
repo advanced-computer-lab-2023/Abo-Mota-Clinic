@@ -7,7 +7,8 @@ const {
 	changePassword,
 	addFreeAppointmentSlots,
 	acceptContract,
-	scheduleFollowUp
+	scheduleFollowUp,
+	viewWallet
 
 } = require("../controllers/doctorController");
 
@@ -39,5 +40,7 @@ router.patch("/acceptContract", authorize, acceptContract);
 //Add Patient Follow Up
 router.post("/scheduleFollowUp", authorize, scheduleFollowUp)
 
+//Get Amount in my Wallet
+router.get('/wallet', authorize, viewWallet)
 
 module.exports = router;
