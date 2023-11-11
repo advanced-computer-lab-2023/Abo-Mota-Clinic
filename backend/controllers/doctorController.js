@@ -270,13 +270,13 @@ const scheduleFollowUp = async(req, res) => {
 		const doctor = await Doctor.findOne({username});
 
 		const {patientUsername, followUpDate} = req.body;
-
+		
 		const patient = await Patient.findOne({username: patientUsername});
 
 		if(!patient)
 			throw new Error("This patient does not exist");
 
-		const appointment = await Appointment.create({date: followUpDate, doctor: doctor._id, patient: patient._id});
+		const appointment = await Appointment.create({date: followUpDate, status: "upcoming", doctor: doctor._id, patient: patient._id});
 
 		res.status(200).json({message: "Follow up added successfully" , appointment});
 

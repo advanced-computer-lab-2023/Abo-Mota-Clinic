@@ -83,6 +83,21 @@ const doctorApi = createApi({
                 }
             }
         }),
+        scheduleFollowUp: builder.mutation({
+            invalidatesTags : (result, error, doctor)=>{
+                return [{type:'Doctor', id:"123"}];
+            },
+            query : ({patientUsername, followUpDate})=>{
+                return {
+                    url: '/scheduleFollowUp',
+                    body: {
+                        patientUsername,
+                        followUpDate
+                    },
+                    method :'POST',
+                }
+            }
+        }),
        } 
     }
 })
@@ -92,6 +107,7 @@ export const {
     useFetchPatientsQuery,
     useFetchAppointmentsQuery,
     useUpdateDoctorMutation,
-    useAcceptContractMutation
+    useAcceptContractMutation,
+    useScheduleFollowUpMutation
 } = doctorApi;
 export { doctorApi };

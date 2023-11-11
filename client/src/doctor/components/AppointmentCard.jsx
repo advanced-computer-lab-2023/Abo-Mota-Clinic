@@ -19,7 +19,7 @@ export default function AppointmentCard({appointment}) {
     const navigate = useNavigate(); // Hook to get the navigate function
   
     const navigateToPatientFollowUp = () => {
-      navigate(`PatientFollowUp/${appointment.patient.id}`); // Use the patient's ID to navigate
+      navigate('PatientFollowUp' , {state: appointment.patient}); // Use the patient to navigate
     };
 const colors = {
     "upcoming": "warning",
@@ -91,9 +91,9 @@ const colors = {
               <Typography level="body-md" textColor="text.tertiary" startDecorator={<PhoneIcon fontSize='small' />}>
                 {appointment.patient.mobile}
               </Typography>
-              <Button variant="plain" onClick={navigateToPatientFollowUp} size="md"> 
+              {(appointment.status === 'completed') && (<Button variant="plain" onClick={navigateToPatientFollowUp} size="md"> 
                 Follow Up
-              </Button>
+              </Button>)}
               </div>
               
               

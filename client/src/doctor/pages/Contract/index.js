@@ -13,10 +13,11 @@ let formattedDate = `${year}-${month.toString().padStart(2, '0')}-${date.toStrin
 
 const { data, isFetching, isError } = useFetchDoctorQuery();
 const [acceptContract, result] = useAcceptContractMutation();
-
+  console.log(data)
   let fetchedName = "";
-  if(!isFetching)
+  if(!isFetching){
     fetchedName = data.name;
+  }
 
   
   const contractParagraph = `This Employment Agreement is entered into as of ${formattedDate}, by Dr.${fetchedName} and between Abo Mota Clinic , collectively referred to as the "Parties". The Parties hereby agree to the terms and conditions set forth herein whereby the Doctor shall provide medical services to the Employer's patients in a capacity that is both professional and diligent, consistent with the highest standards of the medical profession. This Agreement outlines the terms of employment, compensation, duties, and responsibilities as well as mutual commitments made between the Employer and the Doctor. The Doctor's commitment to deliver healthcare services shall be rewarded with a compensation package detailed below, which includes a base salary and a markup structure designed to incentivize exceptional care and service.`;
@@ -30,11 +31,12 @@ const [acceptContract, result] = useAcceptContractMutation();
         <div className='terms-paragraph'>The Doctor shall be employed in the capacity of a full-time employee. The Doctor shall be expected to work a minimum of 40 hours per week. The Doctor shall be expected to work from sundays to thursdays from 9am to 4pm GMT+2.</div>
         <div className='terms-title'>Markup:</div>
         <div className='terms-paragraph'>The Clinic will take either 10% of the profit or 10000EGP.</div>
-        <div className='terms-paragraph-accept'>Pressing the Accept contract button means accepting all points in the contract</div>
+        {!(data.contractApproved) && (<div className='terms-paragraph-accept'>Pressing the Accept contract button means accepting all points in the contract</div>)}
         <div className="contract-signature">
+          {!(data.contractApproved) &&
           <button className='contract-button' onClick={async() => {await acceptContract()}}>
             Accept Contract
-          </button>
+          </button>}
         </div>
       </div>
       <div className="second-contract"></div>

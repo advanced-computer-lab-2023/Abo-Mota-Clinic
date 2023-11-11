@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { DatePicker } from "antd";
 import { Box, Button, FormControl, FormLabel, Input, Textarea } from '@mui/joy';
 import dayjs from "dayjs";
+import { useScheduleFollowUpMutation } from '../../store';
 
 function PatientFollowUp() {
   const [followUpDate, setFollowUpDate] = useState(null);
   const [notes, setNotes] = useState('');
   const navigate = useNavigate();
-  const {patientId}=useParams();
-  console.log(patientId);
+  const location = useLocation();
+  const patient = location.state; 
+  const [followUp, result] = useScheduleFollowUpMutation();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     // ... submit logic ...
+    console.log(patient.username)
+    if(followUpDate)
+      await followUp({patientUsername: patient.username, followUpDate: followUpDate})
   };
 
   return (
@@ -61,7 +67,7 @@ function PatientFollowUp() {
           '&:hover': {
               backgroundColor: '#0056b3',
           },
-        }}>
+        }} onClick={handleSubmit}>
           Schedule Follow Up
         </Button>
       </Box>

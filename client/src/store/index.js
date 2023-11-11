@@ -32,7 +32,8 @@ export {
   useFetchPatientsQuery,
   useFetchDoctorQuery,
   useUpdateDoctorMutation,
-  useAcceptContractMutation
+  useAcceptContractMutation,
+  useScheduleFollowUpMutation
 } from "./apis/doctorApi";
 
 export {
