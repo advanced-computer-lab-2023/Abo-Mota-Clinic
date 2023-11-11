@@ -30,7 +30,6 @@ const {
 const router = express.Router();
 const authorize = require("../middlewares/authorization");
 const multer = require("multer");
-const path = require("path");
 
 // Get Patient
 router.get("/", authorize, getPatient);
@@ -52,7 +51,6 @@ router.get("/appointments", authorize, getAppointments);
 
 //handle uploads
 const storage = multer.memoryStorage();
-
 const upload = multer({ storage });
 
 //Upload a medical history record
@@ -64,7 +62,7 @@ router.post(
 );
 
 //Delete a medical history record
-router.delete("/deleteMedicalHistory/:_id", deleteMedicalHistory);
+router.delete("/deleteMedicalHistory/:id", authorize, deleteMedicalHistory);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
