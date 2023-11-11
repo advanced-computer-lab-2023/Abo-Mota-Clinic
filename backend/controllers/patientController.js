@@ -352,7 +352,11 @@ const linkFamilyMember = async (req, res) => {
 			};
 
 			let newFamilyDiscount;
-			if (memberAccount.familyDiscount < loggedIn.healthPackage.package.familyDiscount) {
+			if (
+				loggedIn.healthPackage.package &&
+				loggedIn.healthPackage.status !== "cancelled" &&
+				memberAccount.familyDiscount < loggedIn.healthPackage.package.familyDiscount
+			) {
 				newFamilyDiscount = loggedIn.healthPackage.package.familyDiscount;
 			} else newFamilyDiscount = memberAccount.familyDiscount;
 			const updatedOpposite = await Patient.updateOne(
