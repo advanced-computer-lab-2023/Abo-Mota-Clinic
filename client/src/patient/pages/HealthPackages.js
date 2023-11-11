@@ -27,6 +27,7 @@ function HealthPackages() {
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <PayHealthPackageModal
+            selectedIdx={selected}
             selectedPackage={data[selected]}
             setSelectedPackage={setSelected}
           />

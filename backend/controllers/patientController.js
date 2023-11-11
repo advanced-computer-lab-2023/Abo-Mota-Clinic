@@ -214,14 +214,11 @@ const uploadMedicalHistory = async (req, res) => {
 
 const deleteMedicalHistory = async (req, res) => {
 	try {
-		const username = req.body.username
-		const recordId = req.params._id;
+		const username = req.userData.username;
+		const recordId = req.params.id;
 
 		const patient = await Patient.findOne({ username });
-
-		const updatedMedicalHistory = patient.medicalHistory.filter((o)=>recordId!==o._id);
-
-		patient.medicalHistory = updatedMedicalHistory;
+		patient.medicalHistory = patient.medicalHistory.filter(record => !record._id.equals(recordId));
 
 		await patient.save();
 

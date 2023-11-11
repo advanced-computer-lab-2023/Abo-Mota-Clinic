@@ -23,6 +23,8 @@ import ViewWallet from "./patient/pages/ViewWallet";
 import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PatientTest3 from "./patient/pages/PatientTest3";
+import PaymentPage from "./patient/pages/PaymentPage";
+import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -39,7 +41,7 @@ import Contract from "./doctor/pages/Contract";
 // login
 import LoginForm from "./shared/pages/LoginForm";
 
-import PaymentPage from "./patient/pages/PaymentPage";
+
 
 // login
 
@@ -61,8 +63,9 @@ function App() {
           <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="test3" element={<PatientTest3 />} />
+          <Route path="test3" element={<PaymentPage />} />
           <Route path="profile/subscription" element={<Subscription />} />
+          <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>

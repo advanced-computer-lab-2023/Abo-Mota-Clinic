@@ -1,84 +1,27 @@
-import { Box } from "@mui/joy";
-import { Typography, Divider, Button, Card } from "@mui/joy";
+import { Box, Typography, Divider, Button, Card } from "@mui/joy";
+
+// HOOKS
+import { useState } from "react";
+
+// COMPONENTS
 import CardPayment from "../components/CardPayment";
+import PaymentSummary from "../components/PaymentSummary";
+import CheckoutDetails from "../components/CheckoutDetails";
+import WalletPayment from "../components/WalletPayment";
+
+// ICONS
 import { FaRegCreditCard } from "react-icons/fa";
 import { IoWallet } from "react-icons/io5";
-import { useState } from "react";
-import { BsClock } from "react-icons/bs";
-import { GrLocationPin } from "react-icons/gr";
-import { useFetchPatientQuery, usePayAppointmentByWalletMutation, usePayAppointmentByCardMutation, useBookAppointmentMutation } from "../../store";
-import capitalize from "../utils/capitalize";
-import WalletPayment from "../components/WalletPayment";
-import { useNavigate } from "react-router-dom";
-import Toast from "../components/Toast";
-import { useCreditDoctorMutation } from "../../store";
-import PaymentSummary from "../components/PaymentSummary";
-import round2dp from "../utils/round2dp";
-import CheckoutDetails from "../components/CheckoutDetails";
 
-function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit, appointmentId }) {
+// UTILS
+import round2dp from "../utils/round2dp";
+
+function PaymentPage({ items, type, details, discount, onPaymentSuccess, onPaymentFailure }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
 
-  const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
-  const [payAppointmentByWallet, walletResults] = usePayAppointmentByWalletMutation();
-  const [creditDoctor, creditDoctorResults] = useCreditDoctorMutation();
-  const [bookAppointment, bookResults] = useBookAppointmentMutation();
-
-  const navigate = useNavigate();
-
-  const [toast, setToast] = useState({
-    open: false,
-    duration: 4000,
-  });
-
-  const onToastClose = (event, reason) => {
-    if (reason === "clickaway") return;
-
-    setToast({
-      ...toast,
-      open: false,
-    });
-  };
-
-
-  const onPaymentSuccess = () => {
-    creditDoctor({
-      doctor_id: doctorId,
-      credit: doctorCredit
-    });
-
-    bookAppointment({
-      appointmentId
-    });
-
-    setToast({
-      ...toast,
-      open: true,
-      color: "success",
-      message: "Payment completed successfully!",
-    });
-
-    setTimeout(() => {
-      navigate("/patient/");
-    }, 1500)
-  }
-
-  const onPaymentFailure = () => {
-    setToast({
-      ...toast,
-      open: true,
-      color: "danger",
-      message: "Payment unsuccessful",
-    });
-  }
-
-  if (isFetchingPatient) {
-    return <div>Loading ...</div>;
-  } else if (isFetchingPatientError) {
-    return <div> Error ... </div>;
-  }
-
-
+  const subtotal = items.reduce((acc, {price}) => acc + price, 0);
+  const deductible = round2dp(subtotal * (1 - discount));
+  
   const buttonGroup = [
     {
       id: 1,
@@ -95,37 +38,20 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
   ];
 
   return (
-    //w-full add this if you want full width
     <Box className="mt-15 space-y-5">
       <Box sx={{ py: 2 }}>
-        <Typography level="h1" sx={{ml: -0.5}}>
+        <Typography level="h1" sx={{ ml: -0.5 }}>
           Checkout
         </Typography>
-
-        {/* <Divider sx={{ my: 1.5 }} /> */}
 
         <br></br>
 
         <Box id="card-body" className="w-full flex justify-between space-x-20">
-          <Box sx={{width: '60%'}}>
-            {/* <Box id="appointment-review" className="mb-5">
-              <Typography level="title-lg" sx={{ marginBottom: 1 }}>
-                Details
-              </Typography>
+          <Box sx={{ width: '60%' }}>
 
-              <Typography level="body-md" startDecorator={<BsClock />}>
-                {date}, {currentTime}
-              </Typography>
+            <CheckoutDetails type={type} details={details} />
 
-              <Typography level="body-md" startDecorator={<GrLocationPin />}>
-                {doctor.affiliation}
-              </Typography>
-            </Box> */}
-
-            <CheckoutDetails />
-
-
-            <Typography level="h3" sx={{mt: 5}}>
+            <Typography level="h3" sx={{ mt: 5 }}>
               Payment Method
             </Typography>
 
@@ -170,34 +96,12 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
           </Box>
 
           <PaymentSummary
-            items={[{ name: "Consultation", price: round2dp(doctor.rate * 1.1) }]}
-            discount={patient.healthPackage.package ? patient.healthPackage.package.doctorDiscount : 0}
-            optionalHeaders={
-              <Typography level="body-sm">
-                Subscribed health package:{" "}
-                <span className="font-bold">
-                  {!patient.healthPackage ? "No Package" : capitalize(patient.healthPackage.package.name)}
-                </span>
-              </Typography>
-            }
+            items={items}
+            discount={discount}
           />
 
         </Box>
       </Box>
-
-      {/* <Box className="flex w-full justify-end">
-        <Button type="submit" variant="solid" id="submit" sx={{ marginRight: 5, py: 2, borderRadius: 2 }}>
-          <span id="Button-text">
-            PAY APPOINTMENT
-          </span>
-        </Button>
-      </Box> */}
-
-
-      <div>
-        <Toast {...toast} onClose={onToastClose} />
-      </div>
-
     </Box>
 
 

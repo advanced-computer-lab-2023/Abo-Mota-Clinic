@@ -3,9 +3,10 @@ import capitalize from "../utils/capitalize";
 import round2dp from "../utils/round2dp";
 
 function PaymentSummary({ items, discount, optionalHeaders }) {
-  const subtotal = items.reduce((acc, item) => acc + item.price, 0);
+  const subtotal = items.reduce((acc, {price}) => acc + price, 0);
   let deductible = discount ? subtotal * (1 - discount) : subtotal;
-  deductible = deductible.toFixed(2);
+  deductible = round2dp(deductible);
+  const discountedAmount = round2dp(discount * subtotal);
 
   return (
     <Box
@@ -16,27 +17,16 @@ function PaymentSummary({ items, discount, optionalHeaders }) {
       <Box className="">
         <Typography level="title-lg">Summary</Typography>
 
-        {/* <Typography level="body-sm">
-          Subscribed health package:{" "}
-          <span className="font-bold">
-            {!discount ? "No Package" : capitalize(patient.healthPackage.package.name)}
-          </span>
-        </Typography> */}
-
         {optionalHeaders}
 
         <Divider sx={{ my: 2 }} />
-        <Box>
-          {/* <Box className="flex justify-between">
-            <Typography level="body-sm">Consultation</Typography>
-            <Typography level="body-sm">${doctor.rate}</Typography>
-          </Box> */}
 
+        <Box>
           {
-            items.map(({ name, price }) => {
+            items.map(({ label, price }) => {
               return (
                 <Box className="flex justify-between mb-3">
-                  <Typography level="body-sm">{name}</Typography>
+                  <Typography level="body-sm">{label}</Typography>
                   <Typography level="body-sm">${price}</Typography>
                 </Box>
               )
@@ -55,7 +45,7 @@ function PaymentSummary({ items, discount, optionalHeaders }) {
             <Typography level="body-sm">Discount</Typography>
             <Typography level="body-sm" color="success">
               {" "}
-              - ({round2dp(discount * subtotal)})
+              - ({discountedAmount})
             </Typography>
           </Box>
 
