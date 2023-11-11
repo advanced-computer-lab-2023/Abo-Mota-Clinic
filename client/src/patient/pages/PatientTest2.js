@@ -27,7 +27,10 @@ export default function PatientTest2({ step = 0 }) {
   const { doctorId, id } = useParams();
   const [date, setDate] = useState(null);
   const [currentTime, setCurrentTime] = useState(null);
+  const [appointmentId, setAppointmentId] = useState(null);
   const [currentTimings, setCurrentTimings] = useState([]);
+
+  
 
   const { data: doctor, isFetching: isFetchingDoctor, error: isFetchingDoctorError } = useFetchDoctorsQuery();
   const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } =
@@ -55,6 +58,7 @@ export default function PatientTest2({ step = 0 }) {
 
   const handleReset = () => {
     setDate(null);
+    setAppointmentId(null);
     setCurrentTime(null);
     setCurrentTimings([]);
     setActiveStep(0);
@@ -69,6 +73,8 @@ export default function PatientTest2({ step = 0 }) {
       currentTime={currentTime}
       setCurrentTime={setCurrentTime}
       doctorId={doctorId}
+      appointmentId={appointmentId}
+      setAppointmentId={setAppointmentId}
     />
   );
   const payment = (
@@ -80,6 +86,7 @@ export default function PatientTest2({ step = 0 }) {
       doctor={doctor[id]}
       patient={patient}
       doctorCredit={rate}
+      appointmentId={appointmentId}
     />
   );
 

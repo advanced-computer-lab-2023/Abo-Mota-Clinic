@@ -11,7 +11,11 @@ const stripeApi = createApi({
 
   endpoints: (builder) => {
     return {
-      fetchConfig: builder.query({
+      fetchStripeConfig: builder.query({
+        providesTags: (result, error) => {
+          return ["StripeConfig"];
+        },
+
         query: () => {
           return {
             url: "/config",
@@ -19,7 +23,12 @@ const stripeApi = createApi({
           };
         },
       }),
+
       createPaymentIntent: builder.mutation({
+        providesTags: (result, error) => {
+          return ["PaymentIntent"];
+        },
+
         query: (amount) => {
           return {
             url: "/create-payment-intent",
@@ -32,6 +41,6 @@ const stripeApi = createApi({
   },
 });
 
-export const { useCreatePaymentIntentMutation, useFetchConfigQuery } = stripeApi;
+export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
 
 export { stripeApi };

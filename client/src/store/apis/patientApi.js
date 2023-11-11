@@ -128,10 +128,10 @@ const patientApi = createApi({
         },
       }),
 
-      payAppointmentByCard: builder.mutation({
+      creditDoctor: builder.mutation({
         query: (data) => {
           return {
-            url: "/payCard",
+            url: "/creditDoctor",
             method: "PATCH",
             body: data,
           };
@@ -143,6 +143,16 @@ const patientApi = createApi({
           return {
             url: "/payWallet",
             method: "PATCH",
+            body: data,
+          };
+        },
+      }),
+
+      bookAppointment: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/bookAppointment",
+            method: "POST",
             body: data,
           };
         },
@@ -161,8 +171,9 @@ export const {
   useFetchDoctorsQuery,
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
-  usePayAppointmentByCardMutation,
+  useCreditDoctorMutation,
   usePayAppointmentByWalletMutation,
+  useBookAppointmentMutation,
 } = patientApi;
 
 export { patientApi };

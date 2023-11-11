@@ -62,10 +62,11 @@ export const {
   useFetchDoctorsQuery,
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
-  usePayAppointmentByCardMutation,
+  useCreditDoctorMutation,
   usePayAppointmentByWalletMutation,
+  useBookAppointmentMutation,
 } = patientApi;
 
-export const { useCreatePaymentIntentMutation, useFetchConfigQuery } = "./apis/stripeApi";
+export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
 
 

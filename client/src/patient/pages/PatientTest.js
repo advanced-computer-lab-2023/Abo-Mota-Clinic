@@ -31,38 +31,17 @@ export default function PatientTest({
   currentTime,
   setCurrentTime,
   doctorId,
+  appointmentId,
+  setAppointmentId,
 }) {
-  // const [disabledDays, setDisabledDays] = useState([dayjs("2023-10-10"), dayjs("2021-10-12")]);
 
-  // const enabledDays = [
-  //   dayjs("2023-11-26"),
-  //   dayjs("2023-12-25"),
-  //   dayjs("2023-11-10"),
-  //   dayjs("2023-11-09"),
-  // ];
-
-  // const handleDateChange = (date) => {
-  //   // Disable the selected date and the next day.
-  //   setDisabledDays([date, date.add(1, 'day')]);
-  // };
-
-  // const timings = [
-  //   "12:00 PM",
-  //   "1:00 PM",
-  //   "2:00 PM",
-  //   "3:00 PM",
-  //   "4:00 PM",
-  //   "5:00 PM",
-  //   "7:00 PM",
-  //   "8:00 PM",
-  // ];
-  // const [date, setDate] = useState(null);
-  // const [currentTime, setCurrentTime] = useState(null);
-  // const [currentTimings, setCurrentTimings] = useState([]);
-
-  // Modify your onChange handler for the date picker
+  console.log("Appointment ID @ PatientTest")
+  console.log(appointmentId);
 
   const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(doctorId);
+
+  console.log("Available Appointments @ PatientTest");
+  console.log(data);
 
   if (isFetching) {
     return <LoadingIndicator />;
@@ -115,12 +94,15 @@ export default function PatientTest({
           </Typography>
 
           <Box className="space-y-5">
-            {currentTimings.map((time) => {
+            {currentTimings.map(([id, time]) => {
               const isSelected = time === currentTime;
               return (
                 <Button
                   key={time}
-                  onClick={() => setCurrentTime(time)}
+                  onClick={() => {
+                    setCurrentTime(time)
+                    setAppointmentId(id)
+                  }}
                   variant="outlined"
                   color="primary"
                   fullWidth

@@ -6,17 +6,70 @@ import { IoWallet } from "react-icons/io5";
 import { useState } from "react";
 import { BsClock } from "react-icons/bs";
 import { GrLocationPin } from "react-icons/gr";
-import { useFetchPatientQuery, usePayAppointmentByWalletMutation } from "../../store";
+import { useFetchPatientQuery, usePayAppointmentByWalletMutation, usePayAppointmentByCardMutation, useBookAppointmentMutation } from "../../store";
 import capitalize from "../utils/capitalize";
 import WalletPayment from "../components/WalletPayment";
+import { useNavigate } from "react-router-dom";
+import Toast from "../components/Toast";
+import { useCreditDoctorMutation } from "../../store";
 
-function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit }) {
+function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit, appointmentId }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
 
-  console.log("Doctor Credit @ PaymentPage: ", doctorCredit)
-
   const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
-  const [payAppointmentByWallet, results] = usePayAppointmentByWalletMutation();
+  const [payAppointmentByWallet, walletResults] = usePayAppointmentByWalletMutation();
+  const [creditDoctor, creditDoctorResults] = useCreditDoctorMutation();
+  const [bookAppointment, bookResults] = useBookAppointmentMutation();
+
+  const navigate = useNavigate();
+
+  const [toast, setToast] = useState({
+    open: false,
+    duration: 4000,
+  });
+
+  const onToastClose = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    setToast({
+      ...toast,
+      open: false,
+    });
+  };
+
+
+
+
+  const onPaymentSuccess = () => {
+    creditDoctor({
+      doctor_id: doctorId,
+      credit: doctorCredit
+    });
+
+    bookAppointment({
+      appointmentId
+    });
+
+    setToast({
+      ...toast,
+      open: true,
+      color: "success",
+      message: "Payment completed successfully!",
+    });
+
+    setTimeout(() => {
+      navigate("/patient/");
+    }, 1500)
+  }
+
+  const onPaymentFailure = () => {
+    setToast({
+      ...toast,
+      open: true,
+      color: "danger",
+      message: "Payment unsuccessful",
+    });
+  }
 
   if (isFetchingPatient) {
     return <div>Loading ...</div>;
@@ -97,9 +150,17 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
               {/* MAIN PAYMENT COMPONENT */}
 
               {paymentMethod === "card" ? (
-                <CardPayment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
+                <CardPayment
+                  deductible={deductible}
+                  onSuccess={onPaymentSuccess}
+                  onFailure={onPaymentFailure}
+                />
               ) : (
-                <WalletPayment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
+                <WalletPayment
+                  deductible={deductible}
+                  onSuccess={onPaymentSuccess}
+                  onFailure={onPaymentFailure}
+                />
               )}
             </Card>
           </Box>
@@ -161,7 +222,15 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
           </span>
         </Button>
       </Box> */}
+
+
+      <div>
+        <Toast {...toast} onClose={onToastClose} />
+      </div>
+
     </Box>
+
+
   );
 }
 export default PaymentPage;
