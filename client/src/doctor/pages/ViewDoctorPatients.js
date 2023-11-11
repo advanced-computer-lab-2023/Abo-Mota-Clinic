@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Button from '@mui/joy/Button';
 import { isAfter, isSameDay } from 'date-fns'; // Import date-fns functions
 import { useSelector } from "react-redux";
-import { useFetchPatientsQuery } from "../../store";
+import { useFetchPatientsQuery, useFetchDoctorQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
 import PatientCard from "../components/PatientCard";
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +11,8 @@ import { useNavigate } from 'react-router-dom';
 function ViewDoctorPatients() {
 	const [isFiltered, setIsFiltered]  = useState(false)
 	const [searchTerm, setSearchTerm] = useState("")
-
-	const doctor = useSelector((state) => state.doctorSlice);
-	const { data, error , isFetching } = useFetchPatientsQuery(doctor);
+	
+	const { data, error , isFetching } = useFetchPatientsQuery();
 	const patients = data;
 
 	const navigate = useNavigate();

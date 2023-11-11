@@ -50,12 +50,19 @@ const patientSchema = new Schema(
 			relation: String,
 		},
 		healthPackage: {
+			status: {
+				type: String,
+				default: null,
+				enum: ["subscribed", "unsubscribed", "cancelled"],
+			},
 			package: {
 				type: Schema.Types.ObjectId,
 				default: null,
 				ref: "HealthPackage",
 			},
 			endDate: Date,
+			cancelDate: Date,
+			unsubscribeDate: Date,
 		},
 		healthRecords: [String],
 		medicalHistory: [String],
