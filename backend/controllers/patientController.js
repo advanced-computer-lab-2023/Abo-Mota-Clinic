@@ -297,7 +297,7 @@ const linkFamilyMember = async (req, res) => {
 	try {
 		const { email, mobile, relationToPatient } = req.body;
 		const username = req.userData.username;
-		const loggedIn = await Patient.findOne({ username });
+		const loggedIn = await Patient.findOne({ username }).populate(healthPackage.package);
 		let membersRelation = "";
 
 		if (!email && !mobile) {
@@ -350,10 +350,16 @@ const linkFamilyMember = async (req, res) => {
 				member: loggedIn._id,
 				relationToPatient: membersRelation,
 			};
+
+			let newFamilyDiscount;
+			if (memberAccount.familyDiscount < loggedIn.healthPackage.package.familyDiscount) {
+				newFamilyDiscount = loggedIn.healthPackage.package.familyDiscount;
+			} else newFamilyDiscount = memberAccount.familyDiscount;
 			const updatedOpposite = await Patient.updateOne(
 				{ _id: memberAccount._id },
-				{ $push: { linkedFamily: oppositeMember } }
+				{ $push: { linkedFamily: oppositeMember }, familyDiscount: newFamilyDiscount }
 			);
+
 			return res.status(200).json({ updated });
 		} else if (mobile) {
 			const memberAccount = await Patient.findOne({ mobile });
