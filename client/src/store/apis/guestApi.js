@@ -36,7 +36,7 @@ const guestApi = createApi({
         },
       }),
 
-      logout: builder.mutation({
+      logout: builder.query({
         query: () => {
           return {
             url: "/logout",
@@ -48,5 +48,5 @@ const guestApi = createApi({
   },
 });
 
-export const { useRegisterDoctorMutation, useRegisterPatientMutation, useLoginMutation, useLogoutMutation } = guestApi;
+export const { useRegisterDoctorMutation, useRegisterPatientMutation, useLoginMutation, useLogoutQuery } = guestApi;
 export { guestApi };

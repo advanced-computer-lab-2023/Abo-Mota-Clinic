@@ -37,6 +37,7 @@ const doctorApi = createApi({
         }),
         fetchPatients: builder.query({
             providesTags:(result,error)=>{
+                console.log("RESULT", result)
                 const tags = result.map((patient)=>{
                     return {type:'Patient', id:patient._id}
                 });
