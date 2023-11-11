@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import Button from "@mui/joy/Button";
 import { useFetchAppointmentsQuery, useFetchDoctorQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
-import { isAfter, isSameDay, isBefore, set, parseISO } from 'date-fns'; // Import date-fns functions
+import { isAfter, isSameDay, isBefore, set, parseISO } from 'date-fns'; 
 import { Autocomplete } from "@mui/joy";
 import FormControl from "@mui/joy/FormControl";
 import CircularProgress from '@mui/joy/CircularProgress';
@@ -58,7 +58,7 @@ function ViewDoctorAppointments() {
 		});
 	}
 	const navigateToFreeSlots = () => {
-		navigate('/doctor/FreeSlotsAppointments'); // Replace with the actual path to your Free Slots Appointments
+		navigate('/doctor/FreeSlotsAppointments'); 
 	  };
 
 	filteredAppointments = filteredAppointments.filter((appointment) => {
@@ -119,7 +119,7 @@ function ViewDoctorAppointments() {
 						<Button 
 							variant="solid" 
 							sx={{ 
-							alignSelf: 'center', // Adjust alignment as necessary
+							alignSelf: 'center', 
 							}} 
 							onClick={navigateToFreeSlots}
 						>
