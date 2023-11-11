@@ -83,6 +83,7 @@ const addFamilyMember = async (req, res) => {
 	try {
 		const {
 			name,
+			email,
 			nationalId,
 			age,
 			gender,
@@ -94,7 +95,7 @@ const addFamilyMember = async (req, res) => {
 		} = req.body;
 
 		const loggedInUsername = req.userData.username;
-		const loggedIn = await Patient.findOne({ loggedInUsername });
+		const loggedIn = await Patient.findOne({ username: loggedInUsername });
 		const familyMemExists = await Patient.findOne({
 			$or: [{ username }, { email }, { nationalId }, { mobile: phoneNumber }],
 		});
@@ -125,6 +126,7 @@ const addFamilyMember = async (req, res) => {
 			],
 			mobile: phoneNumber,
 			username: username.toLowerCase(),
+			email,
 			password: hashedPassword,
 			dob,
 			emergencyContact: {
@@ -139,7 +141,7 @@ const addFamilyMember = async (req, res) => {
 			relationToPatient: relationToPatient,
 		};
 		const updated = await Patient.updateOne(
-			{ loggedInUsername },
+			{ username: loggedInUsername },
 			{ $push: { linkedFamily: linkedFamilyMember } }
 		);
 		res.status(200).json(updated);
@@ -194,11 +196,11 @@ const getAppointments = async (req, res) => {
 };
 
 const uploadMedicalHistory = async (req, res) => {
-	try{
+	try {
 		const medicalHistory = {
 			data: req.files.medicalHistory[0].buffer,
 			contentType: req.files.medicalHistory[0].mimetype,
-		}
+		};
 		const username = req.userData.username;
 		const patient = await Patient.findOne({ username });
 		const updated = await Patient.updateOne(
@@ -218,7 +220,9 @@ const deleteMedicalHistory = async (req, res) => {
 		const recordId = req.params.id;
 
 		const patient = await Patient.findOne({ username });
-		patient.medicalHistory = patient.medicalHistory.filter(record => !record._id.equals(recordId));
+		patient.medicalHistory = patient.medicalHistory.filter(
+			(record) => !record._id.equals(recordId)
+		);
 
 		await patient.save();
 
@@ -407,6 +411,7 @@ const selfSubscribeWallet = async (user, package) => {
 			status: "subscribed",
 			package: package._id,
 			endDate: dateInYear,
+			pricePaid: discountedPrice,
 		};
 		// Finding updating all family members' family discount when their discount is less than the incoming one
 		const familyMemberIds = await user.linkedFamily.map((familyLink) => familyLink.member);
@@ -430,7 +435,7 @@ const selfSubscribeWallet = async (user, package) => {
 		throw error;
 	}
 };
-const selfSubscribeCard = async () => { };
+const selfSubscribeCard = async () => {};
 
 // Helpers for family subscription controllers
 const familySubscribeWallet = async (receiver, subscriber, package) => {
@@ -452,6 +457,7 @@ const familySubscribeWallet = async (receiver, subscriber, package) => {
 			status: "subscribed",
 			package: package._id,
 			endDate: dateInYear,
+			pricePaid: discountedPrice,
 		};
 		// Finding updating all family members' family discount when their discount is less than the incoming one
 		const familyMemberIds = await receiver.linkedFamily.map((familyLink) => familyLink.member);
@@ -475,7 +481,7 @@ const familySubscribeWallet = async (receiver, subscriber, package) => {
 		throw error;
 	}
 };
-const familySubscribeCard = async () => { };
+const familySubscribeCard = async () => {};
 
 // Controllers for Subscription
 const subscribeForMyself = async (req, res) => {
@@ -489,7 +495,9 @@ const subscribeForMyself = async (req, res) => {
 		}
 
 		if (loggedIn.healthPackage.package !== null || loggedIn.healthPackage.status !== "cancelled") {
-			throw Error("You already have an active package");
+			throw Error(
+				"You already have a subscribed package or remaining benefits from an unsubscribed package"
+			);
 		}
 
 		if (paymentType.toLowerCase() !== "wallet" && paymentType.toLowerCase() !== "card") {
@@ -569,8 +577,7 @@ const getMyPackage = async (req, res) => {
 			throw Error("You are not subscribed to any packages");
 		}
 		const result = {
-			package: loggedIn.healthPackage.package,
-			expiryDate: loggedIn.healthPackage.endDate,
+			...loggedIn.healthPackage,
 		};
 		res.status(200).json(result);
 	} catch (error) {
@@ -592,8 +599,8 @@ const getFamilyPackages = async (req, res) => {
 		const familyPackageArray = familyMembers.map((member) => {
 			const endDate = member.healthPackage?.endDate;
 			return {
+				...member.healthPackage,
 				name: member.username,
-				package: member.healthPackage.package,
 				expiryDate: endDate || "N/A",
 			};
 		});
@@ -640,12 +647,11 @@ const payAppointmentByWallet = async (req, res) => {
 			{ new: true }
 		);
 
-		res.status(200).json({ message: 'Payment is successful', patient: updatedPatient });
-	}
-	catch (err) {
+		res.status(200).json({ message: "Payment is successful", patient: updatedPatient });
+	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
-}
+};
 
 const creditDoctor = async (req, res) => {
 	try {
@@ -707,7 +713,7 @@ const selfCancelSubscription = async (req, res) => {
 			cancelDate,
 		};
 		const unusedMonths = calculateUnusedMonths(loggedIn.healthPackage.endDate, cancelDate);
-		const pricePerMonth = loggedIn.healthPackage.package.pricePerYear / 12;
+		const pricePerMonth = loggedIn.healthPackage.pricePaid / 12;
 		const refund = pricePerMonth * unusedMonths;
 		const cancel = await Patient.updateOne(
 			{ username },
@@ -732,7 +738,7 @@ const selfCancelSubscription = async (req, res) => {
 			member.linkedFamily.forEach((link) => {
 				const meetsCondition =
 					link.member._id !== loggedIn._id && // Exclude the currently logged-in user
-					(link.member.halthPackage.status === "subscribed" ||
+					(link.member.healthPackage.status === "subscribed" ||
 						link.member.healthPackage.status === "unsubscribed");
 				if (meetsCondition) {
 					maxDiscount = Math.max(maxDiscount, link.member.healthPackage.package.familyDiscount);
@@ -771,7 +777,7 @@ const familyCancelSubscription = async (req, res) => {
 			cancelDate,
 		};
 		const unusedMonths = calculateUnusedMonths(familyMember.healthPackage.endDate, cancelDate);
-		const pricePerMonth = familyMember.healthPackage.package.pricePerYear / 12;
+		const pricePerMonth = familyMember.healthPackage.package.pricePaid / 12;
 		const refund = pricePerMonth * unusedMonths;
 		const cancel = await Patient.updateOne(
 			{ username: familyMemberUsername },
@@ -796,7 +802,7 @@ const familyCancelSubscription = async (req, res) => {
 			member.linkedFamily.forEach((link) => {
 				const meetsCondition =
 					link.member._id !== familyMember._id && // Exclude the currently logged-in user
-					(link.member.halthPackage.status === "subscribed" ||
+					(link.member.healthPackage.status === "subscribed" ||
 						link.member.healthPackage.status === "unsubscribed");
 				if (meetsCondition) {
 					maxDiscount = Math.max(maxDiscount, link.member.healthPackage.package.familyDiscount);
@@ -819,13 +825,13 @@ const packageUnsubscribe = async (req, res) => {
 		const username = req.userData.username;
 		const loggedIn = await Patient.findOne({ username }).populate("healthPackage.package");
 
-		if (!loggedIn.healthPackage.package || loggedIn.healthPackage.package !== "subscribed") {
+		if (!loggedIn.healthPackage.package || loggedIn.healthPackage.status !== "subscribed") {
 			throw Error("You are not subscribed to any package");
 		}
 		const currentDate = new Date();
 		const result = {
 			status: "unsubscribed",
-			package: null,
+			package: loggedIn.healthPackage.package,
 			endDate: loggedIn.healthPackage.endDate,
 			cancelDate: null,
 			unsubscribeDate: currentDate,
@@ -837,43 +843,44 @@ const packageUnsubscribe = async (req, res) => {
 	}
 };
 
-const viewMyPackageStatus = async (req, res) => {
-	try {
-		const username = req.userData.username;
-		const loggedIn = await Patient.findOne({ username });
-		let result;
+// const viewMyPackageStatus = async (req, res) => {
+// 	try {
+// 		const username = req.userData.username;
+// 		const loggedIn = await Patient.findOne({ username });
+// 		let result;
 
-		if (loggedIn.healthPackage.status === "subscribed") {
-			result = {
-				status: loggedIn.healthPackage.status,
-				renewalDate: loggedIn.healthPackage.endDate,
-			};
-		} else if (loggedIn.healthPackage.status === "unsubscribed") {
-			result = {
-				status: loggedIn.healthPackage.status,
-				unsubscribeDate: loggedIn.healthPackage.unsubscribeDate,
-			};
-		} else if (loggedIn.healthPackage.status === "cancelled") {
-			result = {
-				status: loggedIn.healthPackage.status,
-				cancelDate: loggedIn.healthPackage.cancelDate,
-			};
-		} else if (!loggedIn.healthPackage.status) {
-			result = {
-				status: "No subscription",
-			};
-		}
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
-};
+// 		if (loggedIn.healthPackage.status === "subscribed") {
+// 			result = {
+// 				status: loggedIn.healthPackage.status,
+// 				renewalDate: loggedIn.healthPackage.endDate,
+// 			};
+// 		} else if (loggedIn.healthPackage.status === "unsubscribed") {
+// 			result = {
+// 				status: loggedIn.healthPackage.status,
+// 				unsubscribeDate: loggedIn.healthPackage.unsubscribeDate,
+// 			};
+// 		} else if (loggedIn.healthPackage.status === "cancelled") {
+// 			result = {
+// 				status: loggedIn.healthPackage.status,
+// 				cancelDate: loggedIn.healthPackage.cancelDate,
+// 			};
+// 		} else if (!loggedIn.healthPackage.status) {
+// 			result = {
+// 				status: "No subscription",
+// 			};
+// 		}
+// 		res.status(200).json(result);
+// 	} catch (error) {
+// 		res.status(500).json({ error: error.message });
+// 	}
+// };
 
-const viewFamilyPackageStatus = async (req, res) => {
-	try {
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
-};
+// const viewFamilyPackageStatus = async (req, res) => {
+// 	try {
+// 	} catch (error) {
+// 		res.status(500).json({ error: error.message });
+// 	}
+// };
 
 const test = async (req, res) => {
 	const { mode } = req.body;
@@ -899,12 +906,10 @@ const bookAppointment = async (req, res) => {
 		);
 
 		res.status(200).json({ message: "Appointment booked successfully", appointment });
-	}
-
-	catch (error) {
+	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
-}
+};
 
 module.exports = {
 	getPatient,
@@ -925,8 +930,6 @@ module.exports = {
 	viewWallet,
 	selfCancelSubscription,
 	familyCancelSubscription,
-	viewMyPackageStatus,
-	viewFamilyPackageStatus,
 	packageUnsubscribe,
 	uploadMedicalHistory,
 	deleteMedicalHistory,

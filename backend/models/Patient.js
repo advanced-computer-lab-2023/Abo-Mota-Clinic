@@ -63,6 +63,10 @@ const patientSchema = new Schema(
 			endDate: Date,
 			cancelDate: Date,
 			unsubscribeDate: Date,
+			pricePaid: {
+				type: Number,
+				default: 0,
+			},
 		},
 		healthRecords: [
 			{

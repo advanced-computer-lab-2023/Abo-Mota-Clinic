@@ -20,8 +20,6 @@ const {
 	deleteMedicalHistory,
 	bookAppointment,
 	creditDoctor,
-	viewMyPackageStatus,
-	viewFamilyPackageStatus,
 	selfCancelSubscription,
 	familyCancelSubscription,
 	packageUnsubscribe,
@@ -57,7 +55,7 @@ const upload = multer({ storage });
 router.post(
 	"/uploadMedicalHistory",
 	authorize,
-	upload.fields([{name: "medicalHistory", maxCount: 1}]),
+	upload.fields([{ name: "medicalHistory", maxCount: 1 }]),
 	uploadMedicalHistory
 );
 
@@ -104,10 +102,10 @@ router.post("/bookAppointment", authorize, bookAppointment);
 router.get("/wallet", authorize, viewWallet);
 
 // Get Status of my package
-router.get("/myPackageStatus", authorize, viewMyPackageStatus);
+// router.get("/myPackageStatus", authorize, viewMyPackageStatus);
 
 // Get status of family member
-router.get("/familyPackageStatus", authorize, viewFamilyPackageStatus);
+// router.get("/familyPackageStatus", authorize, viewFamilyPackageStatus);
 
 // Cancel my subscription
 router.post("/cancelMySub", authorize, selfCancelSubscription);
@@ -116,5 +114,5 @@ router.post("/cancelMySub", authorize, selfCancelSubscription);
 router.post("/cancelFamilySub", authorize, familyCancelSubscription);
 
 // Unsubscribe from my package
-router.post("/unsubscribe", packageUnsubscribe);
+router.post("/unsubscribe", authorize, packageUnsubscribe);
 module.exports = router;
