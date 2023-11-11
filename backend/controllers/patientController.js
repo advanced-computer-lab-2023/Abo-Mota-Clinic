@@ -596,14 +596,12 @@ const getFamilyPackages = async (req, res) => {
 		const familyMembers = await Patient.find({
 			_id: { $in: familyMemberIds },
 		}).populate("healthPackage.package");
-		const familyPackageArray = familyMembers.map((member, index) => {
+		const familyPackageArray = familyMembers.map((member) => {
 			const endDate = member.healthPackage?.endDate;
-			const relation = loggedIn.linkedFamily[index].relationToPatient;
 			return {
 				...member.healthPackage,
 				name: member.username,
 				expiryDate: endDate || "N/A",
-				relationToLoggedIn: relation,
 			};
 		});
 		res.status(200).json(familyPackageArray);
