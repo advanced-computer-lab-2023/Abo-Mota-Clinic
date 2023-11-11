@@ -1,6 +1,23 @@
 import React, { useState } from "react";
 import { useFetchFamilyMembersQuery, useAddFamilyMemberMutation } from "../../store";
-import { Button, FormControl, FormLabel, Input, Select, Option, Modal, ModalDialog, DialogTitle, DialogContent, Stack, ModalClose, Link, Breadcrumbs, Typography, Box } from "@mui/joy";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Option,
+  Modal,
+  ModalDialog,
+  DialogTitle,
+  DialogContent,
+  Stack,
+  ModalClose,
+  Link,
+  Breadcrumbs,
+  Typography,
+  Box,
+} from "@mui/joy";
 import Add from "@mui/icons-material/Add";
 import Toast from "../components/Toast";
 import MemberCard from "../components/MemberCard";
@@ -8,15 +25,20 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 // Home / Patient / View Family Members
 
 const validationSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
-  nationalId: Yup.string().required('National ID is required'),
-  age: Yup.number().required('Age is required'),
-  gender: Yup.string().required('Gender is required'),
-  relation: Yup.string().required('Relation is required'),
+  name: Yup.string().required("Name is required"),
+  nationalId: Yup.string().required("National ID is required"),
+  age: Yup.number().required("Age is required"),
+  gender: Yup.string().required("Gender is required"),
+  relation: Yup.string().required("Relation is required"),
 });
 
 export default function ViewFamilyMembers() {
@@ -38,6 +60,11 @@ export default function ViewFamilyMembers() {
     age: null,
     gender: null,
     relationToPatient: null,
+    phoneNumber: null,
+    username: null,
+    password: null,
+    confirmPassword: null,
+    dateOfBirth: null,
   });
 
   const [toast, setToast] = useState({
@@ -80,16 +107,13 @@ export default function ViewFamilyMembers() {
     content = <div> Error ... </div>;
   } else {
     content = data.map((item) => {
-
       return (
-        <div >
+        <div>
           <MemberCard {...item} />
         </div>
-
       );
     });
   }
-
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -120,82 +144,135 @@ export default function ViewFamilyMembers() {
         });
       });
   };
+  const dateFormat = "MM/DD/YYYY";
 
-  const buttonModal = (<React.Fragment>
+  const handleDateChange = (dateString) => {
+    const newDate = dayjs(dateString.$d).format(dateFormat);
+    setFormState({ ...formState, dateOfBirth: newDate });
+    setDate(newDate);
+    // console.log(newDate);
+  };
+  const [date, setDate] = useState(null);
 
-    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-      <ModalDialog>
-        <ModalClose onClick={() => setIsModalOpen(false)} />
-        <DialogTitle>Add a family member to your account</DialogTitle>
-        <DialogContent>Fill in the information of your family member.</DialogContent>
-        <form onChange={onFormChange} onSubmit={onFormSubmit}>
-          <Stack
-            spacing={2}
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(80px, 1fr))",
-              gap: 1.5,
-            }}
-          >
-            <FormControl sx={{ gridColumn: "1/-1" }}>
-              <FormLabel>Name</FormLabel>
-              <Input value={formState.name} name="name" placeholder="Enter name" />
-            </FormControl>
+  const buttonModal = (
+    <React.Fragment>
+      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalDialog sx={{ overflowY: "auto", maxHeight: "90vh" }}>
+          <ModalClose onClick={() => setIsModalOpen(false)} />
+          <DialogTitle>Add a family member to your account</DialogTitle>
+          <DialogContent>Fill in the information of your family member.</DialogContent>
+          <form onChange={onFormChange} onSubmit={onFormSubmit}>
+            <Stack
+              spacing={2}
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(80px, 1fr))",
+                gap: 1.5,
+              }}
+            >
+              <FormControl sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>Full Name</FormLabel>
+                <Input value={formState.name} name="name" placeholder="Enter Full Name" />
+              </FormControl>
 
-            <FormControl sx={{ gridColumn: "1/-1" }}>
-              <FormLabel>National ID</FormLabel>
-              <Input value={formState.nationalId} name="nationalId" placeholder="Enter NID" />
-            </FormControl>
+              <FormControl sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>National ID</FormLabel>
+                <Input value={formState.nationalId} name="nationalId" placeholder="Enter NID" />
+              </FormControl>
 
-            <FormControl>
-              <FormLabel>Age</FormLabel>
-              <Input value={formState.age} name="age" type="number" placeholder="Enter age" />
-            </FormControl>
+              <FormControl sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>Username</FormLabel>
+                <Input value={formState.username} name="username" placeholder="Enter Username" />
+              </FormControl>
 
-            <FormControl>
-              <FormLabel>Gender</FormLabel>
-              <Select
-                name="gender"
-                value={formState.gender}
-                onChange={(e, n) => onFormChange(e, "gender", n)}
-                placeholder="Enter gender"
-              >
-                <Option value="m">Male</Option>
-                <Option value="f">Female</Option>
-              </Select>
-            </FormControl>
+              <FormControl sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>Password</FormLabel>
+                <Input value={formState.password} name="password" placeholder="Enter Password" />
+              </FormControl>
 
-            <FormControl sx={{ gridColumn: "1/-1" }}>
-              <FormLabel>Relation</FormLabel>
-              <Select
-                name="relation"
-                value={formState.relationToPatient}
-                placeholder="Enter relation to patient"
-                onChange={(e, n) => {
-                  onFormChange(e, "relationToPatient", n);
-                }}
-              >
-                <Option value="wife">Wife</Option>
-                <Option value="husband">Husband</Option>
-                <Option value="child">Child</Option>
-              </Select>
-            </FormControl>
+              <FormControl sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>Confirm Password</FormLabel>
+                <Input
+                  value={formState.confirmPassword}
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                />
+              </FormControl>
 
-            <Button loading={isAdding} sx={{ gridColumn: "1/-1" }} type="submit">
-              Submit
-            </Button>
-          </Stack>
-        </form>
-      </ModalDialog>
-    </Modal>
-  </React.Fragment>
+              <FormControl sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>Phone Number</FormLabel>
+                <Input
+                  value={formState.phoneNumber}
+                  name="phoneNumber"
+                  placeholder="Enter Phone Number"
+                />
+              </FormControl>
+
+              <FormControl id="multiple-limit-tags" sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>Date of Birth</FormLabel>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    value={date}
+                    onChange={handleDateChange}
+                    sx={{
+                      marginBottom: -3,
+                      width: "100%",
+                      "& .MuiInputBase-root": { height: "70%" },
+                    }}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Age</FormLabel>
+                <Input value={formState.age} name="age" type="number" placeholder="Enter age" />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Gender</FormLabel>
+                <Select
+                  name="gender"
+                  value={formState.gender}
+                  onChange={(e, n) => onFormChange(e, "gender", n)}
+                  placeholder="Enter gender"
+                >
+                  <Option value="m">Male</Option>
+                  <Option value="f">Female</Option>
+                </Select>
+              </FormControl>
+
+              <FormControl sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>Relation</FormLabel>
+                <Select
+                  name="relation"
+                  value={formState.relationToPatient}
+                  placeholder="Enter relation to patient"
+                  onChange={(e, n) => {
+                    onFormChange(e, "relationToPatient", n);
+                  }}
+                >
+                  <Option value="wife">Wife</Option>
+                  <Option value="husband">Husband</Option>
+                  <Option value="child">Child</Option>
+                </Select>
+              </FormControl>
+
+              <Button loading={isAdding} sx={{ gridColumn: "1/-1" }} type="submit">
+                Submit
+              </Button>
+            </Stack>
+          </form>
+        </ModalDialog>
+      </Modal>
+    </React.Fragment>
   );
 
   return (
     <div className="ml-20 mr-20 mt-10 w-full">
-
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
-        <Link component={RouterLink} color="neutral" to="../">Home</Link>
+        <Link component={RouterLink} color="neutral" to="../">
+          Home
+        </Link>
         <Typography>Family</Typography>
       </Breadcrumbs>
 
@@ -207,20 +284,16 @@ export default function ViewFamilyMembers() {
           color="primary"
           startDecorator={<Add />}
           onClick={() => setIsModalOpen(true)}
-
         >
           Add Family Member
         </Button>
       </Box>
-      
+
       <div>
         <Toast {...toast} onClose={onToastClose} />
       </div>
 
-
-      <div className="">
-        {buttonModal}
-      </div>
+      <div className="">{buttonModal}</div>
     </div>
   );
 }
