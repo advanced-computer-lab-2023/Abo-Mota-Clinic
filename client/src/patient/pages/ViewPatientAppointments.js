@@ -62,7 +62,7 @@ export default function ViewPatientAppointments() {
             multiple
             id="tags-default"
             placeholder="Status"
-            options={["Completed", "Upcoming", "Cancelled"]}
+            options={["Completed", "Upcoming", "Cancelled", "Rescheduled"]}
             // endDecorator={
             //   isFetching ? (
             //     <CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
