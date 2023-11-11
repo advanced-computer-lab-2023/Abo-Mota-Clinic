@@ -1,16 +1,14 @@
-import { useFetchPatientAppointmentsQuery } from '../../store';
-import AppointmentCard from '../components/AppointmentCard';
-import { Box } from '@mui/system';
+import { useFetchPatientAppointmentsQuery } from "../../store";
+import AppointmentCard from "../components/AppointmentCard";
+import { Box } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
-import { Link, Typography, Breadcrumbs, FormControl, FormLabel, Autocomplete } from '@mui/joy';
+import { Link, Typography, Breadcrumbs, FormControl, FormLabel, Autocomplete } from "@mui/joy";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import { useState } from 'react';
-import filter from '../utils/filter';
-
+import { useState } from "react";
+import filter from "../utils/filter";
 
 export default function ViewPatientAppointments() {
-
   const [date, setDate] = useState(null);
   const [config, setConfig] = useState({});
 
@@ -23,34 +21,41 @@ export default function ViewPatientAppointments() {
   } else if (isError) {
     content = <div> Error ... </div>;
   } else {
-    let filteredData = filter(data, config);
+    const newData = data.map((appointment) => {
+      const currDate = dayjs();
+      const appointmentDate = dayjs(appointment.formattedDate);
+
+      if (appointmentDate.isAfter(currDate)) {
+        return { ...appointment, status: "upcoming" };
+      } else {
+        return { ...appointment, status: "completed" };
+      }
+    });
+    let filteredData = filter(newData, config);
 
     filteredData = filteredData.filter((pres) => {
       if (date) {
-        return dayjs(pres.formattedDate, dateFormat).isSame(dayjs(date, dateFormat), 'minute');
+        return dayjs(pres.formattedDate, dateFormat).isSame(dayjs(date, dateFormat), "minute");
       } else {
         return true;
       }
     });
 
     content = filteredData.map((appointment) => {
-      return (
-        // <div>
-        <AppointmentCard sx={{ width: '100%' }} {...appointment} />
-        // </div>
-      );
+      return <AppointmentCard sx={{ width: "100%" }} {...appointment} />;
     });
   }
 
   return (
-    <Box className='w-full ml-20 mt-10 mr-20 space-y-5'>
+    <Box className="w-full ml-20 mt-10 mr-20 space-y-5">
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
-        <Link component={RouterLink} color="neutral" to="../">Home</Link>
+        <Link component={RouterLink} color="neutral" to="../">
+          Home
+        </Link>
         <Typography>Appointments</Typography>
       </Breadcrumbs>
 
       <Box className="flex space-x-8">
-
         <FormControl id="multiple-limit-tags">
           <FormLabel>Status</FormLabel>
           <Autocomplete
@@ -65,10 +70,10 @@ export default function ViewPatientAppointments() {
             // }
             limitTags={2}
             onChange={(event, newValue) => {
-              setConfig({ ...config, status: newValue })
+              setConfig({ ...config, status: newValue });
             }}
           />
-        </ FormControl>
+        </FormControl>
 
         <FormControl id="multiple-limit-tags">
           <FormLabel>Date</FormLabel>
@@ -78,9 +83,7 @@ export default function ViewPatientAppointments() {
             showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
             className="h-full w-56"
           />
-        </ FormControl>
-
-
+        </FormControl>
       </Box>
 
       {content}

@@ -41,9 +41,7 @@ import LoginForm from "./shared/pages/LoginForm";
 
 import PaymentPage from "./patient/pages/PaymentPage";
 
-
 // login
-
 
 function App() {
   return (
@@ -65,15 +63,18 @@ function App() {
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
           <Route path="test3" element={<PatientTest3 />} />
-          <Route path="profile/subscription" element={<Subscription/>}/>
+          <Route path="profile/subscription" element={<Subscription />} />
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>
-          <Route path="contract" element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}/>
+          <Route
+            path="contract"
+            element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
+          />
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />
           <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
-          <Route path="PatientFollowUp" element={<PatientFollowUp />} />
+          <Route path="appointments/PatientFollowUp/:patientId" element={<PatientFollowUp />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patientInfo" element={<ViewPatientInfo />} />
