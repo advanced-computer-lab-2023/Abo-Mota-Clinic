@@ -37,7 +37,7 @@ const patientSchema = new Schema(
 			{
 				member: {
 					type: Schema.Types.ObjectId,
-					ref: "Patient",
+					ref: "ClinicPatient",
 				},
 				relationToPatient: {
 					type: String,
