@@ -31,20 +31,22 @@ export default function ViewPatientInfo (){
     let recordItems = [];
     if(completedApps.length !== 0){
         recordItems = patient.healthRecords.map((record, index) => {
+            const pdfUrl = "/backend/public/medicalDegree_1699670981314.pdf";
             return {
                 key: index,
                 label: `Record ${index + 1}`,
-                children: <PdfViewer pdfUrl={`backend"\\" ${record}`}/>
+                children: <PdfViewer pdfUrl={pdfUrl}/>
             }
         });
     }
 
     const medicalHistory = patient.medicalHistory.map((record, index) => {
+        const pdfUrl = "/backend/public/medicalDegree_1699670981314.pdf";
         return {
-            key: index,
-            label: `Record ${index + 1}`,
-            children: <PdfViewer pdfUrl={`backend"\\" ${record}`}/>
-        }
+                key: index,
+                label: `Record ${index + 1}`,
+                children: <PdfViewer pdfUrl={pdfUrl}/>
+            }
     });
     
 

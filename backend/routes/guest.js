@@ -18,14 +18,7 @@ const router = express.Router();
 router.post("/registerPatient", validatePatientRegister, registerPatient);
 
 //handle uploads
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "public/");
-	},
-	filename: (req, file, cb) => {
-		cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-	},
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // register a guest as doctor
@@ -34,6 +27,7 @@ router.post(
 	upload.fields([
 		{ name: "medicalLicense", maxCount: 1 },
 		{ name: "medicalDegree", maxCount: 1 },
+		{ name: "nationalId", maxCount: 1 },
 	]),
 	registerDoctor
 );

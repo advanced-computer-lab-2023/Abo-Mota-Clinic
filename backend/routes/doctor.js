@@ -32,20 +32,13 @@ router.get("/appointments", authorize, getDoctorAppointments);
 router.get("/patients", authorize, getDoctorPatients);
 
 //handle uploads
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "public/");
-	},
-	filename: (req, file, cb) => {
-		cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-	},
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 //Upload a Patient's health record
 router.post(
 	"/uploadHealthRecord", 
 	authorize, 
-	upload.single("healthRecord"),
+	upload.fields([{name: "healthRecord", maxCount: 1}]),
 	uploadHealthRecords)
 
 // Change Password

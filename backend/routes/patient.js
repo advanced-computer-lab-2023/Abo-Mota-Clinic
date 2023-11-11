@@ -51,14 +51,7 @@ router.get("/doctors", authorize, getDoctors);
 router.get("/appointments", authorize, getAppointments);
 
 //handle uploads
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "public/");
-	},
-	filename: (req, file, cb) => {
-		cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-	},
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
 
@@ -66,12 +59,12 @@ const upload = multer({ storage });
 router.post(
 	"/uploadMedicalHistory",
 	authorize,
-	upload.single("medicalHistory"),
+	upload.fields([{name: "medicalHistory", maxCount: 1}]),
 	uploadMedicalHistory
 );
 
 //Delete a medical history record
-router.delete("/deleteMedicalHistory/:recordId", authorize, deleteMedicalHistory);
+router.delete("/deleteMedicalHistory/:_id", deleteMedicalHistory);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
