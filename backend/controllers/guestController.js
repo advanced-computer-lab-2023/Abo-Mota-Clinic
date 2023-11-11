@@ -52,11 +52,11 @@ const registerPatient = async (req, res) => {
 
 const registerDoctor = async (req, res) => {
 	try {
-		const { username, nationalId, password, email } = req.body;
+		const { username, password, email } = req.body;
 		const lowerCaseUser = username.toLowerCase();
 		const doctorExists = await Doctor.findOne({
 			$and: [
-				{ $or: [{ username: lowerCaseUser }, { nationalId }, { email }] },
+				{ $or: [{ username: lowerCaseUser }, { email }] },
 				{ registrationStatus: { $in: ["approved", "pending"] } },
 			],
 		});
@@ -67,19 +67,27 @@ const registerDoctor = async (req, res) => {
 
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+		const nationalId = {
+			data: req.files.nationalId[0].buffer,
+			contentType: req.files.nationalId[0].mimetype
+		}
+
 		const medicalLicense = {
 			data: req.files.medicalLicense[0].buffer,
-			contentType: req.files.medicalLicense[0].mimetype,
-		};
+			contentType: req.files.medicalLicense[0].mimetype
+		}
+
 		const medicalDegree = {
 			data: req.files.medicalDegree[0].buffer,
-			contentType: req.files.medicalDegree[0].mimetype,
-		};
+			contentType: req.files.medicalDegree[0].mimetype
+		}
+
 
 		const newDoctor = await Doctor.create({
 			...req.body,
 			username: lowerCaseUser,
 			password: hashedPassword,
+			nationalId,
 			medicalLicense,
 			medicalDegree,
 		});

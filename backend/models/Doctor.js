@@ -14,15 +14,15 @@ const doctorSchema = new Schema(
 		educationalBackground: String,
 		nationalId: {
 			data: Buffer,
-			contentType: String,
+			mimetype: String
 		},
 		medicalLicense: {
 			data: Buffer,
-			contentType: String,
+			mimetype: String
 		},
 		medicalDegree: {
 			data: Buffer,
-			contentType: String,
+			mimetype: String
 		},
 		registrationStatus: {
 			type: String,

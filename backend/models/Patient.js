@@ -64,8 +64,14 @@ const patientSchema = new Schema(
 			cancelDate: Date,
 			unsubscribeDate: Date,
 		},
-		healthRecords: [String],
-		medicalHistory: [String],
+		healthRecords: [{
+			data: Buffer,
+			mimetype: String
+		}],
+		medicalHistory: [{
+			data: Buffer,
+			mimetype: String
+		}],
 		// prescriptions: [
 		//   {
 		//     type: Schema.Types.ObjectId,
