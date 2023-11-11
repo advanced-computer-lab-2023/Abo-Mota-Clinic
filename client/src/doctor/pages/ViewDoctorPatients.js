@@ -1,13 +1,11 @@
 import React, {useState} from "react";
 import Button from '@mui/joy/Button';
 import { isAfter, isSameDay } from 'date-fns'; // Import date-fns functions
-import TableCollapsibleRow from "../components/TableCollapsibleRow";
 import { useSelector } from "react-redux";
 import { useFetchPatientsQuery, useFetchDoctorQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
 import PatientCard from "../components/PatientCard";
 import { useNavigate } from 'react-router-dom';
-
 
 
 function ViewDoctorPatients() {
