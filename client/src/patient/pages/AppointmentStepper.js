@@ -15,15 +15,18 @@ import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import { LuStethoscope, LuCalendarClock, LuBuilding } from "react-icons/lu";
 
 // QUERIES
-import { useFetchDoctorsQuery, useFetchPatientQuery, usePayAppointmentByWalletMutation, useCreditDoctorMutation, useBookAppointmentMutation } from "../../store";
+import {
+  useFetchDoctorsQuery,
+  useFetchPatientQuery,
+  usePayAppointmentByWalletMutation,
+  useCreditDoctorMutation,
+  useBookAppointmentMutation,
+} from "../../store";
 import round2dp from "../utils/round2dp";
-
-
 
 const steps = ["Schedule", "Appointment Overview", "Payment"];
 
 export default function AppointmentStepper({ step = 0 }) {
-
   const navigate = useNavigate();
 
   const [activeStep, setActiveStep] = useState(step);
@@ -33,13 +36,19 @@ export default function AppointmentStepper({ step = 0 }) {
   const [appointmentId, setAppointmentId] = useState(null);
   const [currentTimings, setCurrentTimings] = useState([]);
 
-  const { data: doctor, isFetching: isFetchingDoctor, error: isFetchingDoctorError } = useFetchDoctorsQuery();
-  const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } =
-    useFetchPatientQuery();
+  const {
+    data: doctor,
+    isFetching: isFetchingDoctor,
+    error: isFetchingDoctorError,
+  } = useFetchDoctorsQuery();
+  const {
+    data: patient,
+    isFetching: isFetchingPatient,
+    error: isFetchingPatientError,
+  } = useFetchPatientQuery();
 
   const [creditDoctor, creditDoctorResults] = useCreditDoctorMutation();
   const [bookAppointment, bookResults] = useBookAppointmentMutation();
-
 
   const [toast, setToast] = useState({
     open: false,
@@ -55,14 +64,17 @@ export default function AppointmentStepper({ step = 0 }) {
     });
   };
 
-
   if (isFetchingDoctor || isFetchingPatient) {
     return <div>Loading ...</div>;
   } else if (isFetchingDoctorError || isFetchingPatientError) {
     return <div> Error ... </div>;
   }
   const { name, specialty, affiliation, rate } = doctor[id];
-  const deductible = patient.healthPackage ? rate * 1.1 * (1 - patient.healthPackage.package.doctorDiscount) : rate * 1.1;
+  const deductible = !(
+    patient.healthPackage.package === null || patient.healthPackage.package === undefined
+  )
+    ? rate * 1.1 * (1 - patient.healthPackage.package.doctorDiscount)
+    : rate * 1.1;
 
   const handleNext = () => {
     if (activeStep === 0 && !(date && currentTime)) return;
@@ -102,10 +114,14 @@ export default function AppointmentStepper({ step = 0 }) {
       {
         label: "Consultation Fee",
         price: round2dp(rate * 1.1),
-      }
+      },
     ],
 
-    discount: patient.healthPackage.package ? patient.healthPackage.package.doctorDiscount : 0,
+    discount: !(
+      patient.healthPackage.package === null || patient.healthPackage.package === undefined
+    )
+      ? patient.healthPackage.package.doctorDiscount
+      : 0,
 
     type: "appointment",
 
@@ -118,11 +134,11 @@ export default function AppointmentStepper({ step = 0 }) {
     onPaymentSuccess: () => {
       creditDoctor({
         doctor_id: doctorId,
-        credit: rate
+        credit: rate,
       });
 
       bookAppointment({
-        appointmentId
+        appointmentId,
       });
 
       setToast({
@@ -134,7 +150,7 @@ export default function AppointmentStepper({ step = 0 }) {
 
       setTimeout(() => {
         navigate("/patient/");
-      }, 1500)
+      }, 1500);
     },
 
     onPaymentFailure: () => {
@@ -144,17 +160,14 @@ export default function AppointmentStepper({ step = 0 }) {
         color: "danger",
         message: "Payment unsuccessful",
       });
-    }
-
+    },
   };
-  const payment = (<PaymentPage {...config} />);
+  const payment = <PaymentPage {...config} />;
 
   const review = (
     <Box className="flex justify-between px-10">
       <Card className="">
-        <Box className="flex w-full justify-center">
-
-        </Box>
+        <Box className="flex w-full justify-center"></Box>
         <Box>
           <Typography level="title-md" sx={{ marginBottom: 1 }} startDecorator={<LuStethoscope />}>
             Doctor Details

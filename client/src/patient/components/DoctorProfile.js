@@ -24,11 +24,60 @@ import dayjs from "dayjs";
 import { getDayName, getMonthName } from "../functions/DateManipulation";
 import UserSelectionModal from "./UsersModal";
 import { Link } from "react-router-dom";
+import { useFetchAvailableAppointmentsQuery } from "../../store";
+import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+import { format } from "date-fns";
+import formatAppointments from "../functions/AppointmentsAdjustment";
 const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affiliation }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
   // const [config, setConfig] = useState({});
   const [date, setDate] = useState(null);
+  const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(_id);
+  let appointmentContent = <LoadingIndicator />;
+  if (!isFetching && !error) {
+    const formattedAppointments = formatAppointments(data);
+    const dates = Object.keys(formattedAppointments);
+    // sort the array
+    dates.sort((a, b) => {
+      const dateA = dayjs(a, "MM/DD/YYYY");
+      const dateB = dayjs(b, "MM/DD/YYYY");
+      return dateA.isAfter(dateB) ? 1 : -1;
+    });
+    // get only the first 4 dates
+    const firstFourDates = dates.slice(0, 4);
+    appointmentContent = firstFourDates.map((key, rowIdx) => {
+      const dateSplit = key.split("/");
+      const timings = formattedAppointments[key];
+      return (
+        <Box>
+          <Typography level="body-lg" sx={{ marginBottom: 1.5 }}>
+            {`${getDayName(key)}, ${getMonthName(key)} ${dateSplit[1]}`}
+          </Typography>
 
+          <Box className="flex w-full space-x-6 mr-10">
+            {timings.map(([_, appointment], colIdx) => {
+              const concat = `${rowIdx}${colIdx}}`;
+              return (
+                <Button
+                  key={colIdx}
+                  onClick={() => {
+                    setSelectedIdx(concat);
+                    setDate(key);
+                  }}
+                  variant={concat !== selectedIdx ? "soft" : "solid"}
+                  color={concat !== selectedIdx ? "neutral" : "primary"}
+                  className="h-10"
+                >
+                  {appointment}
+                </Button>
+              );
+            })}
+          </Box>
+          {rowIdx !== Object.entries(formatAppointments).length - 1 && <Divider sx={{ my: 2.5 }} />}
+        </Box>
+      );
+    });
+  }
   const dateFormat = "MM/DD/YYYY";
   let filteredData = appointments2;
   if (date != null) {
@@ -159,7 +208,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
               }}
             >
               <Tab>About</Tab>
-              <Tab>Availability</Tab>
+              {/* <Tab>Availability</Tab> */}
               <Tab>Reviews</Tab>
             </TabList>
             <TabPanel value={0}>
@@ -176,7 +225,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
                 id fermentum dui euismod sit amet.
               </Typography>
             </TabPanel>
-            <TabPanel value={1}>
+            {/* <TabPanel value={1}>
               <Box>
                 <Box sx={{ mb: 5 }}>
                   <FormControl id="multiple-limit-tags">
@@ -228,8 +277,8 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
                   </Box>
                 </Sheet>
               </Box>
-            </TabPanel>
-            <TabPanel value={2}>
+            </TabPanel> */}
+            <TabPanel value={1}>
               <UserSelectionModal />
             </TabPanel>
           </Tabs>
@@ -242,38 +291,12 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
             Available appointments
           </Typography>
           <Typography level="body-md">
-            Appointments can be booked up to a week in advance
+            Appointments can be booked up to the nearest 4 days in advance.
           </Typography>
         </Box>
         <Divider />
         <Sheet className="">
-          {Object.entries(appointments).map(([key, value], rowIdx) => {
-            return (
-              <Box>
-                <Typography level="body-lg" sx={{ marginBottom: 1.5 }}>
-                  {key}
-                </Typography>
-
-                <Box className="flex w-full space-x-6 mr-10">
-                  {value.map((appointment, colIdx) => {
-                    const concat = `${rowIdx}${colIdx}}`;
-                    return (
-                      <Button
-                        key={colIdx}
-                        onClick={() => setSelectedIdx(concat)}
-                        variant={concat !== selectedIdx ? "soft" : "solid"}
-                        color={concat !== selectedIdx ? "neutral" : "primary"}
-                        className="h-10"
-                      >
-                        {appointment}
-                      </Button>
-                    );
-                  })}
-                </Box>
-                {rowIdx !== Object.entries(appointments).length - 1 && <Divider sx={{ my: 2.5 }} />}
-              </Box>
-            );
-          })}
+          {appointmentContent}
 
           <Box className="flex w-full justify-end space-x-3">
             <Button variant="plain" onClick={() => setSelectedIdx(null)}>
@@ -282,11 +305,11 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
             <Button variant="outlined" color="primary">
               Make an appointment
             </Button>
+            <Link to={`appointment/${_id}/`}>
+              <Button color="primary">See more options</Button>
+            </Link>
           </Box>
         </Sheet>
-        <Link to={`appointment/${_id}/`}>
-          <Button>Book more appointments</Button>
-        </Link>
 
         {/* <PatientTest2 /> */}
       </Card>

@@ -91,13 +91,13 @@ export default function AppointmentScheduler({
 
           <Box className="space-y-5">
             {currentTimings.map(([id, time]) => {
-              const isSelected = time === currentTime;
+              const isSelected = id === appointmentId;
               return (
                 <Button
                   key={time}
                   onClick={() => {
-                    setCurrentTime(time)
-                    setAppointmentId(id)
+                    setCurrentTime(time);
+                    setAppointmentId(id);
                   }}
                   variant="outlined"
                   color="primary"

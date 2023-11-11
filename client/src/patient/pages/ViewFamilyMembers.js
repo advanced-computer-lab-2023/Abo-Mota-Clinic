@@ -65,6 +65,7 @@ export default function ViewFamilyMembers() {
     password: null,
     confirmPassword: null,
     dateOfBirth: null,
+    email: null,
   });
 
   const [toast, setToast] = useState({
@@ -186,13 +187,29 @@ export default function ViewFamilyMembers() {
               </FormControl>
 
               <FormControl sx={{ gridColumn: "1/-1" }}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  value={formState.email}
+                  type="email"
+                  name="email"
+                  placeholder="Enter Email"
+                />
+              </FormControl>
+
+              <FormControl sx={{ gridColumn: "1/-1" }}>
                 <FormLabel>Password</FormLabel>
-                <Input value={formState.password} name="password" placeholder="Enter Password" />
+                <Input
+                  value={formState.password}
+                  type="password"
+                  name="password"
+                  placeholder="Enter Password"
+                />
               </FormControl>
 
               <FormControl sx={{ gridColumn: "1/-1" }}>
                 <FormLabel>Confirm Password</FormLabel>
                 <Input
+                  type="password"
                   value={formState.confirmPassword}
                   name="confirmPassword"
                   placeholder="Confirm Password"
