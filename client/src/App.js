@@ -21,7 +21,7 @@ import ViewDoctorProfile from "./patient/pages/ViewDoctorProfile";
 import PatientHome from "./patient/pages/PatientHome";
 import ViewWallet from "./patient/pages/ViewWallet";
 import PatientTest2 from "./patient/pages/PatientTest2";
-import Subscription from "./patient/components/Subscription";
+// import Subscription from "./patient/components/Subscription";
 import PatientTest3 from "./patient/pages/PatientTest3";
 
 // Doctor
@@ -65,7 +65,7 @@ function App() {
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
           <Route path="test3" element={<PatientTest3 />} />
-          <Route path="profile/subscription" element={<Subscription/>}/>
+          {/* <Route path="profile/subscription" element={<Subscription/>}/> */}
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>
@@ -73,7 +73,7 @@ function App() {
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />
           <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
-          <Route path="PatientFollowUp" element={<PatientFollowUp />} />
+          <Route path="appointments/PatientFollowUp/:patientId" element={<PatientFollowUp />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patientInfo" element={<ViewPatientInfo />} />
