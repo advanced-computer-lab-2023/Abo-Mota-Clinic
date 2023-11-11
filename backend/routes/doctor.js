@@ -16,6 +16,8 @@ const {
 const authorize = require('../middlewares/authorization')
 
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 
 // Get Doctor's Details
 router.get("/", authorize, getDoctorProfile);
@@ -29,8 +31,22 @@ router.get("/appointments", authorize, getDoctorAppointments);
 // View All Doctor's Patients
 router.get("/patients", authorize, getDoctorPatients);
 
+//handle uploads
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "public/");
+	},
+	filename: (req, file, cb) => {
+		cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+	},
+});
+const upload = multer({ storage });
 //Upload a Patient's health record
-router.post("/uploadHealthRecord", authorize, uploadHealthRecords)
+router.post(
+	"/uploadHealthRecord", 
+	authorize, 
+	upload.single("healthRecord"),
+	uploadHealthRecords)
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);

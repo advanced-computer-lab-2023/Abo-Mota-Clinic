@@ -67,14 +67,8 @@ const registerDoctor = async (req, res) => {
 
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-		const medicalLicense = {
-			data: req.files.medicalLicense[0].buffer,
-			contentType: req.files.medicalLicense[0].mimetype,
-		};
-		const medicalDegree = {
-			data: req.files.medicalDegree[0].buffer,
-			contentType: req.files.medicalDegree[0].mimetype,
-		};
+		const medicalLicense = req.files.medicalLicense[0].path;
+		const medicalDegree = req.files.medicalDegree[0].path;
 
 		const newDoctor = await Doctor.create({
 			...req.body,

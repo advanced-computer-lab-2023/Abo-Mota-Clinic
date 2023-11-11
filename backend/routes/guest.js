@@ -9,13 +9,23 @@ const {
 } = require("../controllers/guestController");
 const validatePatientRegister = require("../middlewares/validatePatientRegister");
 const multer = require("multer");
+const path = require("path");
+
 
 const router = express.Router();
 
 // register a guest as patient
 router.post("/registerPatient", validatePatientRegister, registerPatient);
 
-const storage = multer.memoryStorage();
+//handle uploads
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "public/");
+	},
+	filename: (req, file, cb) => {
+		cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+	},
+});
 const upload = multer({ storage });
 
 // register a guest as doctor
