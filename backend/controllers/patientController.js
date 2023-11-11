@@ -297,7 +297,7 @@ const linkFamilyMember = async (req, res) => {
 	try {
 		const { email, mobile, relationToPatient } = req.body;
 		const username = req.userData.username;
-		const loggedIn = await Patient.findOne({ username }).populate(healthPackage.package);
+		const loggedIn = await Patient.findOne({ username }).populate("healthPackage.package");
 		let membersRelation = "";
 
 		if (!email && !mobile) {
