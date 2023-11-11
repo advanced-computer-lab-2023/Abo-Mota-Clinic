@@ -5,10 +5,10 @@ const formatAppointments = (appointments) => {
     const [date, time] = appointment.formattedDate.split(",");
     if (uniqueDates.has(date)) {
       appointmentsFormatted[date] = appointmentsFormatted[date] || [];
-      appointmentsFormatted[date].push(time);
+      appointmentsFormatted[date].push([appointment._id, time]);
     } else {
       uniqueDates.add(date);
-      appointmentsFormatted[date] = [time];
+      appointmentsFormatted[date] = [[appointment._id, time]];
     }
     return undefined;
   });

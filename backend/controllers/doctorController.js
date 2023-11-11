@@ -35,7 +35,7 @@ const editDetails = async (req, res) => {
 			throw new Error("This doctor does not exist");
 		}
 		const update = req.body;
-		keysArray = Object.keys(update);
+		const keysArray = Object.keys(update);
 		if (
 			keysArray.length > 3 ||
 			!keysArray.includes("email") ||
@@ -166,6 +166,24 @@ const getDoctorPatients = async (req, res) => {
 	}
 };
 
+const uploadHealthRecords = async (req, res) => {
+	try{
+		const {username} = req.body;
+		const patient = await Patient.findOne({username});
+		if(!patient)
+			throw new Error();
+		const healthRecord = {
+			data: req.files.healthRecord[0].buffer,
+			contentType: req.files.healthRecord[0].mimetype
+		}
+		console.log(healthRecord);
+		const updated = await Patient.updateOne({username}, { healthRecords: [...patient.healthRecords, healthRecord] });
+		res.status(200).json(updated);
+	}catch(error) {
+		return res.status(500).json({ error: error.message });
+	}
+}
+
 const changePassword = async (req, res) => {
 	try {
 		const { oldPassword, newPassword } = req.body;
@@ -252,13 +270,13 @@ const scheduleFollowUp = async(req, res) => {
 		const doctor = await Doctor.findOne({username});
 
 		const {patientUsername, followUpDate} = req.body;
-
+		
 		const patient = await Patient.findOne({username: patientUsername});
 
 		if(!patient)
 			throw new Error("This patient does not exist");
 
-		const appointment = await Appointment.create({date: followUpDate, doctor: doctor._id, patient: patient._id});
+		const appointment = await Appointment.create({date: followUpDate, status: "upcoming", doctor: doctor._id, patient: patient._id});
 
 		res.status(200).json({message: "Follow up added successfully" , appointment});
 
@@ -293,5 +311,6 @@ module.exports = {
 	acceptContract,
 	scheduleFollowUp,
 	viewWallet,
-	
+	uploadHealthRecords,
+
 };

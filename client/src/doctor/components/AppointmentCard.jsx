@@ -11,10 +11,16 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import MarkunreadIcon from '@mui/icons-material/Markunread';
 import Divider from '@mui/joy/Divider';
 import Chip from '@mui/joy/Chip';
-
+import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 export default function AppointmentCard({appointment}) {
-
+  
+    const navigate = useNavigate(); // Hook to get the navigate function
+  
+    const navigateToPatientFollowUp = () => {
+      navigate('PatientFollowUp' , {state: appointment.patient}); // Use the patient to navigate
+    };
 const colors = {
     "upcoming": "warning",
     "cancelled": "danger",
@@ -23,73 +29,86 @@ const colors = {
     "rescheduled": "primary"
     }
 
-  return (
-    <Box
-      sx={{
-        width: '100%',
-        // position: 'relative',
-        // overflow: { xs: 'auto', sm: 'initial' },
-      }}
-    >
-      <Card
-        orientation="horizontal"
-        sx={{
-          width: '1100px',
-          flexWrap: 'wrap',
-          display: 'flex',
-          
-          overflow: 'hidden',
-        }}
-        className="hover:shadow-lg"
-
-      >
-            <AspectRatio flex ratio="1" maxHeight={150} sx={{ minWidth: 150 }}>
+    const currDate = dayjs();
+      const appointmentDate = dayjs(appointment.formattedDate);
+    
+      if (appointmentDate.isAfter(currDate) && ((appointment.status !== "cancelled") || (appointment.status !== "rescheduled"))){
+        appointment =  { ...appointment, status: "upcoming" };
+      } else {
+        appointment = { ...appointment, status: "completed" };
+      }
+    return (
+      <Box sx={{ width: '100%', marginBottom: '16px' }}>
+        <Card
+          sx={{
+            display: 'flex',
+            flexDirection: 'row', // Align children horizontally
+            justifyContent: 'space-between', // Distribute space between image and content
+            overflow: 'hidden',
+            boxShadow: 'md', // Shadow for the card
+            borderRadius: 'sm', // Border radius of the card
+          }}
+          className="hover:shadow-lg" // Tailwind CSS for hover shadow effect
+        >
+          <AspectRatio ratio="1" maxHeight={150} sx={{ minWidth: 150 }}>
             <img
-                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
-                loading="lazy"
-                alt=""
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+              srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+              loading="lazy"
+              alt=""
             />
-            </AspectRatio>
-            <CardContent>
-                <div >
-                    <Box className="flex flex-row justify-between mb-2">
-                        <Typography level='h3' fontWeight="lg">
-                            {capitalizeFirstLetter(appointment.patient.name)}
-                        </Typography>
-
-                        <Chip color={colors[appointment.status]} variant='soft'>
-                            <Typography level='title-md'>
-                                {capitalizeFirstLetter(appointment.status)}
-                            </Typography>
-                        </Chip>
-                    </Box>
-                    
-                    <Divider />
-
-                    <Box className="flex flex-col space-y-2 mt-3">
-                        <Typography level="body-md"  textColor="text.tertiary"
-                        startDecorator={<AccessTimeIcon fontSize='10' />}
-                        >
-                            {appointment.formattedDate}
-                        </Typography>
-                        <Typography level="body-md"  textColor="text.tertiary"
-                        startDecorator={<MarkunreadIcon fontSize='10' />}
-                        >
-                            {appointment.patient.email}
-                        </Typography>
-                        <Typography level="body-md"  textColor="text.tertiary"
-                        startDecorator={<PhoneIcon fontSize='10' />}
-                        >
-                            {appointment.patient.mobile}
-                        </Typography>
-                    </Box>
-                </div>
-
-            </CardContent>
+          </AspectRatio>
+          <CardContent
+            sx={{
+              display: 'flex',
+              flexDirection: 'column', // Stack children vertically inside card content
+              justifyContent: 'space-between', // Space between card content children
+              flexGrow: 1, // card content will grow to fill container
+              minWidth: 0, // Fixes flexbox overflow issues with text
+            }}
+          >
+            <Box className="flex flex-row justify-between mb-2">
+              <Typography level='h3' fontWeight="lg">
+                {capitalizeFirstLetter(appointment.patient.name)}
+              </Typography>
+              <Chip color={colors[appointment.status]} variant='soft'>
+                <Typography level='title-md'>
+                  {capitalizeFirstLetter(appointment.status)}
+                </Typography>
+              </Chip>
+            </Box>
+            
+            <Divider />
+    
+            <Box className="flex flex-col space-y-2 mt-3">
+              <Typography level="body-md" textColor="text.tertiary" startDecorator={<AccessTimeIcon fontSize='small' />}>
+                {appointment.formattedDate}
+              </Typography>
+              <Typography level="body-md" textColor="text.tertiary" startDecorator={<MarkunreadIcon fontSize='small' />}>
+                {appointment.patient.email}
+              </Typography>
+              <div className="flex justify-between">
+              <Typography level="body-md" textColor="text.tertiary" startDecorator={<PhoneIcon fontSize='small' />}>
+                {appointment.patient.mobile}
+              </Typography>
+              {(appointment.status === 'completed') && (<Button variant="plain" onClick={navigateToPatientFollowUp} size="md"> 
+                Follow Up
+              </Button>)}
+              </div>
+              
+              
+            </Box>
+    
+            {/* Button positioned at the bottom left */}
+            
+          </CardContent>
         </Card>
-    </Box>
-  );
+      </Box>
+    );
+    
+    
+    
+    
 }
 
 function capitalizeFirstLetter(string){

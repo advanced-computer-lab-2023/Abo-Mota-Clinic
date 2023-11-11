@@ -40,7 +40,7 @@ const guestApi = createApi({
         query: () => {
           return {
             url: "/logout",
-            method: "GET",
+            method: "POST",
           };
         },
       }),

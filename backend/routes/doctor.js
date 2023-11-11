@@ -9,12 +9,15 @@ const {
 	acceptContract,
 	scheduleFollowUp,
 	viewWallet,
+	uploadHealthRecords,
 
 } = require("../controllers/doctorController");
 
 const authorize = require('../middlewares/authorization')
 
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 
 // Get Doctor's Details
 router.get("/", authorize, getDoctorProfile);
@@ -27,6 +30,16 @@ router.get("/appointments", authorize, getDoctorAppointments);
 
 // View All Doctor's Patients
 router.get("/patients", authorize, getDoctorPatients);
+
+//handle uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+//Upload a Patient's health record
+router.post(
+	"/uploadHealthRecord", 
+	authorize, 
+	upload.fields([{name: "healthRecord", maxCount: 1}]),
+	uploadHealthRecords)
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);

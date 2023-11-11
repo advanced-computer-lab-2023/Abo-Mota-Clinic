@@ -22,7 +22,6 @@ import { FormControl, FormLabel } from "@mui/material";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { getDayName, getMonthName } from "../functions/DateManipulation";
-import PatientTest2 from "../pages/PatientTest2";
 import UserSelectionModal from "./UsersModal";
 import { Link } from "react-router-dom";
 const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affiliation }) => {
@@ -285,7 +284,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
             </Button>
           </Box>
         </Sheet>
-        <Link to={`test2/${_id}/`}>
+        <Link to={`appointment/${_id}/`}>
           <Button>Book more appointments</Button>
         </Link>
 

@@ -37,7 +37,7 @@ const patientSchema = new Schema(
 			{
 				member: {
 					type: Schema.Types.ObjectId,
-					ref: "Patient",
+					ref: "ClinicPatient",
 				},
 				relationToPatient: {
 					type: String,
@@ -50,15 +50,36 @@ const patientSchema = new Schema(
 			relation: String,
 		},
 		healthPackage: {
+			status: {
+				type: String,
+				default: null,
+				enum: ["subscribed", "unsubscribed", "cancelled", null],
+			},
 			package: {
 				type: Schema.Types.ObjectId,
 				default: null,
 				ref: "HealthPackage",
 			},
 			endDate: Date,
+			cancelDate: Date,
+			unsubscribeDate: Date,
+			pricePaid: {
+				type: Number,
+				default: 0,
+			},
 		},
-		healthRecords: [{data: Buffer, contentType: String, fileName: String}],
-		medicalHistory: [{data: Buffer, contentType: String, fileName:String}],
+		healthRecords: [
+			{
+				data: Buffer,
+				mimetype: String,
+			},
+		],
+		medicalHistory: [
+			{
+				data: Buffer,
+				mimetype: String,
+			},
+		],
 		// prescriptions: [
 		//   {
 		//     type: Schema.Types.ObjectId,

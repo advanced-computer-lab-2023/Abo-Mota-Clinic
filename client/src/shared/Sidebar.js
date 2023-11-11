@@ -8,7 +8,7 @@ const Sidebar = ({ items }) => {
 					{items.map((item,i) => {
 						return (
 							<li key={i}>
-								<Link to={item.to}>{item.name}</Link>
+								<Link to={item.to} >{item.name}</Link>
 							</li>
 						);
 					})}

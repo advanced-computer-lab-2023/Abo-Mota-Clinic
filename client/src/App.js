@@ -16,13 +16,16 @@ import ViewDoctors from "./patient/pages/ViewDoctors";
 import ViewFamilyMembers from "./patient/pages/ViewFamilyMembers";
 import ViewPrescriptions from "./patient/pages/ViewPrescriptions";
 import RegisterScreen from "./patient/pages/RegisterScreen";
-import PatientTest from "./patient/pages/PatientTest";
+import PatientTest from "./patient/pages/AppointmentScheduler";
 import ViewDoctorProfile from "./patient/pages/ViewDoctorProfile";
 import PatientHome from "./patient/pages/PatientHome";
 import ViewWallet from "./patient/pages/ViewWallet";
 import PatientTest2 from "./patient/pages/PatientTest2";
+import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PatientTest3 from "./patient/pages/PatientTest3";
+import PaymentPage from "./patient/pages/PaymentPage";
+import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -39,18 +42,15 @@ import Contract from "./doctor/pages/Contract";
 // login
 import LoginForm from "./shared/pages/LoginForm";
 
-import PaymentPage from "./patient/pages/PaymentPage";
 
 
 // login
-
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/" element={<LoginForm />} />
         <Route path="/patientRegistration" element={<RegisterScreen />} />
         <Route path="/patient" element={<Patient />}>
           <Route path="" element={<PatientHome />} /> {/* TODO: change to home page */}
@@ -61,19 +61,23 @@ function App() {
           <Route path="test" element={<PatientTest />} />
           <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
           <Route path="wallet" element={<ViewWallet />} />
-          <Route path="doctors/info/:id/test2/:doctorId" element={<PatientTest2 />} />
+          <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="test3" element={<PatientTest3 />} />
-          <Route path="profile/subscription" element={<Subscription/>}/>
+          <Route path="test3" element={<PaymentPage />} />
+          <Route path="profile/subscription" element={<Subscription />} />
+          <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
         </Route>
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route path="/doctor" element={<Doctor />}>
-          <Route path="contract" element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}/>
+          <Route
+            path="contract"
+            element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
+          />
           <Route path="appointments" element={<ViewDoctorAppointments />} />
           <Route path="patients" element={<ViewDoctorPatients />} />
           <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
-          <Route path="PatientFollowUp" element={<PatientFollowUp />} />
+          <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patientInfo" element={<ViewPatientInfo />} />

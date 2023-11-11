@@ -7,7 +7,6 @@ import { Box } from "@mui/joy";
 import { Divider } from "@mui/material";
 import MiniAppointmentCard from "../components/MiniAppointmentCard";
 import PdfViewer from "../components/PdfViewer";
-import pdf from "../assets/dummy.pdf"
 import { Tabs } from 'antd';
 import { useState } from "react";
 import {AiOutlinePlusCircle} from 'react-icons/ai';
@@ -32,16 +31,24 @@ export default function ViewPatientInfo (){
     let recordItems = [];
     if(completedApps.length !== 0){
         recordItems = patient.healthRecords.map((record, index) => {
+            const pdfUrl = "/backend/public/medicalDegree_1699670981314.pdf";
             return {
                 key: index,
                 label: `Record ${index + 1}`,
-                children: <PdfViewer pdfUrl={pdf}/>
+                children: <PdfViewer pdfUrl={pdfUrl}/>
             }
         });
     }
+
+    const medicalHistory = patient.medicalHistory.map((record, index) => {
+        const pdfUrl = "/backend/public/medicalDegree_1699670981314.pdf";
+        return {
+                key: index,
+                label: `Record ${index + 1}`,
+                children: <PdfViewer pdfUrl={pdfUrl}/>
+            }
+    });
     
-
-
 
     return (
        <div className="mt-8 ml-8 mr-8 mb-8 space-y-5 items-center">
@@ -110,7 +117,7 @@ export default function ViewPatientInfo (){
                     <Divider inset="none"/>
                 </Typography>
 
-                <Tabs defaultActiveKey="1" items={recordItems} size="large" />     
+                <Tabs defaultActiveKey="1" items={medicalHistory} size="large" />     
             </div>    
             <div onClick={() => {setAddHealthRecordOpen(true)}} className="flex items-center justify-center gap-1.5 border-2 border-black p-2.5 cursor-pointer text-center w-1/4 hover:bg-black hover:text-white hover:scale-105" > <AiOutlinePlusCircle size={18} />Add Health Record</div> 
             {addHealthRecordOpen && <AddHealthRecordScreen closeForm={() => {setAddHealthRecordOpen(false)}}/>}

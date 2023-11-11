@@ -1,22 +1,23 @@
 import React, {useState} from "react";
 import Button from '@mui/joy/Button';
 import { isAfter, isSameDay } from 'date-fns'; // Import date-fns functions
-import TableCollapsibleRow from "../components/TableCollapsibleRow";
 import { useSelector } from "react-redux";
-import { useFetchPatientsQuery } from "../../store";
+import { useFetchPatientsQuery, useFetchDoctorQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
 import PatientCard from "../components/PatientCard";
 import { useNavigate } from 'react-router-dom';
-
+import dayjs from "dayjs";
 
 
 function ViewDoctorPatients() {
 	const [isFiltered, setIsFiltered]  = useState(false)
 	const [searchTerm, setSearchTerm] = useState("")
+	
+	const { data, error , isFetching } = useFetchPatientsQuery();
 
-	const doctor = useSelector((state) => state.doctorSlice);
-	const { data, error , isFetching } = useFetchPatientsQuery(doctor);
-	const patients = data;
+	let patients = []
+	if(!isFetching)
+		patients = data;
 
 	const navigate = useNavigate();
 
@@ -42,8 +43,18 @@ function ViewDoctorPatients() {
 				const today = new Date();
 				// const appointmentDate = new Date(patient.appointment);
 				const appointmentsList = patient.appointments;
+				const updatedAppointmentsList = appointmentsList.map((appointment) => {
+					const currDate = dayjs();
+					const appointmentDate = dayjs(appointment.formattedDate);
+			  
+					if (appointmentDate.isAfter(currDate)) {
+					  return { ...appointment, status: "upcoming" };
+					} else {
+					  return { ...appointment, status: "completed" };
+					}
+				  });
 	
-				const upcomingAppointments = appointmentsList.filter((appointment) => {
+				const upcomingAppointments = updatedAppointmentsList.filter((appointment) => {
 					const appointmentDate = new Date(appointment.formattedDate.split(",")[0]);
 					
 					return isSameDay(appointmentDate, today) || isAfter(appointmentDate, today); 

@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "@fontsource/inter";
 import "react-dropdown/style.css";
 import DatePickerMaterialUI from "../components/DatePickerMaterialUI";
@@ -7,7 +8,7 @@ import dayjs from "dayjs";
 import Button from "@mui/joy/Button";
 import { useFetchAppointmentsQuery, useFetchDoctorQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
-import { isAfter, isSameDay, isBefore, set, parseISO } from 'date-fns'; // Import date-fns functions
+import { isAfter, isSameDay, isBefore, set, parseISO } from 'date-fns'; 
 import { Autocomplete } from "@mui/joy";
 import FormControl from "@mui/joy/FormControl";
 import CircularProgress from '@mui/joy/CircularProgress';
@@ -26,7 +27,7 @@ function ViewDoctorAppointments() {
 	
 	const { data, error, isFetching } = useFetchAppointmentsQuery();
 	
-	
+	const navigate = useNavigate();
 
 	let filteredAppointments = []
 
@@ -56,7 +57,9 @@ function ViewDoctorAppointments() {
 			
 		});
 	}
-			
+	const navigateToFreeSlots = () => {
+		navigate('/doctor/FreeSlotsAppointments'); 
+	  };
 
 	filteredAppointments = filteredAppointments.filter((appointment) => {
 		const name = appointment.patient.name.toLowerCase();
@@ -82,50 +85,53 @@ function ViewDoctorAppointments() {
 		});
 	}
 	  
-	
 
-	return (
-		<div className="mx-auto">
-			
-			{!isFetching && 
-				<div className="ml-20 flex flex-col space-y-4 ">
-					
+
+			return (
+				<div className="mx-auto">
+					{!isFetching && (
+					<div className="ml-20 flex flex-col space-y-4 ">
 						<div className="flex justify-between items-center space-x-4 w-full mt-10">
-							<RangePicker onChange={handleDateRange} format={"MM/DD/YYYY"}/>
-
-
-							<FormControl id="multiple-limit-tags">
-								<Autocomplete
-									
-									multiple
-									id="tags-default"
-									placeholder="Status"
-									loading={isFetching}
-									options={options}	
-									endDecorator={
-										isFetching ? (
-											<CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
-										) : null
-									}
-									limitTags={2}
-									onChange={(event, newValue) => {
-										handleSelect(newValue)
-									}}
-								
-								/>
-							</ FormControl>
-
-							
-							<SearchBar placeholder="Search for patients..." onChange={(value) => setSearchTerm(value)}/>							
+						<RangePicker onChange={handleDateRange} format={"MM/DD/YYYY"}/>
+			
+						<FormControl id="multiple-limit-tags">
+							<Autocomplete
+								multiple
+								id="tags-default"
+								placeholder="Status"
+								loading={isFetching}
+								options={options}	
+								endDecorator={
+									isFetching ? (
+										<CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
+									) : null
+								}
+								limitTags={2}
+								onChange={(event, newValue) => {
+									handleSelect(newValue)
+								}}
+							/>
+						</FormControl>
+			
+						<SearchBar placeholder="Search for patients..." onChange={(value) => setSearchTerm(value)}/>
+			
+						{/* Button to navigate to Free Slots Appointments */}
+						<Button 
+							variant="solid" 
+							sx={{ 
+							alignSelf: 'center', 
+							}} 
+							onClick={navigateToFreeSlots}
+						>
+							Modify Free Slots
+						</Button>
 						</div>
-					
-					{renderedAppointments}
+			
+						{renderedAppointments}
+					</div>
+					)}
 				</div>
-			}
-		</div>
-		
-		
-	);
+				);
 }
 
 export default ViewDoctorAppointments;

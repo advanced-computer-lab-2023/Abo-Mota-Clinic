@@ -14,7 +14,7 @@ import Chip from '@mui/joy/Chip';
 import Avatar from '@mui/joy/Avatar';
 import { capitalizeFirstLetter } from './AppointmentCard';
 import image from "../assets/appointmentAvatar.png"
-
+import dayjs from 'dayjs';
 
 
 export default function MiniAppointmentCard({appointment}) {
@@ -23,8 +23,18 @@ const colors = {
     "upcoming": "warning",
     "cancelled": "danger",
     "completed": "success",
-    "unbooked": "primary"
+    "unbooked": "primary",
+    "rescheduled": "primary"
     }
+
+      const currDate = dayjs();
+      const appointmentDate = dayjs(appointment.formattedDate);
+    
+      if (appointmentDate.isAfter(currDate) && ((appointment.status !== "cancelled") || (appointment.status !== "rescheduled"))){
+        appointment =  { ...appointment, status: "upcoming" };
+      } else {
+        appointment = { ...appointment, status: "completed" };
+      }  
 
   return (
    

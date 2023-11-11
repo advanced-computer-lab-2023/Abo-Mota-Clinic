@@ -10,7 +10,7 @@ const NavBar = ({ links = [], navBarItems = [] }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
   const [logout, result] = useLogoutMutation();
-  const handleClick = async () => {
+  const handleClick =  async() => {
     await logout();
   }
   const content = navBarItems.map((item) => {

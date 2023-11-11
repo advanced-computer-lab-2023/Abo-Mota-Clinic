@@ -9,12 +9,15 @@ const {
 } = require("../controllers/guestController");
 const validatePatientRegister = require("../middlewares/validatePatientRegister");
 const multer = require("multer");
+const path = require("path");
+
 
 const router = express.Router();
 
 // register a guest as patient
 router.post("/registerPatient", validatePatientRegister, registerPatient);
 
+//handle uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -24,6 +27,7 @@ router.post(
 	upload.fields([
 		{ name: "medicalLicense", maxCount: 1 },
 		{ name: "medicalDegree", maxCount: 1 },
+		{ name: "nationalId", maxCount: 1 },
 	]),
 	registerDoctor
 );
@@ -35,6 +39,6 @@ router.post("/otp", requestOtp);
 router.post("/forgotPassword", forgotPassword);
 
 router.post("/login" , login);
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 module.exports = router;

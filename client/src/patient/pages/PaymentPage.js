@@ -1,30 +1,27 @@
-import { Box } from "@mui/joy";
-import { Typography, Divider, Button, Card } from "@mui/joy";
-import CardPayment from "../components/CardPayment";
-import { FaRegCreditCard } from "react-icons/fa";
-import { IoWallet } from "react-icons/io5";
+import { Box, Typography, Divider, Button, Card } from "@mui/joy";
+
+// HOOKS
 import { useState } from "react";
-import { BsClock } from "react-icons/bs";
-import { GrLocationPin } from "react-icons/gr";
-import { useFetchPatientQuery, usePayAppointmentByWalletMutation } from "../../store";
-import capitalize from "../utils/capitalize";
+
+// COMPONENTS
+import CardPayment from "../components/CardPayment";
+import PaymentSummary from "../components/PaymentSummary";
+import CheckoutDetails from "../components/CheckoutDetails";
 import WalletPayment from "../components/WalletPayment";
 
-function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit }) {
+// ICONS
+import { FaRegCreditCard } from "react-icons/fa";
+import { IoWallet } from "react-icons/io5";
+
+// UTILS
+import round2dp from "../utils/round2dp";
+
+function PaymentPage({ items, type, details, discount, onPaymentSuccess, onPaymentFailure }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
 
-  console.log("Doctor Credit @ PaymentPage: ", doctorCredit)
-
-  const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
-  const [payAppointmentByWallet, results] = usePayAppointmentByWalletMutation();
-
-  if (isFetchingPatient) {
-    return <div>Loading ...</div>;
-  } else if (isFetchingPatientError) {
-    return <div> Error ... </div>;
-  }
-
-
+  const subtotal = items.reduce((acc, {price}) => acc + price, 0);
+  const deductible = round2dp(subtotal * (1 - discount));
+  
   const buttonGroup = [
     {
       id: 1,
@@ -41,40 +38,26 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
   ];
 
   return (
-    //w-full add this if you want full width
-    <Box className=" mt-20 space-y-5">
-      <Box sx={{ py: 2 }} className="">
-        <Typography level="h2" fontWeight={500}>
+    <Box className="mt-15 space-y-5">
+      <Box sx={{ py: 2 }}>
+        <Typography level="h1" sx={{ ml: -0.5 }}>
           Checkout
         </Typography>
 
-        <Divider sx={{ my: 1.5 }} />
-
         <br></br>
 
-        <Box id="card-body" className="flex justify-between space-x-10">
-          <Box className="">
-            <Box id="appointment-review" className="mb-5">
-              <Typography level="title-lg" sx={{ marginBottom: 1 }}>
-                Details
-              </Typography>
+        <Box id="card-body" className="w-full flex justify-between space-x-20">
+          <Box sx={{ width: '60%' }}>
 
-              <Typography level="body-md" startDecorator={<BsClock />}>
-                {date}, {currentTime}
-              </Typography>
+            <CheckoutDetails type={type} details={details} />
 
-              <Typography level="body-md" startDecorator={<GrLocationPin />}>
-                {doctor.affiliation}
-              </Typography>
-            </Box>
-
-            <Divider sx={{ my: 2 }} />
-
-            <Typography level="title-lg" sx={{ marginBottom: 1 }}>
+            <Typography level="h3" sx={{ mt: 5 }}>
               Payment Method
             </Typography>
 
-            <Card sx={{ width: "600px", borderRadius: 0, p: 4 }}>
+            <Divider sx={{ my: 1.5 }} />
+
+            <Card sx={{ borderRadius: 0, p: 4 }}>
               <Box id="button-group" className="flex space-x-2 mb-5">
                 {buttonGroup.map((button) => (
                   <Button
@@ -97,71 +80,31 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
               {/* MAIN PAYMENT COMPONENT */}
 
               {paymentMethod === "card" ? (
-                <CardPayment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
+                <CardPayment
+                  deductible={deductible}
+                  onSuccess={onPaymentSuccess}
+                  onFailure={onPaymentFailure}
+                />
               ) : (
-                <WalletPayment doctorId={doctorId} deductible={deductible} doctorCredit={doctorCredit} />
+                <WalletPayment
+                  deductible={deductible}
+                  onSuccess={onPaymentSuccess}
+                  onFailure={onPaymentFailure}
+                />
               )}
             </Card>
           </Box>
 
-          <Box
-            id="payment-summary"
-            style={{ borderRadius: 0, width: "300px" }}
-            className="bg-gray-100 rounded p-5"
-          >
-            <Box className="">
-              <Typography level="title-lg">Summary</Typography>
+          <PaymentSummary
+            items={items}
+            discount={discount}
+          />
 
-              <Typography level="body-sm">
-                Subscribed health package:{" "}
-                <span className="font-bold">
-                  {!patient.healthPackage ? "No Package" : capitalize(patient.healthPackage.package.name)}
-                </span>
-              </Typography>
-
-              <Divider sx={{ my: 2 }} />
-              <Box>
-                <Box className="flex justify-between">
-                  <Typography level="body-sm">Consultation</Typography>
-                  <Typography level="body-sm">${doctor.rate}</Typography>
-                </Box>
-
-                <Divider sx={{ my: 2 }} />
-
-                <Box className="flex justify-between">
-                  <Typography level="body-sm" sx={{ marginBottom: 1.5 }}>
-                    Subtotal
-                  </Typography>
-                  <Typography level="body-sm">${doctor.rate}</Typography>
-                </Box>
-                <Box className="flex justify-between">
-                  <Typography level="body-sm">Discount</Typography>
-                  <Typography level="body-sm" color="success">
-                    {" "}
-                    - (${doctor.rate - deductible})
-                  </Typography>
-                </Box>
-
-                <Divider sx={{ my: 1.5 }} />
-
-                <Box className="flex justify-between">
-                  <Typography level="title-lg">Total</Typography>
-                  <Typography level="title-lg">${deductible}</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
         </Box>
       </Box>
-
-      {/* <Box className="flex w-full justify-end">
-        <Button type="submit" variant="solid" id="submit" sx={{ marginRight: 5, py: 2, borderRadius: 2 }}>
-          <span id="Button-text">
-            PAY APPOINTMENT
-          </span>
-        </Button>
-      </Box> */}
     </Box>
+
+
   );
 }
 export default PaymentPage;

@@ -14,14 +14,20 @@ const {
 	subscribeForMyself,
 	getMyPackage,
 	getFamilyPackages,
-	payAppointmentByCard,
 	payAppointmentByWallet,
-	test,
-	viewWallet
+	viewWallet,
+	uploadMedicalHistory,
+	deleteMedicalHistory,
+	bookAppointment,
+	creditDoctor,
+	selfCancelSubscription,
+	familyCancelSubscription,
+	packageUnsubscribe,
 } = require("../controllers/patientController");
 
 const router = express.Router();
 const authorize = require("../middlewares/authorization");
+const multer = require("multer");
 
 // Get Patient
 router.get("/", authorize, getPatient);
@@ -41,6 +47,21 @@ router.get("/doctors", authorize, getDoctors);
 // Get all appointments
 router.get("/appointments", authorize, getAppointments);
 
+//handle uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+//Upload a medical history record
+router.post(
+	"/uploadMedicalHistory",
+	authorize,
+	upload.fields([{ name: "medicalHistory", maxCount: 1 }]),
+	uploadMedicalHistory
+);
+
+//Delete a medical history record
+router.delete("/deleteMedicalHistory/:id", authorize, deleteMedicalHistory);
+
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
 
@@ -54,10 +75,12 @@ router.get("/availableAppointments", authorize, getAvailableAppointments);
 router.post("/linkFamily", authorize, linkFamilyMember);
 
 // Pay appointment by card
-router.patch("/payCard", authorize, payAppointmentByCard);
+// router.patch("/payCard", authorize, payAppointmentByCard);
 
 // Pay appointment by wallet
 router.patch("/payWallet", authorize, payAppointmentByWallet);
+
+router.patch("/creditDoctor", authorize, creditDoctor);
 
 // Subscribe for myself
 router.post("/selfSubscribe", authorize, subscribeForMyself);
@@ -71,8 +94,25 @@ router.get("/myPackage", authorize, getMyPackage);
 // Get Subscribed Family Member Packages
 router.get("/familyPackages", authorize, getFamilyPackages);
 
-router.post("/test", test);
-//Get Amount in my Wallet
-router.get('/wallet', authorize, viewWallet)
+// Finalizes appointment booking in database
+// Sets status to booked
+router.post("/bookAppointment", authorize, bookAppointment);
 
+// Get Amount in my Wallet
+router.get("/wallet", authorize, viewWallet);
+
+// Get Status of my package
+// router.get("/myPackageStatus", authorize, viewMyPackageStatus);
+
+// Get status of family member
+// router.get("/familyPackageStatus", authorize, viewFamilyPackageStatus);
+
+// Cancel my subscription
+router.post("/cancelMySub", authorize, selfCancelSubscription);
+
+// Cancel family member subscription
+router.post("/cancelFamilySub", authorize, familyCancelSubscription);
+
+// Unsubscribe from my package
+router.post("/unsubscribe", authorize, packageUnsubscribe);
 module.exports = router;
