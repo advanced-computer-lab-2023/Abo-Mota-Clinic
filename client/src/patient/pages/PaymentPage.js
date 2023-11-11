@@ -12,6 +12,9 @@ import WalletPayment from "../components/WalletPayment";
 import { useNavigate } from "react-router-dom";
 import Toast from "../components/Toast";
 import { useCreditDoctorMutation } from "../../store";
+import PaymentSummary from "../components/PaymentSummary";
+import round2dp from "../utils/round2dp";
+import CheckoutDetails from "../components/CheckoutDetails";
 
 function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCredit, appointmentId }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -93,19 +96,19 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
 
   return (
     //w-full add this if you want full width
-    <Box className=" mt-20 space-y-5">
-      <Box sx={{ py: 2 }} className="">
-        <Typography level="h2" fontWeight={500}>
+    <Box className="mt-15 space-y-5">
+      <Box sx={{ py: 2 }}>
+        <Typography level="h1" sx={{ml: -0.5}}>
           Checkout
         </Typography>
 
-        <Divider sx={{ my: 1.5 }} />
+        {/* <Divider sx={{ my: 1.5 }} /> */}
 
         <br></br>
 
-        <Box id="card-body" className="flex justify-between space-x-10">
-          <Box className="">
-            <Box id="appointment-review" className="mb-5">
+        <Box id="card-body" className="w-full flex justify-between space-x-20">
+          <Box sx={{width: '60%'}}>
+            {/* <Box id="appointment-review" className="mb-5">
               <Typography level="title-lg" sx={{ marginBottom: 1 }}>
                 Details
               </Typography>
@@ -117,15 +120,18 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
               <Typography level="body-md" startDecorator={<GrLocationPin />}>
                 {doctor.affiliation}
               </Typography>
-            </Box>
+            </Box> */}
 
-            <Divider sx={{ my: 2 }} />
+            <CheckoutDetails />
 
-            <Typography level="title-lg" sx={{ marginBottom: 1 }}>
+
+            <Typography level="h3" sx={{mt: 5}}>
               Payment Method
             </Typography>
 
-            <Card sx={{ width: "600px", borderRadius: 0, p: 4 }}>
+            <Divider sx={{ my: 1.5 }} />
+
+            <Card sx={{ borderRadius: 0, p: 4 }}>
               <Box id="button-group" className="flex space-x-2 mb-5">
                 {buttonGroup.map((button) => (
                   <Button
@@ -163,53 +169,19 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
             </Card>
           </Box>
 
-          <Box
-            id="payment-summary"
-            style={{ borderRadius: 0, width: "300px" }}
-            className="bg-gray-100 rounded p-5"
-          >
-            <Box className="">
-              <Typography level="title-lg">Summary</Typography>
-
+          <PaymentSummary
+            items={[{ name: "Consultation", price: round2dp(doctor.rate * 1.1) }]}
+            discount={patient.healthPackage.package ? patient.healthPackage.package.doctorDiscount : 0}
+            optionalHeaders={
               <Typography level="body-sm">
                 Subscribed health package:{" "}
                 <span className="font-bold">
                   {!patient.healthPackage ? "No Package" : capitalize(patient.healthPackage.package.name)}
                 </span>
               </Typography>
+            }
+          />
 
-              <Divider sx={{ my: 2 }} />
-              <Box>
-                <Box className="flex justify-between">
-                  <Typography level="body-sm">Consultation</Typography>
-                  <Typography level="body-sm">${doctor.rate}</Typography>
-                </Box>
-
-                <Divider sx={{ my: 2 }} />
-
-                <Box className="flex justify-between">
-                  <Typography level="body-sm" sx={{ marginBottom: 1.5 }}>
-                    Subtotal
-                  </Typography>
-                  <Typography level="body-sm">${doctor.rate}</Typography>
-                </Box>
-                <Box className="flex justify-between">
-                  <Typography level="body-sm">Discount</Typography>
-                  <Typography level="body-sm" color="success">
-                    {" "}
-                    - (${doctor.rate - deductible})
-                  </Typography>
-                </Box>
-
-                <Divider sx={{ my: 1.5 }} />
-
-                <Box className="flex justify-between">
-                  <Typography level="title-lg">Total</Typography>
-                  <Typography level="title-lg">${deductible}</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
         </Box>
       </Box>
 

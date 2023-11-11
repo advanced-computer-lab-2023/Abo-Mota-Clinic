@@ -105,8 +105,6 @@ router.get("/myPackage", authorize, getMyPackage);
 // Get Subscribed Family Member Packages
 router.get("/familyPackages", authorize, getFamilyPackages);
 
-router.post("/test", test);
-
 // Finalizes appointment booking in database
 // Sets status to booked
 router.post("/bookAppointment", authorize, bookAppointment);

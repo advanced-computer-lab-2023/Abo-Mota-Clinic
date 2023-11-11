@@ -8,6 +8,10 @@ function PatientTest3() {
     {
       name: "Consultation",
       price: 500
+    },
+    {
+      name: "Follow Up",
+      price: 200
     }
   ]
 
@@ -28,7 +32,7 @@ function PatientTest3() {
   };
 
   return (
-    <PaymentSummary patient={patient} doctor={doctor} deductible={100} items={items} discount={discount} />
+    <PaymentSummary items={items} discount={discount} optionalHeaders={undefined} />
   );
 }
 

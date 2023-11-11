@@ -16,11 +16,11 @@ import ViewDoctors from "./patient/pages/ViewDoctors";
 import ViewFamilyMembers from "./patient/pages/ViewFamilyMembers";
 import ViewPrescriptions from "./patient/pages/ViewPrescriptions";
 import RegisterScreen from "./patient/pages/RegisterScreen";
-import PatientTest from "./patient/pages/PatientTest";
+import PatientTest from "./patient/pages/AppointmentScheduler";
 import ViewDoctorProfile from "./patient/pages/ViewDoctorProfile";
 import PatientHome from "./patient/pages/PatientHome";
 import ViewWallet from "./patient/pages/ViewWallet";
-import PatientTest2 from "./patient/pages/PatientTest2";
+import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PatientTest3 from "./patient/pages/PatientTest3";
 
@@ -58,7 +58,7 @@ function App() {
           <Route path="test" element={<PatientTest />} />
           <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
           <Route path="wallet" element={<ViewWallet />} />
-          <Route path="doctors/info/:id/test2/:doctorId" element={<PatientTest2 />} />
+          <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
           <Route path="test3" element={<PatientTest3 />} />

@@ -23,7 +23,7 @@ dayjs.extend(weekday);
 
 const format = (date) => date.format("dddd Do [of] MMMM YYYY");
 
-export default function PatientTest({
+export default function AppointmentScheduler({
   currentTimings,
   setCurrentTimings,
   date,

@@ -12,7 +12,7 @@ import DoctorImg from "../assets/images/doctor.jpg";
 import * as React from "react";
 import { LuStethoscope, LuCalendarClock, LuBuilding } from "react-icons/lu";
 
-import PatientTest from "./PatientTest";
+import AppointmentScheduler from "./AppointmentScheduler";
 import { AspectRatio, CardContent } from "@mui/joy";
 import PaymentPage from "./PaymentPage";
 import { useParams } from "react-router-dom";
@@ -22,15 +22,13 @@ import { useFetchDoctorsQuery, useFetchPatientQuery } from "../../store";
 
 const steps = ["Schedule", "Appointment Overview", "Payment"];
 
-export default function PatientTest2({ step = 0 }) {
+export default function AppointmentStepper({ step = 0 }) {
   const [activeStep, setActiveStep] = useState(step);
   const { doctorId, id } = useParams();
   const [date, setDate] = useState(null);
   const [currentTime, setCurrentTime] = useState(null);
   const [appointmentId, setAppointmentId] = useState(null);
   const [currentTimings, setCurrentTimings] = useState([]);
-
-  
 
   const { data: doctor, isFetching: isFetchingDoctor, error: isFetchingDoctorError } = useFetchDoctorsQuery();
   const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } =
@@ -65,7 +63,7 @@ export default function PatientTest2({ step = 0 }) {
   };
 
   const scheduling = (
-    <PatientTest
+    <AppointmentScheduler
       currentTimings={currentTimings}
       setCurrentTimings={setCurrentTimings}
       date={date}
@@ -235,7 +233,7 @@ export default function PatientTest2({ step = 0 }) {
   const stepElements = [scheduling, review, payment];
 
   return (
-    <Box sx={{ my: 5, mx: 5, width: "100%", py: 5, px: 30 }} className="">
+    <Box sx={{ my: 5, mx: 5, width: "100%", py: 5, px: 20 }} className="">
       <Stepper activeStep={activeStep} sx={{ marginBottom: 3 }}>
         {steps.map((label, index) => {
           const stepProps = {};
