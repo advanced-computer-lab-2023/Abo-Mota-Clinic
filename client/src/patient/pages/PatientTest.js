@@ -34,10 +34,6 @@ export default function PatientTest({
   appointmentId,
   setAppointmentId,
 }) {
-
-  console.log("Appointment ID @ PatientTest")
-  console.log(appointmentId);
-
   const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(doctorId);
 
   console.log("Available Appointments @ PatientTest");

@@ -8,7 +8,7 @@ function FileUploadSection({files})
           <div className="space-y-3">
             {files.map((file, index) => (
               <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium">{file.name}, {file.size}</span>
+                <span className="text-sm font-medium">{file.fileName}, {/*{file.size}*/}</span>
                 <div className="flex space-x-2">
                   <button className="text-blue-600 hover:underline">View</button>
                   <button className="text-blue-600 hover:underline">Download</button>

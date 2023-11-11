@@ -51,6 +51,7 @@ export {
   useRegisterDoctorMutation,
   useRegisterPatientMutation,
   useLoginMutation,
+  useLogoutQuery,
 } from "./apis/guestApi";
 
 export const {

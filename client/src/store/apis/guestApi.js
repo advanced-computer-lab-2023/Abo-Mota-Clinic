@@ -35,9 +35,18 @@ const guestApi = createApi({
           };
         },
       }),
+
+      logout: builder.query({
+        query: () => {
+          return {
+            url: "/logout",
+            method: "GET",
+          };
+        },
+      }),
     };
   },
 });
 
-export const { useRegisterDoctorMutation, useRegisterPatientMutation, useLoginMutation } = guestApi;
+export const { useRegisterDoctorMutation, useRegisterPatientMutation, useLoginMutation, useLogoutQuery } = guestApi;
 export { guestApi };

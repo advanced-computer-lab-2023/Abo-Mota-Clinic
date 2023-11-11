@@ -11,7 +11,7 @@ const doctorApi = createApi({
        return {
         fetchDoctor: builder.query({
             providesTags: (result, error)=>{
-                return [{type: 'Doctor', id: result.id}];
+                return [{type: 'Doctor', id: "123"}];
             },
             query: () => {
                 return {
@@ -36,14 +36,15 @@ const doctorApi = createApi({
             }
         }),
         fetchPatients: builder.query({
-            providesTags:(result,error,doctor)=>{
+            providesTags:(result,error)=>{
+                console.log("RESULT", result)
                 const tags = result.map((patient)=>{
                     return {type:'Patient', id:patient._id}
                 });
-                tags.push({type:'DoctorPatient',id:doctor._id})
+                tags.push({type:'DoctorPatient',id:"123"})
                 return tags;
             },
-            query : (doctor) => {
+            query : () => {
                 return {
                     url: '/patients',
                     // params: {
@@ -56,7 +57,7 @@ const doctorApi = createApi({
         }),
         updateDoctor: builder.mutation({
             invalidatesTags : (result, error, doctor)=>{
-                return [{type:'Doctor', id:doctor.id}];
+                return [{type:'Doctor', id:"123"}];
             },
             query : ({ email , rate, affiliation })=>{
                 return {

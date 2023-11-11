@@ -61,7 +61,7 @@ function ViewDoctors() {
     // filteredData = filterSearch(filteredData, specialtySearchTerm, ["specialty"]);
     // discount = 20;
 
-    if (patient.healthPackage) discount = patient.healthPackage.package.doctorDiscount;
+    if (patient.healthPackage && patient.healthPackage.package) discount = patient.healthPackage.package.doctorDiscount;
     // } else
     // discount = undefined;
 

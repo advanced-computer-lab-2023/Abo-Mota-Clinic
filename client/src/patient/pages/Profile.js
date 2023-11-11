@@ -15,6 +15,11 @@ function Profile() {
 
   const {data, error, isLoading} = useFetchPatientQuery();
 
+  const medicalHistoryFiles = data && data.medicalHistory.map(file => ({
+    name: file.fileName, 
+    size: 'Unknown', 
+    type: file.contentType 
+  }));
   return (
     <div className="bg-gray-100 min-h-screen p-8 w-full">
       {isLoading ||
@@ -29,7 +34,7 @@ function Profile() {
             <EmergencyContactCard patient={data} />
           </div>
           <div className="w-full md:w-1/2 px-3 md:px-6 py-4">
-            <FileUploadSection files={files} />
+            <FileUploadSection files={data.medicalHistory} />
           </div>
         </div>
         

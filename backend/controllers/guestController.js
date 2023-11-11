@@ -283,7 +283,7 @@ const login = async (req, res) => {
 const logout = (req, res) => {
 	try {
 		res.clearCookie("jwt");
-		res.status(200).json({ message: "Logged Out Successfully" });
+		res.status(200).json({ message: "Logged Out Successfully" , isLoggedIn: false});
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}

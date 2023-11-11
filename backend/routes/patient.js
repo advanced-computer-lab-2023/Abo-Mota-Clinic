@@ -14,16 +14,23 @@ const {
 	subscribeForMyself,
 	getMyPackage,
 	getFamilyPackages,
-	payAppointmentByCard,
 	payAppointmentByWallet,
-	test,
 	viewWallet,
+	uploadMedicalHistory,
+	deleteMedicalHistory,
 	bookAppointment,
 	creditDoctor,
+	viewMyPackageStatus,
+	viewFamilyPackageStatus,
+	selfCancelSubscription,
+	familyCancelSubscription,
+	packageUnsubscribe,
 } = require("../controllers/patientController");
 
 const router = express.Router();
 const authorize = require("../middlewares/authorization");
+const multer = require("multer");
+const path = require("path");
 
 // Get Patient
 router.get("/", authorize, getPatient);
@@ -42,6 +49,29 @@ router.get("/doctors", authorize, getDoctors);
 
 // Get all appointments
 router.get("/appointments", authorize, getAppointments);
+
+//handle uploads
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "public/");
+	},
+	filename: (req, file, cb) => {
+		cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+	},
+});
+
+const upload = multer({ storage });
+
+//Upload a medical history record
+router.post(
+	"/uploadMedicalHistory",
+	authorize,
+	upload.single("medicalHistory"),
+	uploadMedicalHistory
+);
+
+//Delete a medical history record
+router.delete("/deleteMedicalHistory/:recordId", authorize, deleteMedicalHistory);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
@@ -77,11 +107,25 @@ router.get("/familyPackages", authorize, getFamilyPackages);
 
 router.post("/test", test);
 
-//Get Amount in my Wallet
-router.get('/wallet', authorize, viewWallet)
-
 // Finalizes appointment booking in database
 // Sets status to booked
 router.post("/bookAppointment", authorize, bookAppointment);
 
+// Get Amount in my Wallet
+router.get("/wallet", authorize, viewWallet);
+
+// Get Status of my package
+router.get("/myPackageStatus", authorize, viewMyPackageStatus);
+
+// Get status of family member
+router.get("/familyPackageStatus", authorize, viewFamilyPackageStatus);
+
+// Cancel my subscription
+router.post("/cancelMySub", authorize, selfCancelSubscription);
+
+// Cancel family member subscription
+router.post("/cancelFamilySub", authorize, familyCancelSubscription);
+
+// Unsubscribe from my package
+router.post("/unsubscribe", packageUnsubscribe);
 module.exports = router;

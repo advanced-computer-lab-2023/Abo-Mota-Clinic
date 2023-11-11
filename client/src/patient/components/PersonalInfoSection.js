@@ -25,7 +25,6 @@ function  PersonalInfoSection({patient})
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
       <div className="flex flex-col items-center">
-        {/* Use a label to wrap the image to act as the file upload trigger */}
         <label htmlFor="profile-photo-upload" className="relative cursor-pointer">
           <div className="flex-shrink-0 h-20 w-20">
             <img
