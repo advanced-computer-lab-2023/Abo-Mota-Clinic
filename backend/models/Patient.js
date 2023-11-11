@@ -52,8 +52,8 @@ const patientSchema = new Schema(
 		healthPackage: {
 			status: {
 				type: String,
-				default: "unsubscribed",
-				enum: ["subscribed", "unsubscribed", "cancelled"],
+				default: null,
+				enum: ["subscribed", "unsubscribed", "cancelled", null],
 			},
 			package: {
 				type: Schema.Types.ObjectId,
@@ -64,14 +64,18 @@ const patientSchema = new Schema(
 			cancelDate: Date,
 			unsubscribeDate: Date,
 		},
-		healthRecords: [{
-			data: Buffer,
-			mimetype: String
-		}],
-		medicalHistory: [{
-			data: Buffer,
-			mimetype: String
-		}],
+		healthRecords: [
+			{
+				data: Buffer,
+				mimetype: String,
+			},
+		],
+		medicalHistory: [
+			{
+				data: Buffer,
+				mimetype: String,
+			},
+		],
 		// prescriptions: [
 		//   {
 		//     type: Schema.Types.ObjectId,
