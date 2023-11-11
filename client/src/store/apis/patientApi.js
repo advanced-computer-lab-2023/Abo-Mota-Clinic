@@ -148,6 +148,29 @@ const patientApi = createApi({
         },
       }),
 
+      fetchMyPackage: builder.query({
+        providesTags:(result, error, data)=>{
+            return ["My package"];
+        }
+        ,
+        query:()=>{
+          return {
+            url:'/myPackage',
+            method:"GET",
+          }
+        }
+      }),
+      fetchFamilyPackage: builder.query({
+        providesTags:(result, error, data)=>{
+            return ["Family packages"];
+        },
+        query:()=>{
+          return{
+            url:'/familyPackages',
+            method:"GET",
+          }
+        }
+      })
     };
   },
 });
@@ -163,6 +186,8 @@ export const {
   useFetchAvailableAppointmentsQuery,
   usePayAppointmentByCardMutation,
   usePayAppointmentByWalletMutation,
+  useFetchMyPackageQuery,
+  useFetchFamilyPackageQuery
 } = patientApi;
 
 export { patientApi };

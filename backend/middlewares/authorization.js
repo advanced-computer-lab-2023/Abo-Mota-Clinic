@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const authToken = (req, res, next) => {
     const token = req.cookies.jwt;
 
-    console.log(token)
+    
 
     if(token){
         jwt.verify(token, process.env.JWT_SECRET, (err, userData) => {
@@ -13,7 +13,7 @@ const authToken = (req, res, next) => {
             req.userData = userData;  //userData is the payload included in the token
             const userType = userData.userType;
             //check if the user type allowed for the current route
-            console.log("baseUrl", req.baseUrl)
+        
             if(userType === 'admin' && (req.baseUrl).includes('/admin')){
                 console.log("OKAY")
                 next();

@@ -118,14 +118,6 @@ const getDoctors = async (req, res) => {
 // Get all appointments
 const getAppointments = async (req, res) => {
 	try {
-		// const patient = await Patient.findOne({}).populate({
-		//   path: "appointments",
-		//   populate: {
-		//     path: "doctor",
-		//     model: "Doctor",
-		//   },
-		// });
-		// res.status(200).json(patient.appointments);
 		const username = req.userData.username;
 		const { _id } = await Patient.findOne({ username });
 		const appointments = await Appointment.find({ patient: _id }).populate("doctor");

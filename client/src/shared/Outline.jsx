@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 import { Outlet } from "react-router-dom";
 
 function Outline({ items, navBarItems = [] }) {
-  console.log(navBarItems);
+  
   return (
     <>
       <div>
