@@ -194,14 +194,18 @@ const getAppointments = async (req, res) => {
 };
 
 const uploadMedicalHistory = async (req, res) => {
-	try {
-		const medicalHistory = req.file.path;
+	try{
+		const medicalHistory = {
+			data: req.files.medicalHistory[0].buffer,
+			contentType: req.files.medicalHistory[0].mimetype,
+		}
 		const username = req.userData.username;
 		const patient = await Patient.findOne({ username });
 		const updated = await Patient.updateOne(
 			{ username },
 			{ medicalHistory: [...patient.medicalHistory, medicalHistory] }
 		);
+		console.log(medicalHistory);
 		res.status(200).json(updated);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -211,15 +215,14 @@ const uploadMedicalHistory = async (req, res) => {
 const deleteMedicalHistory = async (req, res) => {
 	try {
 		const username = req.userData.username;
-		const recordId = req.params.recordId;
+		const recordId = req.params.id;
 
 		const patient = await Patient.findOne({ username });
-
-		patient.medicalHistory.splice(recordId, 1);
+		patient.medicalHistory = patient.medicalHistory.filter(record => !record._id.equals(recordId));
 
 		await patient.save();
 
-		res.status(200).json(patient);
+		res.status(200).json("Record removed");
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}

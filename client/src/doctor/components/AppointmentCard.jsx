@@ -12,6 +12,7 @@ import MarkunreadIcon from '@mui/icons-material/Markunread';
 import Divider from '@mui/joy/Divider';
 import Chip from '@mui/joy/Chip';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 export default function AppointmentCard({appointment}) {
   
@@ -27,6 +28,15 @@ const colors = {
     "unbooked": "primary",
     "rescheduled": "primary"
     }
+
+    const currDate = dayjs();
+      const appointmentDate = dayjs(appointment.formattedDate);
+    
+      if (appointmentDate.isAfter(currDate) && ((appointment.status !== "cancelled") || (appointment.status !== "rescheduled"))){
+        appointment =  { ...appointment, status: "upcoming" };
+      } else {
+        appointment = { ...appointment, status: "completed" };
+      }
     return (
       <Box sx={{ width: '100%', marginBottom: '16px' }}>
         <Card
@@ -81,7 +91,7 @@ const colors = {
               <Typography level="body-md" textColor="text.tertiary" startDecorator={<PhoneIcon fontSize='small' />}>
                 {appointment.patient.mobile}
               </Typography>
-              <Button onClick={navigateToPatientFollowUp} color="neutral" size="sm"> 
+              <Button variant="plain" onClick={navigateToPatientFollowUp} size="md"> 
                 Follow Up
               </Button>
               </div>
