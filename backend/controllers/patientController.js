@@ -57,10 +57,22 @@ const getFamilyMembers = async (req, res) => {
 		const username = req.userData.username;
 
 		// ???
-		const patient = await Patient.findOne({ username });
+		const patient = await Patient.findOne({ username }).populate("linkedFamily.member");
+		const familyMembersWithRelation = patient.linkedFamily.map((familyLink) => {
+			return {
+				...familyLink.member._doc, // Spread the member's data
+				relationToPatient: familyLink.relationToPatient, // Add the relation to patient
+			};
+		});
+		// const familyMembersWithRelation = patient.linkedFamily.map((familyLink) => {
+		// 	return {
+		// 		...familyLink.member, // Spread the member's data
+		// 		relationToPatient: familyLink.relationToPatient, // Add the relation to patient
+		// 	};
+		// });
 		// .populate("familyMembers._id");
 		// ???
-		res.status(200).json(patient.familyMembers);
+		res.status(200).json(familyMembersWithRelation);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
