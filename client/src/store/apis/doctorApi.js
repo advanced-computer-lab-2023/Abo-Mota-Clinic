@@ -71,9 +71,18 @@ const doctorApi = createApi({
 
                 }
             }
-        },
-        
-        )
+        }),
+        acceptContract: builder.mutation({
+            invalidatesTags : (result, error, doctor)=>{
+                return [{type:'Doctor', id:"123"}];
+            },
+            query : ()=>{
+                return {
+                    url: '/acceptContract',
+                    method :'PATCH',
+                }
+            }
+        }),
        } 
     }
 })
@@ -83,5 +92,6 @@ export const {
     useFetchPatientsQuery,
     useFetchAppointmentsQuery,
     useUpdateDoctorMutation,
+    useAcceptContractMutation
 } = doctorApi;
 export { doctorApi };

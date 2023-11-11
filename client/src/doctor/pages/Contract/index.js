@@ -1,5 +1,5 @@
 import './style.css';
-import { useFetchDoctorQuery } from "../../../store";
+import { useFetchDoctorQuery, useAcceptContractMutation } from "../../../store";
 
 
 const Contract = ({contractTitle, name, doctor}) => {
@@ -12,6 +12,7 @@ let year = today.getFullYear(); // Get the full year (e.g. 2023)
 let formattedDate = `${year}-${month.toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
 
 const { data, isFetching, isError } = useFetchDoctorQuery();
+const [acceptContract, result] = useAcceptContractMutation();
 
   let fetchedName = "";
   if(!isFetching)
@@ -31,7 +32,7 @@ const { data, isFetching, isError } = useFetchDoctorQuery();
         <div className='terms-paragraph'>The Clinic will take either 10% of the profit or 10000EGP.</div>
         <div className='terms-paragraph-accept'>Pressing the Accept contract button means accepting all points in the contract</div>
         <div className="contract-signature">
-          <button className='contract-button'>
+          <button className='contract-button' onClick={async() => {await acceptContract()}}>
             Accept Contract
           </button>
         </div>

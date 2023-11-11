@@ -15,5 +15,9 @@ export const items = [
 		name: "Appointments",
 		to: "appointments",
 	},
+	{
+		name: "View Contract",
+		to: "contract"
+	}
 	
 ];

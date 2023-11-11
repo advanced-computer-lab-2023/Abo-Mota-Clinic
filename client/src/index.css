@@ -9,7 +9,7 @@
 
 
 :root {
-	--main-color: blue;
+	--main-color: rgb(66, 136, 248);
 	--main-color-transparent: rgba(0, 0, 255, 0.8);
 
 }

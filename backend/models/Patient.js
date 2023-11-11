@@ -52,7 +52,7 @@ const patientSchema = new Schema(
 		healthPackage: {
 			status: {
 				type: String,
-				default: null,
+				default: "unsubscribed",
 				enum: ["subscribed", "unsubscribed", "cancelled"],
 			},
 			package: {

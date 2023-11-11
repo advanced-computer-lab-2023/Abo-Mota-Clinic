@@ -7,7 +7,9 @@ const SideBar = ({open, setOpen, links=[]}) => {
   const mappedSideBarLinks = links.map((link, index) => {
     return(
       <div key={index} className='sidebar-link-container'>
-        <Link className='sidebar-link' to={link.to}>{link.name}</Link>
+        <div className='mb-4'>
+          <Link className='sidebar-link' to={link.to}>{link.name}</Link>
+        </div>
       </div>
       );
   });
