@@ -14,6 +14,7 @@ function WalletPayment({ deductible, onSuccess, onFailure }) {
     })
       .unwrap()
       .then((res) => {
+        console.log(res);
         onSuccess();
       })
       .catch((err) => {

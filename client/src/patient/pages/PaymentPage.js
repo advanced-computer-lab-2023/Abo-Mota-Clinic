@@ -38,8 +38,6 @@ function PaymentPage({ doctor, doctorId, date, currentTime, deductible, doctorCr
   };
 
 
-
-
   const onPaymentSuccess = () => {
     creditDoctor({
       doctor_id: doctorId,

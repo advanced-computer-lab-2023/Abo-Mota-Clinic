@@ -537,7 +537,7 @@ const payAppointmentByWallet = async (req, res) => {
 			{ new: true }
 		);
 
-		res.status(200).json({ message: 'Payment is successful', patient: updatedPatient, doctor: updatedDoctor });
+		res.status(200).json({ message: 'Payment is successful', patient: updatedPatient });
 	}
 	catch (err) {
 		res.status(500).json({ message: err.message });
@@ -597,7 +597,7 @@ const bookAppointment = async (req, res) => {
 
 		const appointment = await Appointment.findByIdAndUpdate(
 			appointmentId,
-			{ $set: { patient: patient._id, status: "booked" } },
+			{ $set: { patient: patient._id, status: "upcoming" } },
 			{ new: true }
 		);
 
