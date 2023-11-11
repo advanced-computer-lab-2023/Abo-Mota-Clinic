@@ -1,28 +1,31 @@
 import { Fragment, useState } from "react";
-import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Button from "@mui/joy/Button";
-import Typography from "@mui/joy/Typography";
-import Card from "@mui/joy/Card";
-import Avatar from "@mui/material/Avatar";
-import Divider from "@mui/joy/Divider";
+import { Box, Stepper, Step, StepLabel } from "@mui/material";
+import { Button, Card, CardContent, Typography, Divider, AspectRatio } from "@mui/joy";
 import DoctorImg from "../assets/images/doctor.jpg";
-import * as React from "react";
-import { LuStethoscope, LuCalendarClock, LuBuilding } from "react-icons/lu";
 
 import AppointmentScheduler from "./AppointmentScheduler";
-import { AspectRatio, CardContent } from "@mui/joy";
 import PaymentPage from "./PaymentPage";
+import Toast from "../components/Toast";
+
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 
-import { useFetchDoctorsQuery, useFetchPatientQuery } from "../../store";
+import { LuStethoscope, LuCalendarClock, LuBuilding } from "react-icons/lu";
+
+// QUERIES
+import { useFetchDoctorsQuery, useFetchPatientQuery, usePayAppointmentByWalletMutation, useCreditDoctorMutation, useBookAppointmentMutation } from "../../store";
+import round2dp from "../utils/round2dp";
+
+
 
 const steps = ["Schedule", "Appointment Overview", "Payment"];
 
 export default function AppointmentStepper({ step = 0 }) {
+
+  const navigate = useNavigate();
+
   const [activeStep, setActiveStep] = useState(step);
   const { doctorId, id } = useParams();
   const [date, setDate] = useState(null);
@@ -34,13 +37,31 @@ export default function AppointmentStepper({ step = 0 }) {
   const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } =
     useFetchPatientQuery();
 
+  const [creditDoctor, creditDoctorResults] = useCreditDoctorMutation();
+  const [bookAppointment, bookResults] = useBookAppointmentMutation();
+
+
+  const [toast, setToast] = useState({
+    open: false,
+    duration: 4000,
+  });
+
+  const onToastClose = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    setToast({
+      ...toast,
+      open: false,
+    });
+  };
+
+
   if (isFetchingDoctor || isFetchingPatient) {
     return <div>Loading ...</div>;
   } else if (isFetchingDoctorError || isFetchingPatientError) {
     return <div> Error ... </div>;
   }
   const { name, specialty, affiliation, rate } = doctor[id];
-
   const deductible = patient.healthPackage ? rate * 1.1 * (1 - patient.healthPackage.package.doctorDiscount) : rate * 1.1;
 
   const handleNext = () => {
@@ -75,47 +96,64 @@ export default function AppointmentStepper({ step = 0 }) {
       setAppointmentId={setAppointmentId}
     />
   );
-  const payment = (
-    <PaymentPage
-      deductible={deductible}
-      date={date}
-      currentTime={currentTime}
-      doctorId={doctorId}
-      doctor={doctor[id]}
-      patient={patient}
-      doctorCredit={rate}
-      appointmentId={appointmentId}
-    />
-  );
 
-  const fn = (header, info) => {
-    return (
-      <Box>
-        <Typography level="body-xs">{header}</Typography>
-        <Typography level="title-md">{info}</Typography>
-      </Box>
-    );
+  const config = {
+    items: [
+      {
+        label: "Consultation Fee",
+        price: round2dp(rate * 1.1),
+      }
+    ],
+
+    discount: patient.healthPackage.package ? patient.healthPackage.package.doctorDiscount : 0,
+
+    type: "appointment",
+
+    details: {
+      date,
+      currentTime,
+      location: affiliation,
+    },
+
+    onPaymentSuccess: () => {
+      creditDoctor({
+        doctor_id: doctorId,
+        credit: rate
+      });
+
+      bookAppointment({
+        appointmentId
+      });
+
+      setToast({
+        ...toast,
+        open: true,
+        color: "success",
+        message: "Payment completed successfully!",
+      });
+
+      setTimeout(() => {
+        navigate("/patient/");
+      }, 1500)
+    },
+
+    onPaymentFailure: () => {
+      setToast({
+        ...toast,
+        open: true,
+        color: "danger",
+        message: "Payment unsuccessful",
+      });
+    }
+
   };
+  const payment = (<PaymentPage {...config} />);
 
   const review = (
     <Box className="flex justify-between px-10">
       <Card className="">
         <Box className="flex w-full justify-center">
-          {/* <AspectRatio
-            className="flex"
-            ratio="1"
-            sx={{
-              width: 100,
-              borderRadius: '100%',
-              bgcolor: 'background.level2',
-              // borderRadius: 'md',
-            }}>
-            <img
-              src={DoctorImg}
-              loading="lazy"
-              alt="Doctor"
-            />
-          </AspectRatio> */}
+
         </Box>
         <Box>
           <Typography level="title-md" sx={{ marginBottom: 1 }} startDecorator={<LuStethoscope />}>
@@ -271,6 +309,8 @@ export default function AppointmentStepper({ step = 0 }) {
           </Box>
         </Fragment>
       )}
+
+      <Toast {...toast} onClose={onToastClose} />
     </Box>
   );
 }
