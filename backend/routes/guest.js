@@ -35,6 +35,6 @@ router.post("/otp", requestOtp);
 router.post("/forgotPassword", forgotPassword);
 
 router.post("/login" , login);
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 module.exports = router;
