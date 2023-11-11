@@ -4,15 +4,14 @@ import logo from "../../assets/logo.png";
 import { AiOutlineHome } from "react-icons/ai";
 import SideBar from "../SideBar";
 import { useState } from "react";
-import { useLogoutQuery } from "../../../store";
+import { useLogoutMutation } from "../../../store";
 
 const NavBar = ({ links = [], navBarItems = [] }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
-  // const { refetch, isFetching } = useLogoutQuery();
-  const handleClick =  () => {
-    // if(!isFetching)
-    //   refetch()
+  const [logout, result] = useLogoutMutation();
+  const handleClick =  async() => {
+    await logout();
   }
   const content = navBarItems.map((item) => {
     return (

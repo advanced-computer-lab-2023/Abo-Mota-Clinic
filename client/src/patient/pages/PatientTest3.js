@@ -1,34 +1,38 @@
 import axios from "axios";
+import PaymentSummary from "../components/PaymentSummary";
 
 function PatientTest3() {
 
-  const handleButtonClick = async () => {
-    console.log("Clicked!");
 
-    axios.post("http://localhost:5000/api/patient/test", {
-      mode: "error",
-    }).then((res) => {
-      console.log("Response: ", res);
-    }).catch((err) => {
-      console.log(err);
+  const items = [
+    {
+      name: "Consultation",
+      price: 500
+    },
+    {
+      name: "Follow Up",
+      price: 200
+    }
+  ]
 
-    });
+  // const subtotal = items.reduce((acc, item) => acc + item.price, 0);
+  const discount = 0.1;
 
-    // const res = await axios.post("http://localhost:5000/api/patient/test", {
-    //   mode: "error",
-    // });
 
-    // console.log(res);
+  const patient = {
+    healthPackage: {
+      package: {
+        name: "silver"
+      }
+    }
+  };
 
-  }
-  
+  const doctor = {
+    rate: 500
+  };
 
   return (
-    <div>
-      <button onClick={handleButtonClick}>
-        Click me!
-      </button>
-    </div>
+    <PaymentSummary items={items} discount={discount} optionalHeaders={undefined} />
   );
 }
 

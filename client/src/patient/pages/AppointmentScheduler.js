@@ -23,7 +23,7 @@ dayjs.extend(weekday);
 
 const format = (date) => date.format("dddd Do [of] MMMM YYYY");
 
-export default function PatientTest({
+export default function AppointmentScheduler({
   currentTimings,
   setCurrentTimings,
   date,
@@ -31,8 +31,13 @@ export default function PatientTest({
   currentTime,
   setCurrentTime,
   doctorId,
+  appointmentId,
+  setAppointmentId,
 }) {
   const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(doctorId);
+
+  console.log("Available Appointments @ PatientTest");
+  console.log(data);
 
   if (isFetching) {
     return <LoadingIndicator />;
@@ -85,12 +90,15 @@ export default function PatientTest({
           </Typography>
 
           <Box className="space-y-5">
-            {currentTimings.map((time) => {
+            {currentTimings.map(([id, time]) => {
               const isSelected = time === currentTime;
               return (
                 <Button
                   key={time}
-                  onClick={() => setCurrentTime(time)}
+                  onClick={() => {
+                    setCurrentTime(time)
+                    setAppointmentId(id)
+                  }}
                   variant="outlined"
                   color="primary"
                   fullWidth

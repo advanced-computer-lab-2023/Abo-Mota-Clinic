@@ -396,6 +396,7 @@ const selfSubscribeWallet = async (user, package) => {
 		const price = package.pricePerYear;
 		const familyDiscount = user.familyDiscount;
 		const discountedPrice = price * (1 - familyDiscount);
+
 		// Check if user has required funds
 		if (user.wallet >= discountedPrice) {
 			await Patient.updateOne({ _id: user._id }, { wallet: user.wallet - discountedPrice });
@@ -432,7 +433,7 @@ const selfSubscribeWallet = async (user, package) => {
 		throw error;
 	}
 };
-const selfSubscribeCard = async () => {};
+const selfSubscribeCard = async () => { };
 
 // Helpers for family subscription controllers
 const familySubscribeWallet = async (receiver, subscriber, package) => {
@@ -477,7 +478,7 @@ const familySubscribeWallet = async (receiver, subscriber, package) => {
 		throw error;
 	}
 };
-const familySubscribeCard = async () => {};
+const familySubscribeCard = async () => { };
 
 // Controllers for Subscription
 const subscribeForMyself = async (req, res) => {
@@ -605,34 +606,32 @@ const getFamilyPackages = async (req, res) => {
 	}
 };
 
-const payAppointmentByCard = async (req, res) => {
-	try {
-		const { doctor_id, deductible, credit } = req.body;
+// const payAppointmentByCard = async (req, res) => {
+// 	try {
+// 		const { doctor_id, deductible, credit } = req.body;
 
-		// Update the doctor's wallet by the provided amount
-		const updatedDoctor = await Doctor.findByIdAndUpdate(
-			doctor_id,
-			{ $inc: { wallet: parseFloat(credit) } },
-			{ new: true }
-		);
-		// Update the doctor's wallet by the provided amount
-		if (!updatedDoctor) {
-			return res.status(404).json({ message: "Doctor not found" });
-		}
-		res.json({ message: "Doctor wallet updated successfully", doctor: updatedDoctor });
-	} catch (err) {
-		res.status(500).json({ message: err.message });
-	}
-};
+// 		// Update the doctor's wallet by the provided amount
+// 		const updatedDoctor = await Doctor.findByIdAndUpdate(
+// 			doctor_id,
+// 			{ $inc: { wallet: parseFloat(credit) } },
+// 			{ new: true }
+// 		);
+
+// 		if (!updatedDoctor) {
+// 			return res.status(404).json({ message: 'Doctor not found' });
+// 		}
+
+// 		res.json({ message: 'Doctor wallet updated successfully', doctor: updatedDoctor });
+// 	} catch (err) {
+// 		res.status(500).json({ message: err.message });
+// 	}
+// }
 
 const payAppointmentByWallet = async (req, res) => {
 	try {
-		const { doctor_id, deductible, credit } = req.body;
+		const { deductible } = req.body;
 		const username = req.userData.username;
 		const loggedIn = await Patient.findOne({ username });
-
-		console.log("Logged in user");
-		console.log(loggedIn);
 
 		if (loggedIn.wallet < deductible) {
 			return res.status(500).json({ message: "Insufficient funds" });
@@ -643,6 +642,17 @@ const payAppointmentByWallet = async (req, res) => {
 			{ $inc: { wallet: -deductible } },
 			{ new: true }
 		);
+
+		res.status(200).json({ message: 'Payment is successful', patient: updatedPatient });
+	}
+	catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+}
+
+const creditDoctor = async (req, res) => {
+	try {
+		const { doctor_id, credit } = req.body;
 
 		const updatedDoctor = await Doctor.findByIdAndUpdate(
 			doctor_id,
@@ -878,6 +888,27 @@ const test = async (req, res) => {
 	}
 };
 
+const bookAppointment = async (req, res) => {
+	try {
+		const { appointmentId } = req.body;
+		const { username } = req.userData;
+
+		const patient = await Patient.findOne({ username });
+
+		const appointment = await Appointment.findByIdAndUpdate(
+			appointmentId,
+			{ $set: { patient: patient._id, status: "upcoming" } },
+			{ new: true }
+		);
+
+		res.status(200).json({ message: "Appointment booked successfully", appointment });
+	}
+
+	catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+}
+
 module.exports = {
 	getPatient,
 	getPrescriptions,
@@ -893,7 +924,6 @@ module.exports = {
 	subscribeForMyself,
 	getMyPackage,
 	getFamilyPackages,
-	payAppointmentByCard,
 	payAppointmentByWallet,
 	viewWallet,
 	selfCancelSubscription,
@@ -901,10 +931,8 @@ module.exports = {
 	viewMyPackageStatus,
 	viewFamilyPackageStatus,
 	packageUnsubscribe,
-	payAppointmentByCard,
-	payAppointmentByWallet,
-	viewWallet,
 	uploadMedicalHistory,
 	deleteMedicalHistory,
-	test,
+	bookAppointment,
+	creditDoctor,
 };

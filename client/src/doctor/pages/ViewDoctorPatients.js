@@ -54,7 +54,7 @@ function ViewDoctorPatients() {
 					}
 				  });
 	
-				const upcomingAppointments = appointmentsList.filter((appointment) => {
+				const upcomingAppointments = updatedAppointmentsList.filter((appointment) => {
 					const appointmentDate = new Date(appointment.formattedDate.split(",")[0]);
 					
 					return isSameDay(appointmentDate, today) || isAfter(appointmentDate, today); 

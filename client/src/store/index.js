@@ -51,7 +51,7 @@ export {
   useRegisterDoctorMutation,
   useRegisterPatientMutation,
   useLoginMutation,
-  useLogoutQuery,
+  useLogoutMutation,
 } from "./apis/guestApi";
 
 export const {
@@ -63,11 +63,11 @@ export const {
   useFetchDoctorsQuery,
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
-  usePayAppointmentByCardMutation,
+  useCreditDoctorMutation,
   usePayAppointmentByWalletMutation,
-  
+  useBookAppointmentMutation,
 } = patientApi;
 
-export const { useCreatePaymentIntentMutation, useFetchConfigQuery } = "./apis/stripeApi";
+export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
 
 
