@@ -77,17 +77,20 @@ const colors = {
               <Typography level="body-md" textColor="text.tertiary" startDecorator={<MarkunreadIcon fontSize='small' />}>
                 {appointment.patient.email}
               </Typography>
+              <div className="flex justify-between">
               <Typography level="body-md" textColor="text.tertiary" startDecorator={<PhoneIcon fontSize='small' />}>
                 {appointment.patient.mobile}
               </Typography>
+              <Button onClick={navigateToPatientFollowUp} color="neutral" size="sm"> 
+                Follow Up
+              </Button>
+              </div>
+              
+              
             </Box>
     
             {/* Button positioned at the bottom left */}
-            <Box sx={{ alignSelf: 'flex-start', padding: '16px' }}>
-              <Button onClick={navigateToPatientFollowUp} variant="solid">
-                Follow Up
-              </Button>
-            </Box>
+            
           </CardContent>
         </Card>
       </Box>

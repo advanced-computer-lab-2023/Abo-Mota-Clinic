@@ -93,6 +93,8 @@ const addFamilyMember = async (req, res) => {
 			dob,
 		} = req.body;
 
+		const loggedInUsername = req.userData.username;
+		const loggedIn = await Patient.findOne({ loggedInUsername });
 		const familyMemExists = await Patient.findOne({
 			$or: [{ username }, { email }, { nationalId }, { mobile: phoneNumber }],
 		});
@@ -125,9 +127,13 @@ const addFamilyMember = async (req, res) => {
 			username: username.toLowerCase(),
 			password: hashedPassword,
 			dob,
+			emergencyContact: {
+				name: loggedIn.name,
+				mobile: loggedIn.mobile,
+				relationToPatient: relation,
+			},
 		});
 
-		const loggedInUsername = req.userData.username;
 		const linkedFamilyMember = {
 			member: addedFamilyMember._id,
 			relationToPatient: relationToPatient,

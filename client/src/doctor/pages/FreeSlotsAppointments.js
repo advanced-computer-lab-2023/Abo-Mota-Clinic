@@ -9,7 +9,7 @@ import FormLabel from '@mui/joy/FormLabel';
 import FormControl from '@mui/joy/FormControl';
 
 function FreeSlotsAppointments() {
-  const [date, setDate] = useState(null); // Changed to null to handle Date object
+  const [date, setDate] = useState(null); 
   const [startTime, setStartTime] = useState('');
   const [endtime, setEndTime] = useState('');
   const [appointmentDuration, setAppointmentDuration] = useState(45);
@@ -18,7 +18,7 @@ function FreeSlotsAppointments() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log({ 
-      date: date ? date.toISOString().substring(0, 10) : null, // Convert Date object to ISO string
+      date: date ? date.toISOString().substring(0, 10) : null, 
       startTime, 
       endtime, 
       appointmentDuration, 
@@ -30,7 +30,7 @@ function FreeSlotsAppointments() {
   };
 
   const handleDateChange = (e) => {
-    setDate(new Date(e.target.value)); // Convert string to Date object
+    setDate(new Date(e.target.value)); 
   };
 
   return (
@@ -40,10 +40,10 @@ function FreeSlotsAppointments() {
   component="h1" 
   sx={{ 
     mb: 3, 
-    fontSize: '2rem', // Larger font size
-    fontWeight: 'bold', // Bolder font weight
-    textAlign: 'center', // Center align
-    color: '#0000ff' // Adjust color if needed
+    fontSize: '2rem', 
+    fontWeight: 'bold', 
+    textAlign: 'center', 
+    color: '#0000ff' 
   }}
 >
   Free Appointment Slots

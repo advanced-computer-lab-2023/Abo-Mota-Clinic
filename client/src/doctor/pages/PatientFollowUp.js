@@ -18,7 +18,7 @@ function PatientFollowUp() {
   return (
     <Box sx={{
       display: 'flex',
-      justifyContent: 'center', // Centers horizontally
+      justifyContent: 'center', 
       padding: '20px',
       boxSizing: 'border-box',
     }}>

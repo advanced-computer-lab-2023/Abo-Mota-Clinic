@@ -6,6 +6,7 @@ import { useFetchPatientsQuery, useFetchDoctorQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
 import PatientCard from "../components/PatientCard";
 import { useNavigate } from 'react-router-dom';
+import dayjs from "dayjs";
 
 
 function ViewDoctorPatients() {
@@ -13,7 +14,10 @@ function ViewDoctorPatients() {
 	const [searchTerm, setSearchTerm] = useState("")
 	
 	const { data, error , isFetching } = useFetchPatientsQuery();
-	const patients = data;
+
+	let patients = []
+	if(!isFetching)
+		patients = data;
 
 	const navigate = useNavigate();
 
@@ -39,6 +43,16 @@ function ViewDoctorPatients() {
 				const today = new Date();
 				// const appointmentDate = new Date(patient.appointment);
 				const appointmentsList = patient.appointments;
+				const updatedAppointmentsList = appointmentsList.map((appointment) => {
+					const currDate = dayjs();
+					const appointmentDate = dayjs(appointment.formattedDate);
+			  
+					if (appointmentDate.isAfter(currDate)) {
+					  return { ...appointment, status: "upcoming" };
+					} else {
+					  return { ...appointment, status: "completed" };
+					}
+				  });
 	
 				const upcomingAppointments = appointmentsList.filter((appointment) => {
 					const appointmentDate = new Date(appointment.formattedDate.split(",")[0]);
