@@ -2,28 +2,31 @@ import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import StripeForm from "./StripeForm";
 import { Elements } from "@stripe/react-stripe-js";
-import axios from "axios";
+import { useFetchStripeConfigQuery, useCreatePaymentIntentMutation } from "../../store";
 
-function Payment({ deductible, doctorCredit, doctorId }) {
+function Payment({ deductible, onSuccess, onFailure }) {
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
 
-  useEffect(() => {
-    axios.get("http://localhost:5000/api/stripe/config").then((res) => {
-      const { publishableKey } = res.data;
-      setStripePromise(loadStripe(publishableKey));
-    });
-  }, []);
+  const [createPaymentIntent, results] = useCreatePaymentIntentMutation();
+  const { data: config, isFetching, error } = useFetchStripeConfigQuery();
 
   useEffect(() => {
-    axios
-      .post("http://localhost:5000/api/stripe/create-payment-intent", {
-        amount: deductible,
-      })
-      .then((res) => {
-        setClientSecret(res.data.clientSecret);
-      });
-  }, []);
+    if (!isFetching) {
+      setStripePromise(loadStripe(config.publishableKey));
+    }
+  }, [isFetching]);
+
+  useEffect(() => {
+    createPaymentIntent(deductible)
+      .unwrap()
+      .then((res) => setClientSecret(res.clientSecret));
+  }, [])
+
+
+  if (isFetching) {
+    return <div>Loading...</div>; // Show loading or some other placeholder until everything is loaded
+  }
 
   if (!stripePromise || !clientSecret) {
     return <div>Loading...</div>; // Show loading or some other placeholder until everything is loaded
@@ -31,17 +34,12 @@ function Payment({ deductible, doctorCredit, doctorId }) {
 
   return (
     <>
-      <Elements
-        stripe={stripePromise}
-        options={{
-          appearance: {
-            theme: "minimal",
-            locale: "auto",
-          },
-          clientSecret,
-        }}
-      >
-        <StripeForm deductible={deductible} doctorCredit={doctorCredit} doctorId={doctorId} />
+      <Elements stripe={stripePromise} options={{ appearance: { locale: "auto" }, clientSecret }}>
+        <StripeForm
+          deductible={deductible}
+          onSuccess={onSuccess}
+          onFailure={onFailure}
+        />
       </Elements>
     </>
   );

@@ -14,12 +14,12 @@ const {
 	subscribeForMyself,
 	getMyPackage,
 	getFamilyPackages,
-	payAppointmentByCard,
 	payAppointmentByWallet,
 	viewWallet,
 	uploadMedicalHistory,
 	deleteMedicalHistory,
-	test,
+	bookAppointment,
+	creditDoctor,
 	viewMyPackageStatus,
 	viewFamilyPackageStatus,
 	selfCancelSubscription,
@@ -86,10 +86,12 @@ router.get("/availableAppointments", authorize, getAvailableAppointments);
 router.post("/linkFamily", authorize, linkFamilyMember);
 
 // Pay appointment by card
-router.patch("/payCard", authorize, payAppointmentByCard);
+// router.patch("/payCard", authorize, payAppointmentByCard);
 
 // Pay appointment by wallet
 router.patch("/payWallet", authorize, payAppointmentByWallet);
+
+router.patch("/creditDoctor", authorize, creditDoctor);
 
 // Subscribe for myself
 router.post("/selfSubscribe", authorize, subscribeForMyself);
@@ -103,7 +105,10 @@ router.get("/myPackage", authorize, getMyPackage);
 // Get Subscribed Family Member Packages
 router.get("/familyPackages", authorize, getFamilyPackages);
 
-router.post("/test", test);
+// Finalizes appointment booking in database
+// Sets status to booked
+router.post("/bookAppointment", authorize, bookAppointment);
+
 // Get Amount in my Wallet
 router.get("/wallet", authorize, viewWallet);
 

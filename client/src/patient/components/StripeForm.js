@@ -5,31 +5,14 @@ import { Button, Divider } from "@mui/joy";
 import { Typography } from "@mui/joy";
 import { usePayAppointmentByCardMutation } from "../../store";
 import { usePayAppointmentByWalletMutation } from "../../store";
+import { useBookAppointmentMutation } from "../../store";
+import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 // import './stripe.css';
 
-export default function StripeForm({ deductible, doctorCredit, doctorId }) {
+export default function StripeForm({ onSuccess, onFailure }) {
   const stripe = useStripe();
   const elements = useElements();
-
-  const [toast, setToast] = useState({
-    open: false,
-    duration: 4000,
-  });
-
-  const onToastClose = (event, reason) => {
-    if (reason === "clickaway") return;
-
-    setToast({
-      ...toast,
-      open: false,
-    });
-  };
-
-
-  const [payAppointmentByCard, results] = usePayAppointmentByCardMutation();
-
-  const [message, setMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -50,34 +33,11 @@ export default function StripeForm({ deductible, doctorCredit, doctorId }) {
       redirect: "if_required",
     });
 
-    if (error) {
-      setToast({
-        ...toast,
-        open: true,
-        color: "danger",
-        message: "Payment unsuccessful",
-      });
+    if (paymentIntent && paymentIntent.status === "succeeded") {
+      onSuccess();
 
-      console.log(error);
-
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
-
-      payAppointmentByCard({
-        doctor_id: doctorId,
-        deductible: deductible,
-        credit: doctorCredit
-      });
-
-      setToast({
-        ...toast,
-        open: true,
-        color: "success",
-        message: "Payment completed successfully!",
-      });
-
-      setMessage(`Payment status: ${paymentIntent.status}`);
     } else {
-      setMessage("Something went wrong.");
+      onFailure();
     }
 
     setIsProcessing(false);
@@ -111,12 +71,7 @@ export default function StripeForm({ deductible, doctorCredit, doctorId }) {
         <span id="Button-text">{isProcessing ? "Processing ... " : "Pay"}</span>
       </Button>
 
-      <Typography level="body-sm">By clicking Pay you agree to the Terms & Conditions.</Typography>
-
-      {/* Show any error or success messages */}
-      <div>
-        <Toast {...toast} onClose={onToastClose} />
-      </div>
+      <Typography level="body-sm">By clicking Pay you agree to the Terms & Conditions.</Typography>      
 
     </form>
   );
