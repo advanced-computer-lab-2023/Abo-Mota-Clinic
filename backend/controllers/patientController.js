@@ -192,7 +192,7 @@ const uploadMedicalHistory = async (req, res) => {
 		const medicalHistory = {
 			data: req.files.medicalHistory[0].buffer,
 			contentType: req.files.medicalHistory[0].mimetype,
-			fileName: req.files.medicalHistory[0].originalname
+			fileName: req.files.medicalHistory[0].originalname,
 		};
 		const username = req.userData.username;
 		const patient = await Patient.findOne({ username });
@@ -213,9 +213,7 @@ const deleteMedicalHistory = async (req, res) => {
 		const fileName = req.params.fileName;
 
 		const patient = await Patient.findOne({ username });
-		patient.medicalHistory = patient.medicalHistory.filter(
-			(file) => !fileName.equals(file)
-		);
+		patient.medicalHistory = patient.medicalHistory.filter((file) => !fileName.equals(file));
 
 		await patient.save();
 
@@ -723,9 +721,8 @@ const selfCancelSubscription = async (req, res) => {
 		}
 		const cancelDate = new Date();
 		const result = {
+			...loggedIn.healthPackage,
 			status: "cancelled",
-			package: loggedIn.healthPackage.package,
-			endDate: loggedIn.healthPackage.endDate,
 			cancelDate,
 		};
 		const unusedMonths = calculateUnusedMonths(loggedIn.healthPackage.endDate, cancelDate);
@@ -743,9 +740,16 @@ const selfCancelSubscription = async (req, res) => {
 			{ $set: { familyDiscount: 0 } }
 		);
 
+		let testMember;
 		for (const memberId of familyMemberIds) {
 			const member = await Patient.findOne({ _id: memberId }).populate([
-				"linkedFamily.member",
+				{
+					path: "linkedFamily.member",
+					populate: {
+						path: "healthPackage.package", // Replace with the actual field name you want to populate
+						model: "HealthPackage", // Replace with the actual model name of the field you're populating
+					},
+				},
 				"healthPackage.package",
 			]);
 
@@ -787,13 +791,12 @@ const familyCancelSubscription = async (req, res) => {
 		}
 		const cancelDate = new Date();
 		const result = {
+			...familyMember.healthPackage,
 			status: "cancelled",
-			package: familyMember.healthPackage.package,
-			endDate: familyMember.healthPackage.endDate,
 			cancelDate,
 		};
 		const unusedMonths = calculateUnusedMonths(familyMember.healthPackage.endDate, cancelDate);
-		const pricePerMonth = familyMember.healthPackage.package.pricePaid / 12;
+		const pricePerMonth = familyMember.healthPackage.pricePaid / 12;
 		const refund = pricePerMonth * unusedMonths;
 		const cancel = await Patient.updateOne(
 			{ username: familyMemberUsername },
@@ -809,7 +812,13 @@ const familyCancelSubscription = async (req, res) => {
 
 		for (const memberId of familyMemberIds) {
 			const member = await Patient.findOne({ _id: memberId }).populate([
-				"linkedFamily.member",
+				{
+					path: "linkedFamily.member",
+					populate: {
+						path: "healthPackage.package", // Replace with the actual field name you want to populate
+						model: "HealthPackage", // Replace with the actual model name of the field you're populating
+					},
+				},
 				"healthPackage.package",
 			]);
 
