@@ -10,11 +10,10 @@ const {
 	getPackages,
 	getAvailableAppointments,
 	linkFamilyMember,
-	subscribeForFamily,
-	subscribeForMyself,
+	subscribeToHealthPackage,
 	getMyPackage,
 	getFamilyPackages,
-	payAppointmentByWallet,
+	payByWallet,
 	viewWallet,
 	uploadMedicalHistory,
 	deleteMedicalHistory,
@@ -78,15 +77,18 @@ router.post("/linkFamily", authorize, linkFamilyMember);
 // router.patch("/payCard", authorize, payAppointmentByCard);
 
 // Pay appointment by wallet
-router.patch("/payWallet", authorize, payAppointmentByWallet);
+router.patch("/payWallet", authorize, payByWallet);
 
 router.patch("/creditDoctor", authorize, creditDoctor);
 
 // Subscribe for myself
-router.post("/selfSubscribe", authorize, subscribeForMyself);
+// router.post("/selfSubscribe", authorize, subscribeForMyself);
 
 // Subscribe for a family member
-router.post("/familySubscribe", authorize, subscribeForFamily);
+// router.post("/familySubscribe", authorize, subscribeForFamily);
+
+// Subscribe to a health package
+router.post("/subscribe", authorize, subscribeToHealthPackage);
 
 // Get Subscribed Package for myself
 router.get("/myPackage", authorize, getMyPackage);
