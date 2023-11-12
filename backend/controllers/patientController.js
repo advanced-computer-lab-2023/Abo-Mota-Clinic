@@ -222,7 +222,7 @@ const deleteMedicalHistory = async (req, res) => {
 
 		const patient = await Patient.findOne({ username });
 		patient.medicalHistory = patient.medicalHistory.filter(
-			(fileName) => !record._id.equals(fileName)
+			(file) => !fileName.equals(file)
 		);
 
 		await patient.save();
