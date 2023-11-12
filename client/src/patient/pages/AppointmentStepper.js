@@ -7,7 +7,7 @@ import AppointmentScheduler from "./AppointmentScheduler";
 import PaymentPage from "./PaymentPage";
 import Toast from "../components/Toast";
 
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
@@ -23,18 +23,23 @@ import {
   useBookAppointmentMutation,
 } from "../../store";
 import round2dp from "../utils/round2dp";
+import dayjs from "dayjs";
 
 const steps = ["Schedule", "Appointment Overview", "Payment"];
-
+const format = (date) => (date ? dayjs(date).format("dddd Do [of] MMMM YYYY") : null);
 export default function AppointmentStepper({ step = 0 }) {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const { initialDate, initialTime, initialAppointmentId, initialTimings } = location.state
+    ? location.state
+    : { initialDate: null, initialTime: null, initialAppointmentId: null, initialTimings: [] };
   const [activeStep, setActiveStep] = useState(step);
   const { doctorId, id } = useParams();
-  const [date, setDate] = useState(null);
-  const [currentTime, setCurrentTime] = useState(null);
-  const [appointmentId, setAppointmentId] = useState(null);
-  const [currentTimings, setCurrentTimings] = useState([]);
+  console.log(dayjs(initialDate, { format: "MM/DD/YYYY" }));
+  const [date, setDate] = useState(format(initialDate));
+  const [currentTime, setCurrentTime] = useState(initialTime);
+  const [appointmentId, setAppointmentId] = useState(initialAppointmentId);
+  const [currentTimings, setCurrentTimings] = useState(initialTimings);
 
   const {
     data: doctor,

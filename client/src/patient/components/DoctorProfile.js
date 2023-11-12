@@ -27,13 +27,18 @@ import { Link } from "react-router-dom";
 import { useFetchAvailableAppointmentsQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 import formatAppointments from "../functions/AppointmentsAdjustment";
 const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affiliation }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
+  const [currentTime, setCurrentTime] = useState(null);
+  const [appointmentId, setAppointmentId] = useState(null);
+  const [currentTimings, setCurrentTimings] = useState([]);
   // const [config, setConfig] = useState({});
   const [date, setDate] = useState(null);
   const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(_id);
   let appointmentContent = <LoadingIndicator />;
+  const navigate = useNavigate();
   if (!isFetching && !error) {
     const formattedAppointments = formatAppointments(data);
     const dates = Object.keys(formattedAppointments);
@@ -55,7 +60,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
           </Typography>
 
           <Box className="flex w-full space-x-6 mr-10">
-            {timings.map(([_, appointment], colIdx) => {
+            {timings.map(([id, appointment], colIdx) => {
               const concat = `${rowIdx}${colIdx}}`;
               return (
                 <Button
@@ -63,6 +68,9 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
                   onClick={() => {
                     setSelectedIdx(concat);
                     setDate(key);
+                    setCurrentTime(appointment);
+                    setAppointmentId(id);
+                    setCurrentTimings(timings);
                   }}
                   variant={concat !== selectedIdx ? "soft" : "solid"}
                   color={concat !== selectedIdx ? "neutral" : "primary"}
@@ -78,14 +86,14 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
       );
     });
   }
-  const dateFormat = "MM/DD/YYYY";
-  let filteredData = appointments2;
-  if (date != null) {
-    filteredData = appointments2.filter(([key, value]) => {
-      return key === date.format(dateFormat);
-    });
-    // console.log(filteredData);
-  }
+  // const dateFormat = "MM/DD/YYYY";
+  // let filteredData = appointments2;
+  // if (date != null) {
+  //   filteredData = appointments2.filter(([key, value]) => {
+  //     return key === date.format(dateFormat);
+  //   });
+  //   // console.log(filteredData);
+  // }
 
   return (
     <Box
@@ -291,7 +299,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
             Available appointments
           </Typography>
           <Typography level="body-md">
-            Appointments can be booked up to the nearest 4 days in advance.
+            The shown appointments can be booked up to the nearest 4 days in advance.
           </Typography>
         </Box>
         <Divider />
@@ -299,10 +307,32 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
           {appointmentContent}
 
           <Box className="flex w-full justify-end space-x-3">
-            <Button variant="plain" onClick={() => setSelectedIdx(null)}>
+            <Button
+              variant="plain"
+              onClick={() => {
+                setSelectedIdx(null);
+                setDate(null);
+                setCurrentTime(null);
+                setAppointmentId(null);
+                setCurrentTimings([]);
+              }}
+            >
               Clear selection
             </Button>
-            <Button variant="outlined" color="primary">
+            <Button
+              onClick={() => {
+                navigate(`appointment/${_id}`, {
+                  state: {
+                    initialDate: date,
+                    initialTime: currentTime,
+                    initialAppointmentId: appointmentId,
+                    initialTimings: currentTimings,
+                  },
+                });
+              }}
+              variant="outlined"
+              color="primary"
+            >
               Make an appointment
             </Button>
             <Link to={`appointment/${_id}/`}>
