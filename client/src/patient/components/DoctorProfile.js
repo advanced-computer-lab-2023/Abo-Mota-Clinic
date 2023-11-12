@@ -22,7 +22,7 @@ import { FormControl, FormLabel } from "@mui/material";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { getDayName, getMonthName } from "../functions/DateManipulation";
-import UserSelectionModal from "./UsersModal";
+import UserSelectionModal from "./UserSelectionModal";
 import { Link } from "react-router-dom";
 import { useFetchAvailableAppointmentsQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
