@@ -21,7 +21,7 @@ dayjs.extend(weekday);
 // Format the date in the desired English format
 // const formattedDate = date.format('dddd Do [of] MMMM YYYY');
 
-const format = (date) => date.format("dddd Do [of] MMMM YYYY");
+const format = (date) => (date ? date.format("dddd Do [of] MMMM YYYY") : null);
 
 export default function AppointmentScheduler({
   currentTimings,
@@ -37,7 +37,7 @@ export default function AppointmentScheduler({
   const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(doctorId);
 
   console.log("Available Appointments @ PatientTest");
-  console.log(data);
+  // console.log(data);
 
   if (isFetching) {
     return <LoadingIndicator />;
@@ -52,6 +52,7 @@ export default function AppointmentScheduler({
 
   const handleDateChange = (newDate) => {
     setDate(format(newDate));
+    console.log("hi", newDate);
     const formattedDate = newDate.format("MM/DD/YYYY");
     // console.log(formattedDate);
 
@@ -71,6 +72,7 @@ export default function AppointmentScheduler({
       <Card orientation="horizontal" className="p-5 space-y-5">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateCalendar
+            // value={dayjs(date, { format: "MM/DD/YYYY" })}
             shouldDisableDate={shouldDisableDate}
             onChange={handleDateChange}
             disablePast
@@ -91,13 +93,13 @@ export default function AppointmentScheduler({
 
           <Box className="space-y-5">
             {currentTimings.map(([id, time]) => {
-              const isSelected = time === currentTime;
+              const isSelected = id === appointmentId;
               return (
                 <Button
                   key={time}
                   onClick={() => {
-                    setCurrentTime(time)
-                    setAppointmentId(id)
+                    setCurrentTime(time);
+                    setAppointmentId(id);
                   }}
                   variant="outlined"
                   color="primary"
