@@ -98,6 +98,33 @@ const doctorApi = createApi({
                 }
             }
         }),
+        addFreeSlots: builder.mutation({
+            invalidatesTags : (result, error, doctor)=>{
+                return [{type:'Doctor', id:"123"}];
+            },
+            query : ({date, startTime, endTime, appointmentDuration, buffer})=>{
+                return {
+                    url: '/addFreeAppointmentSlots',
+                    body: {
+                        date,
+                        startTime,
+                        endTime,
+                        appointmentDuration,
+                        buffer
+                    },
+                    method :'POST',
+                }
+            }
+        }),
+
+        fetchWalletDoctor: builder.query({
+            query: () => {
+              return {
+                url: "/wallet",
+                method: "GET",
+              };
+            },
+        }),
        } 
     }
 })
@@ -108,6 +135,8 @@ export const {
     useFetchAppointmentsQuery,
     useUpdateDoctorMutation,
     useAcceptContractMutation,
-    useScheduleFollowUpMutation
+    useScheduleFollowUpMutation,
+    useAddFreeSlotsMutation,
+    useFetchWalletDoctorQuery
 } = doctorApi;
 export { doctorApi };

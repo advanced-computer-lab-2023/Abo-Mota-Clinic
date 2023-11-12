@@ -158,6 +158,15 @@ const patientApi = createApi({
         },
       }),
 
+      fetchWalletPatient: builder.query({
+        query: () => {
+          return {
+            url: "/wallet",
+            method: "GET",
+          };
+        },
+      }),
+
     };
   },
 });
@@ -174,6 +183,7 @@ export const {
   useCreditDoctorMutation,
   usePayAppointmentByWalletMutation,
   useBookAppointmentMutation,
+  useFetchWalletPatientQuery
 } = patientApi;
 
 export { patientApi };

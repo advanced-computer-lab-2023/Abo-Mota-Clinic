@@ -7,23 +7,36 @@ import Sheet from '@mui/joy/Sheet';
 import Container from '@mui/joy/Container';
 import FormLabel from '@mui/joy/FormLabel';
 import FormControl from '@mui/joy/FormControl';
+import { blue } from '@mui/material/colors';
+import { useAddFreeSlotsMutation } from '../../store';
 
 function FreeSlotsAppointments() {
   const [date, setDate] = useState(null); 
   const [startTime, setStartTime] = useState('');
-  const [endtime, setEndTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [appointmentDuration, setAppointmentDuration] = useState(45);
   const [buffer, setBuffer] = useState(5);
+  const [addSlots, results] = useAddFreeSlotsMutation();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log({ 
       date: date ? date.toISOString().substring(0, 10) : null, 
       startTime, 
-      endtime, 
+      endTime, 
       appointmentDuration, 
       buffer 
     });
+
+    const body = {
+      date, 
+      startTime, 
+      endTime, 
+      appointmentDuration, 
+      buffer
+    };
+    await addSlots(body);
+    
     setDate(null);
     setStartTime("");
     setEndTime("");
@@ -43,7 +56,7 @@ function FreeSlotsAppointments() {
     fontSize: '2rem', 
     fontWeight: 'bold', 
     textAlign: 'center', 
-    color: '#0000ff' 
+    color: blue[700]
   }}
 >
   Free Appointment Slots
@@ -75,7 +88,7 @@ function FreeSlotsAppointments() {
             <Input
               id="end-time-input"
               type="time"
-              value={endtime}
+              value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
             />
           </FormControl>
@@ -100,7 +113,7 @@ function FreeSlotsAppointments() {
             />
           </FormControl>
   
-          <Button type="submit" variant="solid">Add Time Slots</Button>
+          <Button type="submit" variant="solid" onClick={handleSubmit}>Add Time Slots</Button>
         </form>
       </Sheet>
     </Container>

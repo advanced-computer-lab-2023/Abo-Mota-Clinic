@@ -33,7 +33,9 @@ export {
   useFetchDoctorQuery,
   useUpdateDoctorMutation,
   useAcceptContractMutation,
-  useScheduleFollowUpMutation
+  useScheduleFollowUpMutation,
+  useAddFreeSlotsMutation,
+  useFetchWalletDoctorQuery
 } from "./apis/doctorApi";
 
 export {
@@ -68,6 +70,7 @@ export const {
   useCreditDoctorMutation,
   usePayAppointmentByWalletMutation,
   useBookAppointmentMutation,
+  useFetchWalletPatientQuery
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
