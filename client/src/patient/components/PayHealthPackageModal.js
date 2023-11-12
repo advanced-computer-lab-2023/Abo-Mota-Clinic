@@ -8,6 +8,8 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useFetchPatientQuery } from "../../store";
+import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 
 const style = {
   position: "absolute",
@@ -37,12 +39,20 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export default function PayHealthPackageModal({ selectedIdx, selectedPackage, setSelectedPackage }) {
-
+export default function PayHealthPackageModal({
+  selectedIdx,
+  selectedPackage,
+  setSelectedPackage,
+}) {
   const navigate = useNavigate();
 
-  console.log("SelectedPackage @ PayHealthPackageModal", selectedIdx)
+  console.log("SelectedPackage @ PayHealthPackageModal", selectedIdx);
   console.log(selectedPackage);
+  const {
+    data: patient,
+    isFetching: isFetchingPatient,
+    error: errorPatient,
+  } = useFetchPatientQuery();
 
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState("wallet");
@@ -51,14 +61,17 @@ export default function PayHealthPackageModal({ selectedIdx, selectedPackage, se
     setSelectedPackage(-1);
     setOpen(false);
   };
+  if (isFetchingPatient) {
+    return <LoadingIndicator />;
+  }
 
   const handleSubscribeClick = () => {
     navigate(`./${selectedIdx}`);
-  }
+  };
 
   const handlePayClick = () => {
     handleClose();
-  }
+  };
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -66,7 +79,7 @@ export default function PayHealthPackageModal({ selectedIdx, selectedPackage, se
   return (
     <Box>
       <StyledButton
-        disabled={selectedPackage === undefined ? true : false}
+        disabled={patient.healthPackage || selectedPackage === undefined ? true : false}
         onClick={handleSubscribeClick}
         variant="contained"
         color="primary"
