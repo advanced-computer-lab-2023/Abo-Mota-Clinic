@@ -200,6 +200,7 @@ const uploadMedicalHistory = async (req, res) => {
 		const medicalHistory = {
 			data: req.files.medicalHistory[0].buffer,
 			contentType: req.files.medicalHistory[0].mimetype,
+			fileName: req.files.medicalHistory[0].originalname,
 		};
 		const username = req.userData.username;
 		const patient = await Patient.findOne({ username });
@@ -217,12 +218,10 @@ const uploadMedicalHistory = async (req, res) => {
 const deleteMedicalHistory = async (req, res) => {
 	try {
 		const username = req.userData.username;
-		const recordId = req.params.id;
+		const fileName = req.params.fileName;
 
 		const patient = await Patient.findOne({ username });
-		patient.medicalHistory = patient.medicalHistory.filter(
-			(record) => !record._id.equals(recordId)
-		);
+		patient.medicalHistory = patient.medicalHistory.filter((file) => !fileName.equals(file));
 
 		await patient.save();
 
