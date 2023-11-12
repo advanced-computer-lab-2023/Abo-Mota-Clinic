@@ -1,11 +1,11 @@
-import { useFetchPatientQuery, usePayAppointmentByWalletMutation } from "../../store";
+import { useFetchPatientQuery, usePayByWalletMutation } from "../../store";
 import { Button, Typography } from "@mui/joy";
 import { useState } from "react";
 
 function WalletPayment({ deductible, onSuccess, onFailure }) {
 
   const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
-  const [payAppointmentByWallet, walletResults] = usePayAppointmentByWalletMutation();
+  const [payByWallet, walletResults] = usePayByWalletMutation();
   const [isProcessing, setIsProcessing] = useState(false);
 
 
@@ -14,7 +14,7 @@ function WalletPayment({ deductible, onSuccess, onFailure }) {
 
     setIsProcessing(true);
 
-    payAppointmentByWallet({
+    payByWallet({
       deductible
     })
       .unwrap()

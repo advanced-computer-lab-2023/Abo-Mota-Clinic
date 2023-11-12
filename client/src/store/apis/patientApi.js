@@ -107,6 +107,7 @@ const patientApi = createApi({
           };
         },
       }),
+
       fetchPackagesPatient: builder.query({
         query: (patientId) => {
           return {
@@ -138,7 +139,7 @@ const patientApi = createApi({
         },
       }),
 
-      payAppointmentByWallet: builder.mutation({
+      payByWallet: builder.mutation({
         query: (data) => {
           return {
             url: "/payWallet",
@@ -152,6 +153,16 @@ const patientApi = createApi({
         query: (data) => {
           return {
             url: "/bookAppointment",
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
+
+      subscribeToHealthPackage: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/subscribeToHealthPackage",
             method: "POST",
             body: data,
           };
@@ -172,8 +183,9 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
-  usePayAppointmentByWalletMutation,
+  usePayByWalletMutation,
   useBookAppointmentMutation,
+  useSubscribeToHealthPackageMutation,
 } = patientApi;
 
 export { patientApi };
