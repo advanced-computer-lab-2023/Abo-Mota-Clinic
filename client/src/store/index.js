@@ -70,7 +70,8 @@ export const {
   usePayAppointmentByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
-  useBookAppointmentMutation
+  useBookAppointmentMutation,
+  useCancelMyPackageMutation
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;

@@ -12,8 +12,8 @@ export default function Subscription() {
         color: '#2c3e50', 
     };
 
-    const {data:myPackage, error, isFetching} = useFetchMyPackageQuery();
-    const {data:familyPackages, isFetching:isFetching2}= useFetchFamilyPackageQuery();
+    const {data:myPackage, error, isFetching} = useFetchMyPackageQuery(); 
+    const {data:familyPackages, isFetching:isFetching2}= useFetchFamilyPackageQuery(); 
     
     if(isFetching || isFetching2)
     {
@@ -41,7 +41,7 @@ export default function Subscription() {
             <div>
             <h2 style={headerStyle} className="text-2xl font-bold my-8" >Your Packages</h2>
             <div className="flex justify-center items-center flex-wrap gap-8">
-                <PackageCard data={content}/>
+                {content}
             </div>
             </div>
             <div>

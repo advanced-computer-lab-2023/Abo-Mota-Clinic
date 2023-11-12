@@ -180,6 +180,17 @@ const patientApi = createApi({
           };
         },
       }),
+      cancelMyPackage: builder.mutation({
+        invalidatesTags: (result, error, data) => {
+          return ["My package"];
+        },
+        query: (data)=>{
+          return {
+            url:'/cancelMySub',
+            method:"POST"
+          }
+        }
+      })
 
     };
   },
@@ -198,7 +209,8 @@ export const {
   usePayAppointmentByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
-  useBookAppointmentMutation
+  useBookAppointmentMutation,
+  useCancelMyPackageMutation
 } = patientApi;
 
 export { patientApi };

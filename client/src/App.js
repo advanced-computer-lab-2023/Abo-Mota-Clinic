@@ -20,7 +20,6 @@ import PatientTest from "./patient/pages/AppointmentScheduler";
 import ViewDoctorProfile from "./patient/pages/ViewDoctorProfile";
 import PatientHome from "./patient/pages/PatientHome";
 import ViewWallet from "./patient/pages/ViewWallet";
-import PatientTest2 from "./patient/pages/PatientTest2";
 import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PatientTest3 from "./patient/pages/PatientTest3";
