@@ -237,6 +237,7 @@ const addFreeAppointmentSlots = async (req, res) => {
 
 
 		const {date, startTime, endTime, appointmentDuration, buffer} = req.body;
+		console.log(req.body);
 		// Parse the date and startTime from the request body
 		const startTimeParts = startTime.split(':');
 		const startHours = parseInt(startTimeParts[0], 10) - 2;
@@ -255,6 +256,8 @@ const addFreeAppointmentSlots = async (req, res) => {
 			const appointment = await Appointment.create({date: dateTime, doctor: doctor._id});
 			createdAppointments.push(appointment);
 		}
+
+		console.log(createdAppointments)
 
 		res.status(200).json({message: "Appointments created successfully", appointments: createdAppointments });
 

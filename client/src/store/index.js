@@ -14,7 +14,6 @@ export const store = configureStore({
     [guestApi.reducerPath]: guestApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
     [stripeApi.reducerPath]: stripeApi.reducer,
-    
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
@@ -34,7 +33,10 @@ export {
   useFetchDoctorQuery,
   useUpdateDoctorMutation,
   useAcceptContractMutation,
-  useScheduleFollowUpMutation
+  useScheduleFollowUpMutation,
+  useAddFreeSlotsMutation,
+  useFetchWalletDoctorQuery,
+  useUploadHealthRecordMutation,
 } from "./apis/doctorApi";
 
 export {
@@ -71,9 +73,10 @@ export const {
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,
-  useCancelMyPackageMutation
+  useCancelMyPackageMutation,
+  usePayByWalletMutation,
+  useFetchWalletPatientQuery,
+  useSubscribeToHealthPackageMutation,
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
-
-

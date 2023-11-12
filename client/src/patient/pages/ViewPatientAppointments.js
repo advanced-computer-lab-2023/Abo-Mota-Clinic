@@ -24,7 +24,9 @@ export default function ViewPatientAppointments() {
     const newData = data.map((appointment) => {
       const currDate = dayjs();
       const appointmentDate = dayjs(appointment.formattedDate);
-
+      if (appointment.status === "cancelled" || appointment.status === "reschedualed") {
+        return undefined;
+      }
       if (appointmentDate.isAfter(currDate)) {
         return { ...appointment, status: "upcoming" };
       } else {

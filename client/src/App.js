@@ -41,8 +41,6 @@ import Contract from "./doctor/pages/Contract";
 // login
 import LoginForm from "./shared/pages/LoginForm";
 
-
-
 // login
 
 function App() {
@@ -59,7 +57,7 @@ function App() {
           <Route path="familyMembers" element={<ViewFamilyMembers />} />
           <Route path="test" element={<PatientTest />} />
           <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
-          <Route path="wallet" element={<ViewWallet />} />
+          <Route path="wallet" element={<ViewWallet isPatient={true}/>} />
           <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
           <Route path="healthPackages" element={<HealthPackages />} />
           <Route path="profile" element={<Profile />} />
@@ -79,7 +77,9 @@ function App() {
           <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
-          <Route path="patientInfo" element={<ViewPatientInfo />} />
+          <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
+          <Route path="wallet" element={<ViewWallet isPatient ={false}/>} />
+
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="applications" element={<Applications />} />

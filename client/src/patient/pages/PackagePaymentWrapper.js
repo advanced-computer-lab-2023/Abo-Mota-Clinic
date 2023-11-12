@@ -35,6 +35,7 @@ function PackagePaymentWrapper() {
 
     onPaymentSuccess: () => {
       alert("Payment successful");
+      // Subscribe route
     },
 
     onPaymentFailure: () => {

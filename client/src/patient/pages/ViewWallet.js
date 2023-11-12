@@ -1,9 +1,9 @@
 import { Box, Card, Typography, Divider, Button, Avatar } from "@mui/joy";
 import { useFetchPatientQuery } from "../../store/apis/patientApi";
+import { useFetchWalletPatientQuery,useFetchWalletDoctorQuery } from "../../store";
 
 
-
-function ViewWallet() {
+function ViewWallet({isPatient}) {
 
   // const { data, error, isLoading } = useFetchPatientQuery();
 
@@ -12,6 +12,15 @@ function ViewWallet() {
   // if (isLoading) content = <p>Loading...</p>
   // else if (error) content = <p>{error}</p>
   // else content = <p>Welcome {data.name}</p>
+
+  const {data:dataPatient, isFetching, isLoading} = useFetchWalletPatientQuery();
+  const {data:dataDoctor, isFetching: isFetchingDocotor} = useFetchWalletDoctorQuery();
+
+
+  if(isFetching || isFetchingDocotor)
+    return <div>Loading...</div>
+
+  const wallet = isPatient? dataPatient.wallet: dataDoctor.wallet;
 
   const dummy = [
     {
@@ -49,7 +58,7 @@ function ViewWallet() {
             Total Balance
           </Typography>
           <Typography level="h1" fontWeight={500}>
-            595.00 USD
+            {wallet} USD
           </Typography>
           <Box className="w-full flex justify-end">
             <Button variant="outlined" color="neutral">
