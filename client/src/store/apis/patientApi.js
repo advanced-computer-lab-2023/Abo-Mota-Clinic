@@ -73,12 +73,32 @@ const patientApi = createApi({
             },
           ];
         },
-
         query: (data) => {
           return {
             url: "/family/",
             method: "POST",
             body: data,
+          };
+        },
+      }),
+
+      uploadMedicalHistory: builder.mutation({
+        query: ({ medicalHistory }) => {
+          const formData = new FormData();
+          formData.append("medicalHistory", medicalHistory);
+          return {
+            url: "/uploadMedicalHistory",
+            method: "POST",
+            body: formData,
+          };
+        },
+      }),
+
+      deleteMedicalHistory: builder.mutation({
+        query: ({fileName}) => {
+          return {
+            url: `/deleteMedicalHistory/${fileName}`,
+            method: "DELETE"
           };
         },
       }),
@@ -186,6 +206,8 @@ export const {
   useFetchPatientAppointmentsQuery,
   useFetchFamilyMembersQuery,
   useAddFamilyMemberMutation,
+  useUploadMedicalHistoryMutation,
+  useDeleteMedicalHistoryMutation,
   useFetchPrescriptionsQuery,
   useFetchDoctorsQuery,
   useFetchPackagesPatientQuery,
