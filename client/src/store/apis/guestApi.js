@@ -24,13 +24,11 @@ const guestApi = createApi({
           formData.append("medicalLicense", doctor.medicalLicense);
           formData.append("medicalDegree", doctor.medicalDegree);
 
-          // Add the rest of the doctor fields to FormData
           Object.keys(doctor).forEach((key) => {
             if (key !== "nationalId" && key !== "medicalLicense" && key !== "medicalDegree") {
               formData.append(key, doctor[key]);
             }
           });
-
           return {
             url: "/registerDoctor",
             body: formData,

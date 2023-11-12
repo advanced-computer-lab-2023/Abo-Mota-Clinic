@@ -1,27 +1,27 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const pause = (duration) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, duration);
-  });
-};
+
 
 const patientApi = createApi({
-  reducerPath: "patient",
+  reducerPath: "patientApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/patient",
-    fetchFn: async (...args) => {
-      await pause(2000);
-      return fetch(...args, { credentials: "include" });
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/patient`,
+    credentials: "include",
+    prepareHeaders: (headers, { getState, endpoint }) => {
+      if (endpoint !== "uploadMedicalHistory" ) {
+        headers.set("Content-Type", "application/json");
+      }
+      return headers;
     },
   }),
 
   endpoints: (builder) => {
     return {
       fetchPatient: builder.query({
-        query: (id) => {
+        providesTags:(result, error, id)=>{
+          return ["my info"];
+        },
+        query: () => {
           return {
             url: "/",
             method: "GET",
@@ -107,7 +107,6 @@ const patientApi = createApi({
           };
         },
       }),
-
       fetchPackagesPatient: builder.query({
         query: (patientId) => {
           return {
@@ -139,7 +138,7 @@ const patientApi = createApi({
         },
       }),
 
-      payByWallet: builder.mutation({
+      payAppointmentByWallet: builder.mutation({
         query: (data) => {
           return {
             url: "/payWallet",
@@ -191,25 +190,25 @@ const patientApi = createApi({
             method:"POST"
           }
         }
-      })
-
-      fetchWalletPatient: builder.query({
-        query: () => {
-          return {
-            url: "/wallet",
-            method: "GET",
-          }
-        }
       }),
-      subscribeToHealthPackage: builder.mutation({
-        query: (data) => {
+
+      uploadMedicalHistory: builder.mutation({
+        invalidatesTags: (result, error, { id }) => {
+          return [
+            "my info"
+          ];
+        },
+        query: ({ username, healthRecord }) => {
+          const formData = new FormData();
+          formData.append("username", username);
+          formData.append("medicalHistory", healthRecord);
           return {
-            url: "/subscribeToHealthPackage",
-            method: "POST",
-            body: data,
+            url: "/uploadHealthRecord",
+            body: formData,
+            method: "POST"
           };
         },
-      }),
+    }),
 
     };
   },
@@ -225,18 +224,11 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
-<<<<<<< HEAD
   usePayAppointmentByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,
   useCancelMyPackageMutation
-=======
-  usePayByWalletMutation,
-  useBookAppointmentMutation,
-  useFetchWalletPatientQuery,
-  useSubscribeToHealthPackageMutation,
->>>>>>> 979e08d5e8bbe8f1d59f95c8600ea3bfc4887cd7
 } = patientApi;
 
 export { patientApi };
