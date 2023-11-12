@@ -42,7 +42,7 @@ const RegisterForm = () => {
     // Remove the above await and insert code for backend registeration here.
     setIsLoading(false);
     // resetForm({ values: "" });
-    // navigateq("/doctor/appointments");
+    navigateq("/doctor/appointments");
   };
 
   const DoctorForm = (

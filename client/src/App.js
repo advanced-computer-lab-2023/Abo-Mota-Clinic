@@ -41,8 +41,6 @@ import Contract from "./doctor/pages/Contract";
 // login
 import LoginForm from "./shared/pages/LoginForm";
 
-
-
 // login
 
 function App() {
@@ -79,7 +77,7 @@ function App() {
           <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
           <Route path="profile" element={<EditMyProfile />} />
           <Route path="registerForm" element={<RegisterForm />} />
-          <Route path="patientInfo" element={<ViewPatientInfo />} />
+          <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="applications" element={<Applications />} />

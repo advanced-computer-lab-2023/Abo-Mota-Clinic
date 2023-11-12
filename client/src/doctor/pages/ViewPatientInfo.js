@@ -1,5 +1,5 @@
 import { Typography } from "@mui/joy";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { capitalizeFirstLetter } from "../components/AppointmentCard";
 import Sheet from "@mui/joy/Sheet";
 import Card from "@mui/joy/Card";
@@ -11,25 +11,31 @@ import { Tabs } from "antd";
 import { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import AddHealthRecordScreen from "./AddHealthRecordScreen";
+import { useFetchPatientQuery, useFetchPatientsQuery } from "../../store";
+import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 
 export default function ViewPatientInfo() {
   const location = useLocation();
-  const patient = location.state;
+  const { idx } = useParams();
   const [addHealthRecordOpen, setAddHealthRecordOpen] = useState(false);
-
-  const renderedAppointments = patient.appointments.map((appointment) => {
+  const { data, isFetching, error } = useFetchPatientsQuery();
+  if (isFetching) {
+    return <LoadingIndicator />;
+  }
+  const patientData = data[idx];
+  const renderedAppointments = patientData.appointments.map((appointment) => {
     return <MiniAppointmentCard appointment={appointment} />;
   });
 
-  const completedApps = patient.appointments.filter((appointment) => {
+  const completedApps = patientData.appointments.filter((appointment) => {
     return appointment.status === "completed";
   });
-  console.log(completedApps);
+  // console.log(completedApps);
 
   let recordItems = [];
   if (completedApps.length !== 0) {
-    console.log(patient.healthRecords);
-    recordItems = patient.healthRecords.map((record, index) => {
+    console.log(patientData.healthRecords);
+    recordItems = patientData.healthRecords.map((record, index) => {
       //   console.log(record);
 
       const bytesDegree = new Uint8Array(record.data.data);
@@ -44,7 +50,7 @@ export default function ViewPatientInfo() {
     });
   }
 
-  const medicalHistory = patient.medicalHistory.map((record, index) => {
+  const medicalHistory = patientData.medicalHistory.map((record, index) => {
     console.log(record);
     const bytesDegree = new Uint8Array(record.data.data);
     const blobDegree = new Blob([bytesDegree], { type: record.contentType });
@@ -53,7 +59,7 @@ export default function ViewPatientInfo() {
       key: index,
       label: `Record ${index + 1}`,
       children: record.contentType.includes("image") ? (
-        <img src={urlDegree} alt="image" />
+        <img src={urlDegree} alt="record" />
       ) : (
         <PdfViewer pdfUrl={urlDegree} />
       ),
@@ -63,7 +69,7 @@ export default function ViewPatientInfo() {
   return (
     <div className="mt-8 ml-8 mr-8 mb-8 space-y-5 items-center">
       <Typography level="h2">
-        {capitalizeFirstLetter(patient.name.split(" ")[0])}'s Medical Record
+        {capitalizeFirstLetter(patientData.name.split(" ")[0])}'s Medical Record
       </Typography>
       <Box sx={{ width: "1250px" }}>
         <Card className="pl-5 pt-2 justify-content" variant="soft" size="lg">
@@ -77,25 +83,25 @@ export default function ViewPatientInfo() {
               <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
                 National Id
               </Typography>
-              <Typography>{patient.nationalId}</Typography>
+              <Typography>{patientData.nationalId}</Typography>
             </div>
             <div>
               <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
                 Phone Number
               </Typography>
-              <Typography>{patient.mobile}</Typography>
+              <Typography>{patientData.mobile}</Typography>
             </div>
             <div>
               <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
                 Email
               </Typography>
-              <Typography>{patient.email}</Typography>
+              <Typography>{patientData.email}</Typography>
             </div>
             <div>
               <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
                 Birth Date
               </Typography>
-              <Typography>{patient.formattedDob}</Typography>
+              <Typography>{patientData.formattedDob}</Typography>
             </div>
           </div>
         </Card>
@@ -107,7 +113,7 @@ export default function ViewPatientInfo() {
       </Typography>
       <div className="ml-5">
         <Typography level="body-lg" fontWeight="lg">
-          {patient.emergencyContact.name}
+          {patientData.emergencyContact.name}
         </Typography>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-5 ml-5">
@@ -115,13 +121,13 @@ export default function ViewPatientInfo() {
           <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
             Mobile
           </Typography>
-          <Typography>{patient.emergencyContact.mobile}</Typography>
+          <Typography>{patientData.emergencyContact.mobile}</Typography>
         </div>
         <div>
           <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
             Relation
           </Typography>
-          <Typography>{patient.emergencyContact.relation}</Typography>
+          <Typography>{patientData.emergencyContact.relation}</Typography>
         </div>
       </div>
 
@@ -151,6 +157,7 @@ export default function ViewPatientInfo() {
           </div>
           {addHealthRecordOpen && (
             <AddHealthRecordScreen
+              patient={patientData}
               closeForm={() => {
                 setAddHealthRecordOpen(false);
               }}
