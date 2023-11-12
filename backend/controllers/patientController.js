@@ -200,6 +200,7 @@ const uploadMedicalHistory = async (req, res) => {
 		const medicalHistory = {
 			data: req.files.medicalHistory[0].buffer,
 			contentType: req.files.medicalHistory[0].mimetype,
+			fileName: req.files.medicalHistory[0].originalname
 		};
 		const username = req.userData.username;
 		const patient = await Patient.findOne({ username });
@@ -217,11 +218,11 @@ const uploadMedicalHistory = async (req, res) => {
 const deleteMedicalHistory = async (req, res) => {
 	try {
 		const username = req.userData.username;
-		const recordId = req.params.id;
+		const fileName = req.params.fileName;
 
 		const patient = await Patient.findOne({ username });
 		patient.medicalHistory = patient.medicalHistory.filter(
-			(record) => !record._id.equals(recordId)
+			(file) => !fileName.equals(file)
 		);
 
 		await patient.save();
@@ -398,7 +399,6 @@ const linkFamilyMember = async (req, res) => {
 	}
 };
 
-
 // Helpers for self subscription controllers
 // const selfSubscribeWallet = async (user, package) => {
 // 	try {
@@ -565,7 +565,7 @@ const subscribeToHealthPackage = async (req, res) => {
 	try {
 		const { _id, type } = req.body;
 		const username = req.userData.username;
-		const loggedIn = await Patient.findOne({ username });
+		const loggedIn = await Patient.findOne({ username }).populate("healthPackage.package");
 
 		if (!_id || !type) {
 			throw Error("Please input package ID");
@@ -582,7 +582,7 @@ const subscribeToHealthPackage = async (req, res) => {
 				throw Error("Please input memberId");
 			}
 
-			receiver = await Patient.findOne({ _id: memberId });
+			receiver = await Patient.findOne({ _id: memberId }).populate("healthPackage.package");
 
 			if (!receiver) {
 				throw Error("Receiver does not exist");
@@ -591,10 +591,14 @@ const subscribeToHealthPackage = async (req, res) => {
 			throw Error("Incorrect parameter type passed. Restrict type to self or family");
 		}
 
-		// ADD ADDITIONAL CONDITIONS HERE  ??? 
+		// ADD ADDITIONAL CONDITIONS HERE  ???
 		// unsubscribed will throw an error
-		if (receiver.healthPackage.package !== null) {
-			throw Error("This receiver is already subscribed to a package");
+		if (
+			receiver.healthPackage.package !== null &&
+			receiver.healthPackage.status !== null &&
+			receiver.healthPackage.status !== "cancelled"
+		) {
+			throw Error("This receiver already has active benefits from a subscription");
 		}
 
 		const package = await HealthPackage.findOne({ _id });
@@ -605,7 +609,6 @@ const subscribeToHealthPackage = async (req, res) => {
 		await subscribe(receiver, package);
 
 		res.status(200).json({ message: "Subscription successful!" });
-
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -729,7 +732,7 @@ const selfCancelSubscription = async (req, res) => {
 		const cancelDate = new Date();
 		const result = {
 			status: "cancelled",
-			package: null,
+			package: loggedIn.healthPackage.package,
 			endDate: loggedIn.healthPackage.endDate,
 			cancelDate,
 		};
@@ -793,7 +796,7 @@ const familyCancelSubscription = async (req, res) => {
 		const cancelDate = new Date();
 		const result = {
 			status: "cancelled",
-			package: null,
+			package: familyMember.healthPackage.package,
 			endDate: familyMember.healthPackage.endDate,
 			cancelDate,
 		};
