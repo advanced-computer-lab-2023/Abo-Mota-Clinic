@@ -536,7 +536,7 @@ const subscribe = async (receiver, package) => {
 		status: "subscribed",
 		package: package._id,
 		endDate: dateInYear,
-		pricePaid: package.price * (1 - receiver.familyDiscount),
+		pricePaid: package.pricePerYear * (1 - receiver.familyDiscount),
 	};
 	// Finding updating all family members' family discount when their discount is less than the incoming one
 	const familyMemberIds = await receiver.linkedFamily.map((familyLink) => familyLink.member);
@@ -558,6 +558,9 @@ const subscribe = async (receiver, package) => {
 	return subscribedUser;
 };
 
+// id titanium package  6528d084a48689ecc9e8bd67
+// id family member 6549529d2d11145d712f983f
+
 const subscribeToHealthPackage = async (req, res) => {
 	try {
 		const { _id, type } = req.body;
@@ -568,8 +571,10 @@ const subscribeToHealthPackage = async (req, res) => {
 			throw Error("Please input package ID");
 		}
 
+		let receiver;
+
 		if (type === "self") {
-			const receiver = loggedIn;
+			receiver = loggedIn;
 		} else if (type === "family") {
 			const { memberId } = req.body;
 
@@ -577,7 +582,7 @@ const subscribeToHealthPackage = async (req, res) => {
 				throw Error("Please input memberId");
 			}
 
-			const receiver = await Patient.findOne({ _id: memberId });
+			receiver = await Patient.findOne({ _id: memberId });
 
 			if (!receiver) {
 				throw Error("Receiver does not exist");
@@ -586,8 +591,9 @@ const subscribeToHealthPackage = async (req, res) => {
 			throw Error("Incorrect parameter type passed. Restrict type to self or family");
 		}
 
-		// missing condition ??
-		if (receiver.healthPackage.package !== null || receiver.healthPackage.status !== "cancelled") {
+		// ADD ADDITIONAL CONDITIONS HERE  ??? 
+		// unsubscribed will throw an error
+		if (receiver.healthPackage.package !== null) {
 			throw Error("This receiver is already subscribed to a package");
 		}
 
@@ -597,6 +603,8 @@ const subscribeToHealthPackage = async (req, res) => {
 		}
 
 		await subscribe(receiver, package);
+
+		res.status(200).json({ message: "Subscription successful!" });
 
 	} catch (error) {
 		res.status(500).json({ error: error.message });
