@@ -18,7 +18,7 @@ const patientApi = createApi({
   endpoints: (builder) => {
     return {
       fetchPatient: builder.query({
-        providesTags:(result, error, id)=>{
+        providesTags:(result, error)=>{
           return ["my info"];
         },
         query: () => {
@@ -73,7 +73,6 @@ const patientApi = createApi({
             },
           ];
         },
-
         query: (data) => {
           return {
             url: "/family/",
@@ -115,7 +114,6 @@ const patientApi = createApi({
           };
         },
       }),
-
       fetchAvailableAppointments: builder.query({
         query: (doctorId) => {
           return {
@@ -162,7 +160,10 @@ const patientApi = createApi({
       }),
       fetchFamilyPackage: builder.query({
         providesTags:(result, error, data)=>{
-            return ["Family packages"];
+            const tags = result.map((pack)=>{
+              return {username: pack.username}
+            })
+            return tags;
         },
         query:()=>{
           return{
@@ -184,7 +185,7 @@ const patientApi = createApi({
         invalidatesTags: (result, error, data) => {
           return ["My package"];
         },
-        query: (data)=>{
+        query: ()=>{
           return {
             url:'/cancelMySub',
             method:"POST"
@@ -192,18 +193,39 @@ const patientApi = createApi({
         }
       }),
 
-      uploadMedicalHistory: builder.mutation({
-        invalidatesTags: (result, error, { id }) => {
-          return [
-            "my info"
-          ];
+      cancelMyFamilyPackage : builder.mutation({
+        invalidatesTags: (result, error, {familyMemberUsername}) => {
+          return [{username: familyMemberUsername}]
         },
-        query: ({ username, healthRecord }) => {
-          const formData = new FormData();
-          formData.append("username", username);
-          formData.append("medicalHistory", healthRecord);
+        query: (data)=>{
           return {
-            url: "/uploadHealthRecord",
+            url:'/cancelFamilySub',
+            method:"POST",
+            body: data
+          }
+        }
+      }
+      )
+      ,
+      fetchWalletPatient: builder.query({
+        
+        query: () => {
+          return {
+            url: "/wallet",
+            method: "GET",
+          }
+        }
+      }),
+
+      uploadMedicalHistory: builder.mutation({
+        invalidatesTags:(result , error, data)=>{
+          return ["my info"]
+        },
+        query: ({  medicalHistory }) => {
+          const formData = new FormData();
+          formData.append("medicalHistory", medicalHistory);
+          return {
+            url: "/uploadMedicalHistory",
             body: formData,
             method: "POST"
           };
@@ -228,7 +250,9 @@ export const {
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,
-  useCancelMyPackageMutation
+  useCancelMyPackageMutation,
+  useCancelMyFamilyPackageMutation,
+  useUploadMedicalHistoryMutation
 } = patientApi;
 
 export { patientApi };

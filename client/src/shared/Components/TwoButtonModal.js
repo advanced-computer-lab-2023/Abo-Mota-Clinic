@@ -37,10 +37,7 @@ const buttonGroupStyle = {
 export default function TwoButtonModal({open,handleClose,handleClickLogic}){
 
 
-    const handleConfirm = ()=>{
-        handleClose();
-        handleClickLogic();
-    }
+    
 return (<Modal
             open={open}
             onClose={handleClose}
@@ -56,12 +53,13 @@ return (<Modal
                     </p>
                     <div style={buttonGroupStyle}>
                         <Button type="danger" 
-                         onClick={() => {  handleClose(); }}
+                         
+                         onClick={handleClickLogic}
                          >
                             Yes, Cancel Subscription
                         </Button>
                         <Button 
-                        onClick={handleConfirm}
+                        onClick={() => {  handleClose(); }}
                         >
                             No, Go Back
                         </Button>

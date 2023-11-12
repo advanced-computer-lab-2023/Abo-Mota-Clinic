@@ -77,6 +77,8 @@ export const {
   usePayByWalletMutation,
   useFetchWalletPatientQuery,
   useSubscribeToHealthPackageMutation,
+  useCancelMyFamilyPackageMutation,
+  useUploadMedicalHistoryMutation
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;

@@ -4,6 +4,7 @@ import ReactFlipCard from 'reactjs-flip-card'
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import { cardClasses } from "@mui/material";
 import { useCancelMyPackageMutation } from "../../store";
+import { useCancelMyFamilyPackageMutation } from "../../store";
 
 const colorSchemes = {
     basic: {
@@ -42,9 +43,10 @@ const colorSchemes = {
     
     const [open, setOpen] = useState(false);
     const [cancelMyPackage,results] = useCancelMyPackageMutation();
+    const [cancelFamilyPackage,result]= useCancelMyFamilyPackageMutation();
     const handleOpen = () => {
         setOpen(true);
-      };
+    };
     
       const handleClose = () => {
         setOpen(false);
@@ -72,13 +74,24 @@ const colorSchemes = {
                 <Back data={data} handleOpen={handleOpen} cardClasses={cardClasses}/>
         </div>
     );
-    
-    
+
+    const handleClickLogic =()=>{
+        if(!data.name)
+        {
+            cancelMyPackage();
+        }
+        else
+        {
+            cancelFamilyPackage({familyMemberUsername:data.name});
+        }
+        setOpen(false);
+
+    }
 
     return (
         <>
             {hasName ? flipCardComponent : nonFlipCardComponent}
-            <TwoButtonModal handleClose={handleClose} open={open} handleClickLogic={()=>cancelMyPackage()} />
+            <TwoButtonModal handleClose={handleClose} open={open} handleClickLogic={handleClickLogic} />
         </>
     );
     }
@@ -146,15 +159,16 @@ const colorSchemes = {
         <div className="text-center text-sm font-semibold">
         <strong>{status}</strong> <br/>{content}    
         </div>
-        <Button type="danger" 
+        {(status==='Cancelled')||<Button type="danger" 
         onClick={handleOpen}>
         CANCEL
-        </Button>
+        </Button>}
+        
         </div>
     }
 
     function Front({ data, onFlip, cardClasses }) {
-        return (
+        return(
             <div className={`${cardClasses} flex flex-col justify-center items-center h-full`}>
                 <h3 className="font-bold text-2xl mb-2  ">{data.name}'s Package</h3>
                 <p className="text-lg text-center mb-4 text-gray-600">
