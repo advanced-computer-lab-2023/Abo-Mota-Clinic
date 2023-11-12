@@ -352,11 +352,7 @@ const linkFamilyMember = async (req, res) => {
 			};
 
 			let newFamilyDiscount;
-			if (
-				loggedIn.healthPackage.package &&
-				loggedIn.healthPackage.status !== "cancelled" &&
-				memberAccount.familyDiscount < loggedIn.healthPackage.package.familyDiscount
-			) {
+			if (memberAccount.familyDiscount < loggedIn.healthPackage.package.familyDiscount) {
 				newFamilyDiscount = loggedIn.healthPackage.package.familyDiscount;
 			} else newFamilyDiscount = memberAccount.familyDiscount;
 			const updatedOpposite = await Patient.updateOne(
@@ -648,28 +644,7 @@ const getFamilyPackages = async (req, res) => {
 	}
 };
 
-// const payAppointmentByCard = async (req, res) => {
-// 	try {
-// 		const { doctor_id, deductible, credit } = req.body;
-
-// 		// Update the doctor's wallet by the provided amount
-// 		const updatedDoctor = await Doctor.findByIdAndUpdate(
-// 			doctor_id,
-// 			{ $inc: { wallet: parseFloat(credit) } },
-// 			{ new: true }
-// 		);
-
-// 		if (!updatedDoctor) {
-// 			return res.status(404).json({ message: 'Doctor not found' });
-// 		}
-
-// 		res.json({ message: 'Doctor wallet updated successfully', doctor: updatedDoctor });
-// 	} catch (err) {
-// 		res.status(500).json({ message: err.message });
-// 	}
-// }
-
-const payAppointmentByWallet = async (req, res) => {
+const payByWallet = async (req, res) => {
 	try {
 		const { deductible } = req.body;
 		const username = req.userData.username;
