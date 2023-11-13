@@ -12,6 +12,7 @@ import {
 import { BusinessCenter, AccountBalance, MonetizationOn, Work } from "@mui/icons-material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { ListItemButton } from "@mui/joy";
 // Style for the modal
 const style = {
   position: "absolute",
@@ -29,15 +30,24 @@ const style = {
 // Inline styles
 const listItemStyle = {
   cursor: "pointer",
-  border: "1px solid transparent", // Default no border
+  border: "2px solid #f0f0f0", // Default no border
   borderRadius: 8, // Rounded corners
-  marginBottom: 2, // Spacing between items
+  marginBottom: 5, // Spacing between items
+  padding: 10,
 };
 
 const selectedOrHoveredStyle = {
   ...listItemStyle,
   backgroundColor: "#E6F7FF",
-  border: "1px solid #80DEEA",
+  border: "2px solid #80DEEA",
+  display: "flex",
+  justifyContent: "space-between",
+};
+
+const disabledStyle = {
+  ...listItemStyle,
+  backgroundColor: "#f0f0f0",
+  border: "2px solid #f0f0f0",
   display: "flex",
   justifyContent: "space-between",
 };
@@ -55,39 +65,51 @@ const modalStyle = {
   boxShadow: 24,
   p: 4,
   overflowX: "hidden",
+  maxHeight: "100vh",
+  overflowY: "hidden",
 };
-export default function UserSelectionModal() {
+export default function UserSelectionModal({
+  selectedUser,
+  setSelectedUser,
+  users,
+  isSubscribing,
+}) {
   const [open, setOpen] = useState(false);
-  const [selectedPosition, setSelectedPosition] = useState(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleSubmit = () => {
-    console.log("Selected Position:", selectedPosition);
+    handleClose();
+    console.log("Selected User:", selectedUser);
   };
 
-  const [hoveredPosition, setHoveredPosition] = useState(null);
+  const [hoveredPosition, setHoveredPosition] = useState(-1);
 
-  const handleListItemClick = (position) => {
-    setSelectedPosition(position);
+  const handleListItemClick = (user) => {
+    setSelectedUser(user);
   };
 
-  const handleMouseEnter = (position) => {
-    setHoveredPosition(position);
+  const handleMouseEnter = (user) => {
+    setHoveredPosition(user);
   };
 
   const handleMouseLeave = () => {
-    setHoveredPosition(null);
+    setHoveredPosition(-1);
   };
 
   const isItemSelectedOrHovered = (position) => {
-    return position === selectedPosition || position === hoveredPosition;
+    return position === selectedUser || position === hoveredPosition;
   };
-
+  const isDisabled = (user) =>
+    isSubscribing &&
+    !(user.healthPackage.status === "cancelled" || user.healthPackage.status === null);
+  console.log(isSubscribing);
   return (
-    <div>
-      <Button onClick={handleOpen}>Select Desired User</Button>
+    <Box>
+      <Button onClick={handleOpen} variant="outlined">
+        Select User
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -98,21 +120,38 @@ export default function UserSelectionModal() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Choose from the following users
           </Typography>
-          <List component="nav" aria-label="position selection list">
-            {["Board Member", "Seed Investor & Board Observer"].map((position) => (
-              <ListItem
-                key={position}
-                style={isItemSelectedOrHovered(position) ? selectedOrHoveredStyle : listItemStyle}
-                onClick={() => handleListItemClick(position)}
-                onMouseEnter={() => handleMouseEnter(position)}
+          <List
+            sx={{
+              maxHeight: "80vh", // Adjust this value as needed
+              overflowY: "auto",
+            }}
+            component="nav"
+            aria-label="position selection list"
+          >
+            {users.map((user, idx) => (
+              <ListItemButton
+                key={idx}
+                disabled={isDisabled(user)}
+                style={
+                  isDisabled(user)
+                    ? disabledStyle
+                    : isItemSelectedOrHovered(user)
+                    ? selectedOrHoveredStyle
+                    : listItemStyle
+                }
+                onClick={() => handleListItemClick(user)}
+                onMouseEnter={() => handleMouseEnter(user)}
                 onMouseLeave={handleMouseLeave}
               >
                 <ListItemIcon>
                   <AccountCircleIcon />
                 </ListItemIcon>
-                <ListItemText primary={position} secondary="Surfe Sept 2020 - present" />
-                {isItemSelectedOrHovered(position) && <ChevronRightIcon />}
-              </ListItem>
+                <ListItemText
+                  primary={idx === 0 ? "You" : user.name}
+                  secondary={`${user.username} - ${idx === 0 ? "You" : user.relationToPatient}`}
+                />
+                {isItemSelectedOrHovered(user) && <ChevronRightIcon />}
+              </ListItemButton>
             ))}
           </List>
           <Box>
@@ -121,13 +160,13 @@ export default function UserSelectionModal() {
               variant="contained"
               color="primary"
               onClick={handleSubmit}
-              disabled={!selectedPosition}
+              disabled={selectedUser === -1}
             >
               Select User
             </Button>
           </Box>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }

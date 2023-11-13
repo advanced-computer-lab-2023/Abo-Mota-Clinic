@@ -1,14 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-
-
 const patientApi = createApi({
   reducerPath: "patientApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_URL}/api/patient`,
     credentials: "include",
     prepareHeaders: (headers, { getState, endpoint }) => {
-      if (endpoint !== "uploadMedicalHistory" ) {
+      if (endpoint !== "uploadMedicalHistory") {
         headers.set("Content-Type", "application/json");
       }
       return headers;
@@ -18,7 +16,7 @@ const patientApi = createApi({
   endpoints: (builder) => {
     return {
       fetchPatient: builder.query({
-        providesTags:(result, error)=>{
+        providesTags: (result, error) => {
           return ["my info"];
         },
         query: () => {
@@ -82,12 +80,11 @@ const patientApi = createApi({
         },
       }),
 
-      
       deleteMedicalHistory: builder.mutation({
-        query: ({fileName}) => {
+        query: ({ fileName }) => {
           return {
             url: `/deleteMedicalHistory/${fileName}`,
-            method: "DELETE"
+            method: "DELETE",
           };
         },
       }),
@@ -157,30 +154,29 @@ const patientApi = createApi({
       }),
 
       fetchMyPackage: builder.query({
-        providesTags:(result, error, data)=>{
-            return ["My package"];
-        }
-        ,
-        query:()=>{
+        providesTags: (result, error, data) => {
+          return ["My package"];
+        },
+        query: () => {
           return {
-            url:'/myPackage',
-            method:"GET",
-          }
-        }
+            url: "/myPackage",
+            method: "GET",
+          };
+        },
       }),
       fetchFamilyPackage: builder.query({
-        providesTags:(result, error, data)=>{
-            const tags = result.map((pack)=>{
-              return {username: pack.username}
-            })
-            return tags;
+        providesTags: (result, error, data) => {
+          const tags = result.map((pack) => {
+            return { username: pack.username };
+          });
+          return tags;
         },
-        query:()=>{
-          return{
-            url:'/familyPackages',
-            method:"GET",
-          }
-        }
+        query: () => {
+          return {
+            url: "/familyPackages",
+            method: "GET",
+          };
+        },
       }),
       bookAppointment: builder.mutation({
         query: (data) => {
@@ -195,64 +191,70 @@ const patientApi = createApi({
         invalidatesTags: (result, error, data) => {
           return ["My package"];
         },
-        query: ()=>{
+        query: () => {
           return {
-            url:'/cancelMySub',
-            method:"POST"
-          }
-        }
+            url: "/cancelMySub",
+            method: "POST",
+          };
+        },
       }),
 
-      cancelMyFamilyPackage : builder.mutation({
-        invalidatesTags: (result, error, {familyMemberUsername}) => {
-          return [{username: familyMemberUsername}]
+      cancelMyFamilyPackage: builder.mutation({
+        invalidatesTags: (result, error, { familyMemberUsername }) => {
+          return [{ username: familyMemberUsername }];
         },
-        query: (data)=>{
+        query: (data) => {
           return {
-            url:'/cancelFamilySub',
-            method:"POST",
-            body: data
-          }
-        }
-      }
-      )
-      ,
+            url: "/cancelFamilySub",
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
       fetchWalletPatient: builder.query({
-        
         query: () => {
           return {
             url: "/wallet",
             method: "GET",
-          }
-        }
+          };
+        },
       }),
 
       uploadMedicalHistory: builder.mutation({
-        invalidatesTags:(result , error, data)=>{
-          return ["my info"]
+        invalidatesTags: (result, error, data) => {
+          return ["my info"];
         },
-        query: ({  medicalHistory }) => {
+        query: ({ medicalHistory }) => {
           const formData = new FormData();
           formData.append("medicalHistory", medicalHistory);
           return {
             url: "/uploadMedicalHistory",
             body: formData,
-            method: "POST"
+            method: "POST",
           };
         },
-    }),
-    removeDocument:builder.mutation({
-      invalidatesTags:(result,error,data)=>{
-        return ["my info"]
-      },
-      query:({_id})=>{
-        return {
-          url:`/deleteMedicalHistory/${_id}`,
-          method:"PATCH"
-        }
-      }
-    })
+      }),
+      subscribeToHealthPackage: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/subscribe",
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
 
+      removeDocument: builder.mutation({
+        invalidatesTags: (result, error, data) => {
+          return ["my info"];
+        },
+        query: ({ _id }) => {
+          return {
+            url: `/deleteMedicalHistory/${_id}`,
+            method: "PATCH",
+          };
+        },
+      }),
     };
   },
 });
@@ -275,7 +277,7 @@ export const {
   useBookAppointmentMutation,
   useCancelMyPackageMutation,
   useCancelMyFamilyPackageMutation,
-  useRemoveDocumentMutation
+  useRemoveDocumentMutation,
 } = patientApi;
 
 export { patientApi };

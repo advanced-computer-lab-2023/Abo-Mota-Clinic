@@ -40,6 +40,7 @@ export default function AppointmentStepper({ step = 0 }) {
   const [currentTime, setCurrentTime] = useState(initialTime);
   const [appointmentId, setAppointmentId] = useState(initialAppointmentId);
   const [currentTimings, setCurrentTimings] = useState(initialTimings);
+  const [selectedUser, setSelectedUser] = useState(-1);
 
   const {
     data: doctor,
@@ -125,7 +126,7 @@ export default function AppointmentStepper({ step = 0 }) {
     discount: !(
       patient.healthPackage.package === null || patient.healthPackage.package === undefined
     )
-      ? patient.healthPackage.package.doctorDiscount
+      ? patient.healthPackage?.package?.doctorDiscount
       : 0,
 
     type: "appointment",
@@ -136,6 +137,13 @@ export default function AppointmentStepper({ step = 0 }) {
       location: affiliation,
     },
 
+    usersState: {
+      selectedUser,
+      setSelectedUser,
+    },
+
+    isSubscribing: false,
+
     onPaymentSuccess: () => {
       creditDoctor({
         doctor_id: doctorId,
@@ -144,6 +152,7 @@ export default function AppointmentStepper({ step = 0 }) {
 
       bookAppointment({
         appointmentId,
+        username: selectedUser.username,
       });
 
       setToast({

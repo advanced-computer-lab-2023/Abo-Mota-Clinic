@@ -1,18 +1,19 @@
 import { useRemoveDocumentMutation, useUploadMedicalHistoryMutation } from "../../store";
 import {AiOutlineClose} from '@react-icons/all-files/ai/AiOutlineClose';
 
-function FileUploadSection({ files }) {
+function FileUploadSection({ files, medicalHistory }) {
   const [uploadMedicalHistory] = useUploadMedicalHistoryMutation();
   const [removeDocument]  = useRemoveDocumentMutation();
   
   const handleFileUpload = (event) => {
     const files = event.target.files;
     
-    if (files.length > 0) {
+    if (files.length > 0  ){
         uploadMedicalHistory({medicalHistory:files[0]});
     }
   };
-  
+  if(medicalHistory)
+    console.log(files)
   
   const handleViewFile = (file) => {
     const arrayBuffer = new Uint8Array(file.data.data).buffer;
@@ -22,37 +23,38 @@ function FileUploadSection({ files }) {
   };
 
   const handleRemoveFile = (file)=>{
-    console.log(file);
     removeDocument(file);
   }
-  
-
+  let title = "Health Records";
+  if(medicalHistory)
+    title ="Medical History";
   return (
     <div className="mt-6">
-      <h3 className="text-lg font-medium text-gray-900">Medical History :</h3>
+      <h3 className="text-lg font-medium text-gray-900">{title}:</h3>
       <div className="space-y-3">
         {files.map((file, index) => (
           <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-            <span className="text-sm font-medium">{file.fileName}, {/*{file.size}*/}</span>
+            <span className="text-sm font-medium">{file.fileName} {/*{file.size}*/}</span>
             <div className="flex space-x-2">
               <button className="text-blue-600 hover:underline" onClick={() => handleViewFile(file)}>View</button>
-              <button 
+              {medicalHistory && <button 
             className="text-red-600 hover:underline" 
             onClick={() => {handleRemoveFile(file)}}
-            aria-label="Remove file"
-          >
+            aria-label="Remove file">
             <AiOutlineClose />
-          </button>
+          </button>}
             </div>
           </div>
         ))}
-        <div className="mt-4">
+        {medicalHistory && <div className="mt-4">
           <label htmlFor="file-upload" className="cursor-pointer bg-blue-500 text-white p-2 rounded-md">
             Upload Files
           </label>
           <input id="file-upload" type="file" className="hidden" onChange={handleFileUpload} multiple />
         </div>
-      </div>
+      
+      }
+       </div> 
     </div>
   );
 }

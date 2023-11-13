@@ -79,7 +79,11 @@ export default function PayHealthPackageModal({
   return (
     <Box>
       <StyledButton
-        disabled={patient.healthPackage || selectedPackage === undefined ? true : false}
+        disabled={
+          // patient.healthPackage.status === "subscribe" ||
+          // patient.healthPackage.status === "unsubscribed" ||
+          selectedPackage === undefined
+        }
         onClick={handleSubscribeClick}
         variant="contained"
         color="primary"

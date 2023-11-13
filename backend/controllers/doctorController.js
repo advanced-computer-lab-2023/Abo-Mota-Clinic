@@ -159,7 +159,6 @@ const getDoctorPatients = async (req, res) => {
 			return { ...patient, appointments: patientAppointments };
 		});
 
-		// console.log(patientsWithAppointments);
 		res.status(200).json(patientsWithAppointments);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -172,11 +171,12 @@ const uploadHealthRecords = async (req, res) => {
 		const patient = await Patient.findOne({username});
 		if(!patient)
 			throw new Error();
-		const healthRecord = {
+		const healthRecord = 
+		{
 			data: req.files.healthRecord[0].buffer,
-			contentType: req.files.healthRecord[0].mimetype
+			contentType: req.files.healthRecord[0].mimetype,
+			fileName: req.files.healthRecord[0].originalname
 		}
-		console.log(healthRecord);
 		const updated = await Patient.updateOne({username}, { healthRecords: [...patient.healthRecords, healthRecord] });
 		res.status(200).json(updated);
 	}catch(error) {
