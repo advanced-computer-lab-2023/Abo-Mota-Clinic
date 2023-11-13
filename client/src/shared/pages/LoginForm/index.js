@@ -108,21 +108,50 @@ const LoginForm = () => {
         {UserForm}
         <div className="flex justify-between mr-8 ml-8">
           <div className="flex space-x-4">
-            <button className="forget-password-button" onClick={() => {navigate("/doctorRegistration")}}>
+            <button
+              className="forget-password-button"
+              onClick={() => {
+                navigate("/doctorRegistration");
+              }}
+            >
               Register as Doctor?
             </button>
-            <button className="forget-password-button" onClick={() => {navigate("/patientRegistration")}}>
+            <button
+              className="forget-password-button"
+              onClick={() => {
+                navigate("/patientRegistration");
+              }}
+            >
               Register as Patient?
             </button>
           </div>
-          <button className="forget-password-button" onClick={() => {setForgetPassword(true)}}>
+          <button
+            className="forget-password-button"
+            onClick={() => {
+              setForgetPassword(true);
+            }}
+          >
             Forget Password?
           </button>
-
         </div>
       </div>
-      {forgetPassword && <ForgetPasswordScreen closeForm={() => {setForgetPassword(false)}} goToOtp={() => {setOtpOpen(true)}} />}
-      {otpOpen && <OtpScreen closeForm={() => {setOtpOpen(false)}} />}
+      {forgetPassword && (
+        <ForgetPasswordScreen
+          closeForm={() => {
+            setForgetPassword(false);
+          }}
+          goToOtp={() => {
+            setOtpOpen(true);
+          }}
+        />
+      )}
+      {otpOpen && (
+        <OtpScreen
+          closeForm={() => {
+            setOtpOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };

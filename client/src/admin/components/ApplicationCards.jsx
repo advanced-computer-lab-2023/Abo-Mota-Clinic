@@ -51,6 +51,24 @@ const actionContainerStyles = {
   marginTop: "10px",
 };
 
+const handleViewFile = (file) => {
+  const arrayBuffer = new Uint8Array(file.data.data).buffer;
+  const blob = new Blob([arrayBuffer], { type: file.contentType });
+  const fileUrl = URL.createObjectURL(blob);
+  window.open(fileUrl, "_blank");
+};
+const ViewFile = ({ name, file }) => {
+  return (
+    <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+      <span className="text-sm font-medium">{name}</span>
+      <div className="flex space-x-2">
+        <button className="text-blue-600 hover:underline" onClick={() => handleViewFile(file)}>
+          View
+        </button>
+      </div>
+    </div>
+  );
+};
 export default function ApplicationCard({ data }) {
   const [expanded, setExpanded] = React.useState(false);
   // console.log(data);
@@ -103,6 +121,10 @@ export default function ApplicationCard({ data }) {
             <Typography sx={infoStyles}>Date of Birth: {data.formattedDob}</Typography>
             <Typography sx={infoStyles}>Hourly Rate: ${data.rate}/hr</Typography>
             <Typography sx={infoStyles}>Education: {data.educationalBackground}</Typography>
+            <Typography sx={infoStyles}>Files: </Typography>
+            {data.medicalLicense && <ViewFile name="Medical License" file={data.medicalLicense} />}
+            {data.medicalDegree && <ViewFile name="Medical Degree" file={data.medicalDegree} />}
+            {data.nationalId && <ViewFile name="National Id" file={data.nationalId} />}
           </div>
           {/* <div style={infoContainerStyles}>
             <Typography sx={infoStyles}>
