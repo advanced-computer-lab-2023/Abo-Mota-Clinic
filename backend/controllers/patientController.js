@@ -218,9 +218,9 @@ const deleteMedicalHistory = async (req, res) => {
 			return res.status(404).json({ error: "Patient not found" });
 		}
 
-		const objectId = mongoose.Types.ObjectId(id);
+		const objectId =new  mongoose.Types.ObjectId(id);
 		patient.medicalHistory = patient.medicalHistory.filter((file) => !objectId.equals(file._id));
-
+		console.log(patient.medicalHistory);
 		await patient.save();
 
 		res.status(200).json("Record removed");
@@ -232,11 +232,9 @@ const deleteMedicalHistory = async (req, res) => {
 const changePassword = async (req, res) => {
 	try {
 		const { oldPassword, newPassword } = req.body;
-		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN PATIENT ** DONE
 		const username = req.userData.username;
 		const loggedIn = await Patient.findOne({ username });
-		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN PATIENT **
-
+		
 		const isMatch = await bcrypt.compare(oldPassword, loggedIn.password);
 		if (!isMatch) {
 			throw new Error("Old Password is incorrect");
@@ -272,7 +270,6 @@ const getAvailableAppointments = async (req, res) => {
 		if (!(await Doctor.findOne({ _id: doctorId }))) {
 			throw Error("Doctor doesn't exist");
 		}
-		// Add milliseconds to Date.now if we want to change the starting range of appointments
 		const currentDate = new Date(Date.now());
 		const filter = {
 			$and: [
@@ -289,6 +286,7 @@ const getAvailableAppointments = async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 };
+
 
 const linkFamilyMember = async (req, res) => {
 	try {
