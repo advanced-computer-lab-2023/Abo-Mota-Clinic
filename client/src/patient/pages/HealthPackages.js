@@ -11,20 +11,24 @@ function HealthPackages() {
   const [selected, setSelected] = useState(-1);
   let content = <LoadingIndicator />;
   if (!isFetching && !error) {
+    // console.log(data);
+    let newData = [...data];
     content = (
       <Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 2 }}>
-          {data.map((healthPackage, idx) => {
-            return (
-              <HealthPackageCard
-                key={idx}
-                healthPackage={healthPackage}
-                selected={selected}
-                setSelected={setSelected}
-                index={idx}
-              />
-            );
-          })}
+          {newData
+            .sort((a, b) => a.pricePerYear - b.pricePerYear)
+            .map((healthPackage, idx) => {
+              return (
+                <HealthPackageCard
+                  key={idx}
+                  healthPackage={healthPackage}
+                  selected={selected}
+                  setSelected={setSelected}
+                  index={idx}
+                />
+              );
+            })}
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <PayHealthPackageModal
