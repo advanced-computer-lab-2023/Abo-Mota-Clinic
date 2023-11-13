@@ -163,7 +163,10 @@ const addFamilyMember = async (req, res) => {
 // Get all doctors
 const getDoctors = async (req, res) => {
   try {
-    const doctors = await Doctor.find({ registrationStatus: "approved" }).select("-password");
+    const doctors = await Doctor.find({
+      registrationStatus: "approved",
+      contractApproved: true,
+    }).select("-password");
     const doctorsWithAppointments = await Promise.all(
       doctors.map(async (doctor) => {
         const appointments = await Appointment.find({ doctor: doctor._id, status: "unbooked" });
@@ -218,7 +221,7 @@ const deleteMedicalHistory = async (req, res) => {
       return res.status(404).json({ error: "Patient not found" });
     }
 
-    const objectId = mongoose.Types.ObjectId(id);
+    const objectId = new mongoose.Types.ObjectId(id);
     patient.medicalHistory = patient.medicalHistory.filter((file) => !objectId.equals(file._id));
 
     await patient.save();

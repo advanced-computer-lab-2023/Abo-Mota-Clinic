@@ -1,24 +1,25 @@
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import Typography from '@mui/joy/Typography';
-import Avatar from '@mui/joy/Avatar';
-import IconButton from '@mui/joy/IconButton';
-import Divider from '@mui/joy/Divider';
-import Box from '@mui/joy/Box';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import Card from "@mui/joy/Card";
+import CardContent from "@mui/joy/CardContent";
+import Typography from "@mui/joy/Typography";
+import Avatar from "@mui/joy/Avatar";
+import IconButton from "@mui/joy/IconButton";
+import Divider from "@mui/joy/Divider";
+import Box from "@mui/joy/Box";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { BiChat } from "react-icons/bi";
-import DoctorImg from '../assets/images/doctor.jpg';
-import Chip from '@mui/joy/Chip';
-import capitalize from '../utils/capitalize';
+import DoctorImg from "../assets/images/doctor.jpg";
+import Chip from "@mui/joy/Chip";
+import capitalize from "../utils/capitalize";
 
 function AppointmentCard({ sx, formattedDate, status, doctor: { name, specialty } }) {
-
-  console.log("name: ", name);
+  // console.log("name: ", name);
+  // console.log("doctor: ", specialty);
   const colors = {
-    "upcoming": "warning",
-    "cancelled": "error",
-    "completed": "success"
-  }
+    upcoming: "warning",
+    cancelled: "danger",
+    completed: "success",
+    rescheduled: "primary",
+  };
 
   return (
     <Card
@@ -26,8 +27,8 @@ function AppointmentCard({ sx, formattedDate, status, doctor: { name, specialty 
       orientation="horizontal"
       sx={{
         width: "100%",
-        '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
-        ...sx
+        "&:hover": { boxShadow: "md", borderColor: "neutral.outlinedHoverBorder" },
+        ...sx,
       }}
     >
       <CardContent>
@@ -36,15 +37,13 @@ function AppointmentCard({ sx, formattedDate, status, doctor: { name, specialty 
             <Typography
               level="body-lg"
               id="card-description"
-            // startDecorator={<AccessTimeIcon fontSize='10' />}
+              // startDecorator={<AccessTimeIcon fontSize='10' />}
             >
               Appointment
             </Typography>
 
-            <Chip color={colors[status]} variant='soft'>
-              <Typography level='title-lg'>
-                {capitalize(status)}
-              </Typography>
+            <Chip color={colors[status]} variant="soft">
+              <Typography level="title-lg">{capitalize(status)}</Typography>
             </Chip>
           </Box>
 
@@ -52,7 +51,7 @@ function AppointmentCard({ sx, formattedDate, status, doctor: { name, specialty 
             level="body-lg"
             aria-describedby="card-description"
             mb={1}
-            startDecorator={<AccessTimeIcon fontSize='10' />}
+            startDecorator={<AccessTimeIcon fontSize="10" />}
           >
             {formattedDate.replace(",", " -")}
           </Typography>
@@ -61,14 +60,10 @@ function AppointmentCard({ sx, formattedDate, status, doctor: { name, specialty 
         <Divider sx={{ marginBottom: 1.5 }} />
 
         <Box className="flex justify-between">
-          <Box className='flex space-x-4'>
-            <Avatar
-              alt={name}
-              src={DoctorImg}
-              size="lg"
-            />
+          <Box className="flex space-x-4">
+            <Avatar alt={name} src={DoctorImg} size="lg" />
 
-            <Box className='mr-10'>
+            <Box className="mr-10">
               <Typography level="title-lg" id="card-description">
                 Dr. {name}
               </Typography>
@@ -82,10 +77,8 @@ function AppointmentCard({ sx, formattedDate, status, doctor: { name, specialty 
             <BiChat fontSize={24} />
           </IconButton>
         </Box>
-
       </CardContent>
     </Card>
-
   );
 }
 
