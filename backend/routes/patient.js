@@ -59,7 +59,7 @@ router.post(
 );
 
 //Delete a medical history record
-router.delete("/deleteMedicalHistory/:id", authorize, deleteMedicalHistory);
+router.patch("/deleteMedicalHistory/:id", authorize, deleteMedicalHistory);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
@@ -114,6 +114,8 @@ router.post("/cancelMySub", authorize, selfCancelSubscription);
 
 // Cancel family member subscription
 router.post("/cancelFamilySub", authorize, familyCancelSubscription);
+
+
 
 // Unsubscribe from my package
 router.post("/unsubscribe", authorize, packageUnsubscribe);
