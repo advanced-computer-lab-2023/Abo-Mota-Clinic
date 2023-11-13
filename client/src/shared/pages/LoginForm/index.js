@@ -11,16 +11,18 @@ import "./styles.css";
 import { useLoginMutation } from "../../../store";
 import ForgetPasswordScreen from "../ForgetPasswordScreen";
 import OtpScreen from "../OtpScreen";
-const LoginForm = () => {
+
+
+function LoginForm({setIsLoggedIn, isLoggedIn}) 
+ {
   const [isLoading, setIsLoading] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(false);
   const [otpOpen, setOtpOpen] = useState(false);
   const navigate = useNavigate();
   const [login, results] = useLoginMutation();
   const handleSubmit = async (values, { resetForm }) => {
-    // values contains all the data needed for registeration
-    // console.log(values);
-    console.log(values);
+    
+    
     const user = {
       username: values.username,
       password: values.password,
@@ -30,8 +32,9 @@ const LoginForm = () => {
 
     try {
       const result = await login(user).unwrap();
-      console.log(result);
-      // Use the result for navigation or other side effects
+      if(result.userType === "patient" ||result.userType === "doctor"||result.userType === "admin")
+          setIsLoggedIn(true);
+        console.log(isLoggedIn);
       if (result.userType === "patient") {
         navigate("/patient");
       } else if (result.userType === "doctor") {

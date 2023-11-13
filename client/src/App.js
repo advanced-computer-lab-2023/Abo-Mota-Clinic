@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Patient from "./patient/Patient";
 import Doctor from "./doctor/Doctor";
 import Admin from "./admin/Admin";
@@ -44,11 +45,14 @@ import LoginForm from "./shared/pages/LoginForm";
 // login
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn]= useState(false);
+
   return (
     <div>
       <Routes>
-        <Route path="/" element={<LoginForm />} />
-        <Route path="/patientRegistration" element={<RegisterScreen />} />
+        <Route path="/" element={<LoginForm setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>} />
+        {isLoggedIn &&<>
+          <Route path="/patientRegistration" element={<RegisterScreen />} />
         <Route path="/patient" element={<Patient />}>
           <Route path="" element={<PatientHome />} /> {/* TODO: change to home page */}
           <Route path="appointments" element={<ViewPatientAppointments />} />
@@ -79,13 +83,15 @@ function App() {
           <Route path="registerForm" element={<RegisterForm />} />
           <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
           <Route path="wallet" element={<ViewWallet isPatient ={false}/>} />
-
         </Route>
         <Route path="/admin" element={<Admin />}>
           <Route path="applications" element={<Applications />} />
           <Route path="packages" element={<Packages />} />
           <Route path="manageUsers" element={<ManageUsers />} />
         </Route>
+        </>
+        }
+        
       </Routes>
     </div>
   );
