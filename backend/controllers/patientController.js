@@ -275,7 +275,6 @@ const getAvailableAppointments = async (req, res) => {
     if (!(await Doctor.findOne({ _id: doctorId }))) {
       throw Error("Doctor doesn't exist");
     }
-    // Add milliseconds to Date.now if we want to change the starting range of appointments
     const currentDate = new Date(Date.now());
     const filter = {
       $and: [
@@ -292,6 +291,7 @@ const getAvailableAppointments = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const linkFamilyMember = async (req, res) => {
   try {

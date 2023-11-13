@@ -81,12 +81,6 @@ router.patch("/payWallet", authorize, payByWallet);
 
 router.patch("/creditDoctor", authorize, creditDoctor);
 
-// Subscribe for myself
-// router.post("/selfSubscribe", authorize, subscribeForMyself);
-
-// Subscribe for a family member
-// router.post("/familySubscribe", authorize, subscribeForFamily);
-
 // Subscribe to a health package
 router.post("/subscribe", authorize, subscribeToHealthPackage);
 
@@ -119,4 +113,6 @@ router.post("/cancelFamilySub", authorize, familyCancelSubscription);
 
 // Unsubscribe from my package
 router.post("/unsubscribe", authorize, packageUnsubscribe);
+
+
 module.exports = router;
