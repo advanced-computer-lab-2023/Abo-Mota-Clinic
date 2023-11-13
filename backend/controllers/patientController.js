@@ -5,6 +5,7 @@ const Prescription = require("../models/Prescription");
 const HealthPackage = require("../models/HealthPackage");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const mongoose = require('mongoose');
 
 const getPatient = async (req, res) => {
 	try {
@@ -210,10 +211,15 @@ const uploadMedicalHistory = async (req, res) => {
 const deleteMedicalHistory = async (req, res) => {
 	try {
 		const username = req.userData.username;
-		const fileName = req.params.fileName;
+		const id = req.params.id; 
 
 		const patient = await Patient.findOne({ username });
-		patient.medicalHistory = patient.medicalHistory.filter((file) => !fileName.equals(file));
+		if (!patient) {
+			return res.status(404).json({ error: "Patient not found" });
+		}
+
+		const objectId = mongoose.Types.ObjectId(id);
+		patient.medicalHistory = patient.medicalHistory.filter((file) => !objectId.equals(file._id));
 
 		await patient.save();
 

@@ -78,7 +78,8 @@ export const {
   useFetchWalletPatientQuery,
   useSubscribeToHealthPackageMutation,
   useCancelMyFamilyPackageMutation,
-  useUploadMedicalHistoryMutation
+  useUploadMedicalHistoryMutation,
+  useRemoveDocumentMutation
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;

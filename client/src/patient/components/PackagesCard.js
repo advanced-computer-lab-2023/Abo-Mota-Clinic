@@ -85,7 +85,6 @@ const colorSchemes = {
             cancelFamilyPackage({familyMemberUsername:data.name});
         }
         setOpen(false);
-
     }
 
     return (

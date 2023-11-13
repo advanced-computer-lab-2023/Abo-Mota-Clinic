@@ -82,18 +82,7 @@ const patientApi = createApi({
         },
       }),
 
-      uploadMedicalHistory: builder.mutation({
-        query: ({ medicalHistory }) => {
-          const formData = new FormData();
-          formData.append("medicalHistory", medicalHistory);
-          return {
-            url: "/uploadMedicalHistory",
-            method: "POST",
-            body: formData,
-          };
-        },
-      }),
-
+      
       deleteMedicalHistory: builder.mutation({
         query: ({fileName}) => {
           return {
@@ -252,6 +241,17 @@ const patientApi = createApi({
           };
         },
     }),
+    removeDocument:builder.mutation({
+      invalidatesTags:(result,error,data)=>{
+        return ["my info"]
+      },
+      query:({_id})=>{
+        return {
+          url:`/deleteMedicalHistory/${_id}`,
+          method:"PATCH"
+        }
+      }
+    })
 
     };
   },
@@ -275,7 +275,7 @@ export const {
   useBookAppointmentMutation,
   useCancelMyPackageMutation,
   useCancelMyFamilyPackageMutation,
-  useUploadMedicalHistoryMutation
+  useRemoveDocumentMutation
 } = patientApi;
 
 export { patientApi };

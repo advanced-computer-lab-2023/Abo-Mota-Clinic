@@ -59,7 +59,7 @@ router.post(
 );
 
 //Delete a medical history record
-router.delete("/deleteMedicalHistory/:id", authorize, deleteMedicalHistory);
+router.patch("/deleteMedicalHistory/:id", authorize, deleteMedicalHistory);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);

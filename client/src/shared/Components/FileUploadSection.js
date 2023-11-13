@@ -1,19 +1,18 @@
-import { useUploadMedicalHistoryMutation } from "../../store";
-
-
-
-
+import { useRemoveDocumentMutation, useUploadMedicalHistoryMutation } from "../../store";
+import {AiOutlineClose} from '@react-icons/all-files/ai/AiOutlineClose';
 
 function FileUploadSection({ files }) {
   const [uploadMedicalHistory] = useUploadMedicalHistoryMutation();
-
+  const [removeDocument]  = useRemoveDocumentMutation();
+  
   const handleFileUpload = (event) => {
     const files = event.target.files;
-    console.log(files);
+    
     if (files.length > 0) {
         uploadMedicalHistory({medicalHistory:files[0]});
     }
   };
+  
   
   const handleViewFile = (file) => {
     const arrayBuffer = new Uint8Array(file.data.data).buffer;
@@ -21,6 +20,11 @@ function FileUploadSection({ files }) {
     const fileUrl = URL.createObjectURL(blob);
     window.open(fileUrl, '_blank');
   };
+
+  const handleRemoveFile = (file)=>{
+    console.log(file);
+    removeDocument(file);
+  }
   
 
   return (
@@ -32,7 +36,13 @@ function FileUploadSection({ files }) {
             <span className="text-sm font-medium">{file.fileName}, {/*{file.size}*/}</span>
             <div className="flex space-x-2">
               <button className="text-blue-600 hover:underline" onClick={() => handleViewFile(file)}>View</button>
-              <button className="text-blue-600 hover:underline">Download</button>
+              <button 
+            className="text-red-600 hover:underline" 
+            onClick={() => {handleRemoveFile(file)}}
+            aria-label="Remove file"
+          >
+            <AiOutlineClose />
+          </button>
             </div>
           </div>
         ))}
