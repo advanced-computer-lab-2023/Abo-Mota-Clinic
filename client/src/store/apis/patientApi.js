@@ -1,19 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const pause = (duration) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, duration);
-  });
-};
+// const pause = (duration) => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve();
+//     }, duration);
+//   });
+// };
 
 const patientApi = createApi({
   reducerPath: "patient",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api/patient",
     fetchFn: async (...args) => {
-      await pause(2000);
+      // await pause(2000);
       return fetch(...args, { credentials: "include" });
     },
   }),
@@ -164,19 +164,18 @@ const patientApi = createApi({
           return {
             url: "/wallet",
             method: "GET",
-          }
-        }
+          };
+        },
       }),
       subscribeToHealthPackage: builder.mutation({
         query: (data) => {
           return {
-            url: "/subscribeToHealthPackage",
+            url: "/subscribe",
             method: "POST",
             body: data,
           };
         },
       }),
-
     };
   },
 });
