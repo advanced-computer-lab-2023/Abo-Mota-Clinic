@@ -275,7 +275,7 @@ const patientApi = createApi({
         },
       }),
 
-      changePassword: builder.mutation({
+      changePatientPassword: builder.mutation({
         query: (data) => {
           return {
             url: "/changePassword",
@@ -309,7 +309,7 @@ export const {
   useRemoveDocumentMutation,
   useLinkFamilyMemberMutation,
   useFetchWalletPatientQuery,
-  useChangePasswordMutation,
+  useChangePatientPasswordMutation,
 } = patientApi;
 
 export { patientApi };

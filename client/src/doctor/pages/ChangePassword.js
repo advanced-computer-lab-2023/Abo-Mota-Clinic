@@ -1,13 +1,13 @@
 import { Button, Modal, ModalDialog, ModalClose, DialogTitle, DialogContent, Stack, FormControl, FormLabel, Input, Select, DatePicker, LocalizationProvider } from '@mui/joy';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from 'react';
-import { useChangePatientPasswordMutation } from '../../store';
-import Toast from './Toast';
+import { useChangeDoctorPasswordMutation } from '../../store';
+import Toast from '../../patient/components/Toast';
 
 function ChangePassword() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [changePassword, results] = useChangePatientPasswordMutation();
+  const [changePassword, results] = useChangeDoctorPasswordMutation();
   
 
   const [formState, setFormState] = useState({

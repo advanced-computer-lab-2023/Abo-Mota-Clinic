@@ -8,6 +8,7 @@ export default function EditMyProfile() {
   return (
     <div className="ml-10 mt-5">
       <UserCard />
+      
     </div>
   );
 }

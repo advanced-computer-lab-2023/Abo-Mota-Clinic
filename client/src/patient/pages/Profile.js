@@ -11,7 +11,6 @@ function Profile() {
   const {data, error, isFetching} = useFetchPatientQuery();
   
   
-
   return (
     <div className="bg-gray-100 min-h-screen p-8 w-full">
       {isFetching ||
@@ -32,9 +31,8 @@ function Profile() {
             </div>
 
             <div className='w-full md:w-1/2 px-3 md:px-6 py-4'>
-              <PasswordSection />
+                <PasswordSection />
             </div>
-
           </div>
         </>}
     </div>

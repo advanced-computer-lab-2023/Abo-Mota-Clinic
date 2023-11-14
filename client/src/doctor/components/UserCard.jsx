@@ -16,6 +16,7 @@ import emailValidator from "email-validator";
 import Toast from "../../patient/components/Toast";
 import ViewLicenseAndDegree from "./ViewLicenseAndDegree";
 import { capitalizeFirstLetter } from "../components/AppointmentCard";
+import PasswordSection from "../pages/PasswordSection";
 
 export default function UserCard() {
 
@@ -274,6 +275,7 @@ export default function UserCard() {
         message="Enter Email in correct format"
         duration={4000}
       />
+      <PasswordSection/>
       <ViewLicenseAndDegree data={data} />
     </Box>
   );

@@ -42,6 +42,7 @@ import Contract from "./doctor/pages/Contract";
 // login
 import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
+import PasswordSection from "./admin/pages/PasswordSection";
 
 // login
 function App() {
@@ -91,6 +92,7 @@ function App() {
             <Route path="applications" element={<Applications />} />
             <Route path="packages" element={<Packages />} />
             <Route path="manageUsers" element={<ManageUsers />} />
+            <Route path="changePassword" element={<PasswordSection/>}/>
           </Route>
         </Route>
       </Routes>

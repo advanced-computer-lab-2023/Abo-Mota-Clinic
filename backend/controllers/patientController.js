@@ -310,7 +310,6 @@ const updateNewlyLinkedFamilyMemberDiscount = async (loggedIn, linkedMember) => 
         { familyDiscount: linkedMember.healthPackage.package.familyDiscount }
       );
     }
-
     return;
   }
   if (isNotLinkedMemberPackage) {

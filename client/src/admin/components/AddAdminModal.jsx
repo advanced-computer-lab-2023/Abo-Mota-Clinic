@@ -21,6 +21,7 @@ const modalPaperStyle = {
 
 function AddAdminModal() {
   const [open, setOpen] = useState(false);
+  const [email, setEmail]= useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [addAdmin, results] = useAddAdminMutation();
@@ -31,6 +32,9 @@ function AddAdminModal() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
   };
 
   const handleUsernameChange = (event) => {
@@ -45,9 +49,10 @@ function AddAdminModal() {
     // Handle form submission here
     event.preventDefault();
     // console.log(username, password);
-    await addAdmin({ username, password });
+    await addAdmin({ username, password,email });
     setUsername("");
     setPassword("");
+    setEmail("");
     setOpen(false);
   };
 
@@ -70,6 +75,15 @@ function AddAdminModal() {
         <div style={modalPaperStyle}>
           <h2 id="add-admin-modal-title">Add Administrator</h2>
           <form onSubmit={handleSubmit}>
+          <TextField
+              label="Email"
+              variant="outlined"
+              fullWidth
+              value={email}
+              onChange={handleEmailChange}
+              required
+              margin="normal"
+            />
             <TextField
               label="Username"
               variant="outlined"

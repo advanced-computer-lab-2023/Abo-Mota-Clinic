@@ -33,11 +33,12 @@ function ViewDoctorAppointments() {
 
 	const options = ["upcoming", "cancelled", "completed", "rescheduled"];
 
+
 	if(isFetching)
 		filteredAppointments = [];
 	else if (selection.length === 0) {
 		filteredAppointments = data.filter((appointment) => appointment.patient != null);
-		console.log(data);
+		
 	} else {
 		filteredAppointments = data.filter((appointment) => selection.includes(appointment.status));
 	}

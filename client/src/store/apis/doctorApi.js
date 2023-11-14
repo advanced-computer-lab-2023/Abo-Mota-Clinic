@@ -146,6 +146,17 @@ const doctorApi = createApi({
               };
             },
         }),
+        changeDoctorPassword: builder.mutation({
+          query: (data) => {
+            return {
+              url: "/changePassword",
+              method: "PATCH",
+              body: data,
+            };
+          },
+        })
+
+        
         
         
         };
@@ -163,6 +174,7 @@ export const {
     useAddFreeSlotsMutation,
     useFetchWalletDoctorQuery,
     useUploadHealthRecordMutation,
+    useChangeDoctorPasswordMutation
 } = doctorApi;
 export { doctorApi };
 

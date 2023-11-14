@@ -10,5 +10,9 @@ export const items = [
 	{
 		name: "Manage Users",
 		to: "manageUsers",
+	},
+	{
+		name: "Change Password",
+		to: "changePassword"
 	}
 ];
