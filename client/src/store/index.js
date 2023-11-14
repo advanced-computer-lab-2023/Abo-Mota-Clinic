@@ -5,10 +5,20 @@ import { adminApi } from "./apis/adminApi";
 import { guestApi } from "./apis/guestApi";
 import { patientApi } from "./apis/patientApi";
 import { stripeApi } from "./apis/stripeApi";
+import { userReducer } from "./slices/userSlice";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import { persistReducer, persistStore } from "redux-persist";
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, userReducer);
 
 export const store = configureStore({
   reducer: {
-    
+    user: persistedReducer,
     [doctorApi.reducerPath]: doctorApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
     [guestApi.reducerPath]: guestApi.reducer,
@@ -26,7 +36,7 @@ export const store = configureStore({
 });
 
 setupListeners(store.dispatch);
-
+export const persistor = persistStore(store);
 export {
   useFetchAppointmentsQuery,
   useFetchPatientsQuery,
@@ -79,7 +89,9 @@ export const {
   useSubscribeToHealthPackageMutation,
   useCancelMyFamilyPackageMutation,
   useUploadMedicalHistoryMutation,
-  useRemoveDocumentMutation
+  useRemoveDocumentMutation,
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
+
+export { logout, login, setUserRole } from "./slices/userSlice";
