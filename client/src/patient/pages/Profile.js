@@ -11,13 +11,8 @@ function Profile() {
   const {data, error, isFetching} = useFetchPatientQuery();
   
 
-  const medicalHistoryFiles = data && data.medicalHistory.map(file => ({
-    name: file.fileName, 
-    size: 'Unknown', 
-    type: file.contentType 
-  }));
-  if(!isFetching)
-    console.log(data);
+  
+  console.log(data);
 
 
   return (
