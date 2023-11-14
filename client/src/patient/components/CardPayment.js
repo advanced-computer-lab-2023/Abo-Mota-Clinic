@@ -5,6 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useFetchStripeConfigQuery, useCreatePaymentIntentMutation } from "../../store";
 
 function Payment({ deductible, onSuccess, onFailure }) {
+  const currencyMultiplier = 100;
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
 
@@ -18,7 +19,7 @@ function Payment({ deductible, onSuccess, onFailure }) {
   }, [isFetching]);
 
   useEffect(() => {
-    createPaymentIntent(deductible)
+    createPaymentIntent(currencyMultiplier * deductible)
       .unwrap()
       .then((res) => setClientSecret(res.clientSecret));
   }, [])

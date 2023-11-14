@@ -21,6 +21,10 @@ const patientApi = createApi({
   endpoints: (builder) => {
     return {
       fetchPatient: builder.query({
+        providesTags: (result, error) => {
+          return ["Patient"];
+        },
+
         query: (id) => {
           return {
             url: "/",
@@ -140,6 +144,10 @@ const patientApi = createApi({
       }),
 
       payByWallet: builder.mutation({
+        invalidatesTags: (result, error, arg) => {
+          return ["Patient"];
+        },
+
         query: (data) => {
           return {
             url: "/payWallet",
