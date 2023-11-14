@@ -21,7 +21,7 @@ export default function AppointmentCard({appointment}) {
     const navigateToPatientFollowUp = () => {
       navigate('PatientFollowUp' , {state: appointment.patient}); // Use the patient to navigate
     };
-const colors = {
+    const colors = {
     "upcoming": "warning",
     "cancelled": "danger",
     "completed": "success",
@@ -30,13 +30,15 @@ const colors = {
     }
 
     const currDate = dayjs();
-      const appointmentDate = dayjs(appointment.formattedDate);
-    
-      if (appointmentDate.isAfter(currDate) && ((appointment.status !== "cancelled") || (appointment.status !== "rescheduled"))){
+    const appointmentDate = dayjs(appointment.formattedDate);
+    if(((appointment.status !== "cancelled") && (appointment.status !== "rescheduled"))){
+      if (appointmentDate.isAfter(currDate)){
         appointment =  { ...appointment, status: "upcoming" };
       } else {
         appointment = { ...appointment, status: "completed" };
       }
+    }
+      
     return (
       <Box sx={{ width: '100%', marginBottom: '16px' }}>
         <Card

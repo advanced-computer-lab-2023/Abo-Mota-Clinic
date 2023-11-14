@@ -59,7 +59,7 @@ router.post(
 );
 
 //Delete a medical history record
-router.delete("/deleteMedicalHistory/:id", authorize, deleteMedicalHistory);
+router.patch("/deleteMedicalHistory/:id", authorize, deleteMedicalHistory);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
@@ -80,12 +80,6 @@ router.post("/linkFamily", authorize, linkFamilyMember);
 router.patch("/payWallet", authorize, payByWallet);
 
 router.patch("/creditDoctor", authorize, creditDoctor);
-
-// Subscribe for myself
-// router.post("/selfSubscribe", authorize, subscribeForMyself);
-
-// Subscribe for a family member
-// router.post("/familySubscribe", authorize, subscribeForFamily);
 
 // Subscribe to a health package
 router.post("/subscribe", authorize, subscribeToHealthPackage);
@@ -115,6 +109,10 @@ router.post("/cancelMySub", authorize, selfCancelSubscription);
 // Cancel family member subscription
 router.post("/cancelFamilySub", authorize, familyCancelSubscription);
 
+
+
 // Unsubscribe from my package
 router.post("/unsubscribe", authorize, packageUnsubscribe);
+
+
 module.exports = router;

@@ -19,4 +19,8 @@ export const items = [
     name: "View Health Packages Options",
     to: "healthPackages",
   },
+  {
+    name: "View my Wallet",
+    to: "wallet"
+  }
 ];

@@ -136,15 +136,15 @@ export default function ViewPatientInfo() {
         <Divider inset="none" />
       </Typography>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pr-20 mb-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 pr-20 mb-5">
         {renderedAppointments}
       </div>
-      {completedApps.length !== 0 && (
-        <div>
-          <Typography level="h4" fontWeight="lg">
-            Health Records
-            <Divider inset="none" />
-          </Typography>
+      <div>
+        <Typography level="h4" fontWeight="lg">
+          Health Records
+          <Divider inset="none" />
+        </Typography>
+        {completedApps.length !== 0 && (
           <div
             onClick={() => {
               setAddHealthRecordOpen(true);
@@ -155,17 +155,17 @@ export default function ViewPatientInfo() {
             <AiOutlinePlusCircle size={18} />
             Add Health Record
           </div>
-          {addHealthRecordOpen && (
-            <AddHealthRecordScreen
-              patient={patientData}
-              closeForm={() => {
-                setAddHealthRecordOpen(false);
-              }}
-            />
-          )}
-          <Tabs defaultActiveKey="1" items={recordItems} size="large" />
-        </div>
-      )}
+        )}
+        {addHealthRecordOpen && (
+          <AddHealthRecordScreen
+            patient={patientData}
+            closeForm={() => {
+              setAddHealthRecordOpen(false);
+            }}
+          />
+        )}
+        <Tabs defaultActiveKey="1" items={recordItems} size="large" />
+      </div>
 
       <div>
         <Typography level="h4" fontWeight="lg">

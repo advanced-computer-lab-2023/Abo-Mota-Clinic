@@ -45,6 +45,7 @@ export default function MiniAppointmentCard({ appointment }) {
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
+        mr: 2,
       }}
       className="hover:shadow-lg"
     >

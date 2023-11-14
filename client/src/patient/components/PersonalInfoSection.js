@@ -8,7 +8,7 @@ function  PersonalInfoSection({patient})
 {
   const navigate = useNavigate();
   const handleViewSubscription = ()=>{
-    navigate('./Subscription');
+    navigate('./Subscription'); 
   }
 
   const formattedDate = new Date(patient.dob).toLocaleDateString('en-GB', {

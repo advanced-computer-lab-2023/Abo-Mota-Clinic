@@ -18,6 +18,11 @@ export const items = [
 	{
 		name: "View Contract",
 		to: "contract"
+	},
+	{
+		name: "View my Wallet",
+		to: "wallet"
 	}
+	
 	
 ];

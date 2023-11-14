@@ -25,7 +25,7 @@ export default function ViewPatientAppointments() {
       const currDate = dayjs();
       const appointmentDate = dayjs(appointment.formattedDate);
       if (appointment.status === "cancelled" || appointment.status === "reschedualed") {
-        return undefined;
+        return appointment;
       }
       if (appointmentDate.isAfter(currDate)) {
         return { ...appointment, status: "upcoming" };
@@ -42,8 +42,9 @@ export default function ViewPatientAppointments() {
         return true;
       }
     });
-
+    // console.log(filteredData);
     content = filteredData.map((appointment) => {
+      // console.log("appointment: ", appointment);
       return <AppointmentCard sx={{ width: "100%" }} {...appointment} />;
     });
   }

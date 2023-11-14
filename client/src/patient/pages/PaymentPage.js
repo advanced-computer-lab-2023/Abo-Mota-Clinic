@@ -15,13 +15,32 @@ import { IoWallet } from "react-icons/io5";
 
 // UTILS
 import round2dp from "../utils/round2dp";
+import { useFetchFamilyMembersQuery, useFetchPatientQuery } from "../../store";
+import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+import UserSelectionModal from "../components/UserSelectionModal";
+import { TextField } from "@mui/material";
 
-function PaymentPage({ items, type, details, discount, onPaymentSuccess, onPaymentFailure }) {
+function PaymentPage({
+  items,
+  type,
+  details,
+  discount,
+  onPaymentSuccess,
+  onPaymentFailure,
+  usersState,
+  isSubscribing,
+}) {
   const [paymentMethod, setPaymentMethod] = useState("card");
-
-  const subtotal = items.reduce((acc, {price}) => acc + price, 0);
+  const { selectedUser, setSelectedUser } = usersState;
+  const subtotal = items.reduce((acc, { price }) => acc + price, 0);
   const deductible = round2dp(subtotal * (1 - discount));
-  
+
+  const { data: familyMembers, isFetching, error } = useFetchFamilyMembersQuery();
+  const {
+    data: patient,
+    isFetching: isFetchingPatient,
+    error: errorPatient,
+  } = useFetchPatientQuery();
   const buttonGroup = [
     {
       id: 1,
@@ -37,6 +56,10 @@ function PaymentPage({ items, type, details, discount, onPaymentSuccess, onPayme
     },
   ];
 
+  if (isFetching || isFetchingPatient) {
+    return <LoadingIndicator />;
+  }
+  const users = [patient].concat(familyMembers);
   return (
     <Box className="mt-15 space-y-5">
       <Box sx={{ py: 2 }}>
@@ -47,9 +70,37 @@ function PaymentPage({ items, type, details, discount, onPaymentSuccess, onPayme
         <br></br>
 
         <Box id="card-body" className="w-full flex justify-between space-x-20">
-          <Box sx={{ width: '60%' }}>
-
+          <Box sx={{ width: "60%" }}>
             <CheckoutDetails type={type} details={details} />
+            <Typography level="h4" sx={{ mt: 5 }}>
+              Select Desired User
+            </Typography>
+            <Box
+              sx={{
+                mt: 3,
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <TextField
+                disabled
+                label="Selected User"
+                variant="outlined"
+                value={selectedUser !== -1 ? selectedUser.name : ""}
+                InputLabelProps={{
+                  readOnly: true,
+                }}
+              />
+              <Box sx={{ ml: 3 }}>
+                <UserSelectionModal
+                  selectedUser={selectedUser}
+                  setSelectedUser={setSelectedUser}
+                  users={users}
+                  isSubscribing={isSubscribing}
+                />
+              </Box>
+            </Box>
 
             <Typography level="h3" sx={{ mt: 5 }}>
               Payment Method
@@ -95,16 +146,10 @@ function PaymentPage({ items, type, details, discount, onPaymentSuccess, onPayme
             </Card>
           </Box>
 
-          <PaymentSummary
-            items={items}
-            discount={discount}
-          />
-
+          <PaymentSummary items={items} discount={discount} />
         </Box>
       </Box>
     </Box>
-
-
   );
 }
 export default PaymentPage;

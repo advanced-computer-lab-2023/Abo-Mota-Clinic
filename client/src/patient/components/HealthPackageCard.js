@@ -230,19 +230,19 @@ const HealthPackageCard = ({ healthPackage, selected, setSelected, index }) => {
         <CardContent>
           <FeatureList>
             <FeatureItem>
-              <CheckCircleIcon color="success" /> Doctor Discount: {doctorDiscount}%
+              <CheckCircleIcon color="success" /> Doctor Discount: {doctorDiscount * 100}%
               <Tooltip title="Discount provided on doctor appointments">
                 <TooltipIcon />
               </Tooltip>
             </FeatureItem>
             <FeatureItem>
-              <CheckCircleIcon color="success" /> Pharmacy Discount: {pharmacyDiscount}%
+              <CheckCircleIcon color="success" /> Pharmacy Discount: {pharmacyDiscount * 100}%
               <Tooltip title="Discount provided on pharmacy purchases">
                 <TooltipIcon />
               </Tooltip>
             </FeatureItem>
             <FeatureItem>
-              <CheckCircleIcon color="success" /> Family Discount: {familyDiscount}%
+              <CheckCircleIcon color="success" /> Family Discount: {familyDiscount * 100}%
               <Tooltip title="Discount provided for family members">
                 <TooltipIcon />
               </Tooltip>

@@ -97,39 +97,71 @@ const doctorApi = createApi({
               patientUsername,
               followUpDate,
             },
-            method: "POST",
-          };
-        },
-      }),
-      uploadHealthRecord: builder.mutation({
-        invalidatesTags: (result, error, { id }) => {
-          return [
-            { type: "Doctor", id: "123" },
-            { type: "Patient", id: id },
-          ];
-        },
-        query: ({ username, healthRecord }) => {
-          const formData = new FormData();
-          formData.append("username", username);
-          formData.append("healthRecord", healthRecord);
-          return {
-            url: "/uploadHealthRecord",
-            body: formData,
-            method: "POST",
-          };
-        },
-      }),
-    };
-  },
-});
+            }
+        }
+        }),
+        addFreeSlots: builder.mutation({
+            invalidatesTags : (result, error, doctor)=>{
+                return [{type:'Doctor', id:"123"}];
+            },
+            query : ({date, startTime, endTime, appointmentDuration, buffer})=>{
+                return {
+                    url: '/addFreeAppointmentSlots',
+                    body: {
+                        date,
+                        startTime,
+                        endTime,
+                        appointmentDuration,
+                        buffer
+                    },
+                    method :'POST',
+                }
+            }
+        }),
+
+        fetchWalletDoctor: builder.query({
+            query: () => {
+              return {
+                url: "/wallet",
+                method: "GET",
+              };
+            },
+        }),
+        uploadHealthRecord: builder.mutation({
+            invalidatesTags: (result, error, { id }) => {
+              return [
+                { type: "Doctor", id: "123" },
+                { type: "Patient", id: id },
+              ];
+            },
+            query: ({ username, healthRecord }) => {
+              const formData = new FormData();
+              formData.append("username", username);
+              formData.append("healthRecord", healthRecord);
+              return {
+                url: "/uploadHealthRecord",
+                body: formData,
+                method: "POST",
+              };
+            },
+        }),
+        
+        
+        };
+    }
+})
+
 
 export const {
-  useFetchDoctorQuery,
-  useFetchPatientsQuery,
-  useFetchAppointmentsQuery,
-  useUpdateDoctorMutation,
-  useAcceptContractMutation,
-  useScheduleFollowUpMutation,
-  useUploadHealthRecordMutation,
+    useFetchDoctorQuery,
+    useFetchPatientsQuery,
+    useFetchAppointmentsQuery,
+    useUpdateDoctorMutation,
+    useAcceptContractMutation,
+    useScheduleFollowUpMutation,
+    useAddFreeSlotsMutation,
+    useFetchWalletDoctorQuery,
+    useUploadHealthRecordMutation,
 } = doctorApi;
 export { doctorApi };
+

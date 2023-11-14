@@ -1,29 +1,34 @@
 import React, { useState } from "react";
 import HealthPackageCard from "../components/HealthPackageCard";
 import { Box } from "@mui/material";
-import { useFetchPackagesPatientQuery } from "../../store";
+import { useFetchPackagesPatientQuery, useFetchPatientQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import PayHealthPackageModal from "../components/PayHealthPackageModal";
 
 function HealthPackages() {
   const { data, isFetching, error } = useFetchPackagesPatientQuery();
+
   const [selected, setSelected] = useState(-1);
   let content = <LoadingIndicator />;
   if (!isFetching && !error) {
+    // console.log(data);
+    let newData = [...data];
     content = (
       <Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 2 }}>
-          {data.map((healthPackage, idx) => {
-            return (
-              <HealthPackageCard
-                key={idx}
-                healthPackage={healthPackage}
-                selected={selected}
-                setSelected={setSelected}
-                index={idx}
-              />
-            );
-          })}
+          {newData
+            .sort((a, b) => a.pricePerYear - b.pricePerYear)
+            .map((healthPackage, idx) => {
+              return (
+                <HealthPackageCard
+                  key={idx}
+                  healthPackage={healthPackage}
+                  selected={selected}
+                  setSelected={setSelected}
+                  index={idx}
+                />
+              );
+            })}
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <PayHealthPackageModal

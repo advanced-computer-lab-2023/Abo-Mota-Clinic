@@ -72,12 +72,14 @@ const patientSchema = new Schema(
       {
         data: Buffer,
         contentType: String,
+        fileName:String
       },
     ],
     medicalHistory: [
       {
         data: Buffer,
         contentType: String,
+        fileName: String
       },
     ],
     // prescriptions: [

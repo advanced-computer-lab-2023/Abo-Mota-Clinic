@@ -8,6 +8,7 @@ import { stripeApi } from "./apis/stripeApi";
 
 export const store = configureStore({
   reducer: {
+    
     [doctorApi.reducerPath]: doctorApi.reducer,
     [adminApi.reducerPath]: adminApi.reducer,
     [guestApi.reducerPath]: guestApi.reducer,
@@ -33,6 +34,8 @@ export {
   useUpdateDoctorMutation,
   useAcceptContractMutation,
   useScheduleFollowUpMutation,
+  useAddFreeSlotsMutation,
+  useFetchWalletDoctorQuery,
   useUploadHealthRecordMutation,
 } from "./apis/doctorApi";
 
@@ -66,9 +69,17 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
-  usePayByWalletMutation,
+  usePayAppointmentByWalletMutation,
+  useFetchMyPackageQuery,
+  useFetchFamilyPackageQuery,
   useBookAppointmentMutation,
+  useCancelMyPackageMutation,
+  usePayByWalletMutation,
+  useFetchWalletPatientQuery,
   useSubscribeToHealthPackageMutation,
+  useCancelMyFamilyPackageMutation,
+  useUploadMedicalHistoryMutation,
+  useRemoveDocumentMutation
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
