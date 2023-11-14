@@ -79,17 +79,17 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
-  usePayAppointmentByWalletMutation,
+  usePayByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,
   useCancelMyPackageMutation,
-  usePayByWalletMutation,
   useFetchWalletPatientQuery,
   useSubscribeToHealthPackageMutation,
   useCancelMyFamilyPackageMutation,
   useUploadMedicalHistoryMutation,
   useRemoveDocumentMutation,
+  useLinkFamilyMemberMutation,
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;

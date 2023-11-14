@@ -255,6 +255,25 @@ const patientApi = createApi({
           };
         },
       }),
+
+      linkFamilyMember: builder.mutation({
+        invalidatesTags: (result, error, data) => {
+          return [
+            "my info",
+            {
+              type: "patientId",
+              value: data.patientId,
+            },
+          ];
+        },
+        query: (data) => {
+          return {
+            url: "/linkFamily",
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
     };
   },
 });
@@ -271,13 +290,14 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
-  usePayAppointmentByWalletMutation,
+  usePayByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,
   useCancelMyPackageMutation,
   useCancelMyFamilyPackageMutation,
   useRemoveDocumentMutation,
+  useLinkFamilyMemberMutation,
 } = patientApi;
 
 export { patientApi };
