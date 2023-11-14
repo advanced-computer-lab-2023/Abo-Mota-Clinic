@@ -286,9 +286,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
                 </Sheet>
               </Box>
             </TabPanel> */}
-            <TabPanel value={1}>
-              <UserSelectionModal />
-            </TabPanel>
+            <TabPanel value={1}>reviews</TabPanel>
           </Tabs>
         </CardContent>
       </Card>

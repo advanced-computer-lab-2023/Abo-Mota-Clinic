@@ -12,6 +12,7 @@ import { persistReducer, persistStore } from "redux-persist";
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["isAuthenticatedClinic", "userRoleClinic"],
 };
 
 const persistedReducer = persistReducer(persistConfig, userReducer);
@@ -97,4 +98,4 @@ export const {
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
 
-export { logout, login, setUserRole } from "./slices/userSlice";
+export { logout, login } from "./slices/userSlice";

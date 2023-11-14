@@ -2,8 +2,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isAuthenticated: false,
-  userRole: null,
+  isAuthenticatedClinic: false,
+  userRoleClinic: null,
 };
 
 export const userSlice = createSlice({
@@ -11,20 +11,17 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.isAuthenticated = true;
-      state.userRole = action.payload.role;
+      state.isAuthenticatedClinic = true;
+      state.userRoleClinic = action.payload.role;
     },
     logout: (state) => {
-      state.isAuthenticated = false;
-      state.userRole = null;
-    },
-    setUserRole: (state, action) => {
-      state.userRole = action.payload;
+      state.isAuthenticatedClinic = false;
+      state.userRoleClinic = null;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { login, logout, setUserRole } = userSlice.actions;
+export const { login, logout } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
