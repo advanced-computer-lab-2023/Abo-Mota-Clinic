@@ -7,16 +7,16 @@ import { useFetchPatientQuery } from '../../store';
 import PasswordSection from '../components/PasswordSection';
 
 function Profile() {
-
-  const { data, error, isFetching } = useFetchPatientQuery();
-
+  
+  const {data, error, isFetching} = useFetchPatientQuery();
+  
 
   const medicalHistoryFiles = data && data.medicalHistory.map(file => ({
-    name: file.fileName,
-    size: 'Unknown',
-    type: file.contentType
+    name: file.fileName, 
+    size: 'Unknown', 
+    type: file.contentType 
   }));
-  if (!isFetching)
+  if(!isFetching)
     console.log(data);
 
 

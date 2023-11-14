@@ -281,6 +281,7 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
+  usePayByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,

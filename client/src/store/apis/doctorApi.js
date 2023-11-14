@@ -97,6 +97,7 @@ const doctorApi = createApi({
               patientUsername,
               followUpDate,
             },
+            method:"POST"
             }
         }
         }),

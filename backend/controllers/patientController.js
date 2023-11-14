@@ -193,6 +193,7 @@ const getAppointments = async (req, res) => {
 
 const uploadMedicalHistory = async (req, res) => {
   try {
+    // console.log(req.files.medicalHistory[0]);
     const medicalHistory = {
       data: req.files.medicalHistory[0].buffer,
       contentType: req.files.medicalHistory[0].mimetype,

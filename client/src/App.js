@@ -41,51 +41,57 @@ import Contract from "./doctor/pages/Contract";
 
 // login
 import LoginForm from "./shared/pages/LoginForm";
+import ProtectedRoute from "./ProtectedRoute";
 
 // login
-
 function App() {
   return (
     <div>
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/patientRegistration" element={<RegisterScreen />} />
-        <Route path="/patient" element={<Patient />}>
-          <Route path="" element={<PatientHome />} /> {/* TODO: change to home page */}
-          <Route path="appointments" element={<ViewPatientAppointments />} />
-          <Route path="doctors" element={<ViewDoctors />} />
-          <Route path="prescriptions" element={<ViewPrescriptions />} />
-          <Route path="familyMembers" element={<ViewFamilyMembers />} />
-          <Route path="test" element={<PatientTest />} />
-          <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
-          <Route path="wallet" element={<ViewWallet isPatient={true}/>} />
-          <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
-          <Route path="healthPackages" element={<HealthPackages />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="test3" element={<ChangePassword />} />
-          <Route path="profile/subscription" element={<Subscription />} />
-          <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
+        <Route element={<ProtectedRoute roles={["patient"]} />}>
+          <Route path="/patient" element={<Patient />}>
+            <Route path="" element={<PatientHome />} />
+            <Route path="appointments" element={<ViewPatientAppointments />} />
+            <Route path="doctors" element={<ViewDoctors />} />
+            <Route path="prescriptions" element={<ViewPrescriptions />} />
+            <Route path="familyMembers" element={<ViewFamilyMembers />} />
+            <Route path="test" element={<PatientTest />} />
+            <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
+            <Route path="wallet" element={<ViewWallet isPatient={true} />} />
+            <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
+            <Route path="healthPackages" element={<HealthPackages />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="test3" element={<PaymentPage />} />
+            <Route path="profile/subscription" element={<Subscription />} />
+            <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
+          </Route>
         </Route>
-        <Route path="/doctorRegistration" element={<RegisterForm />} />
-        <Route path="/doctor" element={<Doctor />}>
-          <Route
-            path="contract"
-            element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
-          />
-          <Route path="appointments" element={<ViewDoctorAppointments />} />
-          <Route path="patients" element={<ViewDoctorPatients />} />
-          <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
-          <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
-          <Route path="profile" element={<EditMyProfile />} />
-          <Route path="registerForm" element={<RegisterForm />} />
-          <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
-          <Route path="wallet" element={<ViewWallet isPatient ={false}/>} />
 
+        <Route path="/doctorRegistration" element={<RegisterForm />} />
+        <Route element={<ProtectedRoute roles={["doctor"]} />}>
+          <Route path="/doctor" element={<Doctor />}>
+            <Route
+              path="contract"
+              element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
+            />
+            <Route path="appointments" element={<ViewDoctorAppointments />} />
+            <Route path="patients" element={<ViewDoctorPatients />} />
+            <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
+            <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
+            <Route path="profile" element={<EditMyProfile />} />
+            <Route path="registerForm" element={<RegisterForm />} />
+            <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
+            <Route path="wallet" element={<ViewWallet isPatient={false} />} />
+          </Route>
         </Route>
-        <Route path="/admin" element={<Admin />}>
-          <Route path="applications" element={<Applications />} />
-          <Route path="packages" element={<Packages />} />
-          <Route path="manageUsers" element={<ManageUsers />} />
+        <Route element={<ProtectedRoute roles={["admin"]} />}>
+          <Route path="/admin" element={<Admin />}>
+            <Route path="applications" element={<Applications />} />
+            <Route path="packages" element={<Packages />} />
+            <Route path="manageUsers" element={<ManageUsers />} />
+          </Route>
         </Route>
       </Routes>
     </div>
