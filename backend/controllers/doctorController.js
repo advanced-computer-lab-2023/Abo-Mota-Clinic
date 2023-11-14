@@ -246,7 +246,7 @@ const addFreeAppointmentSlots = async (req, res) => {
 		const endTimeParts = endTime.split(":");
 		const endHours = parseInt(endTimeParts[0]) - 2;
 		const endMinutes = parseInt(endTimeParts[1]);
-
+		
 		const createdAppointments = [];
 		//assuming that the buffer and duration and in mins
 		for (let i = startHours * 60 + startMinutes; i < (endHours * 60 + endMinutes); i += appointmentDuration + buffer) {
