@@ -6,19 +6,56 @@ import * as yup from 'yup';
 import Button from "../../Components/Button";
 import LoadingIndicator from "../../Components/LoadingIndicator";
 import { useState } from "react";
+import { useRequestOtpMutation } from '../../../store';
+import Toast from "../../../patient/components/Toast";
 
 const ForgetPasswordScreen = ({closeForm, goToOtp}) => {
 
   const [isLoading, setIsLoading] = useState(false);
+  const [requestOtp, results] = useRequestOtpMutation();
+
+  const [toast, setToast] = useState({
+    open: false,
+    duration: 4000,
+  });
+
+  const onToastClose = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    setToast({
+      ...toast,
+      open: false,
+    });
+  };
+
   const handleSubmit = async (values, {resetForm}) => {
     setIsLoading(true);
     console.log(values);
     await new Promise(resolve => setTimeout(resolve, 3000));
-    // Remove the above await and insert code for backend registeration here.
-    setIsLoading(false);
-    closeForm();
-    goToOtp();
-    resetForm({ values: '' });
+
+    
+      requestOtp(values)
+      .unwrap()
+      .then((res) => {
+        setIsLoading(false);
+        closeForm();
+        goToOtp();
+        resetForm({ values: '' });
+      })
+      .catch((res) => {
+        setToast({
+          ...toast,
+          open: true,
+          color: "danger",
+          message: res.data.error,
+        });
+      });
+
+    
+      setIsLoading(false);
+    
+
+    
   };
   const forgetPasswordForm = (
     <Formik
@@ -63,6 +100,11 @@ const ForgetPasswordScreen = ({closeForm, goToOtp}) => {
         {forgetPasswordForm}
         <p className='forget-password-paragraph'>We’ll send a verification code to this email if it matches an existing Abo Mota account.</p>
       </div>
+
+      <div>
+        <Toast {...toast} onClose={onToastClose} />
+      </div>
+
     </div>
 
   );

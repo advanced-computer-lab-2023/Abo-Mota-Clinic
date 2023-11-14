@@ -154,6 +154,7 @@ const LoginForm = () => {
           closeForm={() => {
             setOtpOpen(false);
           }}
+          
         />
       )}
     </div>

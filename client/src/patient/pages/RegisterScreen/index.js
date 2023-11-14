@@ -9,15 +9,17 @@ import Header from "../../../shared/Components/Header";
 import { Formik } from "formik";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import DropDown from "../../../shared/Components/DropDown";
-import { useRegisterPatientMutation } from "../../../store";
+import { login, useRegisterPatientMutation } from "../../../store";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../../shared/Components/NavBar";
 import { navBarItems } from "../../navBarItems";
+import { useDispatch } from "react-redux";
 
 const RegisterScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [registerPatient, results] = useRegisterPatientMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (values, { resetForm }) => {
     // values contains all the data needed for registeration
     // console.log(values);
@@ -40,12 +42,13 @@ const RegisterScreen = () => {
 
     setIsLoading(true);
     await registerPatient(patient);
+    // dispatch(login({ role: "patient" }));
     console.log(results);
     // await new Promise(resolve => setTimeout(resolve, 3000));
     // Remove the above await and insert code for backend registeration here.
     setIsLoading(false);
     resetForm({ values: "" });
-    navigate("/patient/appointments");
+    navigate("/");
   };
 
   const clientForm = (

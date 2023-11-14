@@ -8,16 +8,18 @@ import * as yup from "yup";
 import Header from "../../../shared/Components/Header";
 import { Formik } from "formik";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
-import { useRegisterDoctorMutation } from "../../../store";
+import { login, useRegisterDoctorMutation } from "../../../store";
 import DropDown from "../../../shared/Components/DropDown";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../../shared/Components/NavBar";
 import FileInput from "../../../shared/Components/FileInput";
+import { useDispatch } from "react-redux";
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [registerDoctor, results] = useRegisterDoctorMutation();
   const navigateq = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (values, { resetForm }) => {
     // values contains all the data needed for registeration
     console.log(values);
@@ -39,10 +41,11 @@ const RegisterForm = () => {
     console.log(doctor);
     setIsLoading(true);
     await registerDoctor(doctor);
+    // dispatch(login({ role: "doctor" }));
     // Remove the above await and insert code for backend registeration here.
     setIsLoading(false);
     // resetForm({ values: "" });
-    navigateq("/doctor/appointments");
+    navigateq("/");
   };
 
   const DoctorForm = (

@@ -255,6 +255,35 @@ const patientApi = createApi({
           };
         },
       }),
+
+      linkFamilyMember: builder.mutation({
+        invalidatesTags: (result, error, data) => {
+          return [
+            "my info",
+            {
+              type: "patientId",
+              value: data.patientId,
+            },
+          ];
+        },
+        query: (data) => {
+          return {
+            url: "/linkFamily",
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
+
+      changePassword: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/changePassword",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
     };
   },
 });
@@ -278,6 +307,9 @@ export const {
   useCancelMyPackageMutation,
   useCancelMyFamilyPackageMutation,
   useRemoveDocumentMutation,
+  useLinkFamilyMemberMutation,
+  useFetchWalletPatientQuery,
+  useChangePasswordMutation,
 } = patientApi;
 
 export { patientApi };

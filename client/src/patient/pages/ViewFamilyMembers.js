@@ -30,6 +30,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { LinkOutlined } from "@mui/icons-material";
+import LinkFamilyMember from "../components/LinkFamilyMember";
 
 // Home / Patient / View Family Members
 
@@ -50,9 +52,7 @@ export default function ViewFamilyMembers() {
   const isAdding = results.isLoading;
   const isAddingError = results.isError;
 
-  const [isFormOpen, setIsFormOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const [formState, setFormState] = useState({
     name: null,
@@ -133,7 +133,13 @@ export default function ViewFamilyMembers() {
           nationalId: null,
           age: null,
           gender: null,
-          relation: null,
+          relationToPatient: null,
+          phoneNumber: null,
+          username: null,
+          password: null,
+          confirmPassword: null,
+          dateOfBirth: null,
+          email: null,
         });
       })
       .catch((err) => {
@@ -295,7 +301,7 @@ export default function ViewFamilyMembers() {
 
       <div className="flex ml-5 mt-5 mb-5 flex-wrap space-x-6">{content}</div>
 
-      <Box className="w-full flex justify-end">
+      <Box className="w-full flex justify-end space-x-2">
         <Button
           variant="outlined"
           color="primary"
@@ -304,8 +310,8 @@ export default function ViewFamilyMembers() {
         >
           Add Family Member
         </Button>
+        <LinkFamilyMember toast={toast} setToast={setToast} />
       </Box>
-
       <div>
         <Toast {...toast} onClose={onToastClose} />
       </div>

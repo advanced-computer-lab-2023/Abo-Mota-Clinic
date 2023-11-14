@@ -12,6 +12,7 @@ import { persistReducer, persistStore } from "redux-persist";
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["isAuthenticatedClinic", "userRoleClinic"],
 };
 
 const persistedReducer = persistReducer(persistConfig, userReducer);
@@ -67,6 +68,8 @@ export {
   useRegisterPatientMutation,
   useLoginMutation,
   useLogoutMutation,
+  useForgetPasswordMutation,
+  useRequestOtpMutation,
 } from "./apis/guestApi";
 
 export const {
@@ -79,18 +82,20 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
+  usePayByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,
   useCancelMyPackageMutation,
-  usePayByWalletMutation,
   useFetchWalletPatientQuery,
   useSubscribeToHealthPackageMutation,
   useCancelMyFamilyPackageMutation,
   useUploadMedicalHistoryMutation,
   useRemoveDocumentMutation,
+  useLinkFamilyMemberMutation,
+  useChangePasswordMutation,
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
 
-export { logout, login, setUserRole } from "./slices/userSlice";
+export { logout, login } from "./slices/userSlice";

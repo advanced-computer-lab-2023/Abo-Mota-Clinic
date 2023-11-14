@@ -63,6 +63,28 @@ const guestApi = createApi({
           };
         },
       }),
+      forgetPassword: builder.mutation({
+        query: ({ email, otp, newPassword }) => {
+          return {
+            url: "/forgotPassword",
+            method: "POST",
+            body: { 
+              email, 
+              otp, 
+              newPassword
+            }
+          };
+        },
+      }),
+      requestOtp: builder.mutation({
+        query: ({email}) => {
+          return {
+            url: "/otp",
+            method: "POST",
+            body: {email}
+          };
+        },
+      }),
     };
   },
 });
@@ -72,5 +94,8 @@ export const {
   useRegisterPatientMutation,
   useLoginMutation,
   useLogoutMutation,
+  useForgetPasswordMutation,
+  useRequestOtpMutation,
+
 } = guestApi;
 export { guestApi };

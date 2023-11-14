@@ -293,7 +293,56 @@ const getAvailableAppointments = async (req, res) => {
   }
 };
 
+const updateNewlyLinkedFamilyMemberDiscount = async (loggedIn, linkedMember) => {
+  let greaterDiscount = 0;
+  const isNotLoggedInPackage =
+    loggedIn.healthPackage.status === "cancelled" || !loggedIn.healthPackage.status;
+  const isNotLinkedMemberPackage =
+    linkedMember.healthPackage.status === "cancelled" || !linkedMember.healthPackage.status;
+  if (isNotLoggedInPackage && isNotLinkedMemberPackage) {
+    return;
+  }
+  if (isNotLoggedInPackage) {
+    greaterDiscount = linkedMember.healthPackage.package.familyDiscount;
+    if (loggedIn.familyDiscount < greaterDiscount) {
+      const updated = await Patient.updateOne(
+        { _id: loggedIn._id },
+        { familyDiscount: linkedMember.healthPackage.package.familyDiscount }
+      );
+    }
 
+    return;
+  }
+  if (isNotLinkedMemberPackage) {
+    greaterDiscount = loggedIn.healthPackage.package.familyDiscount;
+    if (linkedMember.familyDiscount < greaterDiscount) {
+      const updated = await Patient.updateOne(
+        { _id: linkedMember._id },
+        { familyDiscount: loggedIn.healthPackage.package.familyDiscount }
+      );
+    }
+
+    return;
+  }
+  greaterDiscount = Math.max(
+    loggedIn.healthPackage.package.familyDiscount,
+    linkedMember.healthPackage.package.familyDiscount
+  );
+
+  if (linkedMember.familyDiscount < greaterDiscount) {
+    const updated = await Patient.updateOne(
+      { _id: linkedMember._id },
+      { familyDiscount: greaterDiscount }
+    );
+  }
+
+  if (loggedIn.familyDiscount < greaterDiscount) {
+    const updatedLoggedIn = await Patient.updateOne(
+      { _id: loggedIn._id },
+      { familyDiscount: greaterDiscount }
+    );
+  }
+};
 const linkFamilyMember = async (req, res) => {
   try {
     const { email, mobile, relationToPatient } = req.body;
@@ -360,12 +409,12 @@ const linkFamilyMember = async (req, res) => {
         { _id: memberAccount._id },
         { $push: { linkedFamily: oppositeMember }, familyDiscount: newFamilyDiscount }
       );
-
+      await updateNewlyLinkedFamilyMemberDiscount(loggedIn, memberAccount);
       return res.status(200).json({ updated });
     } else if (mobile) {
       const memberAccount = await Patient.findOne({ mobile });
       if (!memberAccount) {
-        throw Error("This email does not belong to a registered user");
+        throw Error("This phone number does not belong to a registered user");
       }
 
       const query = {
@@ -392,6 +441,8 @@ const linkFamilyMember = async (req, res) => {
         { _id: memberAccount._id },
         { $push: { linkedFamily: oppositeMember } }
       );
+      await updateNewlyLinkedFamilyMemberDiscount(loggedIn, memberAccount);
+
       return res.status(200).json({ updated });
     }
   } catch (error) {

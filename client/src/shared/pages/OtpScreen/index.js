@@ -6,18 +6,58 @@ import * as yup from 'yup';
 import Button from "../../Components/Button";
 import LoadingIndicator from "../../Components/LoadingIndicator";
 import { useState, useEffect } from "react";
+import { useForgetPasswordMutation } from '../../../store';
+import { useRequestOtpMutation } from '../../../store';
+import Toast from "../../../patient/components/Toast";
 
 const OtpScreen = ({closeForm}) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [seconds, setSeconds] = useState(60);
   const [showButton, setShowButton] = useState(false);
+  const [setNewPassword , result] = useForgetPasswordMutation();
+  const [requestOtp, results] = useRequestOtpMutation();
+
+  const [email, setEmail] = useState("");
+
+  const [toast, setToast] = useState({
+    open: false,
+    duration: 4000,
+  });
+
+  const onToastClose = (event, reason) => {
+    if (reason === "clickaway") return;
+
+    setToast({
+      ...toast,
+      open: false,
+    });
+  };
 
   const onResendClick = () => {
     setSeconds(60);
     setShowButton(false);
     // Add code for backend resend otp here
-  };
+    console.log(email)
+    requestOtp({email})
+    .unwrap()
+    .then(() => {
+      setToast({
+        ...toast,
+        open: true,
+        color: "success",
+        message: "OTP resent to your email",
+      });
+    })
+    .catch((res) => {
+      setToast({
+        ...toast,
+        open: true,
+        color: "danger",
+        message: res.data.error,
+      });
+    });
+  }
 
   useEffect(() => {
     // Only start the countdown if the button is not yet visible
@@ -42,11 +82,38 @@ const OtpScreen = ({closeForm}) => {
 
   const handleSubmit = async (values, {resetForm}) => {
     setIsLoading(true);
-    console.log(values);
+    console.log(values.email);
+    if(values.email)
+      setEmail(values.email);
     await new Promise(resolve => setTimeout(resolve, 3000));
-    // Remove the above await and insert code for backend registeration here.
+
+    setNewPassword(values)
+      .unwrap()
+      .then(async() => {
+        setToast({
+          ...toast,
+          open: true,
+          color: "success",
+          message: "Password Changed",
+        });
+        resetForm({ values: '' });
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        closeForm();
+      })
+      .catch((res) => 
+      {
+        setToast({
+          ...toast,
+          open: true,
+          color: "danger",
+          message: res.data.error,
+        });
+      });
+
+
     setIsLoading(false);
-    resetForm({ values: '' });
+
+  
   };
   const OtpForm = (
     <Formik
@@ -58,6 +125,17 @@ const OtpScreen = ({closeForm}) => {
         <form onSubmit={formik.handleSubmit}>
           <div className="form-container">         
             <Input 
+            label="Email" 
+            icon
+            type="text" 
+            id="email"
+            error={formik.errors.email}
+            touch={formik.touched.email}
+            {...formik.getFieldProps('email')}
+            />
+          </div>
+          <div className="form-container">         
+            <Input 
             label="OTP" 
             icon
             type="text" 
@@ -65,6 +143,17 @@ const OtpScreen = ({closeForm}) => {
             error={formik.errors.otp}
             touch={formik.touched.otp}
             {...formik.getFieldProps('otp')}
+            />
+          </div>
+          <div className="form-container">
+            <Input
+              label="Password*"
+              icon
+              type="password"
+              id="password"
+              error={formik.errors.password}
+              touch={formik.touched.password}
+              {...formik.getFieldProps("newPassword")}
             />
           </div>
           <div className="submit-add-medicine-button-container">
@@ -90,6 +179,10 @@ const OtpScreen = ({closeForm}) => {
         </div>
         {OtpForm}
         <p className='otp-paragraph'>Check your Mail.{showButton ? <span className='otp-resend-span otp-resend-clickable' onClick={onResendClick}> Resend OTP</span> : <span className='otp-resend-span'> wait {seconds} seconds</span>}</p>
+      </div>
+
+      <div>
+        <Toast {...toast} onClose={onToastClose} />
       </div>
     </div>
 
