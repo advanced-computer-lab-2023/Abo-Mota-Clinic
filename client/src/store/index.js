@@ -69,7 +69,6 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
-  usePayAppointmentByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,

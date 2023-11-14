@@ -143,7 +143,7 @@ const patientApi = createApi({
         },
       }),
 
-      payAppointmentByWallet: builder.mutation({
+      payByWallet: builder.mutation({
         query: (data) => {
           return {
             url: "/payWallet",
@@ -271,7 +271,7 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
-  usePayAppointmentByWalletMutation,
+  usePayByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,

@@ -42,16 +42,13 @@ import Contract from "./doctor/pages/Contract";
 // login
 import LoginForm from "./shared/pages/LoginForm";
 
-// login
-
 function App() {
-  const [isLoggedIn, setIsLoggedIn]= useState(false);
-
+  
   return (
     <div>
       <Routes>
-        <Route path="/" element={<LoginForm setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}/>} />
-        {isLoggedIn &&<>
+        <Route path="/" element={<LoginForm />} />
+        
           <Route path="/patientRegistration" element={<RegisterScreen />} />
         <Route path="/patient" element={<Patient />}>
           <Route path="" element={<PatientHome />} /> {/* TODO: change to home page */}
@@ -89,8 +86,6 @@ function App() {
           <Route path="packages" element={<Packages />} />
           <Route path="manageUsers" element={<ManageUsers />} />
         </Route>
-        </>
-        }
         
       </Routes>
     </div>

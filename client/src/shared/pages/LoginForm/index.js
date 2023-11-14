@@ -13,7 +13,7 @@ import ForgetPasswordScreen from "../ForgetPasswordScreen";
 import OtpScreen from "../OtpScreen";
 
 
-function LoginForm({setIsLoggedIn, isLoggedIn}) 
+function LoginForm() 
  {
   const [isLoading, setIsLoading] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(false);
@@ -32,9 +32,8 @@ function LoginForm({setIsLoggedIn, isLoggedIn})
 
     try {
       const result = await login(user).unwrap();
-      if(result.userType === "patient" ||result.userType === "doctor"||result.userType === "admin")
-          setIsLoggedIn(true);
-        console.log(isLoggedIn);
+      
+        
       if (result.userType === "patient") {
         navigate("/patient");
       } else if (result.userType === "doctor") {
