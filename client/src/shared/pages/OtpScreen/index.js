@@ -17,6 +17,7 @@ const OtpScreen = ({closeForm}) => {
   const [showButton, setShowButton] = useState(false);
   const [setNewPassword , result] = useForgetPasswordMutation();
   const [requestOtp, results] = useRequestOtpMutation();
+
   const [email, setEmail] = useState("");
 
   const [toast, setToast] = useState({
@@ -33,12 +34,21 @@ const OtpScreen = ({closeForm}) => {
     });
   };
 
-  const onResendClick = async () => {
+  const onResendClick = () => {
     setSeconds(60);
     setShowButton(false);
     // Add code for backend resend otp here
-    requestOtp(email)
+    console.log(email)
+    requestOtp({email})
     .unwrap()
+    .then(() => {
+      setToast({
+        ...toast,
+        open: true,
+        color: "success",
+        message: "OTP resent to your email",
+      });
+    })
     .catch((res) => {
       setToast({
         ...toast,
@@ -72,13 +82,24 @@ const OtpScreen = ({closeForm}) => {
 
   const handleSubmit = async (values, {resetForm}) => {
     setIsLoading(true);
-    console.log(values);
-    setEmail(values.email);
+    console.log(values.email);
+    if(values.email)
+      setEmail(values.email);
     await new Promise(resolve => setTimeout(resolve, 3000));
-    
+
     setNewPassword(values)
       .unwrap()
-      .then(() => resetForm({ values: '' }))
+      .then(async() => {
+        setToast({
+          ...toast,
+          open: true,
+          color: "success",
+          message: "Password Changed",
+        });
+        resetForm({ values: '' });
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        closeForm();
+      })
       .catch((res) => 
       {
         setToast({
