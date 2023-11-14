@@ -143,7 +143,7 @@ const patientApi = createApi({
         },
       }),
 
-      payAppointmentByWallet: builder.mutation({
+      payByWallet: builder.mutation({
         query: (data) => {
           return {
             url: "/payWallet",
@@ -255,6 +255,16 @@ const patientApi = createApi({
           };
         },
       }),
+
+      changePassword: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/changePassword",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
     };
   },
 });
@@ -271,13 +281,15 @@ export const {
   useFetchPackagesPatientQuery,
   useFetchAvailableAppointmentsQuery,
   useCreditDoctorMutation,
-  usePayAppointmentByWalletMutation,
+  usePayByWalletMutation,
   useFetchMyPackageQuery,
   useFetchFamilyPackageQuery,
   useBookAppointmentMutation,
   useCancelMyPackageMutation,
   useCancelMyFamilyPackageMutation,
   useRemoveDocumentMutation,
+  useFetchWalletPatientQuery,
+  useChangePasswordMutation,
 } = patientApi;
 
 export { patientApi };

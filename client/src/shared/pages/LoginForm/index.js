@@ -8,19 +8,20 @@ import { Formik } from "formik";
 import LoadingIndicator from "../../Components/LoadingIndicator";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
-import { useLoginMutation } from "../../../store";
+import { useLoginMutation, login } from "../../../store";
 import ForgetPasswordScreen from "../ForgetPasswordScreen";
 import OtpScreen from "../OtpScreen";
+import { useDispatch } from "react-redux";
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(false);
   const [otpOpen, setOtpOpen] = useState(false);
   const navigate = useNavigate();
-  const [login, results] = useLoginMutation();
+  const [loginMutation, results] = useLoginMutation();
+  const dispatch = useDispatch();
   const handleSubmit = async (values, { resetForm }) => {
-    // values contains all the data needed for registeration
-    // console.log(values);
-    console.log(values);
+    
+    
     const user = {
       username: values.username,
       password: values.password,
@@ -29,14 +30,17 @@ const LoginForm = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     try {
-      const result = await login(user).unwrap();
+      const result = await loginMutation(user).unwrap();
       console.log(result);
       // Use the result for navigation or other side effects
       if (result.userType === "patient") {
+        dispatch(login({ role: "patient" })); // Dispatch login action with role
         navigate("/patient");
       } else if (result.userType === "doctor") {
+        dispatch(login({ role: "doctor" })); // Dispatch login action with role
         navigate("/doctor");
       } else if (result.userType === "admin") {
+        dispatch(login({ role: "admin" })); // Dispatch login action with role
         navigate("/admin");
       }
       resetForm({ values: "" });

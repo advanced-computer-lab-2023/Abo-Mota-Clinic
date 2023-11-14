@@ -5,19 +5,30 @@ import { AiOutlineHome } from "react-icons/ai";
 import SideBar from "../SideBar";
 import { useState } from "react";
 import { useLogoutMutation } from "../../../store";
-
+import { useDispatch } from "react-redux";
+import { logout } from "../../../store"; // Importing the logout action and renaming it to avoid conflict
 const NavBar = ({ links = [], navBarItems = [] }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
-
-  const [logout, result] = useLogoutMutation();
-  const handleClick =  async() => {
-    await logout();
-  }
+  const dispatch = useDispatch();
+  const [logoutMutation, result] = useLogoutMutation();
+  const handleClick = async () => {
+    const resultLogout = await logoutMutation();
+    if (resultLogout?.data) {
+      dispatch(logout());
+    }
+  };
   const content = navBarItems.map((item) => {
     return (
       <li id={item.name}>
-        {item.name === "Logout"? <Link to={item.to} className="navbar-link" onClick={handleClick}>{item.name}</Link>: 
-        <Link to={item.to} className="navbar-link">{item.name}</Link>}
+        {item.name === "Logout" ? (
+          <Link to={item.to} className="navbar-link" onClick={handleClick}>
+            {item.name}
+          </Link>
+        ) : (
+          <Link to={item.to} className="navbar-link">
+            {item.name}
+          </Link>
+        )}
       </li>
     );
   });
