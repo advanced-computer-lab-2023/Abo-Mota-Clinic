@@ -67,6 +67,8 @@ export {
   useRegisterPatientMutation,
   useLoginMutation,
   useLogoutMutation,
+  useForgetPasswordMutation,
+  useRequestOtpMutation,
 } from "./apis/guestApi";
 
 export const {
@@ -90,6 +92,7 @@ export const {
   useUploadMedicalHistoryMutation,
   useRemoveDocumentMutation,
   useLinkFamilyMemberMutation,
+  useChangePasswordMutation,
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;

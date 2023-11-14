@@ -274,6 +274,16 @@ const patientApi = createApi({
           };
         },
       }),
+
+      changePassword: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/changePassword",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
     };
   },
 });
@@ -298,6 +308,8 @@ export const {
   useCancelMyFamilyPackageMutation,
   useRemoveDocumentMutation,
   useLinkFamilyMemberMutation,
+  useFetchWalletPatientQuery,
+  useChangePasswordMutation,
 } = patientApi;
 
 export { patientApi };

@@ -17,7 +17,7 @@ function HealthPackages() {
       <Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 2 }}>
           {newData
-            .sort((a, b) => a.pricePerYear - b.pricePerYear)
+            // .sort((a, b) => a.pricePerYear - b.pricePerYear)
             .map((healthPackage, idx) => {
               return (
                 <HealthPackageCard

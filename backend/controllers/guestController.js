@@ -236,6 +236,9 @@ const login = async (req, res) => {
     });
   }
 
+  if(doctorExists && doctorExists.registrationStatus !== "approved")
+    throw new Error("You are not accepted by the admin");
+
   let dbUserPass;
   let userType;
   if (patientExists) {

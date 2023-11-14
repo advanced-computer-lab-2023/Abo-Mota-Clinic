@@ -20,9 +20,8 @@ const LoginForm = () => {
   const [loginMutation, results] = useLoginMutation();
   const dispatch = useDispatch();
   const handleSubmit = async (values, { resetForm }) => {
-    // values contains all the data needed for registeration
-    // console.log(values);
-    console.log(values);
+    
+    
     const user = {
       username: values.username,
       password: values.password,
@@ -155,6 +154,7 @@ const LoginForm = () => {
           closeForm={() => {
             setOtpOpen(false);
           }}
+          
         />
       )}
     </div>

@@ -3,10 +3,7 @@ import PackageCard from '../components/PackagesCard'
 
 
 export default function Subscription() {
-    const gradientStyle = {
-        background: 'linear-gradient(to right, #e6f1ff, #cce0ff)', 
-        color: '#333', 
-    };
+    
     const headerStyle = {
         textAlign: 'center', 
         color: '#2c3e50', 
@@ -36,7 +33,7 @@ export default function Subscription() {
     //     .filter(familyPackage => familyPackage.package !== null));
     
     return (
-            <section style={{ ...gradientStyle, maxWidth: '1536px', width: '100%' }} 
+            <section style={{  maxWidth: '1536px', width: '100%' }} 
             className="border-2 border-gray-300 rounded-lg mx-auto my-8 p-4 space-y-8">
             <div>
             <h2 style={headerStyle} className="text-2xl font-bold my-8" >Your Packages</h2>
