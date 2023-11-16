@@ -19,6 +19,8 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [loginMutation, results] = useLoginMutation();
   const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+
   const handleSubmit = async (values, { resetForm }) => {
     
     
@@ -147,6 +149,7 @@ const LoginForm = () => {
           goToOtp={() => {
             setOtpOpen(true);
           }}
+          setEmail = {setEmail}
         />
       )}
       {otpOpen && (
@@ -154,7 +157,7 @@ const LoginForm = () => {
           closeForm={() => {
             setOtpOpen(false);
           }}
-          
+          email = {email}
         />
       )}
     </div>
