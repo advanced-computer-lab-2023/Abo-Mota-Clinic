@@ -26,6 +26,7 @@ import PatientTest3 from "./patient/pages/PatientTest3";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
 import ChangePassword from "./patient/components/ChangePassword";
+import Chat from "./patient/components/Chat"
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -43,6 +44,10 @@ import Contract from "./doctor/pages/Contract";
 import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
 import PasswordSection from "./admin/pages/PasswordSection";
+
+import io from "socket.io-client";
+// Socket.io
+const socket = io.connect("http://localhost:5000");
 
 // login
 function App() {
@@ -64,7 +69,7 @@ function App() {
             <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="test3" element={<PaymentPage />} />
+            <Route path="test3" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
           </Route>

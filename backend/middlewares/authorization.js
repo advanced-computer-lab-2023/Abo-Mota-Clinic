@@ -18,9 +18,9 @@ const authToken = (req, res, next) => {
                 console.log("OKAY")
                 next();
             }
-            else if(userType === 'doctor' && (req.baseUrl).includes('/doctor'))
+            else if(userType === 'doctor' && (req.baseUrl).includes('/doctor'|| (req.baseUrl).includes('/chat')))
                 next();
-            else if (userType === 'patient' && ((req.baseUrl).includes('/patient') || (req.baseUrl).includes('/stripe')))
+            else if (userType === 'patient' && ((req.baseUrl).includes('/patient') || (req.baseUrl).includes('/stripe') || (req.baseUrl).includes('/chat')))
                 next();
             else
                 return res.status(403).json({ message: "Forbidden"});
