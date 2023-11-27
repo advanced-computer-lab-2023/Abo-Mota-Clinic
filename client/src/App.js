@@ -69,7 +69,7 @@ function App() {
             <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="test3" element={<Chat socket={socket} />} />
+            <Route path="test3/:recipient" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
           </Route>

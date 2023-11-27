@@ -2,29 +2,28 @@ import React from 'react'
 import { Input, Button } from '@mui/joy'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
+
+import { useFetchLoggedInQuery, useSendMessageMutation, useFetchMessagesQuery } from '../../store';
 
 function Chat({ socket }) {
 
-  const myName = "Omar Elkord";
+  // controlled state
+  // const [room, setRoom] = useState("");
+  const malakId = "654eacecba61ba134d8164a8";
+  const saraId = "654cff639445f84c04148803";
+
+  const { recipient } = useParams();
+  console.log("recipient:", recipient);
+
+  const [messages, setMessages] = useState([]);
+
+  console.log("Real messages:", messages);
 
   // controlled state
-  const [room, setRoom] = useState("");
+  const [messageContent, setMessageContent] = useState("");
 
-  // controlled state
-  const [message, setMessage] = useState("");
-
-  // to be fetched from the database
-  const [messages, setMessages] = useState([
-    {
-      sender: "Omar Elkord",
-      content: "Hi Dr. Alaa. I am writing to inquire about the status of our next appointment."
-    },
-
-    {
-      sender: "Alaa Tantawy",
-      content: "Hi Omar. We are still on for Tuesday."
-    }
-  ]);
 
   useEffect(() => {
     socket.emit("join_room", 441);
@@ -32,15 +31,34 @@ function Chat({ socket }) {
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      setMessages([...messages, data])
+      // setMessages([...messages, data])
+
+      setMessages((prevMessages) => {
+        const newMessages = [...prevMessages, data];
+        return newMessages;
+      });
     });
 
-  }, [socket])
+  }, [socket]);
 
-  // hardcoded sender and recipient IDs
-  const senderId = "sara's";
 
-  const recipientId = "654eacecba61ba134d8164a8";
+  const { data: loggedInUser, isFetching: isFetchingUser, isError } = useFetchLoggedInQuery();
+  const { data: messagesData, isFetching: isFetchingMessages, isError: isErrorMessages } = useFetchMessagesQuery({ recipient });
+  const [sendMessage] = useSendMessageMutation();
+
+  useEffect(() => {
+    if (!isFetchingMessages) {
+      setMessages(messagesData.messages);
+    }
+  }, [isFetchingMessages])
+
+  if (isFetchingUser || isFetchingMessages) {
+    return <div>Loading...</div>;
+  }
+
+  // // hardcoded sender and recipient IDs
+  // const senderId = loggedInUser._id;
+
 
   // const onJoinRoom = () => {
   //   if (room === "")
@@ -50,23 +68,20 @@ function Chat({ socket }) {
   // };
 
   const onSendMessage = async () => {
-    if (message === "")
+    if (messageContent === "")
       return;
 
-    const messageData = {
-      room: 441,
-      content: message,
-      recipientId
+    // console.log("ID: ", loggedInUser);
+    
+    const message = {
+      content: messageContent,
+      sender: loggedInUser._id,
+      recipient
     }
 
-    await socket.emit("send_message", messageData);
-    await axios.post("http://localhost:5000/api/chat/message", { content: message, recipientId }, {
-      withCredentials: true,  // Include credentials in the request
-      headers: {
-        'Content-Type': 'application/json',
-        // Add other headers as needed
-      },
-    })
+    await socket.emit("send_message", { ...message, room: 441 });
+
+    sendMessage(message);
   };
 
 
@@ -74,6 +89,9 @@ function Chat({ socket }) {
     <div>
       {
         messages.map(({ sender, content }) => {
+          console.log("Sender: ", sender);
+          console.log("loggedInUser: ", loggedInUser._id);
+
           return (
             <div className='mb-10'>
               <div>
@@ -81,14 +99,14 @@ function Chat({ socket }) {
               </div>
 
               <div>
-                Sender: {sender === myName ? "You" : sender}
+                Sender: {sender === loggedInUser._id ? "You" : "Other"}
               </div>
             </div>
           );
         })
       }
       {/* <Input placeholder='Room Id' onChange={(e) => setRoom(e.target.value)} /> */}
-      <Input placeholder='Send a text' onChange={(e) => setMessage(e.target.value)} />
+      <Input placeholder='Send a text' onChange={(e) => setMessageContent(e.target.value)} />
       {/* <Button onClick={onJoinRoom}>Join</Button> */}
       <Button onClick={onSendMessage}>Send</Button>
     </div>

@@ -13,7 +13,7 @@ const doctorRouter = require("./routes/doctor");
 const adminRouter = require("./routes/admin");
 const guestRouter = require("./routes/guest");
 const stripeRouter = require("./routes/stripe");
-const chatRouter = require("./routes/chat");
+const commonRouter = require("./routes/common");
 
 // added for socket.io
 const http = require("http");
@@ -41,13 +41,13 @@ io.on("connection", (socket) => {
     const { room, ...message } = data;
 
     // forward to listening recipients
-    socket.to(room).emit("receive_message", message);
+    io.to(room).emit("receive_message", message);
 
   })
 });
 
 const mongoose = require("mongoose");
-const { sendMessage } = require("./controllers/chatController");
+const { sendMessage } = require("./controllers/commonController");
 mongoose.set("strictQuery", false);
 // const bodyParser = require("body-parser");
 const MongoURI = process.env.MONGO_URI;
@@ -81,7 +81,7 @@ app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
 app.use("/api/stripe", stripeRouter);
-app.use("/api/chat", chatRouter);
+app.use("/api/common", commonRouter);
 //handle uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

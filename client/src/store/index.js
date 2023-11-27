@@ -5,6 +5,7 @@ import { adminApi } from "./apis/adminApi";
 import { guestApi } from "./apis/guestApi";
 import { patientApi } from "./apis/patientApi";
 import { stripeApi } from "./apis/stripeApi";
+import { commonApi } from "./apis/commonApi";
 import { userReducer } from "./slices/userSlice";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import { persistReducer, persistStore } from "redux-persist";
@@ -25,6 +26,7 @@ export const store = configureStore({
     [guestApi.reducerPath]: guestApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
     [stripeApi.reducerPath]: stripeApi.reducer,
+    [commonApi.reducerPath]: commonApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
@@ -32,7 +34,8 @@ export const store = configureStore({
       .concat(adminApi.middleware)
       .concat(guestApi.middleware)
       .concat(patientApi.middleware)
-      .concat(stripeApi.middleware);
+      .concat(stripeApi.middleware)
+      .concat(commonApi.middleware);
   },
 });
 
@@ -98,6 +101,15 @@ export const {
   useChangePatientPasswordMutation,
 } = patientApi;
 
-export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
+export const {
+  useCreatePaymentIntentMutation,
+  useFetchStripeConfigQuery
+} = stripeApi;
+
+export const {
+  useFetchLoggedInQuery,
+  useSendMessageMutation,
+  useFetchMessagesQuery,
+} = commonApi;
 
 export { logout, login } from "./slices/userSlice";
