@@ -43,6 +43,9 @@ const doctorApi = createApi({
       fetchPatients: builder.query({
         providesTags: (result, error) => {
           console.log("RESULT", result);
+          if (result === undefined) {
+            result = [];
+          }
           const tags = result.map((patient) => {
             return { type: "Patient", id: patient._id };
           });
@@ -97,84 +100,78 @@ const doctorApi = createApi({
               patientUsername,
               followUpDate,
             },
-            method:"POST"
-            }
-        }
-        }),
-        addFreeSlots: builder.mutation({
-            invalidatesTags : (result, error, doctor)=>{
-                return [{type:'Doctor', id:"123"}];
+            method: "POST",
+          };
+        },
+      }),
+      addFreeSlots: builder.mutation({
+        invalidatesTags: (result, error, doctor) => {
+          return [{ type: "Doctor", id: "123" }];
+        },
+        query: ({ date, startTime, endTime, appointmentDuration, buffer }) => {
+          return {
+            url: "/addFreeAppointmentSlots",
+            body: {
+              date,
+              startTime,
+              endTime,
+              appointmentDuration,
+              buffer,
             },
-            query : ({date, startTime, endTime, appointmentDuration, buffer})=>{
-                return {
-                    url: '/addFreeAppointmentSlots',
-                    body: {
-                        date,
-                        startTime,
-                        endTime,
-                        appointmentDuration,
-                        buffer
-                    },
-                    method :'POST',
-                }
-            }
-        }),
+            method: "POST",
+          };
+        },
+      }),
 
-        fetchWalletDoctor: builder.query({
-            query: () => {
-              return {
-                url: "/wallet",
-                method: "GET",
-              };
-            },
-        }),
-        uploadHealthRecord: builder.mutation({
-            invalidatesTags: (result, error, { id }) => {
-              return [
-                { type: "Doctor", id: "123" },
-                { type: "Patient", id: id },
-              ];
-            },
-            query: ({ username, healthRecord }) => {
-              const formData = new FormData();
-              formData.append("username", username);
-              formData.append("healthRecord", healthRecord);
-              return {
-                url: "/uploadHealthRecord",
-                body: formData,
-                method: "POST",
-              };
-            },
-        }),
-        changeDoctorPassword: builder.mutation({
-          query: (data) => {
-            return {
-              url: "/changePassword",
-              method: "PATCH",
-              body: data,
-            };
-          },
-        })
-
-        
-        
-        
-        };
-    }
-})
-
+      fetchWalletDoctor: builder.query({
+        query: () => {
+          return {
+            url: "/wallet",
+            method: "GET",
+          };
+        },
+      }),
+      uploadHealthRecord: builder.mutation({
+        invalidatesTags: (result, error, { id }) => {
+          return [
+            { type: "Doctor", id: "123" },
+            { type: "Patient", id: id },
+          ];
+        },
+        query: ({ username, healthRecord }) => {
+          const formData = new FormData();
+          formData.append("username", username);
+          formData.append("healthRecord", healthRecord);
+          return {
+            url: "/uploadHealthRecord",
+            body: formData,
+            method: "POST",
+          };
+        },
+      }),
+      changeDoctorPassword: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/changePassword",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
+    };
+  },
+});
 
 export const {
-    useFetchDoctorQuery,
-    useFetchPatientsQuery,
-    useFetchAppointmentsQuery,
-    useUpdateDoctorMutation,
-    useAcceptContractMutation,
-    useScheduleFollowUpMutation,
-    useAddFreeSlotsMutation,
-    useFetchWalletDoctorQuery,
-    useUploadHealthRecordMutation,
-    useChangeDoctorPasswordMutation
+  useFetchDoctorQuery,
+  useFetchPatientsQuery,
+  useFetchAppointmentsQuery,
+  useUpdateDoctorMutation,
+  useAcceptContractMutation,
+  useScheduleFollowUpMutation,
+  useAddFreeSlotsMutation,
+  useFetchWalletDoctorQuery,
+  useUploadHealthRecordMutation,
+  useChangeDoctorPasswordMutation,
 } = doctorApi;
 export { doctorApi };
-

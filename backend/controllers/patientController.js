@@ -722,7 +722,7 @@ const creditDoctor = async (req, res) => {
       { new: true }
     );
 
-    res.json({ message: "Payment is successful", patient: updatedPatient, doctor: updatedDoctor });
+    res.json({ message: "Payment is successful", doctor: updatedDoctor });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

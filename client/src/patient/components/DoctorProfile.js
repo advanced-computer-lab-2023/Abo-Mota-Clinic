@@ -29,6 +29,7 @@ import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import formatAppointments from "../functions/AppointmentsAdjustment";
+import { VideoChat } from "@mui/icons-material";
 const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affiliation }) => {
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [currentTime, setCurrentTime] = useState(null);
@@ -187,6 +188,9 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
                     <Typography level="body-xs">Consultation fee</Typography>
                     <Typography level="title-md">${Math.round(rate * 1.1)}/hr</Typography>
                   </Box>
+                  <Link to="video">
+                    <VideoChat />
+                  </Link>
                 </Box>
               </Sheet>
             </Box>
