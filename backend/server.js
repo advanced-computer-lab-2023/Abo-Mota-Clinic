@@ -5,7 +5,6 @@ const cookieParser = require("cookie-parser");
 const multer = require("multer");
 const path = require("path");
 
-
 // express app
 const app = express();
 const patientRouter = require("./routes/patient");
@@ -13,7 +12,7 @@ const doctorRouter = require("./routes/doctor");
 const adminRouter = require("./routes/admin");
 const guestRouter = require("./routes/guest");
 const stripeRouter = require("./routes/stripe");
-const commonRouter = require("./routes/common");
+const chatRouter = require("./routes/common");
 
 // added for socket.io
 const http = require("http");
@@ -23,17 +22,18 @@ const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"]
-  }
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+  },
 });
 
 io.on("connection", (socket) => {
   console.log("Connection success");
 
+  // text chat
   socket.on("join_room", (data) => {
     socket.join(data);
 
-    console.log(`User with id ${socket.id} joined room ${data}`)
+    console.log(`User with id ${socket.id} joined room ${data}`);
   });
 
   socket.on("send_message", (data) => {
@@ -41,9 +41,28 @@ io.on("connection", (socket) => {
     const { room, ...message } = data;
 
     // forward to listening recipients
-    io.to(room).emit("receive_message", message);
+    socket.to(room).emit("receive_message", message);
+  });
 
-  })
+  //----------------------
+  // video chat
+  socket.emit("me", socket.id);
+
+  socket.on("disconnect", () => {
+    socket.broadcast.emit("callEnded");
+  });
+
+  socket.on("callUser", (data) => {
+    io.to(data.userToCall).emit("callUser", {
+      signal: data.signalData,
+      from: data.from,
+      name: data.name,
+    });
+  });
+
+  socket.on("answerCall", (data) => {
+    io.to(data.to).emit("callAccepted", data.signal);
+  });
 });
 
 const mongoose = require("mongoose");
@@ -81,7 +100,7 @@ app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
 app.use("/api/stripe", stripeRouter);
-app.use("/api/common", commonRouter);
+app.use("/api/chat", chatRouter);
 //handle uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -98,7 +117,7 @@ app.post("/sdjfjkdsvjkjn", upload.single("file"), (req, res) => {
   res.send("File uploaded");
 });
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // listen for requests
 server.listen(process.env.PORT, () => {
   console.log(`listening on port ${process.env.PORT}`);

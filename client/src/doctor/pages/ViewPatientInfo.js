@@ -1,5 +1,5 @@
 import { Typography } from "@mui/joy";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { capitalizeFirstLetter } from "../components/AppointmentCard";
 import Sheet from "@mui/joy/Sheet";
 import Card from "@mui/joy/Card";
@@ -13,6 +13,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import AddHealthRecordScreen from "./AddHealthRecordScreen";
 import { useFetchPatientQuery, useFetchPatientsQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+import { VideoChat } from "@mui/icons-material";
 
 export default function ViewPatientInfo() {
   const location = useLocation();
@@ -102,6 +103,11 @@ export default function ViewPatientInfo() {
                 Birth Date
               </Typography>
               <Typography>{patientData.formattedDob}</Typography>
+            </div>
+            <div>
+              <Link to="video">
+                <VideoChat />
+              </Link>
             </div>
           </div>
         </Card>
