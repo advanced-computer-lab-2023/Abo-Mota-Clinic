@@ -46,22 +46,29 @@ io.on("connection", (socket) => {
 
   //----------------------
   // video chat
-  socket.emit("me", socket.id);
+  // socket.emit("me", socket.id);
 
-  socket.on("disconnect", () => {
-    socket.broadcast.emit("callEnded");
+  socket.on("join_room_video", ({ room }) => {
+    socket.join(room);
+    console.log(`User with id ${socket.id} joined VIDEO room ${room}`);
+  });
+
+  socket.on("callEnded", () => {
+    socket.broadcast.emit("othersCallEnded");
   });
 
   socket.on("callUser", (data) => {
-    io.to(data.userToCall).emit("callUser", {
+    const { room } = data;
+    console.log("call user SERVER");
+    socket.to(room).emit("receiveCall", {
       signal: data.signalData,
       from: data.from,
-      name: data.name,
     });
   });
 
   socket.on("answerCall", (data) => {
-    io.to(data.to).emit("callAccepted", data.signal);
+    const { room } = data;
+    socket.to(room).emit("callAccepted", data.signal);
   });
 });
 

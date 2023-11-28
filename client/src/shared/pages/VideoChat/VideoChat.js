@@ -20,6 +20,7 @@ import {
 } from "../../../store";
 import LoadingIndicator from "../../Components/LoadingIndicator";
 import { useParams } from "react-router-dom";
+import { set } from "date-fns";
 
 const socket = io.connect("http://localhost:5000");
 function VideoChat() {
@@ -57,6 +58,7 @@ function VideoChat() {
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState("");
   const [callerName, setCallerName] = useState("");
+  const [roomId, setRoomId] = useState("123");
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
@@ -81,16 +83,21 @@ function VideoChat() {
       setCameraOff(!enabled);
     }
   };
+
   useEffect(() => {
     if (patientIsFetching || doctorsIsFetching || doctorIsFetching || patientsIsFetching) return;
     if (user.userRoleClinic === "patient") {
+      setMe(patientData._id);
       setName(patientData.name);
       setCallerName(doctorsData[id].name);
       setIdToCall(doctorsData[id]._id);
+      setRoomId(patientData._id + doctorsData[id]._id);
     } else {
+      setMe(doctorData._id);
       setName(doctorData.name);
       setCallerName(patientsData[idx].name);
       setIdToCall(patientsData[idx]._id);
+      setRoomId(patientsData[idx]._id + doctorData._id);
     }
   }, [patientIsFetching, doctorsIsFetching, doctorIsFetching, patientsIsFetching]);
 
@@ -103,40 +110,45 @@ function VideoChat() {
         myVideo.current.srcObject = stream;
       }
     });
+    socket.emit("join_room_video", { room: roomId });
 
-    socket.on("me", (id) => {
-      setMe(id);
-    });
-
-    socket.on("callUser", (data) => {
+    socket.on("receiveCall", (data) => {
+      console.log("receive call fe");
       setReceivingCall(true);
       setCaller(data.from);
-      setName(data.name);
       setCallerSignal(data.signal);
     });
 
-    socket.on("callEnded", () => {
-      setCallEnded(true);
+    socket.on("othersCallEnded", () => {
+      closeCall();
     });
-  }, []);
+  }, [roomId]);
 
-  const callUser = (id) => {
+  const callUser = () => {
+    setCallEnded(false);
     const peer = new Peer({
       initiator: true,
       trickle: false,
       stream: stream,
     });
+
     peer.on("signal", (data) => {
+      console.log("call user emit frontend");
+
       socket.emit("callUser", {
-        userToCall: id,
+        room: roomId,
         signalData: data,
         from: me,
-        name: name,
       });
+      // if (peer.signalingState === "have-local-offer") {
+      //   peer.setRemoteDescription(new RTCSessionDescription(data));
+      // }
     });
 
     peer.on("stream", (stream) => {
-      userVideo.current.srcObject = stream;
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
     });
 
     socket.on("callAccepted", (signal) => {
@@ -148,33 +160,49 @@ function VideoChat() {
   };
 
   const answerCall = () => {
+    setCallEnded(false);
     setCallAccepted(true);
     const peer = new Peer({
       initiator: false,
       trickle: false,
       stream: stream,
     });
+
     peer.on("signal", (data) => {
+      console.log("answer call data");
       console.log(data);
+      console.log("answer call caller");
       console.log(caller);
-      socket.emit("answerCall", { signal: data, to: caller });
+
+      socket.emit("answerCall", { room: roomId, signal: data, to: caller });
+      // if (peer.signalingState === "have-local-offer") {
+      //   peer.setRemoteDescription(new RTCSessionDescription(data));
+      // }
     });
     peer.on("stream", (stream) => {
-      userVideo.current.srcObject = stream;
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
     });
     peer.signal(callerSignal);
     connectionRef.current = peer;
   };
-
-  const leaveCall = () => {
-    socket.emit("callEnded");
+  const closeCall = () => {
     setCallEnded(true);
-    // console.log(connectionRef.current);
-
+    setReceivingCall(false);
+    setCallAccepted(false);
+    setCallerSignal();
     if (connectionRef.current) {
       connectionRef.current.destroy();
     }
-    socket.disconnect();
+    // connectionRef.current = null;
+    window.location.reload();
+  };
+  const leaveCall = () => {
+    // socket.emit("callEnded");
+    socket.emit("callEnded");
+    closeCall();
+    // socket.disconnect();
   };
   if (patientIsFetching || doctorsIsFetching || doctorIsFetching || patientsIsFetching)
     return <LoadingIndicator />;
@@ -219,7 +247,7 @@ function VideoChat() {
                 End Call
               </Button>
             ) : (
-              <IconButton color="primary" aria-label="call" onClick={() => callUser(idToCall)}>
+              <IconButton color="primary" aria-label="call" onClick={callUser}>
                 <PhoneIcon fontSize="large" />
               </IconButton>
             )}
@@ -229,34 +257,35 @@ function VideoChat() {
         <div>
           {receivingCall && !callAccepted ? (
             <div className="caller">
-              <h1>{name} is calling...</h1>
+              <h1>{callerName} is calling...</h1>
               <Button variant="contained" color="primary" onClick={answerCall}>
                 Answer
               </Button>
             </div>
           ) : null}
         </div>
+        <div>
+          {/*className="my-video"*/}
+          {stream && (
+            <div>
+              <video
+                className="video-player"
+                playsInline
+                muted
+                ref={myVideo}
+                autoPlay
+                style={{ width: "200px" }}
+              />
+              <Button variant="outlined" color="primary" onClick={toggleMute}>
+                {isMuted ? <GoUnmute /> : <BsMicMute />}
+              </Button>
+              <Button variant="outlined" color="secondary" onClick={toggleCamera}>
+                {cameraOff ? <HiOutlineVideoCamera /> : <HiOutlineVideoCameraSlash />}
+              </Button>
+            </div>
+          )}
+        </div>
         <div className="video-container">
-          <div className="my-video">
-            {stream && (
-              <div>
-                <video
-                  className="video-player"
-                  playsInline
-                  muted
-                  ref={myVideo}
-                  autoPlay
-                  style={{ width: "200px" }}
-                />
-                <Button variant="outlined" color="primary" onClick={toggleMute}>
-                  {isMuted ? <GoUnmute /> : <BsMicMute />}
-                </Button>
-                <Button variant="outlined" color="secondary" onClick={toggleCamera}>
-                  {cameraOff ? <HiOutlineVideoCamera /> : <HiOutlineVideoCameraSlash />}
-                </Button>
-              </div>
-            )}
-          </div>
           <div className="other-video">
             {callAccepted && !callEnded ? (
               <video

@@ -8,9 +8,9 @@ import { store, persistor } from "./store/index";
 import { PersistGate } from "redux-persist/integration/react";
 import * as process from "process";
 
-// window.global = window;
+window.global = window;
 window.process = process;
-// window.Buffer = [];
+window.Buffer = [];
 
 // import restProvider from 'ra-data-simple-rest'
 const el = document.getElementById("root");
