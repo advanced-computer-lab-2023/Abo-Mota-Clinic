@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const multer = require("multer");
 const path = require("path");
 
 // express app
@@ -55,11 +54,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
 
-app.post("/sdjfjkdsvjkjn", upload.single("file"), (req, res) => {
-  res.send("File uploaded");
-});
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 // listen for requests
