@@ -2,8 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const multer = require("multer");
 const path = require("path");
+const bodyParser = require("body-parser");
 
 // express app
 const app = express();
@@ -28,6 +28,8 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log("Connection success");
+
+  
 
   // text chat
   socket.on("join_room", (data) => {
@@ -75,8 +77,13 @@ io.on("connection", (socket) => {
 const mongoose = require("mongoose");
 const { sendMessage } = require("./controllers/commonController");
 mongoose.set("strictQuery", false);
-// const bodyParser = require("body-parser");
+
+
 const MongoURI = process.env.MONGO_URI;
+
+
+
+
 
 // mongo connection string
 mongoose
@@ -100,6 +107,7 @@ app.use(express.json());
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(cookieParser());
 app.use(express.static(process.env.STATIC_DIR));
+app.use(bodyParser.json());
 
 // routes
 app.use("/api/patient", patientRouter);
@@ -108,21 +116,9 @@ app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
 app.use("/api/stripe", stripeRouter);
 app.use("/api/chat", chatRouter);
-//handle uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-  },
-});
 
-const upload = multer({ storage });
 
-app.post("/sdjfjkdsvjkjn", upload.single("file"), (req, res) => {
-  res.send("File uploaded");
-});
+
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // listen for requests
