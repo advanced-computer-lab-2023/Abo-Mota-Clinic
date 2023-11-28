@@ -87,9 +87,14 @@ const addAdmin = async (req, res) => {
 		const existingAdmin = await Admin.findOne({
 			$or: [{ username: username.toLowerCase() }, { email: email.toLowerCase() }],
 		});
-
-		if (existingAdmin) {
-			return res.status(500).json({ error: "Admin with this username or email already exists" });
+		const patientExists = await Patient.findOne({
+			$or: [{ username: username.toLowerCase() }, { email }],
+		});
+		const doctorExists = await Doctor.findOne({
+			$or: [{ username: username.toLowerCase() }, { email }],
+		});
+		if (existingAdmin || patientExists || doctorExists) {
+			return res.status(500).json({ error: "User with this username or email already exists" });
 		}
 
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -186,8 +191,7 @@ const deleteDoctor = async (req, res) => {
 
 // Get all doctor applications
 const getApplications = async (req, res) => {
-	try 
-	{
+	try {
 		const applications = await Doctor.find({ registrationStatus: "pending" });
 		res.status(200).json(applications);
 	} catch (error) {
@@ -244,8 +248,8 @@ const changePassword = async (req, res) => {
 	try {
 		const { oldPassword, newPassword } = req.body;
 		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR ** DONE
-		const username = req.userData.username
-		const loggedIn = await Admin.findOne({ username});
+		const username = req.userData.username;
+		const loggedIn = await Admin.findOne({ username });
 		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR **
 
 		const isMatch = await bcrypt.compare(oldPassword, loggedIn.password);
