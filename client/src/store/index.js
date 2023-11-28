@@ -5,6 +5,7 @@ import { adminApi } from "./apis/adminApi";
 import { guestApi } from "./apis/guestApi";
 import { patientApi } from "./apis/patientApi";
 import { stripeApi } from "./apis/stripeApi";
+import {serviceWorkerApi} from "./apis/workerApi";
 import { userReducer } from "./slices/userSlice";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import { persistReducer, persistStore } from "redux-persist";
@@ -97,6 +98,8 @@ export const {
   useLinkFamilyMemberMutation,
   useChangePatientPasswordMutation,
 } = patientApi;
+
+export const { useCreateSubscriptionMutation } = serviceWorkerApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
 
