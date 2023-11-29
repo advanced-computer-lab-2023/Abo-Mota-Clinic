@@ -1,71 +1,73 @@
-.container {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.myId {
-  margin-right: 5rem;
-  border-radius: 5px;
-  background: #c9d6ff; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #e2e2e2, #c9d6ff); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #e2e2e2,
-    #c9d6ff
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-}
-
-.call-button {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.video-container {
-  position: relative;
-  align-self: center;
-  width: 50%;
-  min-height: 400px;
-  padding-right: 50px;
+.video-chat-container{
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
-.my-video {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  right: 0;
+.video-caller{
+  font-size: 40px;
+  color: black;
 }
 
-.other-video {
-  width: 100%;
+.video-chat-button-terminal{
   display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
-.no-call-placeholder {
-  border-radius: 20px;
-  background-color: black;
+.video-chat-button{
+  background-color: grey;
   color: white;
-  text-align: center;
-  width: 100%;
-  height: 400px;
+  padding: 10px;
+  border-radius: 40px;
 }
 
-.video-player {
+.red-video-button{
+  background-color: red;
+}
+
+.blue-video-button{
+  background-color: blue;
+}
+
+.green-video-button{
+  background-color: green;
+}
+
+.video-call-div{
+  height: 70%;
+  width: 70%;
+  background-color: turquoise;
   border-radius: 20px;
 }
 
-.caller {
-  text-align: center;
-  color: #fff;
+.video-player{
+  border-radius: 20px;
 }
 
-body {
-  background: silver; /* fallback for old browsers */
+.my-video{
+  position: absolute;
+}
+
+.other-video{
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+}
+
+.no-call-placeholder{
+  font-size: 30px;
+  color: white;
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

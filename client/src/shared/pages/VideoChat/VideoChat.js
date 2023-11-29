@@ -2,12 +2,11 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import PhoneIcon from "@mui/icons-material/Phone";
-import { BsMicMute } from "react-icons/bs";
-import { GoUnmute } from "react-icons/go";
-import { HiOutlineVideoCameraSlash, HiOutlineVideoCamera } from "react-icons/hi2";
+import { BsFillCameraVideoFill, BsFillCameraVideoOffFill } from "react-icons/bs";
+import { PiPhoneSlashFill } from "react-icons/pi";
+import { MdPhone } from "react-icons/md";
+import { IoMicSharp, IoMicOffSharp } from "react-icons/io5";
 import React, { useEffect, useRef, useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 import io from "socket.io-client";
 import "./VideoChat.css";
@@ -212,81 +211,20 @@ function VideoChat() {
   // }
 
   return (
-    <>
-      <h1 style={{ textAlign: "center", color: "#fff" }}>Video Call</h1>
-      <div className="container">
-        <div className="myId">
-          <TextField
-            id="filled-basic"
-            label="Name"
-            variant="filled"
-            value={name}
-            // onChange={(e) => setName(e.target.value)}
-            style={{ marginBottom: "20px" }}
-          />
-          {/* <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AssignmentIcon fontSize="large" />}
-            >
-              Copy ID
-            </Button>
-          </CopyToClipboard> */}
-
-          <TextField
-            id="filled-basic"
-            label={user.userRoleClinic === "doctor" ? "Patient to call" : "Doctor to Call"}
-            variant="filled"
-            value={callerName}
-            // onChange={(e) => setIdToCall(e.target.value)}
-          />
-          <div className="call-button">
-            {callAccepted && !callEnded ? (
-              <Button variant="contained" color="secondary" onClick={leaveCall}>
-                End Call
-              </Button>
-            ) : (
-              <IconButton color="primary" aria-label="call" onClick={callUser}>
-                <PhoneIcon fontSize="large" />
-              </IconButton>
-            )}
-            {callerName}
-          </div>
+    <div className="video-chat-container">
+      <h1 className="video-caller">Calling {callerName}</h1>
+      <div className="video-call-div">
+        <div className="my-video">
+            <video
+              className="video-player"
+              playsInline
+              muted
+              ref={myVideo}
+              autoPlay
+              style={{ width: "300px" }}
+            />
         </div>
-        <div>
-          {receivingCall && !callAccepted ? (
-            <div className="caller">
-              <h1>{callerName} is calling...</h1>
-              <Button variant="contained" color="primary" onClick={answerCall}>
-                Answer
-              </Button>
-            </div>
-          ) : null}
-        </div>
-        <div>
-          {/*className="my-video"*/}
-          {stream && (
-            <div>
-              <video
-                className="video-player"
-                playsInline
-                muted
-                ref={myVideo}
-                autoPlay
-                style={{ width: "200px" }}
-              />
-              <Button variant="outlined" color="primary" onClick={toggleMute}>
-                {isMuted ? <GoUnmute /> : <BsMicMute />}
-              </Button>
-              <Button variant="outlined" color="secondary" onClick={toggleCamera}>
-                {cameraOff ? <HiOutlineVideoCamera /> : <HiOutlineVideoCameraSlash />}
-              </Button>
-            </div>
-          )}
-        </div>
-        <div className="video-container">
-          <div className="other-video">
+        <div className="other-video">
             {callAccepted && !callEnded ? (
               <video
                 className="video-player"
@@ -296,13 +234,31 @@ function VideoChat() {
                 style={{ width: "100%" }}
               />
             ) : (
-              <div className="no-call-placeholder">Waiting</div>
+              <div className="no-call-placeholder">Calling ...</div>
             )}
           </div>
-        </div>
       </div>
-    </>
+      <div className="video-chat-button-terminal">
+      <button className="video-chat-button blue-video-button" onClick={toggleMute}>
+        {isMuted ? <IoMicSharp size={40}/>: <IoMicOffSharp size={40}/>}
+      </button>
+      {callAccepted && !callEnded ?
+      <button className="video-chat-button red-video-button" onClick={leaveCall}>
+        <PiPhoneSlashFill size={40}/>
+      </button>:
+      <button className="video-chat-button green-video-button" onClick={callUser}>
+        <MdPhone size={40}/>
+      </button>
+      }
+
+      <button className="video-chat-button blue-video-button" onClick={toggleCamera}>
+        {cameraOff ? <BsFillCameraVideoFill size={40}/>: <BsFillCameraVideoOffFill size={40}/>}
+        </button>
+      </div>
+    </div>
   );
 }
+
+
 
 export default VideoChat;
