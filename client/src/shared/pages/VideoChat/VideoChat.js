@@ -1,4 +1,4 @@
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -20,7 +20,7 @@ import {
 import LoadingIndicator from "../../Components/LoadingIndicator";
 import { useParams } from "react-router-dom";
 import { set } from "date-fns";
-
+import Button from "../../Components/Button";
 const socket = io.connect("http://localhost:5000");
 function VideoChat() {
   const user = useSelector((state) => state.user);
@@ -213,6 +213,16 @@ function VideoChat() {
   return (
     <div className="video-chat-container">
       <h1 className="video-caller">Calling {callerName}</h1>
+      <div>
+        {receivingCall && !callAccepted ? (
+          <div className="caller">
+            <h1>{callerName} is calling...</h1>
+            <Button variant="contained" color="primary" onClick={answerCall}>
+              Answer
+            </Button>
+          </div>
+        ) : null}
+      </div>
       <div className="video-call-div">
         <div className="my-video">
           <video
