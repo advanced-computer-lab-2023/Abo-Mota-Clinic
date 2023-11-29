@@ -32,9 +32,13 @@ export default function Subscription() {
     // console.log(familyPackages
     //     .filter(familyPackage => familyPackage.package !== null));
     
+
+    //
+
+    //
     return (
             <section style={{  maxWidth: '1536px', width: '100%' }} 
-            className="border-2 border-gray-300 rounded-lg mx-auto my-8 p-4 space-y-8">
+            className="mx-auto my-8  p-4 space-y-8 border-2 border-gray-300 rounded-lg ">
             <div>
             <h2 style={headerStyle} className="text-2xl font-bold my-8" >Your Packages</h2>
             <div className="flex justify-center items-center flex-wrap gap-8">

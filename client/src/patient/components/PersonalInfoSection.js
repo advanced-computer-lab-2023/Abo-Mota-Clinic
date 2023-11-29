@@ -46,8 +46,8 @@ function  PersonalInfoSection({patient})
           <p className="text-lg font-medium text-gray-900">{patient.name}</p>
           <p className="text-sm text-gray-500 truncate">{patient.email}</p>
         </div>
-        <div>
-          <Button onClick={handleViewSubscription}>
+        <div className='mt-2'>
+          <Button   type='primary'onClick={handleViewSubscription}>
             View Subscription
           </Button>
         </div>
