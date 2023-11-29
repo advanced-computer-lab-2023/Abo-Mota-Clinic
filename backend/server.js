@@ -12,7 +12,7 @@ const doctorRouter = require("./routes/doctor");
 const adminRouter = require("./routes/admin");
 const guestRouter = require("./routes/guest");
 const stripeRouter = require("./routes/stripe");
-const chatRouter = require("./routes/common");
+const commonRouter = require("./routes/common");
 
 // added for socket.io
 const http = require("http");
@@ -26,11 +26,26 @@ const io = new Server(server, {
   },
 });
 
+const activeUsers = {};
+
+
+
 io.on("connection", (socket) => {
   console.log("Connection success");
 
-  
+  socket.on("user_connected", (userId) => {
+    console.log("User connected:", userId);
+    activeUsers[userId] = socket.id;
+  });
 
+  //----------Notifications------------
+
+  socket.on("send_notification", ({sender, receiver, content}) => {
+    const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
+    socket.to(receiverSocket).emit("receive_notification", {sender, content});
+  });
+
+  //------------------------------------
   // text chat
   socket.on("join_room", (data) => {
     socket.join(data);
@@ -75,9 +90,6 @@ mongoose.set("strictQuery", false);
 const MongoURI = process.env.MONGO_URI;
 
 
-
-
-
 // mongo connection string
 mongoose
   .connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -108,7 +120,7 @@ app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
 app.use("/api/stripe", stripeRouter);
-app.use("/api/chat", chatRouter);
+app.use("/api/common", commonRouter);
 
 
 

@@ -39,6 +39,8 @@ import Profile from "./patient/pages/Profile";
 import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
 import PatientFollowUp from "./doctor/pages/PatientFollowUp";
 import Contract from "./doctor/pages/Contract";
+import Notification from "./doctor/components/Notification";
+
 
 // login
 import LoginForm from "./shared/pages/LoginForm";
@@ -61,14 +63,14 @@ function App() {
           <Route path="/patient" element={<Patient />}>
             <Route path="" element={<PatientHome />} />
             <Route path="appointments" element={<ViewPatientAppointments />} />
-            <Route path="doctors" element={<ViewDoctors />} />
+            <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
             <Route path="test" element={<PatientTest />} />
             <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
             <Route path="doctors/info/:id/video" element={<VideoChat />} />
             <Route path="wallet" element={<ViewWallet isPatient={true} />} />
-            <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
+            <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper socket={socket} />} />
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
             <Route path="test3/:recipient" element={<Chat socket={socket} />} />
@@ -79,7 +81,9 @@ function App() {
 
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route element={<ProtectedRoute roles={["doctor"]} />}>
-          <Route path="/doctor" element={<Doctor />}>
+          <Route path="/doctor" element={<Doctor socket={socket}/>}>
+          <Route path="" element={<Notification socket={socket} />} />
+
             <Route
               path="contract"
               element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}

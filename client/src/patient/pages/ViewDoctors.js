@@ -69,7 +69,7 @@ function ViewDoctors() {
       <>
         {filteredData.map((doctor, index) => {
           // const handleRedirect = () => navigate('../doctorInfo', { state: doctor });
-          return <DoctorCard index={index} {...doctor} discount={discount} />;
+          return <DoctorCard index={index} {...doctor} discount={discount}/>;
         })}
       </>
     );
