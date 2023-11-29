@@ -224,16 +224,6 @@ function VideoChat() {
             // onChange={(e) => setName(e.target.value)}
             style={{ marginBottom: "20px" }}
           />
-          {/* <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AssignmentIcon fontSize="large" />}
-            >
-              Copy ID
-            </Button>
-          </CopyToClipboard> */}
-
           <TextField
             id="filled-basic"
             label={user.userRoleClinic === "doctor" ? "Patient to call" : "Doctor to Call"}
