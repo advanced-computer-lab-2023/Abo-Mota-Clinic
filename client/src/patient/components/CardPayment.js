@@ -4,7 +4,7 @@ import StripeForm from "./StripeForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { useFetchStripeConfigQuery, useCreatePaymentIntentMutation } from "../../store";
 
-function Payment({ deductible, onSuccess, onFailure }) {
+function Payment({ deductible, onSuccess, onFailure, socket, doctor }) {
   const currencyMultiplier = 100;
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);

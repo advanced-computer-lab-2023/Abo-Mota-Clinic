@@ -1,4 +1,4 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;1,900&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
 
@@ -11,7 +11,7 @@
 :root {
 	--main-color: rgb(66, 136, 248);
 	--main-color-transparent: rgba(0, 0, 255, 0.8);
-
+	--text-color: #6c757d;
 }
 
 html {
@@ -22,6 +22,45 @@ html {
 body {
 	margin: 0px;
 	background: #efefef;
+	color: var(--text-color);
 	/* background: #eee; */
 	/* font-family: Besley, serif; */
 }
+
+/* .sidebar
+{
+	position: sticky;
+	top:0;
+	
+} */
+:root {
+	/* Primary color */
+		--primary-color: #0056b3; /* Dark blue */
+	--primary-color-light: #507fba; /* Lighter shade of blue */
+	--primary-color-dark: #003c82; /* Darker shade of blue */
+	--primary-color-very-dark: #000055; /* Very dark blue */
+
+	/* Secondary color */
+	--secondary-color: #f50057; /* Example secondary color */
+	--secondary-color-light: #f73378; /* Lighter shade */
+	--secondary-color-dark: #ab003c; /* Darker shade */
+
+	/* Text color */
+	 
+	--text-color-secondary: #000000; /* Black text color */
+
+	/* Background colors */
+	--background-color: #ffffff; /* White background */
+	--background-color-light: #f8f9fa; /* Light gray background */
+	--background-color-dark: #343a40; /* Dark gray background */
+
+	/* Other colors */
+	--info-color: #17a2b8; /* Info color */
+	--success-color: #28a745; /* Success color */
+	--warning-color: #ffc107; /* Warning color */
+	--danger-color: #dc3545; /* Danger color */
+
+	/* Border color */
+	--border-color: #dee2e6; /* Light gray border */
+}
+

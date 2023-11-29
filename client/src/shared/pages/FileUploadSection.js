@@ -1,3 +1,4 @@
+import Button from "../Components/Button";
 import { useRemoveDocumentMutation, useUploadMedicalHistoryMutation } from "../../store";
 import {AiOutlineClose} from '@react-icons/all-files/ai/AiOutlineClose';
 
@@ -16,6 +17,7 @@ function FileUploadSection({ files, medicalHistory }) {
     console.log(files)
   
   const handleViewFile = (file) => {
+    console.log(file);  
     const arrayBuffer = new Uint8Array(file.data.data).buffer;
     const blob = new Blob([arrayBuffer], {type: file.contentType});
     const fileUrl = URL.createObjectURL(blob);
@@ -47,9 +49,9 @@ function FileUploadSection({ files, medicalHistory }) {
           </div>
         ))}
         {medicalHistory && <div className="mt-4">
-          <label htmlFor="file-upload" className="cursor-pointer bg-blue-500 text-white p-2 rounded-md">
+          <Button isFilled={false} htmlFor="file-upload" >
             Upload Files
-          </label>
+          </Button>
           <input id="file-upload" type="file" className="hidden" onChange={handleFileUpload} multiple />
         </div>
       

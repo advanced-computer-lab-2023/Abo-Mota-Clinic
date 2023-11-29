@@ -2,7 +2,7 @@ import { useFetchPatientQuery, usePayByWalletMutation } from "../../store";
 import { Button, Typography } from "@mui/joy";
 import { useState } from "react";
 
-function WalletPayment({ deductible, onSuccess, onFailure }) {
+function WalletPayment({ deductible, onSuccess, onFailure, socket, doctor }) {
 
   const { data: patient, isFetching: isFetchingPatient, error: isFetchingPatientError } = useFetchPatientQuery();
   const [payByWallet, walletResults] = usePayByWalletMutation();
@@ -22,6 +22,16 @@ function WalletPayment({ deductible, onSuccess, onFailure }) {
         console.log(res);
         onSuccess();
         setIsProcessing(false);
+
+        //send notification to doctor and myself
+        // call sendNotification from commonController.js
+
+        //send socket event to backend
+        socket.emit("send_notification", {
+          sender: patient._id,
+          receiver: doctor._id,
+          content: `You have a new appointment with ${patient.name}!`
+        });
 
       })
       .catch((err) => {

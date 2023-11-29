@@ -94,6 +94,12 @@ const patientSchema = new Schema(
 				fileName: String,
 			},
 		],
+		notifications: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: "Notification",
+			},
+		],
 		// prescriptions: [
 		//   {
 		//     type: Schema.Types.ObjectId,
