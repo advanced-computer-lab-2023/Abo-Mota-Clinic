@@ -12,7 +12,7 @@ const doctorRouter = require("./routes/doctor");
 const adminRouter = require("./routes/admin");
 const guestRouter = require("./routes/guest");
 const stripeRouter = require("./routes/stripe");
-const chatRouter = require("./routes/common");
+const commonRouter = require("./routes/common");
 
 // added for socket.io
 const http = require("http");
@@ -26,24 +26,40 @@ const io = new Server(server, {
   },
 });
 
+// keeping track of online users
+const activeUsers = {};
+
 io.on("connection", (socket) => {
   console.log("Connection success");
 
-  
-
-  // text chat
-  socket.on("join_room", (data) => {
-    socket.join(data);
-
-    console.log(`User with id ${socket.id} joined room ${data}`);
+  socket.on("user_connected", (userId) => {
+    console.log("User connected:", userId);
+    activeUsers[userId] = socket.id;
   });
 
-  socket.on("send_message", (data) => {
+  // text chat
+  //----------------------
+  // socket.on("join_room", (data) => {
+  //   socket.join(data);
+
+  //   console.log(`User with id ${socket.id} joined room ${data}`);
+  // });
+
+  socket.on("send_message", async (message) => {
     // add message to database
-    const { room, ...message } = data;
+    // await Message.create(message);
+
+    const { sender, recipient } = message;
+    const senderSocketId = activeUsers[sender];
+    const recipientSocketId = activeUsers[recipient];
+
+    if(recipientSocketId) {
+      io.to(senderSocketId).emit("receive_message", message);
+      socket.to(recipientSocketId).emit("receive_message", message);
+    }
 
     // forward to listening recipients
-    socket.to(room).emit("receive_message", message);
+    // io.to(room).emit("receive_message", message);
   });
 
   //----------------------
@@ -68,7 +84,6 @@ io.on("connection", (socket) => {
 });
 
 const mongoose = require("mongoose");
-const { sendMessage } = require("./controllers/commonController");
 mongoose.set("strictQuery", false);
 
 
@@ -108,9 +123,7 @@ app.use("/api/doctor", doctorRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
 app.use("/api/stripe", stripeRouter);
-app.use("/api/chat", chatRouter);
-
-
+app.use("/api/common", commonRouter);
 
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";

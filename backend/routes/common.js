@@ -1,5 +1,5 @@
 const express = require("express");
-const { sendMessage, getMessages, getLoggedIn } = require("../controllers/commonController");
+const { sendMessage, getMessages, getLoggedIn, getUser } = require("../controllers/commonController");
 const router = express.Router();
 require("dotenv").config();
 
@@ -11,4 +11,5 @@ router.post("/message", authorize, sendMessage);
 
 router.get("/loggedIn", authorize, getLoggedIn);
 
+router.get("/user", getUser);
 module.exports = router;

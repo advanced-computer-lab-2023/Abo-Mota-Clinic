@@ -55,6 +55,15 @@ const commonApi = createApi({
           };
         },
       }),
+
+      fetchUser: builder.query({
+        query: (userId) => {
+          return {
+            url: `/user?userId=${userId}`,
+            method: "GET",
+          };
+        },
+      }),
     }
   },
 });
@@ -62,7 +71,8 @@ const commonApi = createApi({
 export const {
   useFetchLoggedInQuery,
   useSendMessageMutation,
-  useFetchMessagesQuery
+  useFetchMessagesQuery,
+  useFetchUserQuery
 } = commonApi;
 
 export { commonApi };

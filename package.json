@@ -4,5 +4,8 @@
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.0.1",
     "web-push": "^3.6.6"
+  },
+  "devDependencies": {
+    "daisyui": "^4.4.14"
   }
 }

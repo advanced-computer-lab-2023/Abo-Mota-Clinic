@@ -78,8 +78,23 @@ const getLoggedIn = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  try {
+    const { userId } = req.query;
+    let user = await Patient.findOne({ _id: userId });
+    if (!user)
+      user = await Doctor.findOne({ _id: userId });
+    if (!user)
+      user = await Admin.findOne({ _id: userId });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   sendMessage,
   getMessages,
   getLoggedIn,
+  getUser,
 };

@@ -47,6 +47,7 @@ import PasswordSection from "./admin/pages/PasswordSection";
 
 import io from "socket.io-client";
 import VideoChat from "./shared/pages/VideoChat/VideoChat";
+
 // Socket.io
 const socket = io.connect("http://localhost:5000");
 
