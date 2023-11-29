@@ -1,7 +1,0 @@
-1. Add appointment to database
-  * Set patient ID
-  * Set status upcoming
-
-2. Book appointment for family member
-
-3. Health package subscription

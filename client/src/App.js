@@ -22,10 +22,9 @@ import PatientHome from "./patient/pages/PatientHome";
 import ViewWallet from "./patient/pages/ViewWallet";
 import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
-import PatientTest3 from "./patient/pages/PatientTest3";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
-import ChangePassword from "./patient/components/ChangePassword";
+
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -44,7 +43,6 @@ import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
 import PasswordSection from "./admin/pages/PasswordSection";
 
-// login
 function App() {
   return (
     <div>

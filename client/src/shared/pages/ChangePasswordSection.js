@@ -1,14 +1,16 @@
-import { Modal, ModalDialog, ModalClose, DialogTitle, DialogContent, Stack, FormControl, FormLabel, Input, Select, DatePicker, LocalizationProvider } from '@mui/joy';
-import Button from '../../shared/Components/Button';
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Modal, ModalDialog, ModalClose, DialogTitle, DialogContent, Stack, FormControl, FormLabel, Input } from '@mui/joy';
+import Button from '../Components/Button';
 import { useState } from 'react';
-import { useChangeAdminPasswordMutation } from '../../store';
+import { useChangeAdminPasswordMutation, useChangeDoctorPasswordMutation, useChangePatientPasswordMutation } from '../../store';
 import Toast from '../../patient/components/Toast';
 
-function ChangePassword() {
+
+function ChangePassword(isDoctor, isPatient, isAdmin) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [changePassword, results] = useChangeAdminPasswordMutation();
+  const [changeAdminPassword, results1] = useChangeAdminPasswordMutation();
+  const [changePatientPassword, results2] = useChangePatientPasswordMutation();
+  const [changeDoctorPassword, results3]= useChangeDoctorPasswordMutation();
   
 
   const [formState, setFormState] = useState({
@@ -41,7 +43,9 @@ function ChangePassword() {
   const onFormSubmit = (e) => {
     e.preventDefault();
     const { oldPassword, newPassword } = formState;
-    changePassword({ oldPassword, newPassword })
+    if(isAdmin)
+    {
+        changeAdminPassword({ oldPassword, newPassword })
       .unwrap()
       .then(() => {
         setToast({
@@ -60,15 +64,61 @@ function ChangePassword() {
           color: "danger",
         });
       });
+    }
+    else if(isDoctor)
+    {
+        changeDoctorPassword({ oldPassword, newPassword })
+      .unwrap()
+      .then(() => {
+        setToast({
+          ...toast,
+          open: true,
+          message: "Password changed successfully",
+          color: "success",
+        });
+        setIsModalOpen(false);
+      })
+      .catch((err) => {
+        setToast({
+          ...toast,
+          open: true,
+          message: "Old password is incorrect",
+          color: "danger",
+        });
+      });
+    }
+    else
+    {
+        changePatientPassword({ oldPassword, newPassword })
+      .unwrap()
+      .then(() => {
+        setToast({
+          ...toast,
+          open: true,
+          message: "Password changed successfully",
+          color: "success",
+        });
+        setIsModalOpen(false);
+      })
+      .catch((err) => {
+        setToast({
+          ...toast,
+          open: true,
+          message: "Old password is incorrect",
+          color: "danger",
+        });
+      });
+    }
+    
   };
 
 
   return (
 
     <>
-      <button className='cursor-pointer bg-blue-500 text-white p-2 rounded-md' onClick={() => setIsModalOpen(true)}>
+      <Button isFilled={false} onClick={() => setIsModalOpen(true)}>
         Change password
-      </button>
+      </Button>
 
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ModalDialog sx={{ overflowY: "auto", maxHeight: "90vh", p: 3 }}>
@@ -106,7 +156,7 @@ function ChangePassword() {
               </FormControl>
 
 
-              <Button sx={{ gridColumn: "1/-1" }} type="submit">
+              <Button isFilled sx={{ gridColumn: "1/-1" }} type="submit">
                 Submit
               </Button>
             </Stack>
@@ -122,4 +172,25 @@ function ChangePassword() {
   )
 }
 
-export default ChangePassword;
+
+
+
+function ChangePasswordSection({ patient }) {
+  return (<div className="mt-6">
+    <h3 className="text-lg font-medium text-gray-900">Password Settings</h3>
+    <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200 mb-2">
+      <div className="py-3 flex justify-between text-sm font-medium">
+        <dt className="text-gray-500">Password</dt>
+        <dd className="text-gray-900">********</dd>
+      </div>
+
+    </dl>
+
+    {/* asterisks shown are just for looks, maybe turn functional ? */}
+    <div className="flex justify-end ">
+      <ChangePassword />
+    </div>
+  </div>)
+}
+
+export default ChangePasswordSection;

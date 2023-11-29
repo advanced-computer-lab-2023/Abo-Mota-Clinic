@@ -12,6 +12,8 @@ import { useLoginMutation, login } from "../../../store";
 import ForgetPasswordScreen from "../ForgetPasswordScreen";
 import OtpScreen from "../OtpScreen";
 import { useDispatch } from "react-redux";
+
+
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(false);
@@ -19,6 +21,8 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [loginMutation, results] = useLoginMutation();
   const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+
   const handleSubmit = async (values, { resetForm }) => {
     
     
@@ -59,7 +63,6 @@ const LoginForm = () => {
     <Formik initialValues={initialUserValues} validationSchema={UserSchema} onSubmit={handleSubmit}>
       {(formik) => (
         <form onSubmit={formik.handleSubmit}>
-          {/* {console.log(formik.values)} */}
           <div className="form-container">
             <Input
               label="Username*"
@@ -106,7 +109,7 @@ const LoginForm = () => {
             {" "}
             <img className="login-logo" src={logo} alt="logo" />{" "}
           </div>
-          <Header header="Welcome Back!" type="login-header" />
+          {/* <Header header="Welcome Back!" type="login-header" /> */}
         </div>
         <p className="login-word">Login</p>
         {UserForm}
@@ -147,6 +150,7 @@ const LoginForm = () => {
           goToOtp={() => {
             setOtpOpen(true);
           }}
+          setEmail = {setEmail}
         />
       )}
       {otpOpen && (
@@ -154,7 +158,7 @@ const LoginForm = () => {
           closeForm={() => {
             setOtpOpen(false);
           }}
-          
+          email = {email}
         />
       )}
     </div>
@@ -168,10 +172,6 @@ const UserSchema = yup.object().shape({
   username: yup.string("Invalid username").required("Please enter a valid username"),
 
   password: yup.string(),
-  // .min(8, "Password must be at least 8 characters long")
-  // .matches(/[a-zA-Z]/, "Password must contain at least one letter")
-  // .matches(/[0-9]/, "Password must contain at least one number")
-  // .required("Please enter a valid password"),
 });
 
 const initialUserValues = {
