@@ -10,7 +10,7 @@ import { useForgetPasswordMutation } from '../../../store';
 import { useRequestOtpMutation } from '../../../store';
 import Toast from "../../../patient/components/Toast";
 
-const OtpScreen = ({closeForm}) => {
+const OtpScreen = ({closeForm, email}) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [seconds, setSeconds] = useState(60);
@@ -18,12 +18,11 @@ const OtpScreen = ({closeForm}) => {
   const [setNewPassword , result] = useForgetPasswordMutation();
   const [requestOtp, results] = useRequestOtpMutation();
 
-  const [email, setEmail] = useState("");
-
   const [toast, setToast] = useState({
     open: false,
     duration: 4000,
   });
+  console.log(email)
 
   const onToastClose = (event, reason) => {
     if (reason === "clickaway") return;
@@ -83,11 +82,10 @@ const OtpScreen = ({closeForm}) => {
   const handleSubmit = async (values, {resetForm}) => {
     setIsLoading(true);
     console.log(values.email);
-    if(values.email)
-      setEmail(values.email);
+    
     await new Promise(resolve => setTimeout(resolve, 3000));
 
-    setNewPassword(values)
+    setNewPassword({...values, email})
       .unwrap()
       .then(async() => {
         setToast({
@@ -123,17 +121,7 @@ const OtpScreen = ({closeForm}) => {
     >
       {(formik) => (
         <form onSubmit={formik.handleSubmit}>
-          <div className="form-container">         
-            <Input 
-            label="Email" 
-            icon
-            type="text" 
-            id="email"
-            error={formik.errors.email}
-            touch={formik.touched.email}
-            {...formik.getFieldProps('email')}
-            />
-          </div>
+          
           <div className="form-container">         
             <Input 
             label="OTP" 
@@ -150,9 +138,9 @@ const OtpScreen = ({closeForm}) => {
               label="Password*"
               icon
               type="password"
-              id="password"
-              error={formik.errors.password}
-              touch={formik.touched.password}
+              id="newPassword"
+              error={formik.errors.newPassword}
+              touch={formik.touched.newPassword}
               {...formik.getFieldProps("newPassword")}
             />
           </div>
@@ -191,11 +179,18 @@ const OtpScreen = ({closeForm}) => {
 
 const OtpSchema = yup.object().shape({
   otp: yup.string().matches(/^\d{6}$/, 'OTP must be exactly 6 digits').required('Please enter your OTP'),
+  newPassword: yup
+  .string()
+  .min(8, "Password must be at least 8 characters long")
+  .matches(/[a-zA-Z]/, "Password must contain at least one letter")
+  .matches(/[0-9]/, "Password must contain at least one number")
+  .required("Please enter a valid password"),
 });
 
 
 const initialOtpValues = {
   otp: '',
+  newPassword: '',
 };
 
 

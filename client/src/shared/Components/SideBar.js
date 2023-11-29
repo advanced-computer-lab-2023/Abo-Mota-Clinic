@@ -9,7 +9,7 @@ export default function SideBar({ open, links }) {
   const hoverStyles = {
     backgroundColor: 'purple', // Change this to the desired hover color
   };
-  console.log(links);
+
   return (
     <Sidebar 
       collapsedWidth='0px' 

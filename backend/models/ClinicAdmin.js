@@ -3,9 +3,15 @@ const { Schema } = mongoose;
 
 const clinicAdminSchema = new Schema({
 	// name: String,
-	username: String,
+	username: {
+		type: String,
+		unique: true,
+	},
 	password: String,
-	email: String,
+	email: {
+		type: String,
+		unique: true,
+	},
 });
 
 const ClinicAdmin = mongoose.model("ClinicAdmin", clinicAdminSchema);

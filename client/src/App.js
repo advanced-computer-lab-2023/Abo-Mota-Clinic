@@ -24,7 +24,8 @@ import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
-
+import ChangePassword from "./patient/components/ChangePassword";
+import Chat from "./patient/components/Chat";
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -43,6 +44,12 @@ import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
 import PasswordSection from "./admin/pages/PasswordSection";
 
+import io from "socket.io-client";
+import VideoChat from "./shared/pages/VideoChat/VideoChat";
+// Socket.io
+const socket = io.connect("http://localhost:5000");
+
+// login
 function App() {
   return (
     <div>
@@ -58,11 +65,12 @@ function App() {
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
             <Route path="test" element={<PatientTest />} />
             <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
+            <Route path="doctors/info/:id/video" element={<VideoChat />} />
             <Route path="wallet" element={<ViewWallet isPatient={true} />} />
             <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="test3" element={<PaymentPage />} />
+            <Route path="test3/:recipient" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
           </Route>
@@ -82,6 +90,7 @@ function App() {
             <Route path="profile" element={<EditMyProfile />} />
             <Route path="registerForm" element={<RegisterForm />} />
             <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
+            <Route path="patients/patientInfo/:idx/video" element={<VideoChat />} />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
           </Route>
         </Route>
@@ -90,7 +99,7 @@ function App() {
             <Route path="applications" element={<Applications />} />
             <Route path="packages" element={<Packages />} />
             <Route path="manageUsers" element={<ManageUsers />} />
-            <Route path="changePassword" element={<PasswordSection/>}/>
+            <Route path="changePassword" element={<PasswordSection />} />
           </Route>
         </Route>
       </Routes>

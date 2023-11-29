@@ -6,6 +6,11 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store, persistor } from "./store/index";
 import { PersistGate } from "redux-persist/integration/react";
+import * as process from "process";
+
+window.global = window;
+window.process = process;
+window.Buffer = [];
 
 // import restProvider from 'ra-data-simple-rest'
 const el = document.getElementById("root");
