@@ -21,42 +21,42 @@ import { notification } from 'antd';
 import { useFetchNotificationQuery } from "../../store";
 
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
+  "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
-    width: 'auto',
+    width: "auto",
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
+  color: "inherit",
+  "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
     },
   },
 }));
@@ -128,6 +128,8 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  
+
   const handleNotificationClick = () => {
     setAnchorEl(true)
     setIsNotificationOpen(true);
@@ -142,13 +144,13 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
     setIsProfileOpen(false);
   }
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       id={menuId}
       keepMounted
@@ -185,22 +187,25 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
 
   
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  
+
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}>
+      onClose={handleMobileMenuClose}
+    >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
@@ -226,7 +231,8 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
-          color="inherit">
+          color="inherit"
+        >
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
@@ -236,7 +242,7 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
 
   return (
     <Box sx={{ flexGrow: 1 }} className="sticky top-0 z-10">
-      <AppBar   sx={{ backgroundColor: '#ffffff', color: '#5090d3' }}>
+      <AppBar sx={{ backgroundColor: "#ffffff", color: "#5090d3" }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -252,7 +258,7 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: "none", sm: "block" } }}
           >
             MUI
           </Typography>
@@ -297,7 +303,7 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
               <AccountCircle />
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -311,7 +317,7 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
           </Box>
         </Toolbar>
       </AppBar>
-      
+
       {renderMobileMenu}
       {renderMenu}
 
