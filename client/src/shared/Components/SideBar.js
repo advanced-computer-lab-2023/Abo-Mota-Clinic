@@ -43,12 +43,9 @@ export default function SideBar({ open, links }) {
       >
         {links.map((link, index) => {
           return (
-            // <MenuItem icon={link.logo} styles={hoverStyles}>
-            //   <Link to={link.to}>{link.name}</Link>
-            // </MenuItem>
-            <MenuItem icon={link.logo}>
-              <Link to={link.to}>{link.name}</Link>
-            </MenuItem>
+            <Link key={index} to={link.to}>
+              <MenuItem icon={link.logo}>{link.name}</MenuItem>
+            </Link>
           );
         })}
       </Menu>
