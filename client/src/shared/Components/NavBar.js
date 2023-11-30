@@ -4,7 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import logoImage from '../assets/logo.png'
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,7 +15,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
-import SideBar from './SideBar';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,6 +62,8 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
+
+  
   
 
   const toggleSideBar = () => {
@@ -111,7 +113,6 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
           </MenuItem>
         })
       }
-      
     </Menu>
   );
 
@@ -178,14 +179,10 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MUI
-          </Typography>
+          
+  <img src={logoImage} alt="Logo" style={{ height: '40px' }} /> 
+    <Box sx={{ flexGrow: 1 }} />
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">

@@ -31,15 +31,16 @@ body {
 {
 	position: sticky;
 	top:0;
-	
+	//#3C84FB
+	//#136CFB
 } */
 :root {
 	/* Primary color */
-		--primary-color: #0056b3; /* Dark blue */
+	--primary-color: #0056b3; /* Dark blue */
 	--primary-color-light: #507fba; /* Lighter shade of blue */
 	--primary-color-dark: #003c82; /* Darker shade of blue */
-	--primary-color-very-dark: #000055; /* Very dark blue */
-
+	--primary-color-very-dark: #000088; /* Very dark blue */
+	
 	/* Secondary color */
 	--secondary-color: #f50057; /* Example secondary color */
 	--secondary-color-light: #f73378; /* Lighter shade */
