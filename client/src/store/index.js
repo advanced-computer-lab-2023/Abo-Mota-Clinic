@@ -110,6 +110,8 @@ export const {
   useFetchLoggedInQuery,
   useSendMessageMutation,
   useFetchMessagesQuery,
+  useSendNotificationMutation,
+  useFetchNotificationQuery,
 } = commonApi;
 
 export { logout, login } from "./slices/userSlice";

@@ -1,4 +1,4 @@
-import {useState}  from 'react';
+import {useState, useEffect}  from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -16,6 +16,10 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
 import SideBar from './SideBar';
+import Dropdown from '@mui/joy/Dropdown';
+import { notification } from 'antd';
+import { useFetchNotificationQuery } from "../../store";
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,12 +61,45 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
+export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [margin, setMargin] = useState(0);
+
+  const { data, isFetching , error } = useFetchNotificationQuery();
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    if(!isFetching){
+      console.log("NOTIF1", data.notifications);
+      const notif = data.notifications.filter((notification) => notification != null)
+                                      .map((notification, index) => notification.content);
+      setNotifications(notif);
+
+    }
+
+  }, [isFetching]);
 
   
+  useEffect(() => {
+    const handleReceiveNotification = ({ contentDoctor ,contentPatient }) => {
+      console.log(contentDoctor);
+      if(contentDoctor) 
+        setNotifications(prev => [...prev, contentDoctor]);
+
+      if(contentPatient) 
+        setNotifications(prev => [...prev, contentPatient]);
+    };
+
+    // Attach the event listener
+    socket.on("receive_notification_booked", handleReceiveNotification);
+
+    
+  }, [socket]);
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -73,6 +110,9 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+    setIsProfileOpen(true);
+    setIsMessageOpen(false);
+    setIsNotificationOpen(false);
   };
 
   const handleMobileMenuClose = () => {
@@ -88,6 +128,20 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleNotificationClick = () => {
+    setAnchorEl(true)
+    setIsNotificationOpen(true);
+    setIsMessageOpen(false);
+    setIsProfileOpen(false);
+
+  }
+  const handleMessageClick = () => {
+    setAnchorEl(true)
+    setIsMessageOpen(true);
+    setIsNotificationOpen(false);
+    setIsProfileOpen(false);
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -99,21 +153,37 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       open={isMenuOpen}
-      onClose={handleMenuClose}>
+      onClose={handleMenuClose}
+      style={{
+        marginTop: '35px', // Add margin-top property
+        marginRight: `10px`,
+      }}
+      size="sm"
+      >
       {
-        items.map(({name,to})=>{
+        isProfileOpen && items.map(({name,to})=>{
           return <MenuItem onClick={handleMenuClose}>
             <Link to={to}>{name}</Link>
+          </MenuItem>
+        })
+      }
+
+      {
+        isNotificationOpen && notifications.map((notification)=>{
+          return <MenuItem size='sm' onClick={handleMenuClose}>
+            <div>{notification}</div>
           </MenuItem>
         })
       }
       
     </Menu>
   );
+
+  
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -139,12 +209,12 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem >
         <IconButton
           size="large"
-          aria-label="show 17 new notifications"
+          aria-label="show 5 new notifications"
           color="inherit">
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={5} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -188,20 +258,33 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton size="large" aria-label="show 4 new mails" color="inherit"
+            onClick={handleMessageClick}
+            >
               <Badge badgeContent={4} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
             <IconButton
               size="large"
-              aria-label="show 17 new notifications"
+              aria-label="show notifications"
               color="inherit"
+              onClick={handleNotificationClick}
             >
-              <Badge badgeContent={17} color="error">
+              {notifications.length > 0 ? <Badge badgeContent={notifications.length} color="error">
                 <NotificationsIcon />
-              </Badge>
+              </Badge> : <NotificationsIcon />}
             </IconButton>
+            {/* <Dropdown>
+                <Badge badgeContent={5} color="error">
+                  <NotificationsIcon />
+                </Badge>             
+                 <Menu>
+                  <MenuItem>Profile</MenuItem>
+                  <MenuItem>My account</MenuItem>
+                  <MenuItem>Logout</MenuItem>
+                </Menu>
+            </Dropdown> */}
             <IconButton
               size="large"
               edge="end"
@@ -231,6 +314,7 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
       
       {renderMobileMenu}
       {renderMenu}
+
     </Box>
   );
 }

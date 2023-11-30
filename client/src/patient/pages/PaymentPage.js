@@ -148,6 +148,7 @@ function PaymentPage({
                   onFailure={onPaymentFailure}
                   socket={socket}
                   doctor={doctor}
+                  details = {details}
                 />
               ) : (
                 <WalletPayment
@@ -156,6 +157,7 @@ function PaymentPage({
                   onFailure={onPaymentFailure}
                   socket={socket}
                   doctor={doctor}
+                  details = {details}
                 />
               )}
             </Card>
