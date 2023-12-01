@@ -238,6 +238,7 @@ const deleteOtp = async (email) => {
 const login = async (req, res) => {
 	const { username, password } = req.body;
 
+
 	const patientExists = await Patient.findOne({ username: username.toLowerCase() });
 	const doctorExists = await Doctor.findOne({ username: username.toLowerCase() });
 	const adminExists = await Admin.findOne({ username: username.toLowerCase() });
@@ -281,7 +282,7 @@ const login = async (req, res) => {
 
 					// console.log(res.cookies.jwt)
 					return res
-						.cookie("jwt", token, {
+						.cookie('jwt', token, {
 							httpOnly: true,
 							maxAge: 86400 * 1000,
 							secure: false,
@@ -305,7 +306,10 @@ const login = async (req, res) => {
 
 const logout = (req, res) => {
 	try {
-		res.clearCookie("jwt");
+		// const { userType } = req.userData;
+		// res.clearCookie(`jwt${userType}`);
+		res.clearCookie('jwt');
+
 		res.status(200).json({ message: "Logged Out Successfully", isLoggedIn: false });
 	} catch (err) {
 		res.status(500).json({ message: err.message });

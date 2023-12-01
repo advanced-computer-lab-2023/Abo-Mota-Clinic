@@ -38,10 +38,9 @@ export default function SideBar({ open, links }) {
       >
         {links.map((link, index) => {
           return (
-            
-            <MenuItem icon={link.logo} className="mt-4">
-              <Link to={link.to}>{link.name}</Link>
-            </MenuItem>
+            <Link key={index} to={link.to}>
+              <MenuItem icon={link.logo}>{link.name}</MenuItem>
+            </Link>
           );
         })}
       </Menu>

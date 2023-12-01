@@ -57,6 +57,10 @@
 .other-video{
   height: 100%;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* This ensures nothing overflows outside this div */
   border-radius: 20px;
 }
 
@@ -70,4 +74,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.main-video{
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    object-fit: fill; /* This maintains aspect ratio within the given dimensions */
 }

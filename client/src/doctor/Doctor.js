@@ -24,7 +24,7 @@ function Doctor({socket}) {
     <div>
       {isFetching && <div>Loading...</div>}
       {!isFetching &&
-        <Outline items={items} navBarItems={navBarItems}/>}
+        <Outline items={items} navBarItems={navBarItems} socket={socket}/>}
 
     </div>
   );

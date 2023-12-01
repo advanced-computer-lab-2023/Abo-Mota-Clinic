@@ -61,7 +61,7 @@ function App() {
         <Route path='/' element={<LandingPage/>} />
         <Route path="/patientRegistration" element={<RegisterScreen />} />
         <Route element={<ProtectedRoute roles={["patient"]} />}>
-          <Route path="/patient" element={<Patient />}>
+          <Route path="/patient" element={<Patient socket={socket}/>}>
             <Route path="" element={<PatientHome />} />
             <Route path="appointments" element={<ViewPatientAppointments />} />
             <Route path="doctors" element={<ViewDoctors socket={socket} />} />
