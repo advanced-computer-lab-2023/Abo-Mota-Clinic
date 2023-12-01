@@ -198,7 +198,7 @@ const RegisterScreen = () => {
 
   return (
     <div className="registesr-div">
-      <NavBar />
+      {/*<NavBar />*/}
       <div className="register-portal">
         <div className="register-part">
           <Header header="Welcome to Abo Mouta Clinic!" subheader="" />

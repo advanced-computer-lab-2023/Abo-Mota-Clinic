@@ -43,6 +43,12 @@ const doctorSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		notifications: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: "Notification",
+			},
+		],
 		// patients: [
 		// 	{
 		// 		type: Schema.Types.ObjectId,

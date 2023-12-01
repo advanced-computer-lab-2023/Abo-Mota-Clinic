@@ -216,7 +216,7 @@ const RegisterForm = () => {
 
   return (
     <div className="registesr-div">
-      <NavBar />
+      {  /*<NavBar >*/}    
       <div className="register-portal">
         <div className="register-part">
           <Header

@@ -33,15 +33,7 @@ const Search = styled('div')(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
+
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
@@ -61,10 +53,6 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-
-
-  
-  
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -192,9 +180,8 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
             </IconButton>
             <IconButton
               size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
+              aria-label="show 16 new notifications"
+              color="inherit">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
@@ -231,4 +218,4 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen}) {
     </Box>
   );
 }
-//links={/* your links here */}
+

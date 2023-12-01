@@ -49,6 +49,8 @@ body {
 	/* Text color */
 	 
 	--text-color-secondary: #000000; /* Black text color */
+	--text-color-primary: #FFFFFF;
+
 
 	/* Background colors */
 	--background-color: #ffffff; /* White background */

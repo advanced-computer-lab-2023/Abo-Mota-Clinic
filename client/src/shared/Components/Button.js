@@ -1,52 +1,37 @@
 import React from 'react';
-import { Button as JoyButton } from '@mui/joy';
 
-const Button = ({ children, type, onClick, className, isFilled = true, htmlFor, ...props })=> {
-  const baseStyle = {
-    color: isFilled ? 'white' : '#0056b3', // Text color changes based on isFilled
-    py: 1, // Padding Y-axis
-    px: 2, // Padding X-axis
-    borderRadius: 'sm', // Small border radius
-    transition: 'colors 0.3s', // Smooth color transition
-    border: !isFilled ? '1px solid' : 'none', // Border for outlined button
-    '&:hover': {
-      boxShadow: 'md', // Medium shadow on hover
-    },
-    '&:focus': {
-      outline: 'none',
-      boxShadow: 'outline', // Focus outline shadow
-    },
+const Button = ({ children, type = 'primary', onClick, className, isFilled = true, ...props }) => {
+  // Tailwind CSS styles for filled buttons
+  const filledStyles = {
+    primary: 'bg-blue-600 hover:bg-blue-700 text-white',
+    secondary: 'bg-green-500 hover:bg-green-600 text-white',
+    tertiary: 'bg-blue-600 hover:bg-blue-500 text-white',
+    danger: 'bg-red-600 hover:bg-red-700 text-white',
   };
 
-  const typeStyles = {
-    primary: {
-      bgcolor: isFilled ? '#0056b3' : 'transparent', // Background color changes based on isFilled
-      '&:hover': {
-        bgcolor: isFilled ? '#003d82' : '#e6f0ff', // Hover color for outlined button
-      },
-    },
-    secondary: {
-      bgcolor: isFilled ? '#28a745' : 'transparent', 
-      '&:hover': {
-        bgcolor: isFilled ? '#1e7e34' : '#ecf4eb', // Hover color for outlined secondary button
-      },
-    },
-    danger: {
-      bgcolor: isFilled ? '#dc3545' : 'transparent', 
-      '&:hover': {
-        bgcolor: isFilled ? '#c82333' : '#f8e3e7', // Hover color for outlined danger button
-      },
-    },
+  // Tailwind CSS styles for outlined buttons
+  const outlinedStyles = {
+    primary: 'bg-transparent hover:bg-blue-700 text-blue-600 border-blue-600 hover:text-white',
+    secondary: 'bg-transparent hover:bg-green-600 text-green-500 border-green-500 hover:text-white',
+    tertiary: 'bg-transparent hover:bg-blue-500 text-blue-400 border-blue-400 hover:text-white',
+    danger: 'bg-transparent hover:bg-red-700 text-red-600 border-red-600 hover:text-white',
   };
 
-  const buttonStyle = { ...baseStyle, ...typeStyles[type] || typeStyles.primary };
+  // Choose the correct Tailwind CSS styles based on the `type` prop and `isFilled` flag
+  const buttonStyle = isFilled ? filledStyles[type] || filledStyles.primary : outlinedStyles[type] || outlinedStyles.primary;
+
+  // Base Tailwind CSS styles that apply to all button types
+  const baseStyle = `py-2 px-4 rounded transition duration-300 ${isFilled ? '' : 'border'} ${className}`;
 
   return (
-    <JoyButton sx={buttonStyle} onClick={onClick} className={className} {...props} component={htmlFor ? 'label' : 'button'} htmlFor={htmlFor}>
+    <button
+      onClick={onClick}
+      className={`${baseStyle} ${buttonStyle}`}
+      {...props}
+    >
       {children}
-    </JoyButton>
+    </button>
   );
-  
 };
 
 export default Button;
