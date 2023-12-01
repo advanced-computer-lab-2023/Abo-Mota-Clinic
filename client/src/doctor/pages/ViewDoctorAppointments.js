@@ -18,7 +18,7 @@ const { RangePicker } = DatePicker;
 
 
 
-function ViewDoctorAppointments() {
+function ViewDoctorAppointments({socket}) {
 	const [selection, setSelection] = useState([]);
 	const [selectedDateRange, setSelectedDateRange] = useState(null);
 
@@ -82,7 +82,7 @@ function ViewDoctorAppointments() {
 
 	if(filteredAppointments){
 		renderedAppointments = filteredAppointments.map((appointment, index) => {
-			return <AppointmentCard key={index} appointment={appointment}/>
+			return <AppointmentCard key={index} appointment={appointment} socket={socket}/>
 		});
 	}
 	  

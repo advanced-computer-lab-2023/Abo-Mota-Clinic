@@ -63,7 +63,7 @@ function App() {
         <Route element={<ProtectedRoute roles={["patient"]} />}>
           <Route path="/patient" element={<Patient socket={socket}/>}>
             <Route path="" element={<PatientHome />} />
-            <Route path="appointments" element={<ViewPatientAppointments />} />
+            <Route path="appointments" element={<ViewPatientAppointments socket={socket}/>} />
             <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
@@ -89,7 +89,7 @@ function App() {
               path="contract"
               element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
             />
-            <Route path="appointments" element={<ViewDoctorAppointments />} />
+            <Route path="appointments" element={<ViewDoctorAppointments socket={socket}/>} />
             <Route path="patients" element={<ViewDoctorPatients />} />
             <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />

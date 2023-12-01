@@ -133,7 +133,7 @@ const getLoggedIn = async (req, res) => {
       user = await Doctor.findOne({ username });
 
     if (userType.toLowerCase() === 'admin')
-      user = await Doctor.findOne({ admin });
+      user = await Doctor.findOne({ username });
 
     res.status(200).json(user);
   } catch (error) {

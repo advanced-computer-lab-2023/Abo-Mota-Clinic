@@ -98,6 +98,8 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
 
     // Attach the event listener
     socket.on("receive_notification_booked", handleReceiveNotification);
+    socket.on("receive_notification_cancelled_by_patient", handleReceiveNotification);
+    socket.on("receive_notification_cancelled_by_doctor", handleReceiveNotification);
 
     
   }, [socket]);

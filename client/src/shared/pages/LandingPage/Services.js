@@ -15,7 +15,7 @@ export default function Services() {
               <div className="flex items-center justify-center h-32 w-32 rounded-full bg-white mx-auto overflow-hidden">
                 <img src={VideoCall} alt="Video Call" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-xl font-semibold mt-5">Video Call a Doctor</h3>
+              <h3 className="text-xl font-semibold mt-5 text-blue-900">Video Call a Doctor</h3>
               <p className="text-gray-600 mt-3">
                 Connect with certified doctors at the click of a button for a personal consultation.
               </p>
@@ -26,7 +26,7 @@ export default function Services() {
               <div className="flex items-center justify-center h-32 w-32 rounded-full bg-white mx-auto overflow-hidden">
                 <img src={Appointments} alt="Book Appointments" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-xl font-semibold mt-5">Book Appointments Online</h3>
+              <h3 className="text-xl font-semibold mt-5 text-blue-900">Book Appointments Online</h3>
               <p className="text-gray-600 mt-3">
                 Choose the best time for you and book your appointment online with ease.
               </p>
@@ -37,7 +37,7 @@ export default function Services() {
               <div className="flex items-center justify-center h-32 w-32 rounded-full bg-white mx-auto overflow-hidden">
                 <img src={Prescriptions} alt="Online Prescriptions" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-xl font-semibold mt-5">Online Prescription Refills</h3>
+              <h3 className="text-xl font-semibold mt-5 text-blue-900">Online Prescription Refills</h3>
               <p className="text-gray-600 mt-3">
                 Use your prescription to order your medication online and have it delivered.
               </p>
