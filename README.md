@@ -109,10 +109,6 @@ The project adheres to the "standard" coding conventions for clarity and maintai
 
 
 
-## Tests
-
-
-
 ## How to Use?
 
 
