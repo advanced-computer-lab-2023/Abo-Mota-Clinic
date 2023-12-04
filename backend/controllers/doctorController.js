@@ -379,6 +379,14 @@ const cancelAppointment = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const getAllMedicines = async (req, res) => {
+  try {
+    const medicines = await Medicine.find({});
+    res.status(200).json(medicines);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
   getDoctorProfile,
@@ -394,4 +402,5 @@ module.exports = {
   viewPrescriptions,
   reschedulePatientAppointment,
   cancelAppointment,
+  getAllMedicines,
 };
