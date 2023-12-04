@@ -51,7 +51,8 @@ export {
   useAddFreeSlotsMutation,
   useFetchWalletDoctorQuery,
   useUploadHealthRecordMutation,
-  useChangeDoctorPasswordMutation
+  useChangeDoctorPasswordMutation,
+  useGetAllMedicinesQuery,
 } from "./apis/doctorApi";
 
 export {
@@ -65,7 +66,7 @@ export {
   useRemovePatientMutation,
   useRemoveDoctorMutation,
   useHandleApplicationMutation,
-  useChangeAdminPasswordMutation
+  useChangeAdminPasswordMutation,
 } from "./apis/adminApi";
 
 export {
@@ -101,10 +102,7 @@ export const {
   useChangePatientPasswordMutation,
 } = patientApi;
 
-export const {
-  useCreatePaymentIntentMutation,
-  useFetchStripeConfigQuery
-} = stripeApi;
+export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
 
 export const {
   useFetchLoggedInQuery,

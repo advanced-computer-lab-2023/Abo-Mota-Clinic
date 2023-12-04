@@ -13,7 +13,9 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import AddHealthRecordScreen from "./AddHealthRecordScreen";
 import { useFetchPatientQuery, useFetchPatientsQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
-import { VideoChat } from "@mui/icons-material";
+import { VideoChatRounded } from "@mui/icons-material";
+import BackArrow from "../../shared/Components/BackArrow";
+import Button from "../../shared/Components/Button";
 
 export default function ViewPatientInfo() {
   const location = useLocation();
@@ -69,6 +71,7 @@ export default function ViewPatientInfo() {
 
   return (
     <div className="mt-8 ml-8 mr-8 mb-8 space-y-5 items-center">
+      <BackArrow />
       <Typography level="h2">
         {capitalizeFirstLetter(patientData.name.split(" ")[0])}'s Medical Record
       </Typography>
@@ -105,8 +108,19 @@ export default function ViewPatientInfo() {
               <Typography>{patientData.formattedDob}</Typography>
             </div>
             <div>
+              <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+                Prescriptions
+              </Typography>
+              <Link to="prescriptions">
+                <Button>View Prescriptions</Button>
+              </Link>
+            </div>
+            <div>
+              <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+                Want to video call {patientData.name.split(" ")[0]}?
+              </Typography>
               <Link to="video">
-                <VideoChat />
+                <VideoChatRounded />
               </Link>
             </div>
           </div>
@@ -143,13 +157,18 @@ export default function ViewPatientInfo() {
       </Typography>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 pr-20 mb-5">
-        {renderedAppointments}
+        {renderedAppointments.length === 0 ? (
+          <Typography>No appointments</Typography>
+        ) : (
+          renderedAppointments
+        )}
       </div>
       <div>
         <Typography level="h4" fontWeight="lg">
           Health Records
           <Divider inset="none" />
         </Typography>
+
         {completedApps.length !== 0 && (
           <div
             onClick={() => {
@@ -170,7 +189,11 @@ export default function ViewPatientInfo() {
             }}
           />
         )}
-        <Tabs defaultActiveKey="1" items={recordItems} size="large" />
+        {recordItems.length === 0 ? (
+          <Typography>No health Records</Typography>
+        ) : (
+          <Tabs defaultActiveKey="1" items={recordItems} size="large" />
+        )}
       </div>
 
       <div>
@@ -178,8 +201,11 @@ export default function ViewPatientInfo() {
           Medical History
           <Divider inset="none" />
         </Typography>
-
-        <Tabs defaultActiveKey="1" items={medicalHistory} size="large" />
+        {medicalHistory.length === 0 ? (
+          <Typography>No medical history</Typography>
+        ) : (
+          <Tabs defaultActiveKey="1" items={medicalHistory} size="large" />
+        )}
       </div>
     </div>
   );

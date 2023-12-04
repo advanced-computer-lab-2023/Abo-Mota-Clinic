@@ -158,6 +158,14 @@ const doctorApi = createApi({
           };
         },
       }),
+      getAllMedicines: builder.query({
+        query: () => {
+          return {
+            url: "/medicines",
+            method: "GET",
+          };
+        },
+      }),
     };
   },
 });
@@ -173,5 +181,6 @@ export const {
   useFetchWalletDoctorQuery,
   useUploadHealthRecordMutation,
   useChangeDoctorPasswordMutation,
+  useGetAllMedicinesQuery,
 } = doctorApi;
 export { doctorApi };

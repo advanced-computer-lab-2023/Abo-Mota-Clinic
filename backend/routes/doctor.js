@@ -1,23 +1,23 @@
 const express = require("express");
 const {
-	getDoctorProfile,
-	editDetails,
-	getDoctorAppointments,
-	getDoctorPatients,
-	changePassword,
-	addFreeAppointmentSlots,
-	acceptContract,
-	scheduleFollowUp,
-	viewWallet,
-	uploadHealthRecords,
-
+  getDoctorProfile,
+  editDetails,
+  getDoctorAppointments,
+  getDoctorPatients,
+  changePassword,
+  addFreeAppointmentSlots,
+  acceptContract,
+  scheduleFollowUp,
+  viewWallet,
+  uploadHealthRecords,
+  getAllMedicines,
 } = require("../controllers/doctorController");
 
-const authorize = require('../middlewares/authorization')
+const authorize = require("../middlewares/authorization");
 
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
+const multer = require("multer");
+const path = require("path");
 
 // Get Doctor's Details
 router.get("/", authorize, getDoctorProfile);
@@ -36,10 +36,11 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 //Upload a Patient's health record
 router.post(
-	"/uploadHealthRecord", 
-	authorize, 
-	upload.fields([{name: "healthRecord", maxCount: 1}]),
-	uploadHealthRecords)
+  "/uploadHealthRecord",
+  authorize,
+  upload.fields([{ name: "healthRecord", maxCount: 1 }]),
+  uploadHealthRecords
+);
 
 // Change Password
 router.patch("/changePassword", authorize, changePassword);
@@ -51,12 +52,14 @@ router.post("/addFreeAppointmentSlots", authorize, addFreeAppointmentSlots);
 router.patch("/acceptContract", authorize, acceptContract);
 
 //Add Patient Follow Up
-router.post("/scheduleFollowUp", authorize, scheduleFollowUp)
+router.post("/scheduleFollowUp", authorize, scheduleFollowUp);
 
 //Get Amount in my Wallet
-router.get('/wallet', authorize, viewWallet)
+router.get("/wallet", authorize, viewWallet);
 
 //View Health Records of My Patients
 // router.get("/healthRecords", authorize, viewMyPatientHealthRecords);
+
+router.get("/medicines", authorize, getAllMedicines);
 
 module.exports = router;
