@@ -22,6 +22,8 @@ const {
 	selfCancelSubscription,
 	familyCancelSubscription,
 	packageUnsubscribe,
+	rescheduleAppointment,
+	cancelAppointment,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -109,10 +111,13 @@ router.post("/cancelMySub", authorize, selfCancelSubscription);
 // Cancel family member subscription
 router.post("/cancelFamilySub", authorize, familyCancelSubscription);
 
-
-
 // Unsubscribe from my package
 router.post("/unsubscribe", authorize, packageUnsubscribe);
 
+// Reschedule appointment
+router.patch("/rescheduleAppointment", authorize, rescheduleAppointment);
+
+// Cancel Appointment
+router.delete("/cancelAppointment", authorize, cancelAppointment);
 
 module.exports = router;

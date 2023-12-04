@@ -2,14 +2,14 @@ const Doctor = require("../models/Doctor");
 const Medicine = require("../models/Medicine");
 const Appointment = require("../models/Appointment");
 const Prescription = require("../models/Prescription");
-const Patient = require("../models/Patient")
+const Patient = require("../models/Patient");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 // Get Doctor's Profile
 const getDoctorProfile = async (req, res) => {
 	try {
-		const username = req.userData.username
-		const doctor = await Doctor.findOne({ username});
+		const username = req.userData.username;
+		const doctor = await Doctor.findOne({ username });
 		// const doctor = await Doctor.findOne();
 		// console.log(Object.bsonsize(doctor));
 		// .populate({
@@ -29,8 +29,8 @@ const editDetails = async (req, res) => {
 	try {
 		// const { id } = req.params;
 		// const filter = { _id: id };
-		const username = req.userData.username
-		const doctorExists = await Doctor.findOne({username});
+		const username = req.userData.username;
+		const doctorExists = await Doctor.findOne({ username });
 		if (!doctorExists || doctorExists.registrationStatus !== "approved") {
 			throw new Error("This doctor does not exist");
 		}
@@ -72,9 +72,11 @@ const getDoctorAppointments = async (req, res) => {
 		// // const doctor = await Doctor.findOne(filter).populate("appointments");
 		// const appointments = doctor.appointments;
 		// res.status(200).json(appointments);
-		const username = req.userData.username
-		const { _id } = await Doctor.findOne({username});
-		const appointments = await Appointment.find({ doctor: _id }).populate("patient").populate("doctor");
+		const username = req.userData.username;
+		const { _id } = await Doctor.findOne({ username });
+		const appointments = await Appointment.find({ doctor: _id })
+			.populate("patient")
+			.populate("doctor");
 		res.status(200).json(appointments);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -123,9 +125,9 @@ const getDoctorPatients = async (req, res) => {
 		// const patients = populated.patients;
 		// // console.log(populated);
 		// res.status(200).json(patients);
-		const username = req.userData.username
+		const username = req.userData.username;
 
-		const { _id } = await Doctor.findOne({username});
+		const { _id } = await Doctor.findOne({ username });
 		const appointments = await Appointment.find({ doctor: _id }).populate("patient");
 		const nonNullAppointments = appointments.filter((appointment) => appointment.patient !== null);
 		const patients = nonNullAppointments.map((appointment) => appointment.patient._doc);
@@ -166,29 +168,30 @@ const getDoctorPatients = async (req, res) => {
 };
 
 const uploadHealthRecords = async (req, res) => {
-	try{
-		const {username} = req.body;
-		const patient = await Patient.findOne({username});
-		if(!patient)
-			throw new Error();
-		const healthRecord = 
-		{
+	try {
+		const { username } = req.body;
+		const patient = await Patient.findOne({ username });
+		if (!patient) throw new Error();
+		const healthRecord = {
 			data: req.files.healthRecord[0].buffer,
 			contentType: req.files.healthRecord[0].mimetype,
-			fileName: req.files.healthRecord[0].originalname
-		}
-		const updated = await Patient.updateOne({username}, { healthRecords: [...patient.healthRecords, healthRecord] });
+			fileName: req.files.healthRecord[0].originalname,
+		};
+		const updated = await Patient.updateOne(
+			{ username },
+			{ healthRecords: [...patient.healthRecords, healthRecord] }
+		);
 		res.status(200).json(updated);
-	}catch(error) {
+	} catch (error) {
 		return res.status(500).json({ error: error.message });
 	}
-}
+};
 
 const changePassword = async (req, res) => {
 	try {
 		const { oldPassword, newPassword } = req.body;
 		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR ** DONE
-		const username = req.userData.username
+		const username = req.userData.username;
 
 		const loggedIn = await Doctor.findOne({ username });
 		// ** REPLACE THIS LINE WITH LOGIC TO FIND CURRENTLY LOGGED IN DOCTOR **
@@ -206,40 +209,35 @@ const changePassword = async (req, res) => {
 };
 
 const acceptContract = async (req, res) => {
-	try{
-
+	try {
 		const username = req.userData.username;
 
-		const doctor = await Doctor.findOne({username , registrationStatus: "approved"});
-		if(!doctor)
-			throw new Error("Doctor not approved by admin");
+		const doctor = await Doctor.findOne({ username, registrationStatus: "approved" });
+		if (!doctor) throw new Error("Doctor not approved by admin");
 
-		const updatedDoctor = await Doctor.updateOne({_id: doctor._id}, {contractApproved: true});
-		res.status(200).json({message: "Doctor accepted contract" , updatedDoctor});
-
-	}catch(error){
-		res.status(500).json({message: error.message})
+		const updatedDoctor = await Doctor.updateOne({ _id: doctor._id }, { contractApproved: true });
+		res.status(200).json({ message: "Doctor accepted contract", updatedDoctor });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
 	}
-}
-
-
+};
 
 const addFreeAppointmentSlots = async (req, res) => {
-	
-	try{
-
+	try {
 		const username = req.userData.username;
 
-		const doctor = await Doctor.findOne({username , registrationStatus: "approved", contractApproved: true});
+		const doctor = await Doctor.findOne({
+			username,
+			registrationStatus: "approved",
+			contractApproved: true,
+		});
 
-		if(!doctor)
-			throw new Error("Doctor not approved by admin or didn't approve contract");
+		if (!doctor) throw new Error("Doctor not approved by admin or didn't approve contract");
 
-
-		const {date, startTime, endTime, appointmentDuration, buffer} = req.body;
+		const { date, startTime, endTime, appointmentDuration, buffer } = req.body;
 		console.log(req.body);
 		// Parse the date and startTime from the request body
-		const startTimeParts = startTime.split(':');
+		const startTimeParts = startTime.split(":");
 		const startHours = parseInt(startTimeParts[0], 10) - 2;
 		const startMinutes = parseInt(startTimeParts[1], 10);
 
@@ -248,64 +246,112 @@ const addFreeAppointmentSlots = async (req, res) => {
 		const endMinutes = parseInt(endTimeParts[1]);
 		const bufferTime = parseInt(buffer);
 
-		
-		
 		const createdAppointments = [];
 		//assuming that the buffer and duration and in mins
-		for (let i = startHours * 60 + startMinutes; i < (endHours * 60 + endMinutes); i += appointmentDuration + bufferTime) {
-
+		for (
+			let i = startHours * 60 + startMinutes;
+			i < endHours * 60 + endMinutes;
+			i += appointmentDuration + bufferTime
+		) {
 			const dateTime = new Date(date);
 			dateTime.setMinutes(i);
-			const appointment = await Appointment.create({date: dateTime, doctor: doctor._id});
+			const appointment = await Appointment.create({ date: dateTime, doctor: doctor._id });
 			createdAppointments.push(appointment);
 		}
 
-		console.log(createdAppointments)
+		console.log(createdAppointments);
 
-		res.status(200).json({message: "Appointments created successfully", appointments: createdAppointments });
-
-	}catch(error){
-		res.status(500).json({message: error.message})
+		res
+			.status(200)
+			.json({ message: "Appointments created successfully", appointments: createdAppointments });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
 	}
 };
 
-const scheduleFollowUp = async(req, res) => {
-
-	try{
+const scheduleFollowUp = async (req, res) => {
+	try {
 		const username = req.userData.username;
-		const doctor = await Doctor.findOne({username});
+		const doctor = await Doctor.findOne({ username });
 
-		const {patientUsername, followUpDate} = req.body;
-		
-		const patient = await Patient.findOne({username: patientUsername});
+		const { patientUsername, followUpDate } = req.body;
 
-		if(!patient)
-			throw new Error("This patient does not exist");
+		const patient = await Patient.findOne({ username: patientUsername });
 
-		const appointment = await Appointment.create({date: followUpDate, status: "upcoming", doctor: doctor._id, patient: patient._id});
+		if (!patient) throw new Error("This patient does not exist");
 
-		res.status(200).json({message: "Follow up added successfully" , appointment});
+		const appointment = await Appointment.create({
+			date: followUpDate,
+			status: "upcoming",
+			doctor: doctor._id,
+			patient: patient._id,
+		});
 
-	}catch(error){
-		res.status(500).json({message: error.message});
+		res.status(200).json({ message: "Follow up added successfully", appointment });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
 	}
 };
 
 const viewWallet = async (req, res) => {
-	
-	try{
-
+	try {
 		const username = req.userData.username;
-		const loggedIn = await Doctor.findOne({username});
+		const loggedIn = await Doctor.findOne({ username });
 
-		res.status(200).json({wallet: loggedIn.wallet});
-
-	}catch(error){
-		res.status(500).json({message: error.message});
+		res.status(200).json({ wallet: loggedIn.wallet });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
 	}
-
 };
 
+const viewPrescriptions = async (req, res) => {
+	try {
+		const username = req.userData.username;
+		const { _id } = await Doctor.findOne({ username });
+		const prescriptions = await Prescription.find({ doctor: _id }).populate([
+			{
+				path: "medicines.medicine",
+				model: "Medicine",
+			},
+			{
+				path: "patient",
+				model: "Patient",
+			},
+		]);
+		res.status(200).json(prescriptions);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
+const reschedulePatientAppointment = async (req, res) => {
+	// HERE I AM ASSUMING THE GIVEN NEW DATE IS SELECTED FROM A LIST OF UPCOMING
+	// DATES OF APPOINTMENTS THAT DO NOT HAVE PATIENTS AND BELONG TO THE DOCTOR
+	try {
+		const { appointmentId, newDate } = req.body;
+		const username = req.userData.username;
+
+		const loggedIn = await Doctor.findOne({ username });
+
+		const appointment = await Appointment.findOne({ _id: appointmentId });
+		const patientId = appointment.patient;
+
+		const reschedule = await Appointment.updateOne(
+			{ _id: appointment._id },
+			{ status: "rescheduled", date: newDate }
+		);
+
+		const deleteExistingAppointment = await Appointment.deleteOne({
+			doctor: loggedIn._id,
+			patient: patientId,
+			date: newDate,
+		});
+
+		res.status(200).json(reschedule);
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+};
 
 module.exports = {
 	getDoctorProfile,
@@ -318,5 +364,6 @@ module.exports = {
 	scheduleFollowUp,
 	viewWallet,
 	uploadHealthRecords,
-
+	viewPrescriptions,
+	reschedulePatientAppointment,
 };
