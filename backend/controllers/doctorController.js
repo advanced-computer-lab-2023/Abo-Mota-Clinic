@@ -304,12 +304,79 @@ const viewWallet = async (req, res) => {
   }
 };
 
-const getAllMedicines = async (req, res) => {
+const viewPrescriptions = async (req, res) => {
   try {
-    const medicines = await Medicine.find({});
-    res.status(200).json(medicines);
+    const username = req.userData.username;
+    const { _id } = await Doctor.findOne({ username });
+    const prescriptions = await Prescription.find({ doctor: _id }).populate([
+      {
+        path: "medicines.medicine",
+        model: "Medicine",
+      },
+      {
+        path: "patient",
+        model: "Patient",
+      },
+    ]);
+    res.status(200).json(prescriptions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const reschedulePatientAppointment = async (req, res) => {
+  // HERE I AM ASSUMING THE GIVEN NEW DATE IS SELECTED FROM A LIST OF UPCOMING
+  // DATES OF APPOINTMENTS THAT DO NOT HAVE PATIENTS AND BELONG TO THE DOCTOR
+  try {
+    const { appointmentId, newDate } = req.body;
+    const username = req.userData.username;
+
+    const loggedIn = await Doctor.findOne({ username });
+
+    const appointment = await Appointment.findOne({ _id: appointmentId });
+    const patientId = appointment.patient;
+
+    const reschedule = await Appointment.updateOne(
+      { _id: appointment._id },
+      { status: "rescheduled", date: newDate }
+    );
+
+    const deleteExistingAppointment = await Appointment.deleteOne({
+      doctor: loggedIn._id,
+      patient: patientId,
+      date: newDate,
+    });
+
+    res.status(200).json(reschedule);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+const cancelAppointment = async (req, res) => {
+  try {
+    const username = req.userData.username;
+    const { appointmentId } = req.body;
+
+    const appointment = await Appointment.findOne({ _id: appointmentId });
+
+    const cancelAppointment = await Appointment.updateOne(
+      { _id: appointmentId },
+      { status: "cancelled" }
+    );
+
+    const refundPatient = await Patient.updateOne(
+      { _id: appointment.patient },
+      { $inc: { wallet: appointment.pricePaid } }
+    );
+    const withdrawFromDoctor = await Doctor.updateOne(
+      { username },
+      { $inc: { wallet: -appointment.pricePaid } }
+    );
+
+    res.status(200).json(cancelAppointment);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -324,5 +391,7 @@ module.exports = {
   scheduleFollowUp,
   viewWallet,
   uploadHealthRecords,
-  getAllMedicines,
+  viewPrescriptions,
+  reschedulePatientAppointment,
+  cancelAppointment,
 };
