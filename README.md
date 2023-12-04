@@ -23,7 +23,7 @@ The project adheres to the "standard" coding conventions for clarity and maintai
 - **Database**: MongoDB
 - **Authentication**: JWT for secure login sessions
 
-## Features
+
 
 ## Features
 
