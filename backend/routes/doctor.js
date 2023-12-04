@@ -12,6 +12,7 @@ const {
 	uploadHealthRecords,
 	viewPrescriptions,
 	reschedulePatientAppointment,
+	cancelAppointment,
 } = require("../controllers/doctorController");
 
 const authorize = require("../middlewares/authorization");
@@ -66,5 +67,8 @@ router.get("/prescriptions", authorize, viewPrescriptions);
 
 //Reschedule Appointment
 router.patch("/rescheduleAppointment", authorize, reschedulePatientAppointment);
+
+//Cancel Appointment
+router.patch("/cancelAppointment", authorize, cancelAppointment);
 
 module.exports = router;

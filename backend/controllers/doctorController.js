@@ -353,6 +353,33 @@ const reschedulePatientAppointment = async (req, res) => {
 	}
 };
 
+const cancelAppointment = async (req, res) => {
+	try {
+		const username = req.userData.username;
+		const { appointmentId } = req.body;
+
+		const appointment = await Appointment.findOne({ _id: appointmentId });
+
+		const cancelAppointment = await Appointment.updateOne(
+			{ _id: appointmentId },
+			{ status: "cancelled" }
+		);
+
+		const refundPatient = await Patient.updateOne(
+			{ _id: appointment.patient },
+			{ $inc: { wallet: appointment.pricePaid } }
+		);
+		const withdrawFromDoctor = await Doctor.updateOne(
+			{ username },
+			{ $inc: { wallet: -appointment.pricePaid } }
+		);
+
+		res.status(200).json(cancelAppointment);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
 module.exports = {
 	getDoctorProfile,
 	editDetails,
@@ -366,4 +393,5 @@ module.exports = {
 	uploadHealthRecords,
 	viewPrescriptions,
 	reschedulePatientAppointment,
+	cancelAppointment,
 };

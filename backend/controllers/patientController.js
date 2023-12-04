@@ -966,14 +966,14 @@ const test = async (req, res) => {
 
 const bookAppointment = async (req, res) => {
 	try {
-		const { username, appointmentId } = req.body;
+		const { username, appointmentId, price } = req.body;
 		// const { username } = req.userData;
 
 		const patient = await Patient.findOne({ username });
 
 		const appointment = await Appointment.findByIdAndUpdate(
 			appointmentId,
-			{ $set: { patient: patient._id, status: "upcoming" } },
+			{ $set: { patient: patient._id, status: "upcoming", pricePaid: price } },
 			{ new: true }
 		);
 
@@ -1008,9 +1008,39 @@ const rescheduleAppointment = async (req, res) => {
 	}
 };
 
+function isWithin24Hours(date1, date2) {
+	const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+	const difference = Math.abs(date1 - date2);
+	return difference <= ONE_DAY;
+}
+
 const cancelAppointment = async (req, res) => {
 	try {
-	} catch (error) {}
+		const { appointmentId } = req.body;
+
+		const appointment = await Appointment.findOne({ _id: appointmentId });
+
+		const cancelAppointment = await Appointment.updateOne(
+			{ _id: appointmentId },
+			{ status: "cancelled" }
+		);
+
+		const currentDate = new Date(Date.now());
+		if (!isWithin24Hours(currentDate, appointment.date)) {
+			const refundPatient = await Patient.updateOne(
+				{ _id: appointment.patient },
+				{ $inc: { wallet: appointment.pricePaid } }
+			);
+			const withdrawFromDoctor = await Doctor.updateOne(
+				{ _id: appointment.doctor },
+				{ $inc: { wallet: -appointment.pricePaid } }
+			);
+		}
+
+		res.status(200).json(cancelAppointment);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
 };
 
 module.exports = {

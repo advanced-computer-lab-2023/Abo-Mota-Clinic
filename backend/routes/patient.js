@@ -118,6 +118,6 @@ router.post("/unsubscribe", authorize, packageUnsubscribe);
 router.patch("/rescheduleAppointment", authorize, rescheduleAppointment);
 
 // Cancel Appointment
-router.delete("/cancelAppointment", authorize, cancelAppointment);
+router.patch("/cancelAppointment", authorize, cancelAppointment);
 
 module.exports = router;
