@@ -38,7 +38,7 @@ router.get("/applications/:id", authorize, getApplicationInfo);
 router.patch("/applications/:id", authorize, handleApplication);
 
 // Add an admin
-router.post("/admins", authorize, addAdmin);
+router.post("/admins", authorize,addAdmin);
 
 // DELETES TBD IF PARAMS IN URL
 // Delete a specific Admin

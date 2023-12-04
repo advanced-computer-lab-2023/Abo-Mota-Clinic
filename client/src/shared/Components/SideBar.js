@@ -16,19 +16,14 @@ export default function SideBar({ open, links }) {
       collapsed={!open}
       backgroundColor="var(--primary-color-very-dark)"
     >
-      <div
-        style={{ padding: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}
-      >
-        <img src={image} alt="Logo" style={{ width: "auto", height: "100px" }} />{" "}
-        {/* Adjust size as needed */}
+      <div style={{ padding: "1rem", display: "flex", alignItems: "center"}}>
+        <h2 className=" text-[var(--text-color-primary)] font-semibold">Abo Mota Clinic</h2>
       </div>
-
       <Menu
         closeOnClick={true}
-        className="h-screen text-white"
+        className="h-screen text-white "
         menuItemStyles={{
           button: ({ level, active, disabled }) => {
-            // only apply styles on first level elements of the tree
             if (level === 0)
               return {
                 color: disabled ? "#f5d9ff" : "#FFFFFF",

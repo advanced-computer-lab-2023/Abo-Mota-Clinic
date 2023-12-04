@@ -1,4 +1,6 @@
 import * as React from 'react';
+import IconButton from "@mui/joy/IconButton";
+import { BiCalendarX } from "react-icons/bi";
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -13,10 +15,14 @@ import Divider from '@mui/joy/Divider';
 import Chip from '@mui/joy/Chip';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useSendNotificationMutation } from '../../store';
+import TwoButtonModal from '../../shared/Components/TwoButtonModal';
 
-export default function AppointmentCard({appointment}) {
+export default function AppointmentCard({appointment, socket}) {
   
     const navigate = useNavigate(); // Hook to get the navigate function
+    const [showCancelModal, setShowCancelModal] = React.useState(false);
+  const [sendNotification] = useSendNotificationMutation();
   
     const navigateToPatientFollowUp = () => {
       navigate('PatientFollowUp' , {state: appointment.patient}); // Use the patient to navigate
@@ -38,6 +44,41 @@ export default function AppointmentCard({appointment}) {
         appointment = { ...appointment, status: "completed" };
       }
     }
+
+
+    const handleShowModal = () => setShowCancelModal(true);
+  const handleCloseModal = () => setShowCancelModal(false);
+  const handleCancel = () => {
+    console.log(appointment.patient.username)
+    //add Cancel Appointment logic here
+    sendNotification({ 
+      recipientUsername: appointment.doctor.username,
+       recipientType: "doctor" , 
+       content:  `Your appointment with ${appointment.patient.name} on ${appointment.formattedDate.replace(',',' at')} got cancelled`})
+       .unwrap()
+       .then(res => console.log(res))
+       .catch(err => console.log(err));
+
+    // call sendNotification from to save notification in patient db
+    sendNotification({ 
+      recipientUsername: appointment.patient.username,
+       recipientType: "patient" , 
+       content: `Your appointment with Dr. ${appointment.doctor.name} on ${appointment.formattedDate.replace(',',' at')} got cancelled`})
+       .unwrap()
+       .then(res => console.log(res))
+       .catch(err => console.log(err));
+
+    //send socket event to backend
+    socket.emit("send_notification_cancelled_by_doctor", {
+      receiver: appointment.patient._id,
+      contentDoctor: `Your appointment with ${appointment.patient.name} on ${appointment.formattedDate.replace(',',' at')} got cancelled`,
+      contentPatient: `Your appointment with Dr. ${appointment.doctor.name} on ${appointment.formattedDate.replace(',',' at')} got cancelled`,
+
+    });
+    
+    setShowCancelModal(false);
+  }
+  const message = 'Are you sure you want to cancel your appointment?'
       
     return (
       <Box sx={{ width: '100%', marginBottom: '16px' }}>
@@ -90,21 +131,24 @@ export default function AppointmentCard({appointment}) {
                 {appointment.patient.email}
               </Typography>
               <div className="flex justify-between">
-              <Typography level="body-md" textColor="text.tertiary" startDecorator={<PhoneIcon fontSize='small' />}>
-                {appointment.patient.mobile}
-              </Typography>
-              {(appointment.status === 'completed') && (<Button variant="plain" onClick={navigateToPatientFollowUp} size="md"> 
-                Follow Up
-              </Button>)}
+                  <Typography level="body-md" textColor="text.tertiary" startDecorator={<PhoneIcon fontSize='small' />}>
+                    {appointment.patient.mobile}
+                  </Typography>
+                  {(appointment.status === 'completed') && (<Button variant="plain" onClick={navigateToPatientFollowUp} size="md"> 
+                    Follow Up
+                  </Button>)}
+                  <IconButton aria-label="call" size="md" onClick={handleShowModal}>
+                    <BiCalendarX fontSize={24} />
+                  </IconButton>
               </div>
-              
-              
             </Box>
     
             {/* Button positioned at the bottom left */}
             
           </CardContent>
         </Card>
+        <TwoButtonModal open = {showCancelModal} handleClose= {handleCloseModal} handleClickLogic={handleCancel} message={message}/>
+
       </Box>
     );
     

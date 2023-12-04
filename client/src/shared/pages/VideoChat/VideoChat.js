@@ -237,11 +237,10 @@ function VideoChat() {
         <div className="other-video">
           {callAccepted && !callEnded ? (
             <video
-              className="video-player"
+              className="video-player main-video"
               playsInline
               ref={userVideo}
               autoPlay
-              style={{ width: "100%" }}
             />
           ) : (
             <div className="no-call-placeholder">Calling ...</div>

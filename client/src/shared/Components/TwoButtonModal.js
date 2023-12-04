@@ -34,7 +34,7 @@ const buttonGroupStyle = {
     marginTop: '20px', // Adjust spacing above the button group
 };
 
-export default function TwoButtonModal({open,handleClose,handleClickLogic}){
+export default function TwoButtonModal({open,handleClose,handleClickLogic, message}){
 
 
     
@@ -49,14 +49,14 @@ return (<Modal
                     <WarningIcon color="error" style={{ fontSize: 40 }} />
                     <h2 id="simple-modal-title">Are you sure?</h2>
                     <p id="simple-modal-description">
-                        Do you really want to cancel your subscription? This action cannot be reversed.
+                        {message}
                     </p>
                     <div style={buttonGroupStyle}>
                         <Button type="danger" 
                          
                          onClick={handleClickLogic}
                          >
-                            Yes, Cancel Subscription
+                            Yes, Cancel
                         </Button>
                         <Button 
                         onClick={() => {  handleClose(); }}

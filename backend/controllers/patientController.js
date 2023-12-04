@@ -184,7 +184,7 @@ const getAppointments = async (req, res) => {
   try {
     const username = req.userData.username;
     const { _id } = await Patient.findOne({ username });
-    const appointments = await Appointment.find({ patient: _id }).populate("doctor");
+    const appointments = await Appointment.find({ patient: _id }).populate("doctor").populate("patient");
     res.status(200).json(appointments);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -45,6 +45,7 @@ import Notification from "./doctor/components/Notification";
 import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
 import PasswordSection from "./admin/pages/PasswordSection";
+import LandingPage from './shared/pages/LandingPage/LandingPage';
 
 import io from "socket.io-client";
 import VideoChat from "./shared/pages/VideoChat/VideoChat";
@@ -56,12 +57,13 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<LoginForm />} />
+        <Route path="/login" element={<LoginForm />}/>
+        <Route path='/' element={<LandingPage/>} />
         <Route path="/patientRegistration" element={<RegisterScreen />} />
         <Route element={<ProtectedRoute roles={["patient"]} />}>
-          <Route path="/patient" element={<Patient />}>
+          <Route path="/patient" element={<Patient socket={socket}/>}>
             <Route path="" element={<PatientHome />} />
-            <Route path="appointments" element={<ViewPatientAppointments />} />
+            <Route path="appointments" element={<ViewPatientAppointments socket={socket}/>} />
             <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
@@ -87,7 +89,7 @@ function App() {
               path="contract"
               element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
             />
-            <Route path="appointments" element={<ViewDoctorAppointments />} />
+            <Route path="appointments" element={<ViewDoctorAppointments socket={socket}/>} />
             <Route path="patients" element={<ViewDoctorPatients />} />
             <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />

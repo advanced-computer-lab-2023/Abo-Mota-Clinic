@@ -40,9 +40,25 @@ io.on("connection", (socket) => {
 
   //----------Notifications------------
 
-  socket.on("send_notification", ({sender, receiver, content}) => {
+  socket.on("send_notification_booked", ({receiver, contentDoctor, contentPatient}) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    socket.to(receiverSocket).emit("receive_notification", {sender, content});
+    io.to(receiverSocket).emit("receive_notification_booked", {contentDoctor});
+    io.to(socket.id).emit("receive_notification_booked", {contentPatient}); // send notification to sender as well
+
+  });
+
+  socket.on("send_notification_cancelled_by_patient", ({receiver, contentDoctor, contentPatient}) => {
+    const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
+    io.to(receiverSocket).emit("receive_notification_cancelled_by_patient", {contentDoctor});
+    io.to(socket.id).emit("receive_notification_cancelled_by_patient", {contentPatient}); // send notification to sender as well
+
+  });
+
+  socket.on("send_notification_cancelled_by_doctor", ({receiver, contentDoctor, contentPatient}) => {
+    const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
+    io.to(receiverSocket).emit("receive_notification_cancelled_by_doctor", {contentPatient});
+    io.to(socket.id).emit("receive_notification_cancelled_by_doctor", {contentDoctor}); // send notification to sender as well
+
   });
 
   //------------------------------------

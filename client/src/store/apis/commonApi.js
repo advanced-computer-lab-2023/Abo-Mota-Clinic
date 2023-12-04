@@ -55,6 +55,27 @@ const commonApi = createApi({
           };
         },
       }),
+
+      sendNotification: builder.mutation({
+    
+        query: (data) => {
+          return {
+            url: "/notification",
+            body: data,
+            method: "POST",
+          };
+        },
+      }),
+
+      fetchNotification: builder.query({
+
+        query: () => {
+          return {
+            url: "/notifications",
+            method: "GET",
+          };
+        },
+      }),
     }
   },
 });
@@ -62,7 +83,9 @@ const commonApi = createApi({
 export const {
   useFetchLoggedInQuery,
   useSendMessageMutation,
-  useFetchMessagesQuery
+  useFetchMessagesQuery,
+  useSendNotificationMutation,
+  useFetchNotificationQuery,
 } = commonApi;
 
 export { commonApi };
