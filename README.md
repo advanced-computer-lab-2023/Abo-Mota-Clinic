@@ -22,7 +22,6 @@ The project adheres to the "standard" coding conventions for clarity and maintai
 - **Frontend**: React.js, Redux for state management
 - **Database**: MongoDB
 - **Authentication**: JWT for secure login sessions
-- **Deployment**: Docker containers managed with Kubernetes for scalability
 
 ## Features
 
