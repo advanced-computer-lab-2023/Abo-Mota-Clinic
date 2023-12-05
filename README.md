@@ -101,7 +101,41 @@ The project adheres to the "standard" coding conventions for clarity and maintai
 
 *Code snippets will be  here.*
 
-## Installation
+### Installation
+
+Clone the repository:
+
+   ```bash
+   git clone https://github.com/advanced-computer-lab-2023/Abo-Mota-Clinic.git
+   cd Abo-Mota-Clinic
+   ```
+   
+# Install client dependencies
+
+  ```bash
+  cd client
+  npm install
+```
+# Install server dependencies
+  ```bash
+    cd backend
+    npm install
+```
+# Running the Application
+## Start the client:
+ ```bash
+cd client
+cd src
+npm start
+```
+The client server will run on http://localhost:3000.
+## Start the server:
+ ```bash
+cd backend
+nodemon server.js
+ ```
+
+Open your browser and navigate to http://localhost:3000 to access the simulator.
 
 
 
