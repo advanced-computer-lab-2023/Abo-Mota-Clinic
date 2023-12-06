@@ -1,6 +1,72 @@
-import { AspectRatio, Box, Typography, ListItem } from '@mui/joy';
+import { AspectRatio, Box, Typography, ListItem } from "@mui/joy";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
+import { useState } from "react";
+import { TextField } from "@mui/material";
+import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+const MedicationListItem = ({
+  medicine: { name, _id },
+  dosage,
+  frequency,
+  duration,
+  prescriptionId,
+}) => {
+  const [editPres, setEditPres] = useState(false);
+  const [newMedicine, setNewMedicine] = useState({
+    prescriptionId,
+    medicineId: _id,
+    name,
+    dosage,
+    frequency,
+    duration,
+  });
+  // const [newDosage, setNewDosage] = useState(dosage);
+  // const [newFrequency, setNewFrequency] = useState(frequency);
+  // const [newDuration, setNewDuration] = useState(duration);
+  const handleDeleteMedicine = () => {
+    console.log("delete medicine");
+  };
 
-const MedicationListItem = ({ medicine: { name }, dosage, frequency, duration }) => {
+  const handleEditMedicine = () => {
+    setEditPres(true);
+    console.log("edit medicine");
+  };
+
+  const handleInputChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    console.log(name, value);
+    setNewMedicine({
+      ...newMedicine,
+      [name.toLowerCase()]: value,
+    });
+    // setNewDosage(value);
+    console.log(value);
+  };
+
+  const handleCorrectDosage = () => {
+    // add new dosage to database
+    setEditPres(false);
+    // setNewDosage(newDosage);
+    console.log(newMedicine);
+    console.log("correct dosage");
+  };
+
+  const handleCancelDosage = () => {
+    setEditPres(false);
+    // setNewDosage(dosage);
+    setNewMedicine({
+      prescriptionId,
+      medicineId: _id,
+      name,
+      dosage,
+      frequency,
+      duration,
+    });
+    console.log("cancel dosage");
+  };
+
   return (
     <ListItem sx={{ margin: "5px" }}>
       <AspectRatio ratio="0.6" sx={{ width: 30, marginLeft: 1, marginRight: 1.5 }}>
@@ -13,23 +79,88 @@ const MedicationListItem = ({ medicine: { name }, dosage, frequency, duration })
       <Box className="flex justify-between w-full">
         <Box className="mr-6">
           <Typography level="body-xs">Drug</Typography>
-          <Typography level='title-sm' fontWeight="md">{name}</Typography>
+          <Typography level="title-sm" fontWeight="md">
+            {name}
+          </Typography>
         </Box>
         <Box className="justify-items-end">
           <Typography level="body-xs">Dosage</Typography>
-          <Typography level="title-sm">{dosage}</Typography>
+          {editPres ? (
+            <TextField
+              value={newMedicine.dosage}
+              id="outlined-basic"
+              label="Dosage"
+              name="dosage"
+              variant="outlined"
+              size="small"
+              sx={{ width: "30%", mt: 1 }}
+              onChange={handleInputChange}
+            />
+          ) : (
+            <Typography level="title-sm">{newMedicine.dosage}</Typography>
+          )}
         </Box>
         <Box className="justify-items-end">
           <Typography level="body-xs">Frequency</Typography>
-          <Typography level="title-sm">{frequency}</Typography>
+          {editPres ? (
+            <TextField
+              value={newMedicine.frequency}
+              id="outlined-basic"
+              label="Frequency"
+              variant="outlined"
+              name="frequency"
+              size="small"
+              sx={{ width: "30%", mt: 1 }}
+              onChange={handleInputChange}
+            />
+          ) : (
+            <Typography level="title-sm">{newMedicine.frequency} times a day</Typography>
+          )}
         </Box>
         <Box className="justify-items-end">
           <Typography level="body-xs">Duration</Typography>
-          <Typography level="title-sm">{duration}</Typography>
+          {editPres ? (
+            <TextField
+              value={newMedicine.duration}
+              id="outlined-basic"
+              label="Duration"
+              name="duration"
+              variant="outlined"
+              sx={{ width: "30%", mt: 1 }}
+              onChange={handleInputChange}
+            />
+          ) : (
+            <Typography level="title-sm">{newMedicine.duration}</Typography>
+          )}
         </Box>
+        {/* <Button onClick={handleDeleteMedicine}> */}
+        {editPres ? (
+          <CancelOutlinedIcon
+            sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
+            onClick={handleCancelDosage}
+          />
+        ) : (
+          <DeleteForeverIcon
+            sx={{ cursor: "pointer", ":hover": { fontSize: 25 } }}
+            onClick={handleDeleteMedicine}
+          />
+        )}
+        {editPres ? (
+          <CheckOutlinedIcon
+            sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
+            onClick={handleCorrectDosage}
+          />
+        ) : (
+          <EditIcon
+            sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
+            onClick={handleEditMedicine}
+          />
+        )}
+
+        {/* </Button> */}
       </Box>
     </ListItem>
   );
-}
+};
 
 export default MedicationListItem;

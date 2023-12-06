@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
-
+// import { Button } from "@mui/joy";
+import Button from "./Button";
 const BackArrow = () => {
   const navigate = useNavigate();
 
@@ -10,9 +11,18 @@ const BackArrow = () => {
   };
 
   return (
-    <button onClick={goBack} style={{ border: "none", background: "none", cursor: "pointer" }}>
+    <Button
+      onClick={goBack}
+      // sx={{
+      //   border: "none",
+      //   background: "none",
+      //   color: "black",
+      //   cursor: "pointer",
+      //   "&:hover": { backgroundColor: "#1890ff" },
+      // }}
+    >
       <LeftOutlined /> Back
-    </button>
+    </Button>
   );
 };
 
