@@ -1,6 +1,7 @@
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { Typography, Avatar, Box, Stack, Chip } from "@mui/joy";
 import { Button } from "@mui/joy";
+import PrescriptionDescription from "./PrescriptionDescription";
 // import capitalize from "../utils/capitalize";
 
 function PrescriptionHeader({

@@ -1,11 +1,11 @@
 import { Box, InputLabel, TextField } from "@mui/material";
 import { useState } from "react";
-import Button from "../../shared/Components/Button";
+import Button from "../../../shared/Components/Button";
 import { FormControl, MenuItem, Modal, Option, Select, Typography } from "@mui/joy";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import MedicineCard from "./MedicineCard";
-import { useGetAllMedicinesQuery } from "../../store";
-import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+import MedicineCard from "../MedicineCard";
+import { useGetAllMedicinesQuery } from "../../../store";
+import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 
 function AddPrescription({ doctorId, patientId }) {
   const [open, setOpen] = useState(false);

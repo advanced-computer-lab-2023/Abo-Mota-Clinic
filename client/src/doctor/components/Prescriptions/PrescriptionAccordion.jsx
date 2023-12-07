@@ -1,10 +1,12 @@
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import React, { useState } from "react";
-import MedicationList from "./MedicationList";
+import MedicationList from "../MedicationList";
 import PrescriptionHeader from "./PrescriptionHeader";
 import AddMedicine from "./AddMedicine";
+import PrescriptionDescription from "./PrescriptionDescription";
+import { Divider } from "@mui/joy";
 
-function PrescriptionAccordion({ medicines, _id, openAllAccordions, ...rest }) {
+function PrescriptionAccordion({ medicines, _id, openAllAccordions, description, ...rest }) {
   const [expanded, setExpanded] = useState(false);
 
   const handleToggle = () => {
@@ -21,6 +23,8 @@ function PrescriptionAccordion({ medicines, _id, openAllAccordions, ...rest }) {
       </AccordionSummary>
       <AccordionDetails>
         <MedicationList medicines={medicines} prescriptionId={_id} />
+        <Divider />
+        <PrescriptionDescription prescriptionId={_id} description={description} />
         <AddMedicine />
       </AccordionDetails>
     </Accordion>

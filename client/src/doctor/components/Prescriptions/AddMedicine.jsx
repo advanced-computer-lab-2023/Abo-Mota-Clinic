@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useGetAllMedicinesQuery } from "../../store";
-import LoadingIndicator from "../../shared/Components/LoadingIndicator";
-import Button from "../../shared/Components/Button";
+import { useGetAllMedicinesQuery } from "../../../store";
+import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
+import Button from "../../../shared/Components/Button";
 import { TextField } from "@mui/material";
 import { Box, Modal, Option, Select, Typography } from "@mui/joy";
 
@@ -77,7 +77,7 @@ function AddMedicine() {
     p: 4,
   };
   return (
-    <div>
+    <Box className="w-full flex justify-end">
       <Button onClick={handleOpen}>Add Medicine</Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="prescription-modal-title">
         <Box sx={modalStyle}>
@@ -131,7 +131,7 @@ function AddMedicine() {
           </Box>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }
 

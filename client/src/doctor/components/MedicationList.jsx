@@ -7,7 +7,7 @@ function MedicationList({ medicines, prescriptionId }) {
       {medicines.map((med, index) => {
         return (
           <>
-            <Divider />
+            {index > 0 ? <Divider /> : null}
             <MedicationListItem {...med} prescriptionId={prescriptionId} />
           </>
         );
