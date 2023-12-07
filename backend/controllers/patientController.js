@@ -3,6 +3,7 @@ const Doctor = require("../models/Doctor");
 const Appointment = require("../models/Appointment");
 const Prescription = require("../models/Prescription");
 const HealthPackage = require("../models/HealthPackage");
+const FollowUp = require("../models/FollowUp");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const mongoose = require("mongoose");
@@ -20,20 +21,6 @@ const getPatient = async (req, res) => {
 // Get all patient prescriptions
 const getPrescriptions = async (req, res) => {
 	try {
-		// const patient = await Patient.findOne({}).populate({
-		//   path: "prescriptions",
-		//   populate: [
-		//     {
-		//       path: "medicines",
-		//       model: "Medicine",
-		//     },
-		//     {
-		//       path: "doctor",
-		//       model: "Doctor",
-		//     },
-		//   ],
-		// });
-		// res.status(200).json(patient.prescriptions);
 		const username = req.userData.username;
 		const { _id } = await Patient.findOne({ username });
 		const prescriptions = await Prescription.find({ patient: _id }).populate([
@@ -762,7 +749,6 @@ const selfCancelSubscription = async (req, res) => {
 	try {
 		const username = req.userData.username;
 		const loggedIn = await Patient.findOne({ username }).populate("healthPackage.package");
-
 		if (loggedIn.healthPackage.status === "cancelled" || !loggedIn.healthPackage.status) {
 			throw Error("You don't have an active subscription");
 		}
@@ -786,7 +772,6 @@ const selfCancelSubscription = async (req, res) => {
 			},
 			{ $set: { familyDiscount: 0 } }
 		);
-
 		let testMember;
 		for (const memberId of familyMemberIds) {
 			const member = await Patient.findOne({ _id: memberId }).populate([
@@ -799,7 +784,6 @@ const selfCancelSubscription = async (req, res) => {
 				},
 				"healthPackage.package",
 			]);
-
 			// Check if there are other family members and at least one of them has an active package
 			let maxDiscount = 0;
 			member.linkedFamily.forEach((link) => {
@@ -822,7 +806,6 @@ const selfCancelSubscription = async (req, res) => {
 		res.status(500).json({ error: error.message });
 	}
 };
-
 const familyCancelSubscription = async (req, res) => {
 	try {
 		const { familyMemberUsername } = req.body;
@@ -856,7 +839,6 @@ const familyCancelSubscription = async (req, res) => {
 			},
 			{ $set: { familyDiscount: 0 } }
 		);
-
 		for (const memberId of familyMemberIds) {
 			const member = await Patient.findOne({ _id: memberId }).populate([
 				{
@@ -868,7 +850,6 @@ const familyCancelSubscription = async (req, res) => {
 				},
 				"healthPackage.package",
 			]);
-
 			// Check if there are other family members and at least one of them has an active package
 			let maxDiscount = 0;
 			member.linkedFamily.forEach((link) => {
@@ -1017,14 +998,11 @@ function isWithin24Hours(date1, date2) {
 const cancelAppointment = async (req, res) => {
 	try {
 		const { appointmentId } = req.body;
-
 		const appointment = await Appointment.findOne({ _id: appointmentId });
-
 		const cancelAppointment = await Appointment.updateOne(
 			{ _id: appointmentId },
 			{ status: "cancelled" }
 		);
-
 		const currentDate = new Date(Date.now());
 		if (!isWithin24Hours(currentDate, appointment.date)) {
 			const refundPatient = await Patient.updateOne(
@@ -1036,8 +1014,48 @@ const cancelAppointment = async (req, res) => {
 				{ $inc: { wallet: -appointment.pricePaid } }
 			);
 		}
-
 		res.status(200).json(cancelAppointment);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
+const getFamilyMemberAppointments = async (req, res) => {
+	try {
+		const username = req.userData.username;
+		const loggedIn = await Patient.findOne({ username });
+
+		const familyMembers = loggedIn.linkedFamily.map((familyMember) => {
+			return familyMember.member;
+		});
+
+		const appointments = await Appointment.find({
+			patient: { $in: familyMembers },
+			status: "upcoming",
+		});
+
+		res.status(200).json(appointments);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
+const requestFollowUp = async (req, res) => {
+	try {
+		const { patientId, doctorId, oldDate, followUpDate } = req.body;
+		const oldAppointment = await Appointment.findOne({
+			patient: patientId,
+			doctor: doctorId,
+			date: oldDate,
+		});
+		const followUp = await FollowUp.create({
+			date: followUpDate,
+			oldDate,
+			patient: patientId,
+			doctor: doctorId,
+			pricePaid: oldAppointment.pricePaid,
+		});
+		res.status(200).json(followUp);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -1068,4 +1086,6 @@ module.exports = {
 	creditDoctor,
 	rescheduleAppointment,
 	cancelAppointment,
+	requestFollowUp,
+	getFamilyMemberAppointments,
 };

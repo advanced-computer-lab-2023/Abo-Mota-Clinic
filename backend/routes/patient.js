@@ -24,6 +24,8 @@ const {
 	packageUnsubscribe,
 	rescheduleAppointment,
 	cancelAppointment,
+	requestFollowUp,
+	getFamilyMemberAppointments,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -120,4 +122,9 @@ router.patch("/rescheduleAppointment", authorize, rescheduleAppointment);
 // Cancel Appointment
 router.patch("/cancelAppointment", authorize, cancelAppointment);
 
+// Request Follow Up
+router.post("/followUp", authorize, requestFollowUp);
+
+// Get Family Member Appointments
+router.get("/familyAppointments", authorize, getFamilyMemberAppointments);
 module.exports = router;
