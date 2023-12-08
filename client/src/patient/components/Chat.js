@@ -1,106 +1,29 @@
-import React from "react";
-import { Input, Button } from "@mui/joy";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-
-import { useFetchLoggedInQuery, useSendMessageMutation, useFetchMessagesQuery } from "../../store";
+import React from 'react';
+import { useState } from 'react';
+import ChatBox from './ChatBox';
+import SideChat from './SideChat';
+import { Box, Divider } from '@mui/joy'
 
 function Chat({ socket }) {
-  // controlled state
-  // const [room, setRoom] = useState("");
-  const malakId = "654eacecba61ba134d8164a8";
-  const saraId = "654cff639445f84c04148803";
-
-  const { recipient } = useParams();
-  console.log("recipient:", recipient);
-
-  const [messages, setMessages] = useState([]);
-
-  console.log("Real messages:", messages);
-
-  // controlled state
-  const [messageContent, setMessageContent] = useState("");
-
-  useEffect(() => {
-    socket.emit("join_room", 441);
-  }, []);
-
-  useEffect(() => {
-    socket.on("receive_message", (data) => {
-      // setMessages([...messages, data])
-
-      setMessages((prevMessages) => {
-        const newMessages = [...prevMessages, data];
-        return newMessages;
-      });
-    });
-  }, [socket]);
-
-  const { data: loggedInUser, isFetching: isFetchingUser, isError } = useFetchLoggedInQuery();
-  const {
-    data: messagesData,
-    isFetching: isFetchingMessages,
-    isError: isErrorMessages,
-  } = useFetchMessagesQuery({ recipient });
-  const [sendMessage] = useSendMessageMutation();
-
-  useEffect(() => {
-    if (!isFetchingMessages) {
-      setMessages(messagesData.messages);
-    }
-  }, [isFetchingMessages]);
-
-  if (isFetchingUser || isFetchingMessages) {
-    return <div>Loading...</div>;
-  }
-
-  // // hardcoded sender and recipient IDs
-  // const senderId = loggedInUser._id;
-
-  // const onJoinRoom = () => {
-  //   if (room === "")
-  //     return;
-
-  //   socket.emit("join_room", room);
-  // };
-
-  const onSendMessage = async () => {
-    if (messageContent === "") return;
-
-    // console.log("ID: ", loggedInUser);
-
-    const message = {
-      content: messageContent,
-      sender: loggedInUser._id,
-      recipient,
-    };
-
-    await socket.emit("send_message", { ...message, room: 441 });
-
-    sendMessage(message);
-  };
+  const [selectedRecipientId, setSelectedRecipientId] = useState(null);
 
   return (
-    <div>
-      {messages.map(({ sender, content }) => {
-        console.log("Sender: ", sender);
-        console.log("loggedInUser: ", loggedInUser._id);
+    <Box className="flex w-full h-full">
+      <Box>
+        <SideChat selectedRecipientId={selectedRecipientId} setSelectedRecipientId={setSelectedRecipientId} />
+      </Box>
 
-        return (
-          <div className="mb-10">
-            <div>Content: {content}</div>
+      <Divider orientation='vertical' />
 
-            <div>Sender: {sender === loggedInUser._id ? "You" : "Other"}</div>
-          </div>
-        );
-      })}
-      {/* <Input placeholder='Room Id' onChange={(e) => setRoom(e.target.value)} /> */}
-      <Input placeholder="Send a text" onChange={(e) => setMessageContent(e.target.value)} />
-      {/* <Button onClick={onJoinRoom}>Join</Button> */}
-      <Button onClick={onSendMessage}>Send</Button>
-    </div>
-  );
+      <Box className="h-full w-full">
+        {
+          selectedRecipientId
+            ? <ChatBox socket={socket} selectedRecipientId={selectedRecipientId} />
+            : <div>No chats currently selected!</div>
+        }
+      </Box>
+    </Box>
+  )
 }
 
 export default Chat;

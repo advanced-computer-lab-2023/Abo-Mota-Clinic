@@ -27,7 +27,7 @@ import dayjs from "dayjs";
 
 const steps = ["Schedule", "Appointment Overview", "Payment"];
 const format = (date) => (date ? dayjs(date).format("dddd Do [of] MMMM YYYY") : null);
-export default function AppointmentStepper({ step = 0 , socket}) {
+export default function AppointmentStepper({ step = 0, socket }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { initialDate, initialTime, initialAppointmentId, initialTimings } = location.state
@@ -153,6 +153,7 @@ export default function AppointmentStepper({ step = 0 , socket}) {
       bookAppointment({
         appointmentId,
         username: selectedUser.username,
+        price: deductible,
       });
 
       setToast({

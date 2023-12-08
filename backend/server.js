@@ -26,9 +26,8 @@ const io = new Server(server, {
   },
 });
 
+// keeping track of online users
 const activeUsers = {};
-
-
 
 io.on("connection", (socket) => {
   console.log("Connection success");
@@ -38,30 +37,30 @@ io.on("connection", (socket) => {
     activeUsers[userId] = socket.id;
   });
 
-  //----------Notifications------------
+  //----------Notifications----------------//
 
   socket.on("send_notification_booked", ({receiver, contentDoctor, contentPatient}) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    io.to(receiverSocket).emit("receive_notification_booked", {contentDoctor});
+    socket.to(receiverSocket).emit("receive_notification_booked", {contentDoctor});
     io.to(socket.id).emit("receive_notification_booked", {contentPatient}); // send notification to sender as well
 
   });
 
   socket.on("send_notification_cancelled_by_patient", ({receiver, contentDoctor, contentPatient}) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    io.to(receiverSocket).emit("receive_notification_cancelled_by_patient", {contentDoctor});
+    socket.to(receiverSocket).emit("receive_notification_cancelled_by_patient", {contentDoctor});
     io.to(socket.id).emit("receive_notification_cancelled_by_patient", {contentPatient}); // send notification to sender as well
 
   });
 
   socket.on("send_notification_cancelled_by_doctor", ({receiver, contentDoctor, contentPatient}) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    io.to(receiverSocket).emit("receive_notification_cancelled_by_doctor", {contentPatient});
+    socket.to(receiverSocket).emit("receive_notification_cancelled_by_doctor", {contentPatient});
     io.to(socket.id).emit("receive_notification_cancelled_by_doctor", {contentDoctor}); // send notification to sender as well
 
   });
 
-  //------------------------------------
+  //-----------------------------------------//
   // text chat
   socket.on("join_room", (data) => {
     socket.join(data);
@@ -69,12 +68,30 @@ io.on("connection", (socket) => {
     console.log(`User with id ${socket.id} joined room ${data}`);
   });
 
-  socket.on("send_message", (data) => {
+  // text chat
+  //----------------------
+  // socket.on("join_room", (data) => {
+  //   socket.join(data);
+
+  //   console.log(`User with id ${socket.id} joined room ${data}`);
+  // });
+
+  socket.on("send_message", async (message) => {
     // add message to database
-    const { room, ...message } = data;
+    // await Message.create(message);
+
+    const { sender, recipient } = message;
+    const senderSocketId = activeUsers[sender];
+    const recipientSocketId = activeUsers[recipient];
+    
+    io.to(senderSocketId).emit("receive_message", message);
+
+    if(recipientSocketId) {
+      socket.to(recipientSocketId).emit("receive_message", message);
+    }
 
     // forward to listening recipients
-    socket.to(room).emit("receive_message", message);
+    // io.to(room).emit("receive_message", message);
   });
 
   //----------------------
@@ -106,7 +123,6 @@ io.on("connection", (socket) => {
 });
 
 const mongoose = require("mongoose");
-const { sendMessage } = require("./controllers/commonController");
 mongoose.set("strictQuery", false);
 
 
