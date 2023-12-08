@@ -14,7 +14,7 @@ The project adheres to the "standard" coding conventions for clarity and maintai
 
 ## Screenshots
 
-![Screenshot](screen1clinic.jpg)
+![Screenshot](screen1%20clinic.jpg)
 ![Screenshot](clinic2.jpg)
 ![Screenshot](clinic%203.jpg)
 
