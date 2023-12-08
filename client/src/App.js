@@ -94,6 +94,8 @@ function App() {
             <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
             <Route path="patients/patientInfo/:idx/video" element={<VideoChat />} />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
+            <Route path="test3/" element={<Chat socket={socket} />} />
+
           </Route>
         </Route>
         <Route element={<ProtectedRoute roles={["admin"]} />}>

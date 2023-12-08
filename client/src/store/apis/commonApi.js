@@ -48,18 +48,27 @@ const commonApi = createApi({
         //   return tags;
         // },
 
-        query: (data) => {
+        query: (recipient) => {
           return {
-            url: `/message?recipient=${data.recipient}`,
+            url: `/message?recipient=${recipient}`,
             method: "GET",
           };
         },
       }),
 
-      fetchUser: builder.query({
-        query: (userId) => {
+      fetchRecipient: builder.query({
+        query: (recipientId) => {
           return {
-            url: `/user?userId=${userId}`,
+            url: `/recipient?recipientId=${recipientId}`,
+            method: "GET",
+          };
+        },
+      }),
+
+      fetchContacts: builder.query({
+        query: () => {
+          return {
+            url: `/contacts`,
             method: "GET",
           };
         },
@@ -72,7 +81,8 @@ export const {
   useFetchLoggedInQuery,
   useSendMessageMutation,
   useFetchMessagesQuery,
-  useFetchUserQuery
+  useFetchRecipientQuery,
+  useFetchContactsQuery,
 } = commonApi;
 
 export { commonApi };

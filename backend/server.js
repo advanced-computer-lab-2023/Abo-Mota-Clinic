@@ -52,9 +52,10 @@ io.on("connection", (socket) => {
     const { sender, recipient } = message;
     const senderSocketId = activeUsers[sender];
     const recipientSocketId = activeUsers[recipient];
+    
+    io.to(senderSocketId).emit("receive_message", message);
 
     if(recipientSocketId) {
-      io.to(senderSocketId).emit("receive_message", message);
       socket.to(recipientSocketId).emit("receive_message", message);
     }
 
