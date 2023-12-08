@@ -14,9 +14,9 @@ The project adheres to the "standard" coding conventions for clarity and maintai
 
 ## Screenshots
 
-![Screenshot](screen1 clinic.jpg)
+![Screenshot](screen1%20clinic.jpg)
 ![Screenshot](clinic2.jpg)
-![Screenshot](clinic 3.jpg)
+![Screenshot](clinic%203.jpg)
 
 
 ## Tech/Framework Used
@@ -140,13 +140,37 @@ nodemon server.js
 
 Open your browser and navigate to http://localhost:3000 to access the simulator.
 
+## How to Use
 
+The Virtual Clinic system is designed to be intuitive and user-friendly. Here is a step-by-step guide to help you navigate through the main functionalities:
 
-## API Reference
+### For Patients
 
+1. **Creating an Account**: Start by registering as a patient with your personal details on the Virtual Clinic platform.
+2. **Logging In**: Use your credentials to log in and access patient-specific functionalities.
+3. **Managing Medical Records**: Upload and manage your medical documents securely within the platform.
+4. **Booking Appointments**: Browse available doctors, view their schedules, and book appointments that suit your convenience.
+5. **Managing Prescriptions**: View and manage your prescriptions, with options to pay for them directly through the platform.
 
+### For Doctors
 
-## How to Use?
+1. **Registration**: Sign up as a doctor by submitting your professional credentials for verification.
+2. **Appointment Management**: Set your availability and manage appointments scheduled by patients.
+3. **Patient Records**: Access and review your patient's medical history and documents to provide the best care possible.
+
+### For Administrators
+
+1. **Account Oversight**: Manage user accounts, including the ability to add or remove patients, doctors, and other administrators.
+2. **System Monitoring**: Oversee the system's operations and ensure everything runs smoothly, addressing any technical issues that arise.
+
+### Navigating the Interface
+
+- Use the navigation bar to easily switch between different sections of the platform.
+- Access your profile to update personal information or change your password.
+- For any assistance, visit the 'Help' section or contact our support team.
+
+Remember to log out after your session to maintain the security of your account.
+
 
 
 
@@ -156,8 +180,5 @@ Open your browser and navigate to http://localhost:3000 to access the simulator.
 
 ## Credits
 
-
-
-## License
 
 
