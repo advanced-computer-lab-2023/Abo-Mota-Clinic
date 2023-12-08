@@ -16,10 +16,12 @@ import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import { VideoChatRounded } from "@mui/icons-material";
 import BackArrow from "../../shared/Components/BackArrow";
 import Button from "../../shared/Components/Button";
+import { useNavigate } from 'react-router-dom';
 
 export default function ViewPatientInfo() {
   const location = useLocation();
   const { idx } = useParams();
+  const navigate = useNavigate();
   const [addHealthRecordOpen, setAddHealthRecordOpen] = useState(false);
   const { data, isFetching, error } = useFetchPatientsQuery();
   if (isFetching) {
@@ -112,7 +114,7 @@ export default function ViewPatientInfo() {
                 Prescriptions
               </Typography>
               <Link to="prescriptions">
-                <Button>View Prescriptions</Button>
+                <Button >View Prescriptions</Button>
               </Link>
             </div>
             <div>

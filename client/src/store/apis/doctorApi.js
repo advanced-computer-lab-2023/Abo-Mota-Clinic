@@ -228,7 +228,7 @@ const doctorApi = createApi({
         },
       }),
       fetchDoctorPrescriptions: builder.query({
-        providesTags: (result, error) => {
+        providesTags: (result, error, patientId) => {
           const tags = result.map((prescription) => {
             return { type: "Prescription", id: prescription._id };
           });

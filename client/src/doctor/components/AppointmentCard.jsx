@@ -15,7 +15,7 @@ import Divider from "@mui/joy/Divider";
 import Chip from "@mui/joy/Chip";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { useSendNotificationMutation } from "../../store";
+import { useSendNotificationMutation, useCancelAppointmentMutation } from "../../store";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import RescheduleAppointment from "./RescheduleAppointment";
 
@@ -23,7 +23,7 @@ export default function AppointmentCard({ appointment, socket }) {
   const navigate = useNavigate(); // Hook to get the navigate function
   const [showCancelModal, setShowCancelModal] = React.useState(false);
   const [sendNotification] = useSendNotificationMutation();
-
+  const [cancelAppointment, _]  = useCancelAppointmentMutation();
   const navigateToPatientFollowUp = () => {
     navigate("PatientFollowUp", { state: appointment.patient }); // Use the patient to navigate
   };
@@ -47,9 +47,14 @@ export default function AppointmentCard({ appointment, socket }) {
 
   const handleShowModal = () => setShowCancelModal(true);
   const handleCloseModal = () => setShowCancelModal(false);
-  const handleCancel = () => {
-    console.log(appointment.patient.username);
+  const handleCancel = async () => {
+    console.log(appointment);
+
     //add Cancel Appointment logic here
+    await cancelAppointment({
+      appointmentId: appointment._id
+    })
+
     sendNotification({
       recipientUsername: appointment.doctor.username,
       recipientType: "doctor",

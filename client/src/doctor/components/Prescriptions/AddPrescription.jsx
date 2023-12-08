@@ -4,13 +4,13 @@ import Button from "../../../shared/Components/Button";
 import { FormControl, MenuItem, Modal, Option, Select, Typography } from "@mui/joy";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MedicineCard from "./MedicineCard";
-import { useGetAllMedicinesQuery } from "../../../store";
+import { useGetAllMedicinesQuery,useAddPrescriptionMutation } from "../../../store";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 
 function AddPrescription({ doctorId, patientId }) {
   const [open, setOpen] = useState(false);
   const { data, isFetching, error } = useGetAllMedicinesQuery();
-
+  const [addPrescription, _] = useAddPrescriptionMutation();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -88,10 +88,11 @@ function AddPrescription({ doctorId, patientId }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     handleClose();
     console.log(prescription);
+    await addPrescription(prescription);
     setPrescription({
       date: new Date(),
       doctor: doctorId,
