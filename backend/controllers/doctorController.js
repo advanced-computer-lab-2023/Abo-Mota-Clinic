@@ -309,6 +309,7 @@ const viewPrescriptions = async (req, res) => {
   try {
     const username = req.userData.username;
     const { patientId } = req.body;
+    // console.log(patientId)
     const { _id } = await Doctor.findOne({ username });
     const prescriptions = await Prescription.find({ doctor: _id, patient: patientId }).populate([
       {
