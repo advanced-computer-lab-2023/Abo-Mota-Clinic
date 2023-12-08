@@ -239,7 +239,7 @@ const doctorApi = createApi({
           return {
             url: "/prescriptions",
             method: "GET",
-            body: patientId,
+            params: patientId,
           };
         },
       }),

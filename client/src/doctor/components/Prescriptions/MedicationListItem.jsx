@@ -5,6 +5,10 @@ import { useState } from "react";
 import { TextField } from "@mui/material";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import {
+  useDelMedFromPrescriptionMutation,
+  useUpdateMedInPrescriptionMutation,
+} from "../../../store";
 const MedicationListItem = ({
   medicine: { name, _id },
   dosage,
@@ -15,7 +19,6 @@ const MedicationListItem = ({
   const [editPres, setEditPres] = useState(false);
   const [newMedicine, setNewMedicine] = useState({
     prescriptionId,
-    medicineId: _id,
     name,
     dosage,
     frequency,
@@ -24,10 +27,13 @@ const MedicationListItem = ({
   // const [newDosage, setNewDosage] = useState(dosage);
   // const [newFrequency, setNewFrequency] = useState(frequency);
   // const [newDuration, setNewDuration] = useState(duration);
-  const handleDeleteMedicine = () => {
+  const [delMedinPres, results1] = useDelMedFromPrescriptionMutation();
+  const handleDeleteMedicine = async () => {
+    await delMedinPres({ prescriptionId, medicineName: name });
     console.log("delete medicine");
   };
 
+  const [updateMedinPres, results2] = useUpdateMedInPrescriptionMutation();
   const handleEditMedicine = () => {
     setEditPres(true);
     // prescriptionId,medicineName
@@ -46,15 +52,17 @@ const MedicationListItem = ({
     console.log(value);
   };
 
-  const handleCorrectDosage = () => {
+  const handleCorrectUpdate = async () => {
     // add new dosage to database
     setEditPres(false);
+
+    await updateMedinPres({ ...newMedicine, dosage: parseInt(newMedicine.dosage) });
     // setNewDosage(newDosage);
     console.log(newMedicine);
     console.log("correct dosage");
   };
 
-  const handleCancelDosage = () => {
+  const handleCancelUpdate = () => {
     setEditPres(false);
     // setNewDosage(dosage);
     setNewMedicine({
@@ -115,7 +123,7 @@ const MedicationListItem = ({
               onChange={handleInputChange}
             />
           ) : (
-            <Typography level="title-sm">{newMedicine.frequency} times a day</Typography>
+            <Typography level="title-sm">{newMedicine.frequency}</Typography>
           )}
         </Box>
         <Box className="justify-items-end">
@@ -138,7 +146,7 @@ const MedicationListItem = ({
         {editPres ? (
           <CancelOutlinedIcon
             sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
-            onClick={handleCancelDosage}
+            onClick={handleCancelUpdate}
           />
         ) : (
           <DeleteForeverIcon
@@ -149,7 +157,7 @@ const MedicationListItem = ({
         {editPres ? (
           <CheckOutlinedIcon
             sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
-            onClick={handleCorrectDosage}
+            onClick={handleCorrectUpdate}
           />
         ) : (
           <EditIcon

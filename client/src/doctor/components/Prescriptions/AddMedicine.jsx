@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useGetAllMedicinesQuery } from "../../../store";
+import { useAddMedToPrescriptionMutation, useGetAllMedicinesQuery } from "../../../store";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import Button from "../../../shared/Components/Button";
 import { TextField } from "@mui/material";
 import { Box, Modal, Option, Select, Typography } from "@mui/joy";
 
-function AddMedicine() {
+function AddMedicine({ prescriptionId }) {
   const [open, setOpen] = useState(false);
   const { data, isFetching, error } = useGetAllMedicinesQuery();
-
+  const [addMedInPres, results] = useAddMedToPrescriptionMutation();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [medicineData, setMedicineData] = useState({
@@ -42,7 +42,7 @@ function AddMedicine() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (
       medicineData.medicineName === "" ||
@@ -53,6 +53,7 @@ function AddMedicine() {
       return;
     }
     console.log(medicineData);
+    await addMedInPres({ ...medicineData, prescriptionId, dosage: parseInt(medicineData.dosage) });
     setMedicineData({
       medicineName: "",
       medicineId: "",

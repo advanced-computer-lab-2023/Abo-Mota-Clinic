@@ -308,7 +308,7 @@ const viewWallet = async (req, res) => {
 const viewPrescriptions = async (req, res) => {
   try {
     const username = req.userData.username;
-    const { patientId } = req.body;
+    const { patientId } = req.query;
     // console.log(patientId)
     const { _id } = await Doctor.findOne({ username });
     const prescriptions = await Prescription.find({ doctor: _id, patient: patientId }).populate([
@@ -318,7 +318,7 @@ const viewPrescriptions = async (req, res) => {
       },
       {
         path: "patient",
-        model: "Patient",
+        model: "ClinicPatient",
       },
     ]);
     res.status(200).json(prescriptions);
@@ -474,15 +474,15 @@ const updatePrescriptionDesc = async (req, res) => {
 
 const addPrescription = async (req, res) => {
   try {
-    const { medicineArray, description, patientId } = req.body;
+    const { medicines, description, patient } = req.body;
     const username = req.userData.username;
     const loggedIn = await Doctor.findOne({ username });
     const prescription = await Prescription.create({
       date: Date.now(),
       doctor: loggedIn._id,
-      medicines: medicineArray,
+      medicines: medicines,
       description,
-      patient: patientId,
+      patient: patient,
     });
     res.status(200).json(prescription);
   } catch (error) {

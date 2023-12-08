@@ -4,10 +4,10 @@ import Button from "../../../shared/Components/Button";
 import { FormControl, MenuItem, Modal, Option, Select, Typography } from "@mui/joy";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MedicineCard from "./MedicineCard";
-import { useGetAllMedicinesQuery,useAddPrescriptionMutation } from "../../../store";
+import { useGetAllMedicinesQuery, useAddPrescriptionMutation } from "../../../store";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 
-function AddPrescription({ doctorId, patientId }) {
+function AddPrescription({ patientId }) {
   const [open, setOpen] = useState(false);
   const { data, isFetching, error } = useGetAllMedicinesQuery();
   const [addPrescription, _] = useAddPrescriptionMutation();
@@ -16,7 +16,6 @@ function AddPrescription({ doctorId, patientId }) {
 
   const [prescription, setPrescription] = useState({
     date: new Date(),
-    doctor: doctorId,
     medicines: [],
     description: "",
     patient: patientId,
@@ -25,7 +24,7 @@ function AddPrescription({ doctorId, patientId }) {
 
   //{ medicine: "", dosage: "", frequency: "", duration: "" }
   const [medicineData, setMedicineData] = useState({
-    // medicineName: "",
+    medicineName: "",
     medicine: "",
     dosage: 0,
     frequency: "",
@@ -41,7 +40,7 @@ function AddPrescription({ doctorId, patientId }) {
     }
     setMedicineData({
       ...medicineData,
-      // medicineName: newValue,
+      medicineName: newValue,
       medicine: data.find((medicine) => medicine.name === newValue)._id,
     });
   };
@@ -68,10 +67,13 @@ function AddPrescription({ doctorId, patientId }) {
     console.log(medicineData);
     setPrescription({
       ...prescription,
-      medicines: [...prescription.medicines, medicineData],
+      medicines: [
+        ...prescription.medicines,
+        { ...medicineData, dosage: parseInt(medicineData.dosage) },
+      ],
     });
     setMedicineData({
-      // medicineName: "",
+      medicineName: "",
       medicine: "",
       dosage: 0,
       frequency: "",
@@ -91,11 +93,17 @@ function AddPrescription({ doctorId, patientId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     handleClose();
-    console.log(prescription);
-    await addPrescription(prescription);
+    const modifiedPrescription = {
+      ...prescription,
+      medicines: prescription.medicines.map((currMedicine) => {
+        const { dosage, frequency, duration, medicine } = currMedicine;
+        return { dosage, frequency, duration, medicine };
+      }),
+    };
+    console.log(modifiedPrescription);
+    await addPrescription(modifiedPrescription);
     setPrescription({
       date: new Date(),
-      doctor: doctorId,
       medicines: [],
       description: "",
       patient: patientId,

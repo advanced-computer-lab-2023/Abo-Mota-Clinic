@@ -8,8 +8,12 @@ import jsPDF from "jspdf";
 import Button from "../../shared/Components/Button";
 import PrescriptionCard from "../components/Prescriptions/PrescriptionCard";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
-import { useLocation, useParams } from 'react-router-dom';
-import { useFetchDoctorPrescriptionsQuery, useFetchPatientsQuery } from "../../store";
+import { useLocation, useParams } from "react-router-dom";
+import {
+  useFetchDoctorPrescriptionsQuery,
+  useFetchDoctorQuery,
+  useFetchPatientsQuery,
+} from "../../store";
 function ViewPrescriptionsDoctor() {
   const dummy_data = [
     {
@@ -322,18 +326,21 @@ function ViewPrescriptionsDoctor() {
 
   //   captureSection();
   // };
-  const { idx } = useParams()
-  const {data:patients, isFetching: isFetchingPatients } = useFetchPatientsQuery()  
-  let patientId = ""
-  useEffect(()=>{
-    if(!isFetchingPatients){
-      patientId = patients[idx]._id
-    }
-  },[isFetchingPatients])
-  const { data, isFetching, error} = useFetchDoctorPrescriptionsQuery({ patientId });
-  if(isFetching || isFetchingPatients){
-    return <LoadingIndicator/>
+  // const { idx } = useParams()
+  // const {data:patients, isFetching: isFetchingPatients } = useFetchPatientsQuery()
+  // let patientId = ""
+  // useEffect(()=>{
+  //   if(!isFetchingPatients){
+  //     patientId = patients[idx]._id
+  //   }
+  // },[isFetchingPatients])
+  const location = useLocation();
+  const { patientId } = location.state;
+  const { data, isFetching, error } = useFetchDoctorPrescriptionsQuery({ patientId });
+  if (isFetching) {
+    return <LoadingIndicator />;
   }
+  console.log(data);
   return (
     <Box sx={{ width: "100%", m: 5 }}>
       <Box sx={{ display: "flex" }}>
@@ -343,17 +350,21 @@ function ViewPrescriptionsDoctor() {
         <Typography>View Prescriptions</Typography>
       </Box>
       <Box sx={{ width: "100%", mt: 5 }}>
-        {data.length==0?<h3>No Prescriptions</h3>:data.map((prescription, idx) => {
-          return (
-            <Box sx={{ mb: 5 }} key={idx}>
-              {/* <PrescriptionAccordion {...prescription} openAllAccordions={openAllAccordions} /> */}
-              <PrescriptionCard {...prescription} />
-            </Box>
-          );
-        })}
+        {data.length === 0 ? (
+          <h3>No Prescriptions</h3>
+        ) : (
+          data.map((prescription, idx) => {
+            return (
+              <Box sx={{ mb: 5 }} key={idx}>
+                {/* <PrescriptionAccordion {...prescription} openAllAccordions={openAllAccordions} /> */}
+                <PrescriptionCard {...prescription} />
+              </Box>
+            );
+          })
+        )}
       </Box>
       <Box>
-        <AddPrescription />
+        <AddPrescription patientId={patientId} />
       </Box>
       {/* <Box sx={{ mt: 2 }}>
         <Button onClick={downloadPdfDocument}>Download PDF</Button>

@@ -30,6 +30,7 @@ export default function PrescriptionCard({
   formattedDate,
   ...rest
 }) {
+  // console.log(_id);
   const cardRef = useRef(null); // Create a ref for the card
   //   const downloadPdfDocument = () => {
   //     html2canvas(cardRef.current).then((canvas) => {
@@ -113,7 +114,7 @@ export default function PrescriptionCard({
         <Divider inset="none" sx={{ height: 2 }} />
         <CardActions>
           <Button onClick={downloadPdfDocument}>Download</Button>
-          <AddMedicine />
+          <AddMedicine prescriptionId={_id} />
         </CardActions>
       </Card>
     </Box>

@@ -16,7 +16,7 @@ import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import { VideoChatRounded } from "@mui/icons-material";
 import BackArrow from "../../shared/Components/BackArrow";
 import Button from "../../shared/Components/Button";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function ViewPatientInfo() {
   const location = useLocation();
@@ -113,9 +113,13 @@ export default function ViewPatientInfo() {
               <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
                 Prescriptions
               </Typography>
-              <Link to="prescriptions">
-                <Button >View Prescriptions</Button>
-              </Link>
+              {/* <Link to="prescriptions"> */}
+              <Button
+                onClick={() => navigate("prescriptions", { state: { patientId: patientData._id } })}
+              >
+                View Prescriptions
+              </Button>
+              {/* </Link> */}
             </div>
             <div>
               <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">

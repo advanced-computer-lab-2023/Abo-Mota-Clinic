@@ -3,22 +3,25 @@ import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "../../../shared/Components/Button";
+import { useUpdateDescriptionMutation } from "../../../store";
 
-function PrescriptionDescription({ _id, description }) {
+function PrescriptionDescription({ prescriptionId, description }) {
   const [editDescription, setEditDescription] = useState(false);
   const [descriptionValue, setDescriptionValue] = useState(description);
+  const [updateDescription, _] = useUpdateDescriptionMutation();
   const handleEditDescription = () => {
     setEditDescription(!editDescription);
   };
   const handleDescriptionChange = (event) => {
     setDescriptionValue(event.target.value);
   };
-  const handleDescriptionSave = (event) => {
+  const handleDescriptionSave = async (event) => {
     event.preventDefault();
     const newDescription = {
       description: descriptionValue,
-      prescriptionId: _id,
+      prescriptionId,
     };
+    await updateDescription(newDescription);
     console.log(newDescription);
     setEditDescription(false);
     setDescriptionValue(descriptionValue);
