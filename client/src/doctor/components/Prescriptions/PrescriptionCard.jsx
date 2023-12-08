@@ -12,7 +12,7 @@ import Typography from "@mui/joy/Typography";
 import Check from "@mui/icons-material/Check";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { Avatar } from "@mui/joy";
-import MedicationList from "../MedicationList";
+import MedicationList from "./MedicationList";
 import PrescriptionDescription from "./PrescriptionDescription";
 import AddMedicine from "./AddMedicine";
 import jsPDF from "jspdf";

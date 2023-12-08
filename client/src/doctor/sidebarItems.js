@@ -1,5 +1,5 @@
-import Avatar from '@mui/joy/Avatar';
-import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet } from 'react-icons/fa';
+import Avatar from "@mui/joy/Avatar";
+import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet } from "react-icons/fa";
 
 export const items = [
   {
@@ -20,6 +20,11 @@ export const items = [
   {
     name: "View my Wallet",
     to: "wallet",
+    logo: <FaWallet />,
+  },
+  {
+    name: "Follow Up Requests",
+    to: "followUpRequests",
     logo: <FaWallet />,
   },
 ];

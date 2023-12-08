@@ -30,6 +30,7 @@ const MedicationListItem = ({
 
   const handleEditMedicine = () => {
     setEditPres(true);
+    // prescriptionId,medicineName
     console.log("edit medicine");
   };
 

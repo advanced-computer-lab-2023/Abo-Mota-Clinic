@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "../../../shared/Components/Button";
 import { FormControl, MenuItem, Modal, Option, Select, Typography } from "@mui/joy";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import MedicineCard from "../MedicineCard";
+import MedicineCard from "./MedicineCard";
 import { useGetAllMedicinesQuery } from "../../../store";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 
@@ -25,8 +25,8 @@ function AddPrescription({ doctorId, patientId }) {
 
   //{ medicine: "", dosage: "", frequency: "", duration: "" }
   const [medicineData, setMedicineData] = useState({
-    medicineName: "",
-    medicineId: "",
+    // medicineName: "",
+    medicine: "",
     dosage: 0,
     frequency: "",
     duration: "",
@@ -41,8 +41,8 @@ function AddPrescription({ doctorId, patientId }) {
     }
     setMedicineData({
       ...medicineData,
-      medicineName: newValue,
-      medicineId: data.find((medicine) => medicine.name === newValue)._id,
+      // medicineName: newValue,
+      medicine: data.find((medicine) => medicine.name === newValue)._id,
     });
   };
   const handleInputChange = (event) => {
@@ -71,8 +71,8 @@ function AddPrescription({ doctorId, patientId }) {
       medicines: [...prescription.medicines, medicineData],
     });
     setMedicineData({
-      medicineName: "",
-      medicineId: "",
+      // medicineName: "",
+      medicine: "",
       dosage: 0,
       frequency: "",
       duration: "",

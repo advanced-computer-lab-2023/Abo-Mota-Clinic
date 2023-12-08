@@ -1,6 +1,6 @@
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import React, { useState } from "react";
-import MedicationList from "../MedicationList";
+import MedicationList from "./MedicationList";
 import PrescriptionHeader from "./PrescriptionHeader";
 import AddMedicine from "./AddMedicine";
 import PrescriptionDescription from "./PrescriptionDescription";

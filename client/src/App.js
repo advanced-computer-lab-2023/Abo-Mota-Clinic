@@ -49,6 +49,7 @@ import LandingPage from "./shared/pages/LandingPage/LandingPage";
 
 import io from "socket.io-client";
 import VideoChat from "./shared/pages/VideoChat/VideoChat";
+import ViewFollowUpRequests from "./doctor/pages/ViewFollowUpRequests";
 // Socket.io
 const socket = io.connect("http://localhost:5000");
 
@@ -105,6 +106,7 @@ function App() {
               element={<ViewPrescriptionsDoctor />}
             />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
+            <Route path="followUpRequests" element={<ViewFollowUpRequests />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute roles={["admin"]} />}>
