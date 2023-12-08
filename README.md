@@ -14,7 +14,10 @@ The project adheres to the "standard" coding conventions for clarity and maintai
 
 ## Screenshots
 
-*Visual representations of the platform will be here.*
+![Screenshot](screen1 clinic.jpg)
+![Screenshot](clinic2.jpg)
+![Screenshot](clinic 3.jpg)
+
 
 ## Tech/Framework Used
 
