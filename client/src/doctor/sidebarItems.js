@@ -1,5 +1,6 @@
 import Avatar from "@mui/joy/Avatar";
 import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet } from "react-icons/fa";
+import { FaCodePullRequest } from "react-icons/fa6";
 
 export const items = [
   {
@@ -25,6 +26,6 @@ export const items = [
   {
     name: "Follow Up Requests",
     to: "followUpRequests",
-    logo: <FaWallet />,
+    logo: <FaCodePullRequest />,
   },
 ];

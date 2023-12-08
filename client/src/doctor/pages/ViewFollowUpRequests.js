@@ -5,14 +5,12 @@ import "@fontsource/inter";
 import "react-dropdown/style.css";
 import DatePickerMaterialUI from "../components/DatePickerMaterialUI";
 import dayjs from "dayjs";
-import { useFetchAppointmentsQuery, useFetchDoctorQuery } from "../../store";
+import { useGetFollowUpsQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
 import { isAfter, isSameDay, isBefore, set, parseISO } from "date-fns";
-import { Autocomplete } from "@mui/joy";
-import FormControl from "@mui/joy/FormControl";
-import CircularProgress from "@mui/joy/CircularProgress";
 import { DatePicker, Space } from "antd";
 import FollowUpRequestsCard from "../components/FollowUpRequestsCard";
+import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 const { RangePicker } = DatePicker;
 
 function ViewFollowUpRequests() {
@@ -22,40 +20,42 @@ function ViewFollowUpRequests() {
   const [searchTerm, setSearchTerm] = useState("");
 
   //   const { data, error, isFetching } = useFetchAppointmentsQuery();
-  const isFetching = false;
-  const data = [
-    {
-      date: new Date("2023-12-10T09:00:00"),
-      oldDate: new Date("2023-12-05T09:00:00"),
-      patient: {
-        name: "John Doe",
-        email: "johndoe@example.com",
-        mobile: "123-456-7890",
-      },
-    },
-    {
-      date: new Date("2023-12-11T11:00:00"),
-      oldDate: new Date("2023-12-06T11:00:00"),
-      patient: {
-        name: "Jane Smith",
-        email: "janesmith@example.com",
-        mobile: "098-765-4321",
-      },
-    },
-    {
-      date: new Date("2023-12-12T14:00:00"),
-      oldDate: new Date("2023-12-07T14:00:00"),
-      patient: {
-        name: "Alice Johnson",
-        email: "alicejohnson@example.com",
-        mobile: "456-789-0123",
-      },
-    },
-  ];
+  const { data, error, isFetching } = useGetFollowUpsQuery();
+  // const data = [
+  //   {
+  //     date: new Date("2023-12-10T09:00:00"),
+  //     oldDate: new Date("2023-12-05T09:00:00"),
+  //     patient: {
+  //       name: "John Doe",
+  //       email: "johndoe@example.com",
+  //       mobile: "123-456-7890",
+  //     },
+  //   },
+  //   {
+  //     date: new Date("2023-12-11T11:00:00"),
+  //     oldDate: new Date("2023-12-06T11:00:00"),
+  //     patient: {
+  //       name: "Jane Smith",
+  //       email: "janesmith@example.com",
+  //       mobile: "098-765-4321",
+  //     },
+  //   },
+  //   {
+  //     date: new Date("2023-12-12T14:00:00"),
+  //     oldDate: new Date("2023-12-07T14:00:00"),
+  //     patient: {
+  //       name: "Alice Johnson",
+  //       email: "alicejohnson@example.com",
+  //       mobile: "456-789-0123",
+  //     },
+  //   },
+  // ];
   let filteredFollowUpRequests = [];
 
-  if (isFetching) filteredFollowUpRequests = [];
-  else if (selection.length === 0) {
+  if (isFetching) {
+    filteredFollowUpRequests = [];
+    return <LoadingIndicator />;
+  } else if (selection.length === 0) {
     filteredFollowUpRequests = data.filter((appointment) => appointment.patient != null);
   } else {
     filteredFollowUpRequests = data.filter((appointment) => selection.includes(appointment.status));
@@ -90,7 +90,7 @@ function ViewFollowUpRequests() {
       return <FollowUpRequestsCard key={index} followUpRequest={followUp} />;
     });
   }
-
+  // console.log(filteredFollowUpRequests);
   return (
     <div className="mx-auto w-full mr-2">
       {!isFetching && (

@@ -3,13 +3,13 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { DatePicker } from "antd";
 import { Box, Button, FormControl, FormLabel, Input, Modal, Textarea } from "@mui/joy";
 import dayjs from "dayjs";
-import { useScheduleFollowUpMutation } from "../../store";
+import { useRescheduleAppointmentMutation } from "../../store";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { IconButton } from "@mui/material";
 function RescheduleAppointment({ appointmentId }) {
   const [rescheduleDate, setRescheduleDate] = useState(null);
   const [open, setOpen] = useState(false);
-
+  const [rescheduleAppointment, results] = useRescheduleAppointmentMutation();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSubmit = async (event) => {
@@ -17,8 +17,9 @@ function RescheduleAppointment({ appointmentId }) {
     // ... submit logic ...
     const rescheduledAppointment = {
       appointmentId: appointmentId,
-      date: rescheduleDate,
+      newDate: rescheduleDate,
     };
+    await rescheduleAppointment(rescheduledAppointment);
     console.log(rescheduledAppointment);
     handleClose();
     // if (followUpDate)

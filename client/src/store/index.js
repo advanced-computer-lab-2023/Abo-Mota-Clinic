@@ -53,6 +53,16 @@ export {
   useUploadHealthRecordMutation,
   useChangeDoctorPasswordMutation,
   useGetAllMedicinesQuery,
+  useGetFollowUpsQuery,
+  useHandleFollowUpMutation,
+  useRescheduleAppointmentMutation,
+  useCancelAppointmentMutation,
+  useFetchDoctorPrescriptionsQuery,
+  useAddMedToPrescriptionMutation,
+  useDelMedFromPrescriptionMutation,
+  useUpdateMedInPrescriptionMutation,
+  useAddPrescriptionMutation,
+  useUpdateDescriptionMutation,
 } from "./apis/doctorApi";
 
 export {

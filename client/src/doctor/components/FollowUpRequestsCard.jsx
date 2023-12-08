@@ -17,30 +17,33 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import { useState } from "react";
+import { useHandleFollowUpMutation } from "../../store";
 export default function FollowUpRequestsCard({ followUpRequest }) {
   const [showCancelModal, setShowCancelModal] = useState(false);
-
+  const [handleFollowUp, results] = useHandleFollowUpMutation();
   const currDate = dayjs();
   const followUpRequestDate = dayjs(followUpRequest.formattedDate);
 
   const handleShowModal = () => setShowCancelModal(true);
   const handleCloseModal = () => setShowCancelModal(false);
-  const handleCancelRequest = () => {
+  const handleCancelRequest = async () => {
     console.log("Rejected");
     const handleRequest = {
       followUpId: followUpRequest._id,
       choice: "revoke",
     };
     console.log(handleRequest);
+    await handleFollowUp(handleRequest);
     setShowCancelModal(false);
   };
-  const handleAcceptRequest = () => {
+  const handleAcceptRequest = async () => {
     console.log("Accepted");
     const handleRequest = {
       followUpId: followUpRequest._id,
       choice: "accept",
     };
     console.log(handleRequest);
+    await handleFollowUp(handleRequest);
   };
   const message = "Are you sure you want to reject the follow up request?";
 
