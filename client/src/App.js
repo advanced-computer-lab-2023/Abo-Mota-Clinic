@@ -22,7 +22,6 @@ import PatientHome from "./patient/pages/PatientHome";
 import ViewWallet from "./patient/pages/ViewWallet";
 import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
-import PatientTest3 from "./patient/pages/PatientTest3";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
 import ChangePassword from "./patient/components/ChangePassword";
@@ -39,15 +38,17 @@ import Profile from "./patient/pages/Profile";
 import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
 import PatientFollowUp from "./doctor/pages/PatientFollowUp";
 import Contract from "./doctor/pages/Contract";
+import Notification from "./doctor/components/Notification";
+import ViewPrescriptionsDoctor from "./doctor/pages/ViewPrescriptionsDoctor";
 
 // login
 import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
 import PasswordSection from "./admin/pages/PasswordSection";
+import LandingPage from "./shared/pages/LandingPage/LandingPage";
 
 import io from "socket.io-client";
 import VideoChat from "./shared/pages/VideoChat/VideoChat";
-
 // Socket.io
 const socket = io.connect("http://localhost:5000");
 
@@ -56,20 +57,24 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<LoginForm />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/patientRegistration" element={<RegisterScreen />} />
         <Route element={<ProtectedRoute roles={["patient"]} />}>
-          <Route path="/patient" element={<Patient />}>
+          <Route path="/patient" element={<Patient socket={socket} />}>
             <Route path="" element={<PatientHome />} />
-            <Route path="appointments" element={<ViewPatientAppointments />} />
-            <Route path="doctors" element={<ViewDoctors />} />
+            <Route path="appointments" element={<ViewPatientAppointments socket={socket} />} />
+            <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
             <Route path="test" element={<PatientTest />} />
             <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
             <Route path="doctors/info/:id/video" element={<VideoChat />} />
             <Route path="wallet" element={<ViewWallet isPatient={true} />} />
-            <Route path="doctors/info/:id/appointment/:doctorId" element={<AppointmentStepper />} />
+            <Route
+              path="doctors/info/:id/appointment/:doctorId"
+              element={<AppointmentStepper socket={socket} />}
+            />
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
             <Route path="test3/:recipient" element={<Chat socket={socket} />} />
@@ -80,12 +85,14 @@ function App() {
 
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route element={<ProtectedRoute roles={["doctor"]} />}>
-          <Route path="/doctor" element={<Doctor />}>
+          <Route path="/doctor" element={<Doctor socket={socket} />}>
+            <Route path="" element={<Notification socket={socket} />} />
+
             <Route
               path="contract"
               element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
             />
-            <Route path="appointments" element={<ViewDoctorAppointments />} />
+            <Route path="appointments" element={<ViewDoctorAppointments socket={socket} />} />
             <Route path="patients" element={<ViewDoctorPatients />} />
             <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
@@ -93,9 +100,11 @@ function App() {
             <Route path="registerForm" element={<RegisterForm />} />
             <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
             <Route path="patients/patientInfo/:idx/video" element={<VideoChat />} />
+            <Route
+              path="patients/patientInfo/:idx/prescriptions"
+              element={<ViewPrescriptionsDoctor />}
+            />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
-            <Route path="test3/" element={<Chat socket={socket} />} />
-
           </Route>
         </Route>
         <Route element={<ProtectedRoute roles={["admin"]} />}>

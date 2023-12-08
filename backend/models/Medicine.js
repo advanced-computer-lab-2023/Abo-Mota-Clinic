@@ -8,10 +8,9 @@ const medicineSchema = new Schema({
 	price: Number,
 	quantity: Number,
 	image: String, //url
-	sales: 
-	{
-		type:Number,
-		default: 0
+	sales: {
+		type: Number,
+		default: 0,
 	},
 	medicinalUse: {
 		type: String,
@@ -27,6 +26,11 @@ const medicineSchema = new Schema({
 			"Anti-inflammatory",
 			"Diuretic",
 		],
+	},
+	status: {
+		type: String,
+		enum: ["archived", "unarchived"],
+		default: "unarchived",
 	},
 });
 

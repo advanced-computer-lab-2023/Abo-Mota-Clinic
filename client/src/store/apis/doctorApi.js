@@ -30,7 +30,7 @@ const doctorApi = createApi({
           const tags = result.map((appointment) => {
             return { type: "Appointment", id: appointment._id };
           });
-          // tags.push({type:'DoctorAppointment',id:doctor._id})
+          tags.push({ type: "Appointments", id: "all" });
           return tags;
         },
         query: () => {
@@ -158,6 +158,151 @@ const doctorApi = createApi({
           };
         },
       }),
+      getAllMedicines: builder.query({
+        query: () => {
+          return {
+            url: "/medicines",
+            method: "GET",
+          };
+        },
+      }),
+      getFollowUps: builder.query({
+        providesTags: (result, error) => {
+          const tags = result.map((followUp) => {
+            return { type: "FollowUp", id: followUp._id };
+          });
+          return tags;
+        },
+
+        query: () => {
+          return {
+            url: "/followUps",
+            method: "GET",
+          };
+        },
+      }),
+
+      handleFollowUp: builder.mutation({
+        invalidatesTags: (result, error, { followUpId }) => {
+          return [
+            { type: "Appointments", id: "all" },
+            { type: "FollowUp", id: followUpId },
+          ];
+        },
+        query: (followUpRequest) => {
+          return {
+            url: "/handleFollowUp",
+            body: followUpRequest,
+            method: "POST",
+          };
+        },
+      }),
+      rescheduleAppointment: builder.mutation({
+        invalidatesTags: (result, error, { appointmentId }) => {
+          return [
+            // { type: "Appointments", id: "all" },
+            { type: "Appointment", id: appointmentId },
+          ];
+        },
+        query: (appointment) => {
+          return {
+            url: "/rescheduleAppointment",
+            body: appointment,
+            method: "PATCH",
+          };
+        },
+      }),
+      cancelAppointment: builder.mutation({
+        invalidatesTags: (result, error, { appointmentId }) => {
+          return [
+            // { type: "Appointments", id: "all" },
+            { type: "Appointment", id: appointmentId },
+          ];
+        },
+        query: (appointment) => {
+          return {
+            url: "/cancelAppointment",
+            body: appointment,
+            method: "PATCH",
+          };
+        },
+      }),
+      fetchDoctorPrescriptions: builder.query({
+        providesTags: (result, error, patientId) => {
+          const tags = result.map((prescription) => {
+            return { type: "Prescription", id: prescription._id };
+          });
+          tags.push({ type: "Prescriptions", id: "all" });
+          return tags;
+        },
+        query: (patientId) => {
+          return {
+            url: "/prescriptions",
+            method: "GET",
+            params: patientId,
+          };
+        },
+      }),
+      addMedToPrescription: builder.mutation({
+        invalidatesTags: (result, error, { prescriptionId }) => {
+          return [{ type: "Prescription", id: prescriptionId }];
+        },
+        query: (data) => {
+          return {
+            url: "/addMedToPrescription",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
+      delMedFromPrescription: builder.mutation({
+        invalidatesTags: (result, error, { prescriptionId }) => {
+          return [{ type: "Prescription", id: prescriptionId }];
+        },
+        query: (data) => {
+          return {
+            url: "/delMedFromPrescription",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
+      updateMedInPrescription: builder.mutation({
+        invalidatesTags: (result, error, { prescriptionId }) => {
+          return [{ type: "Prescription", id: prescriptionId }];
+        },
+        query: (data) => {
+          return {
+            url: "/updateMedInPrescription",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
+      addPrescription: builder.mutation({
+        invalidatesTags: (result, error) => {
+          return [{ type: "Prescriptions", id: "all" }];
+        },
+        query: (data) => {
+          return {
+            url: "/addPrescription",
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
+      updateDescription: builder.mutation({
+        invalidatesTags: (result, error, { prescriptionId }) => {
+          return [{ type: "Prescription", id: prescriptionId }];
+        },
+        query: (data) => {
+          return {
+            url: "/updateDescription",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
     };
   },
 });
@@ -173,5 +318,16 @@ export const {
   useFetchWalletDoctorQuery,
   useUploadHealthRecordMutation,
   useChangeDoctorPasswordMutation,
+  useGetAllMedicinesQuery,
+  useGetFollowUpsQuery,
+  useHandleFollowUpMutation,
+  useRescheduleAppointmentMutation,
+  useCancelAppointmentMutation,
+  useFetchDoctorPrescriptionsQuery,
+  useAddMedToPrescriptionMutation,
+  useDelMedFromPrescriptionMutation,
+  useUpdateMedInPrescriptionMutation,
+  useAddPrescriptionMutation,
+  useUpdateDescriptionMutation,
 } = doctorApi;
 export { doctorApi };

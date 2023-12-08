@@ -18,6 +18,10 @@ const appointmentSchema = new Schema(
 			default: null,
 			ref: "ClinicPatient",
 		},
+		pricePaid: {
+			type: Number,
+			default: null,
+		},
 	},
 	{ toJSON: { virtuals: true } }
 );

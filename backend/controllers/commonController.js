@@ -1,6 +1,7 @@
 const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor");
 const Message = require("../models/Message");
+const Notification = require("../models/Notification");
 
 const getMessages = async (req, res) => {
   try {
@@ -55,6 +56,68 @@ const sendMessage = async (req, res) => {
   }
 };
 
+const getNotifications = async (req, res) => {
+    try{
+        const {username , userType }= req.userData;
+
+        let user;
+        if(userType.toLowerCase() === 'patient')
+            user = await Patient.findOne({ username });
+        if(userType.toLowerCase() === 'doctor')
+            user = await Doctor.findOne({ username });
+
+        const notifications = await Promise.all(user.notifications.map(async (notificationId) => {
+          return await Notification.findOne({ _id: notificationId });
+        }));     
+                          
+        res.status(200).json({ notifications: notifications});
+
+    }catch(error){
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const sendNotification = async (req, res) => {
+    try{
+        const {username , userType }= req.userData;
+        const { recipientUsername, recipientType , content } = req.body;
+
+        let recipient;
+        if(recipientType.toLowerCase() === 'patient')
+          recipient = await Patient.findOne({ username: recipientUsername.toLowerCase() });
+        if(recipientType.toLowerCase() === 'doctor')
+          recipient = await Doctor.findOne({ username: recipientUsername.toLowerCase() });
+
+        if(!recipient)
+          throw new Error("This recipient does not exist");
+
+        const notification = {
+            sender: {
+                username: username,
+                userType,
+            },
+            recipient: {
+                username: recipientUsername.toLowerCase(),
+                userType: recipientType,
+            },
+            content: content,
+            date: Date.now(),
+        }
+
+        const savedNotification = await Notification.create(notification);
+
+        //update recipient
+        recipient.notifications.push(savedNotification._id);
+        await recipient.save();
+
+        res.status(200).json({ message: "Notification sent successfully!" });
+
+    }catch(error){
+        res.status(500).json({ error: error.message });
+    }
+
+};
+
 const getLoggedIn = async (req, res) => {
   try {
     const { username, userType } = req.userData;
@@ -68,7 +131,7 @@ const getLoggedIn = async (req, res) => {
       user = await Doctor.findOne({ username });
 
     if (userType.toLowerCase() === 'admin')
-      user = await Doctor.findOne({ admin });
+      user = await Doctor.findOne({ username });
 
     res.status(200).json(user);
   } catch (error) {
@@ -131,6 +194,8 @@ const getContactedUsers = async (req, res) => {
 module.exports = {
   sendMessage,
   getMessages,
+  getNotifications,
+  sendNotification,
   getLoggedIn,
   getRecipient,
   getContactedUsers

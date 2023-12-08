@@ -1,4 +1,5 @@
-import { Button, Modal, ModalDialog, ModalClose, DialogTitle, DialogContent, Stack, FormControl, FormLabel, Input, Select, DatePicker, LocalizationProvider } from '@mui/joy';
+import { Modal, ModalDialog, ModalClose, DialogTitle, DialogContent, Stack, FormControl, FormLabel, Input, Select, DatePicker, LocalizationProvider } from '@mui/joy';
+import Button from '../../shared/Components/Button';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from 'react';
 import { useChangeAdminPasswordMutation } from '../../store';

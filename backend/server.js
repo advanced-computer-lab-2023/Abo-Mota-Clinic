@@ -37,6 +37,37 @@ io.on("connection", (socket) => {
     activeUsers[userId] = socket.id;
   });
 
+  //----------Notifications----------------//
+
+  socket.on("send_notification_booked", ({receiver, contentDoctor, contentPatient}) => {
+    const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
+    socket.to(receiverSocket).emit("receive_notification_booked", {contentDoctor});
+    io.to(socket.id).emit("receive_notification_booked", {contentPatient}); // send notification to sender as well
+
+  });
+
+  socket.on("send_notification_cancelled_by_patient", ({receiver, contentDoctor, contentPatient}) => {
+    const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
+    socket.to(receiverSocket).emit("receive_notification_cancelled_by_patient", {contentDoctor});
+    io.to(socket.id).emit("receive_notification_cancelled_by_patient", {contentPatient}); // send notification to sender as well
+
+  });
+
+  socket.on("send_notification_cancelled_by_doctor", ({receiver, contentDoctor, contentPatient}) => {
+    const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
+    socket.to(receiverSocket).emit("receive_notification_cancelled_by_doctor", {contentPatient});
+    io.to(socket.id).emit("receive_notification_cancelled_by_doctor", {contentDoctor}); // send notification to sender as well
+
+  });
+
+  //-----------------------------------------//
+  // text chat
+  socket.on("join_room", (data) => {
+    socket.join(data);
+
+    console.log(`User with id ${socket.id} joined room ${data}`);
+  });
+
   // text chat
   //----------------------
   // socket.on("join_room", (data) => {
@@ -65,22 +96,29 @@ io.on("connection", (socket) => {
 
   //----------------------
   // video chat
-  socket.emit("me", socket.id);
+  // socket.emit("me", socket.id);
 
-  socket.on("disconnect", () => {
-    socket.broadcast.emit("callEnded");
+  socket.on("join_room_video", ({ room }) => {
+    socket.join(room);
+    console.log(`User with id ${socket.id} joined VIDEO room ${room}`);
+  });
+
+  socket.on("callEnded", () => {
+    socket.broadcast.emit("othersCallEnded");
   });
 
   socket.on("callUser", (data) => {
-    io.to(data.userToCall).emit("callUser", {
+    const { room } = data;
+    console.log("call user SERVER");
+    socket.to(room).emit("receiveCall", {
       signal: data.signalData,
       from: data.from,
-      name: data.name,
     });
   });
 
   socket.on("answerCall", (data) => {
-    io.to(data.to).emit("callAccepted", data.signal);
+    const { room } = data;
+    socket.to(room).emit("callAccepted", data.signal);
   });
 });
 
@@ -89,9 +127,6 @@ mongoose.set("strictQuery", false);
 
 
 const MongoURI = process.env.MONGO_URI;
-
-
-
 
 
 // mongo connection string
@@ -125,6 +160,8 @@ app.use("/api/admin", adminRouter);
 app.use("/api/guest", guestRouter);
 app.use("/api/stripe", stripeRouter);
 app.use("/api/common", commonRouter);
+
+
 
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
