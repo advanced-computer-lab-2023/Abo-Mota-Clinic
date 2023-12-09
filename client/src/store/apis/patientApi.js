@@ -294,6 +294,15 @@ const patientApi = createApi({
           };
         },
       }),
+
+      fetchFamilyMemberAppointments: builder.query({
+        query: () => {
+          return {
+            url: "/familyAppointments",
+            method: "GET",
+          };
+        },
+      }),
     };
   },
 });
@@ -320,7 +329,9 @@ export const {
   useLinkFamilyMemberMutation,
   useFetchWalletPatientQuery,
   useChangePatientPasswordMutation,
-  usePatientRescheduleAppointmentMutation
+  usePatientRescheduleAppointmentMutation,
+  useFetchFamilyMemberAppointmentsQuery,
+
 } = patientApi;
 
 export { patientApi };

@@ -1039,8 +1039,12 @@ const getFamilyMemberAppointments = async (req, res) => {
 
 		const appointments = await Appointment.find({
 			patient: { $in: familyMembers },
-			status: "upcoming",
-		});
+			$or: [
+				{ status: "upcoming" },
+				{ status: "rescheduled" }
+			]
+		}).populate("doctor")
+			.populate("patient");
 
 		res.status(200).json(appointments);
 	} catch (error) {

@@ -111,7 +111,8 @@ export const {
   useRemoveDocumentMutation,
   useLinkFamilyMemberMutation,
   useChangePatientPasswordMutation,
-  usePatientRescheduleAppointmentMutation
+  usePatientRescheduleAppointmentMutation,
+  useFetchFamilyMemberAppointmentsQuery
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;

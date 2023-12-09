@@ -27,7 +27,7 @@ import {
   ModalClose
 } from "@mui/joy";
 
-function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, appointmentId }) {
+function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, appointmentId, name }) {
   // console.log("name: ", name);
   // console.log("doctor: ", specialty);
 
@@ -81,25 +81,6 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
   }
   const message = 'Are you sure you want to cancel your appointment?'
 
-  const onRescheduleConfirm = () => {
-    // CALL API MUTATION
-    setIsRescheduleModalOpen(false);
-
-  }
-
-  const onRescheduleDateChange = (date) => {
-
-  }
-
-  const ActionBar = () => {
-    return (
-      <>
-        <Button variant="outlined" onClick={onRescheduleConfirm}>
-          Confirm
-        </Button>
-      </>
-    )
-  };
 
 
   return (
@@ -167,8 +148,11 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
 
 
         </Box>
-        <Box className="flex w-full justify-end">
-          <Button variant="outlined" onClick={() => setIsRescheduleModalOpen(true)}>
+        <Box className="flex w-full justify-between items-center">
+          <Typography level="body-sm">
+            Patient: {name}
+          </Typography>
+          <Button variant="plain" onClick={() => setIsRescheduleModalOpen(true)}>
             Reschedule
           </Button>
           <RescheduleModal isRescheduleModalOpen={isRescheduleModalOpen} setIsRescheduleModalOpen={setIsRescheduleModalOpen} doctorId={doctor._id} oldAppointmentId={appointmentId} />
