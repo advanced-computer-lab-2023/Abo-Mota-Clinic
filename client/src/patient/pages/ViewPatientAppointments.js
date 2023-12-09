@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import filter from "../utils/filter";
 
-export default function ViewPatientAppointments({socket}) {
+export default function ViewPatientAppointments({ socket }) {
   const [date, setDate] = useState(null);
   const [config, setConfig] = useState({});
 
@@ -45,7 +45,7 @@ export default function ViewPatientAppointments({socket}) {
     // console.log(filteredData);
     content = filteredData.map((appointment) => {
       // console.log("appointment: ", appointment);
-      return <AppointmentCard sx={{ width: "100%" }} socket={socket} {...appointment} />;
+      return <AppointmentCard sx={{ width: "100%" }} socket={socket} {...appointment} appointmentId={appointment._id} />;
     });
   }
 

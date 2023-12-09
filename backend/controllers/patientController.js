@@ -265,6 +265,9 @@ const getAvailableAppointments = async (req, res) => {
 		if (!(await Doctor.findOne({ _id: doctorId }))) {
 			throw Error("Doctor doesn't exist");
 		}
+
+		console.log(await Doctor.findOne({ _id: doctorId }));
+
 		const currentDate = new Date(Date.now());
 		const filter = {
 			$and: [
@@ -968,20 +971,25 @@ const rescheduleAppointment = async (req, res) => {
 	// HERE I AM ASSUMING THE GIVEN NEW DATE IS SELECTED FROM A LIST OF UPCOMING
 	// DATES OF APPOINTMENTS THAT DO NOT HAVE PATIENTS AND BELONG TO THE SAME DOCTOR
 	try {
-		const { appointmentId, newDate } = req.body;
+		const { oldAppointmentId, newAppointmentId } = req.body;
 
-		const appointment = await Appointment.findOne({ _id: appointmentId });
-		const doctorId = appointment.doctor;
+		const oldAppointment = await Appointment.findOne({ _id: oldAppointmentId });
+		const oldDate = oldAppointment.date;
 
+		const newAppointment = await Appointment.findOne({ _id: newAppointmentId });
+		const newDate = newAppointment.date;
+
+		// MODIFY THE OLD APPOINTMENT'S DATE AND STATUS
 		const reschedule = await Appointment.updateOne(
-			{ _id: appointment._id },
+			{ _id: oldAppointment._id },
 			{ status: "rescheduled", date: newDate }
 		);
 
-		const deleteExistingAppointment = await Appointment.deleteOne({
-			doctor: doctorId,
-			date: newDate,
-		});
+		// FREEING UP A NEW APPOINTMENT WITH THE OLD DATE
+		await Appointment.updateOne(
+			{ _id: newAppointment._id },
+			{ date: oldDate }
+		)
 
 		res.status(200).json(reschedule);
 	} catch (error) {

@@ -284,6 +284,16 @@ const patientApi = createApi({
           };
         },
       }),
+
+      patientRescheduleAppointment: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/rescheduleAppointment",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
     };
   },
 });
@@ -310,6 +320,7 @@ export const {
   useLinkFamilyMemberMutation,
   useFetchWalletPatientQuery,
   useChangePatientPasswordMutation,
+  usePatientRescheduleAppointmentMutation
 } = patientApi;
 
 export { patientApi };
