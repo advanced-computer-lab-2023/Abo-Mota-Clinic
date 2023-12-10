@@ -199,5 +199,5 @@ We welcome contributions that help enhance the features and functionalities of t
 
 ## Credits
 
-
+## License
 
