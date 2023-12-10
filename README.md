@@ -195,7 +195,7 @@ Remember to log out after your session to maintain the security of your account.
 
 ## Contribute
 
-
+We welcome contributions that help enhance the features and functionalities of the Pharmacy Management System. Please refer to the contribution guidelines for the process and standards we follow.
 
 ## Credits
 
