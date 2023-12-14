@@ -87,10 +87,12 @@ const colorSchemes = {
         setOpen(false);
     }
 
+    const message = 'Are you sure you want to cancel your subscription? This action cannot be reversed.'
+
     return (
         <>
             {hasName ? flipCardComponent : nonFlipCardComponent}
-            <TwoButtonModal handleClose={handleClose} open={open} handleClickLogic={handleClickLogic} />
+            <TwoButtonModal handleClose={handleClose} open={open} handleClickLogic={handleClickLogic} message={message}/>
         </>
     );
     }

@@ -34,9 +34,10 @@ export default function AppointmentScheduler({
   appointmentId,
   setAppointmentId,
 }) {
+
   const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(doctorId);
 
-  console.log("Available Appointments @ PatientTest");
+  // console.log("Available Appointments @ PatientTest");
   // console.log(data);
 
   if (isFetching) {
@@ -66,6 +67,7 @@ export default function AppointmentScheduler({
     // console.log(enabledDays);
     return !enabledDays.some((enabledDay) => dayjs(enabledDay).isSame(day, "day"));
   };
+  
   console.log(currentTime);
   return (
     <div className="m-10">

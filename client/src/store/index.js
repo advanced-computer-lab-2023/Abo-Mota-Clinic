@@ -41,6 +41,7 @@ export const store = configureStore({
 
 setupListeners(store.dispatch);
 export const persistor = persistStore(store);
+
 export {
   useFetchAppointmentsQuery,
   useFetchPatientsQuery,
@@ -51,7 +52,18 @@ export {
   useAddFreeSlotsMutation,
   useFetchWalletDoctorQuery,
   useUploadHealthRecordMutation,
-  useChangeDoctorPasswordMutation
+  useChangeDoctorPasswordMutation,
+  useGetAllMedicinesQuery,
+  useGetFollowUpsQuery,
+  useHandleFollowUpMutation,
+  useRescheduleAppointmentMutation,
+  useCancelAppointmentMutation,
+  useFetchDoctorPrescriptionsQuery,
+  useAddMedToPrescriptionMutation,
+  useDelMedFromPrescriptionMutation,
+  useUpdateMedInPrescriptionMutation,
+  useAddPrescriptionMutation,
+  useUpdateDescriptionMutation,
 } from "./apis/doctorApi";
 
 export {
@@ -65,7 +77,7 @@ export {
   useRemovePatientMutation,
   useRemoveDoctorMutation,
   useHandleApplicationMutation,
-  useChangeAdminPasswordMutation
+  useChangeAdminPasswordMutation,
 } from "./apis/adminApi";
 
 export {
@@ -99,19 +111,21 @@ export const {
   useRemoveDocumentMutation,
   useLinkFamilyMemberMutation,
   useChangePatientPasswordMutation,
+  usePatientRescheduleAppointmentMutation,
+  useFetchFamilyMemberAppointmentsQuery
 } = patientApi;
 
-export const {
-  useCreatePaymentIntentMutation,
-  useFetchStripeConfigQuery
-} = stripeApi;
+export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
 
 export const {
   useFetchLoggedInQuery,
   useSendMessageMutation,
   useFetchMessagesQuery,
+  useFetchRecipientQuery,
+  useFetchContactsQuery,
   useSendNotificationMutation,
   useFetchNotificationQuery,
 } = commonApi;
 
 export { logout, login } from "./slices/userSlice";
+

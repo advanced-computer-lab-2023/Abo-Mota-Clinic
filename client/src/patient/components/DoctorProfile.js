@@ -40,8 +40,15 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
   const { data, isFetching, error } = useFetchAvailableAppointmentsQuery(_id);
   let appointmentContent = <LoadingIndicator />;
   const navigate = useNavigate();
+
   if (!isFetching && !error) {
+
+    console.log("appointments @ DoctorProfile", data);
+
     const formattedAppointments = formatAppointments(data);
+
+    console.log("formattedAppointments @ DoctorProfile", formattedAppointments);
+
     const dates = Object.keys(formattedAppointments);
     // sort the array
     dates.sort((a, b) => {
