@@ -41,6 +41,7 @@ export const store = configureStore({
 
 setupListeners(store.dispatch);
 export const persistor = persistStore(store);
+
 export {
   useFetchAppointmentsQuery,
   useFetchPatientsQuery,
@@ -110,6 +111,8 @@ export const {
   useRemoveDocumentMutation,
   useLinkFamilyMemberMutation,
   useChangePatientPasswordMutation,
+  usePatientRescheduleAppointmentMutation,
+  useFetchFamilyMemberAppointmentsQuery
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
@@ -125,3 +128,4 @@ export const {
 } = commonApi;
 
 export { logout, login } from "./slices/userSlice";
+

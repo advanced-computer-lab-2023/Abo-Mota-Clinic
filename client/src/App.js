@@ -26,6 +26,7 @@ import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
 import ChangePassword from "./patient/components/ChangePassword";
 import Chat from "./patient/components/Chat";
+import ViewPatientFamilyAppointments from "./patient/pages/ViewPatientFamilyAppointments";
 
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
@@ -64,6 +65,7 @@ function App() {
           <Route path="/patient" element={<Patient socket={socket} />}>
             <Route path="" element={<PatientHome />} />
             <Route path="appointments" element={<ViewPatientAppointments socket={socket} />} />
+            <Route path="familyAppointments" element={<ViewPatientFamilyAppointments socket={socket} />} />
             <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />

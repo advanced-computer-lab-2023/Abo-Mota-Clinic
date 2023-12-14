@@ -1,4 +1,4 @@
-import { useFetchPatientAppointmentsQuery, useFetchFamilyMemberAppointmentsQuery } from "../../store";
+import { useFetchFamilyMemberAppointmentsQuery } from "../../store";
 import AppointmentCard from "../components/AppointmentCard";
 import { Box } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
@@ -8,25 +8,22 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import filter from "../utils/filter";
 
-export default function ViewPatientAppointments({ socket }) {
+export default function ViewPatientFamilyAppointments({ socket }) {
   const [date, setDate] = useState(null);
-  const [config, setConfig] = useState({ owner: "Self" });
+  const [config, setConfig] = useState({});
 
   const dateFormat = "MM/DD/YYYY HH:mm A";
-  const { data, isFetching, isError } = useFetchPatientAppointmentsQuery();
-  const { data: familyMemberAppointments, isFetching: isFetchingFamilyMemberAppointments, isError: isErrorFamilyMemberAppointments } = useFetchFamilyMemberAppointmentsQuery();
+  const { data, isFetching, isError } = useFetchFamilyMemberAppointmentsQuery();
   let content;
 
-  if (isFetching || isFetchingFamilyMemberAppointments) {
+  console.log("Family Appointments: ", data);
+
+  if (isFetching) {
     content = <div> Loading ...</div>;
   } else if (isError) {
     content = <div> Error ... </div>;
   } else {
-    let newData = [
-      ...data.map((appointment) => { return { ...appointment, owner: "Self", name: "You" } }),
-      ...familyMemberAppointments.map((appointment) => { return { ...appointment, owner: "Family", name: appointment.patient.name } })];
-
-    newData = newData.map((appointment) => {
+    const newData = data.map((appointment) => {
       const currDate = dayjs();
       const appointmentDate = dayjs(appointment.formattedDate);
       if (appointment.status === "cancelled" || appointment.status === "rescheduled") {
@@ -40,9 +37,9 @@ export default function ViewPatientAppointments({ socket }) {
     });
     let filteredData = filter(newData, config);
 
-    filteredData = filteredData.filter((appt) => {
+    filteredData = filteredData.filter((pres) => {
       if (date) {
-        return dayjs(appt.formattedDate, dateFormat).isSame(dayjs(date, dateFormat), "minute");
+        return dayjs(pres.formattedDate, dateFormat).isSame(dayjs(date, dateFormat), "minute");
       } else {
         return true;
       }
@@ -50,7 +47,7 @@ export default function ViewPatientAppointments({ socket }) {
     // console.log(filteredData);
     content = filteredData.map((appointment) => {
       // console.log("appointment: ", appointment);
-      return <AppointmentCard sx={{ width: "100%" }} socket={socket} {...appointment} appointmentId={appointment._id} name={appointment.name} />;
+      return <AppointmentCard sx={{ width: "100%" }} socket={socket} {...appointment} appointmentId={appointment._id} />;
     });
   }
 
@@ -71,26 +68,14 @@ export default function ViewPatientAppointments({ socket }) {
             id="tags-default"
             placeholder="Status"
             options={["Completed", "Upcoming", "Cancelled", "Rescheduled"]}
-
+            // endDecorator={
+            //   isFetching ? (
+            //     <CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
+            //   ) : null
+            // }
             limitTags={2}
             onChange={(event, newValue) => {
               setConfig({ ...config, status: newValue });
-            }}
-          />
-        </FormControl>
-
-        <FormControl id="multiple-limit-tags">
-          <FormLabel>Patient</FormLabel>
-          <Autocomplete
-            multiple
-            id="tags-default"
-            placeholder="Status"
-            options={["Self", "Family"]}
-            defaultValue={["Self"]}
-
-            limitTags={2}
-            onChange={(event, newValue) => {
-              setConfig({ ...config, owner: newValue });
             }}
           />
         </FormControl>
@@ -107,6 +92,6 @@ export default function ViewPatientAppointments({ socket }) {
       </Box>
 
       {content}
-    </Box >
+    </Box>
   );
 }
