@@ -13,12 +13,14 @@ import capitalize from "../utils/capitalize";
 import { useState } from "react";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import { useSendNotificationMutation } from "../../store";
+import { useSendEmailMutation } from "../../store/apis/commonApi";
 
 function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket}) {
   // console.log("name: ", name);
   // console.log("doctor: ", specialty);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [sendNotification] = useSendNotificationMutation();
+  const [sendEmail] = useSendEmailMutation();
 
   const colors = {
     upcoming: "warning",
@@ -54,6 +56,11 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket}) 
       contentDoctor: `Your appointment with ${patient.name} on ${formattedDate.replace(',',' at')} got cancelled`,
       contentPatient: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',',' at')} got cancelled`,
 
+    });
+
+    sendEmail({
+      subject: 'Cancelled appointment',
+      text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',',' at')} got cancelled`
     });
     
     setShowCancelModal(false);

@@ -18,12 +18,15 @@ import dayjs from "dayjs";
 import { useSendNotificationMutation, useCancelAppointmentMutation } from "../../store";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import RescheduleAppointment from "./RescheduleAppointment";
+import { useSendEmailMutation } from "../../store/apis/commonApi";
 
 export default function AppointmentCard({ appointment, socket }) {
   const navigate = useNavigate(); // Hook to get the navigate function
   const [showCancelModal, setShowCancelModal] = React.useState(false);
   const [sendNotification] = useSendNotificationMutation();
   const [cancelAppointment, _]  = useCancelAppointmentMutation();
+  const [sendEmail] = useSendEmailMutation();
+
   const navigateToPatientFollowUp = () => {
     navigate("PatientFollowUp", { state: appointment.patient }); // Use the patient to navigate
   };
@@ -88,6 +91,11 @@ export default function AppointmentCard({ appointment, socket }) {
         appointment.doctor.name
       } on ${appointment.formattedDate.replace(",", " at")} got cancelled`,
     });
+
+    sendEmail({
+      subject: 'Cancelled appointment',
+      text: `Your appointment with Dr. ${appointment.doctor.name} on ${appointment.formattedDate.replace(',',' at')} got cancelled`
+    })
 
     setShowCancelModal(false);
   };

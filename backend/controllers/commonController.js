@@ -2,6 +2,7 @@ const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor");
 const Message = require("../models/Message");
 const Notification = require("../models/Notification");
+const sendEmail = require("../utils/sendEmail");
 
 const getMessages = async (req, res) => {
   try {
@@ -77,37 +78,32 @@ const getNotifications = async (req, res) => {
     }
 };
 
-// const sendEmail = async (email) => {
-// 	try {
-// 		if (!email) {
-// 			throw new Error("Email is required");
-// 		}
-// 		// clear old requests
-// 		await Otp.deleteOne({ email });
-// 		const generatedOtp = await generateOTP();
-// 		// send email
-// 		const mailOptions = {
-// 			from: OTP_SENDER_MAIL,
-// 			to: email,
-// 			subject: "Your Password Reset Code",
-// 			html: `<p>Here is your requested OTP</p>
-//       <p style="color:tomato;font-size:25px;letter-spacing:2px;"><b>${generatedOtp}</b></p>
-//       <p>This code <b>expires in 5 minutes</b>.</p>`,
-// 		};
-// 		await sendEmail(mailOptions);
-// 		// save otp in DB
-// 		const hashedOtp = await bcrypt.hash(generatedOtp, saltRounds);
-// 		const newOtp = await Otp.create({
-// 			email,
-// 			otp: hashedOtp,
-// 			createdAt: Date.now(),
-// 			expiresAt: Date.now() + 5 * 60 * 1000,
-// 		});
-// 		return newOtp;
-// 	} catch (error) {
-// 		throw error;
-// 	}
-// };
+const sendEmailNotif = async (req, res) => {
+  try{
+    const {username} = req.userData;
+    const { OTP_SENDER_MAIL } = process.env;
+
+    let recipientEmail;
+    if(req.userData.userType === 'doctor')
+      recipientEmail = await Doctor.findOne({username});
+    else
+      recipientEmail = await Patient.findOne({username});
+
+	  const { subject, text } = req.body;
+    
+	  const mailOptions = {
+	    from: OTP_SENDER_MAIL,
+	    to: recipientEmail,
+	    subject: subject,
+	    text: text,
+	  };
+
+    await sendEmail(mailOptions);
+		res.status(200).send('Email sent successfully');
+  } catch(error){
+    console.error(error);
+  }
+}
 
 const sendNotification = async (req, res) => {
     try{
@@ -226,6 +222,7 @@ const getContactedUsers = async (req, res) => {
 module.exports = {
   sendMessage,
   getMessages,
+  sendEmailNotif,
   getNotifications,
   sendNotification,
   getLoggedIn,

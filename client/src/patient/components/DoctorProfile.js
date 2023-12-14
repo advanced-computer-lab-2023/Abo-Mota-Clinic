@@ -42,6 +42,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
   const navigate = useNavigate();
   if (!isFetching && !error) {
     const formattedAppointments = formatAppointments(data);
+  console.log(formattedAppointments)
     const dates = Object.keys(formattedAppointments);
     // sort the array
     dates.sort((a, b) => {
