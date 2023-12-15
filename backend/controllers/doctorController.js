@@ -311,16 +311,18 @@ const viewPrescriptions = async (req, res) => {
     const { patientId } = req.query;
     // console.log(patientId)
     const { _id } = await Doctor.findOne({ username });
-    const prescriptions = await Prescription.find({ doctor: _id, patient: patientId }).populate([
-      {
-        path: "medicines.medicine",
-        model: "Medicine",
-      },
-      {
-        path: "patient",
-        model: "ClinicPatient",
-      },
-    ]);
+    const prescriptions = await Prescription.find({ doctor: _id, patient: patientId })
+      .sort({ date: -1 })
+      .populate([
+        {
+          path: "medicines.medicine",
+          model: "Medicine",
+        },
+        {
+          path: "patient",
+          model: "ClinicPatient",
+        },
+      ]);
     res.status(200).json(prescriptions);
   } catch (error) {
     res.status(500).json({ error: error.message });

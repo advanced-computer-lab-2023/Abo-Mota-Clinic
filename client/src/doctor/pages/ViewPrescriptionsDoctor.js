@@ -14,6 +14,8 @@ import {
   useFetchDoctorQuery,
   useFetchPatientsQuery,
 } from "../../store";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 function ViewPrescriptionsDoctor() {
   const dummy_data = [
     {
@@ -337,10 +339,28 @@ function ViewPrescriptionsDoctor() {
   const location = useLocation();
   const { patientId } = location.state;
   const { data, isFetching, error } = useFetchDoctorPrescriptionsQuery({ patientId });
+  const [selectedDate, setSelectedDate] = useState(null);
+  const handelDateChange = (date) => {
+    const formattedChosenDate = dayjs(date).format("MM/DD/YYYY");
+    if (formattedChosenDate === "Invalid Date") {
+      setSelectedDate(null);
+      return;
+    }
+    setSelectedDate(formattedChosenDate);
+    console.log(formattedChosenDate);
+  };
   if (isFetching) {
     return <LoadingIndicator />;
   }
-  console.log(data);
+  let prescriptions = data;
+  if (selectedDate !== null) {
+    prescriptions = prescriptions.filter((prescription) => {
+      return prescription.formattedDate === selectedDate;
+    });
+  } else {
+    prescriptions = data;
+  }
+  // console.log(data);
   return (
     <Box sx={{ width: "100%", m: 5 }}>
       <Box sx={{ display: "flex", width: "100%" }}>
@@ -352,17 +372,24 @@ function ViewPrescriptionsDoctor() {
         {data.length === 0 ? (
           <h3>No Prescriptions</h3>
         ) : (
-          data.map((prescription, idx) => {
-            return (
-              <Box sx={{ mb: 5 }} key={idx}>
-                {/* <PrescriptionAccordion {...prescription} openAllAccordions={openAllAccordions} /> */}
-                <PrescriptionCard {...prescription} />
-              </Box>
-            );
-          })
+          <Box className="space-y-5">
+            <DatePicker format="MM/DD/YYYY" onChange={handelDateChange} style={{ width: "20%" }} />
+            {prescriptions.length !== 0 ? (
+              prescriptions.map((prescription, idx) => {
+                return (
+                  <Box sx={{ mb: 5 }} key={idx}>
+                    {/* <PrescriptionAccordion {...prescription} openAllAccordions={openAllAccordions} /> */}
+                    <PrescriptionCard {...prescription} />
+                  </Box>
+                );
+              })
+            ) : (
+              <Typography variant="h6">No Prescriptions on {selectedDate}</Typography>
+            )}
+          </Box>
         )}
       </Box>
-      <Box>
+      <Box sx={{ mt: 5 }}>
         <AddPrescription patientId={patientId} />
       </Box>
       {/* <Box sx={{ mt: 2 }}>
