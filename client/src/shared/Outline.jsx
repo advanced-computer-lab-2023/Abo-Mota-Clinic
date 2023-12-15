@@ -3,14 +3,10 @@ import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined ,BellOutlined, MessageOutlined, UserOutlined} from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
 import PopOver from './Components/PopOver';
+import Logo from './assets/logo.png'
 import { navBarItems } from '../patient/navBarItems';
 import { useLogoutMutation } from '../store';
-
-
 const { Header, Content, Footer, Sider } = Layout;
-
-
-
 
 
 const Outline = ({ items, navBarItems }) => {
@@ -32,8 +28,6 @@ const Outline = ({ items, navBarItems }) => {
     navigate('/');
     logout();
   }
-
-
   const profileContent = (
     <div>
       {navBarItems.map(item => (  
@@ -48,7 +42,7 @@ const Outline = ({ items, navBarItems }) => {
   );
 
   const messageContent = <p>Messages Content</p>;
-  const notificationContent = <p>Notifications Content</p>;
+  const notificationContent = <p>Notifications Content</  p>;
   
 
   return (
@@ -66,6 +60,9 @@ const Outline = ({ items, navBarItems }) => {
           bottom: 0,
         }}
       >
+        <div className="demo-logo-vertical">
+        <img src={Logo} alt="Logo" style={{ width: '100px', padding: '16px', margin: '0 auto' }} />
+      </div>
         <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
@@ -81,7 +78,7 @@ const Outline = ({ items, navBarItems }) => {
           transition: 'margin-left 0.2s',
         }}
       >
-        <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px', background: colorBgContainer }}>
+        <Header style={{ position: 'sticky', top: '0', zIndex: '1000',display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px', background: colorBgContainer }}>
         <div>
         <Button
           type="text"
