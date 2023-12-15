@@ -94,6 +94,17 @@ const commonApi = createApi({
           };
         },
       }),
+
+      sendEmail: builder.mutation({
+
+        query: (data) => {
+          return {
+            url: "/send-email",
+            body: data,
+            method: "POST",
+          };
+        },
+      }),
     }
   },
 });
@@ -106,6 +117,7 @@ export const {
   useFetchContactsQuery,
   useSendNotificationMutation,
   useFetchNotificationQuery,
+  useSendEmailMutation,
 } = commonApi;
 
 export { commonApi };

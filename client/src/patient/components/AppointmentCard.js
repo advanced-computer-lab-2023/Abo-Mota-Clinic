@@ -13,7 +13,7 @@ import Chip from "@mui/joy/Chip";
 import capitalize from "../utils/capitalize";
 import { useEffect, useState } from "react";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
-import { useSendNotificationMutation } from "../../store";
+import { useSendNotificationMutation, useSendEmailMutation } from "../../store";
 import RescheduleModal from "./RescheduleModal";
 
 import dayjs from "dayjs";
@@ -33,6 +33,7 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
 
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [sendNotification] = useSendNotificationMutation();
+  const [sendEmail] = useSendEmailMutation();
   const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
 
   // const [rescheduleDate, setRescheduleDate] = useState(null);
@@ -77,6 +78,11 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
 
     });
 
+    sendEmail({
+      subject: 'Cancelled appointment',
+      text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',',' at')} got cancelled`
+    });
+    
     setShowCancelModal(false);
   }
   const message = 'Are you sure you want to cancel your appointment?'

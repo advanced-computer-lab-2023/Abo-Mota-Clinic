@@ -8,7 +8,7 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 
 export default function ViewPrescriptions() {
-  const { data, isFetching, error } = useFetchPrescriptionsQuery(0);
+  const { data, isFetching, error } = useFetchPrescriptionsQuery();
   const [config, setConfig] = useState({});
   const [date, setDate] = useState(null);
   const dateFormat = "MM/DD/YYYY"

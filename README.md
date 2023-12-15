@@ -189,9 +189,10 @@ The Virtual Clinic system is designed to be intuitive and user-friendly. Here is
 - For any assistance, visit the 'Help' section or contact our support team.
 
 Remember to log out after your session to maintain the security of your account.
+## API Refrences 
 
 
-
+## Tests
 
 ## Contribute
 
@@ -200,4 +201,6 @@ We welcome contributions that help enhance the features and functionalities of t
 ## Credits
 
 ## License
+- The software is open source under the Apache 2.0 License.
 
+- The Stripe is licensed under the Apache License 2.0
