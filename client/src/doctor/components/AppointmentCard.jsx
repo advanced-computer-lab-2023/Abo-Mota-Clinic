@@ -23,7 +23,7 @@ export default function AppointmentCard({ appointment, socket }) {
   const navigate = useNavigate(); // Hook to get the navigate function
   const [showCancelModal, setShowCancelModal] = React.useState(false);
   const [sendNotification] = useSendNotificationMutation();
-  const [cancelAppointment, _]  = useCancelAppointmentMutation();
+  const [cancelAppointment, _] = useCancelAppointmentMutation();
   const navigateToPatientFollowUp = () => {
     navigate("PatientFollowUp", { state: appointment.patient }); // Use the patient to navigate
   };
@@ -52,8 +52,8 @@ export default function AppointmentCard({ appointment, socket }) {
 
     //add Cancel Appointment logic here
     await cancelAppointment({
-      appointmentId: appointment._id
-    })
+      appointmentId: appointment._id,
+    });
 
     sendNotification({
       recipientUsername: appointment.doctor.username,
@@ -162,7 +162,8 @@ export default function AppointmentCard({ appointment, socket }) {
                   Follow Up
                 </Button>
               )}
-              {appointment.status === "upcoming" && (
+
+              {["upcoming", "rescheduled"].includes(appointment.status) && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <RescheduleAppointment appointmentId={appointment._id} />
                   <IconButton aria-label="call" size="md" onClick={handleShowModal}>

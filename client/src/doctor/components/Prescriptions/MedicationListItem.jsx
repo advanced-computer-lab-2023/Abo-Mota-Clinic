@@ -98,7 +98,7 @@ const MedicationListItem = ({
             <TextField
               value={newMedicine.dosage}
               id="outlined-basic"
-              label="Dosage"
+              // label="Dosage"
               name="dosage"
               variant="outlined"
               size="small"
@@ -115,7 +115,7 @@ const MedicationListItem = ({
             <TextField
               value={newMedicine.frequency}
               id="outlined-basic"
-              label="Frequency"
+              // label="Frequency"
               variant="outlined"
               name="frequency"
               size="small"
@@ -132,7 +132,7 @@ const MedicationListItem = ({
             <TextField
               value={newMedicine.duration}
               id="outlined-basic"
-              label="Duration"
+              // label="Duration"
               name="duration"
               variant="outlined"
               sx={{ width: "30%", mt: 1 }}

@@ -96,10 +96,10 @@ export default function PrescriptionCard({
 
             <Box className="mr-10">
               <Typography level="title-lg" id="card-description">
-                {name}
+                Prescription at
               </Typography>
               <Typography level="body-sm" aria-describedby="card-description">
-                {specialty}
+                {formattedDate}
               </Typography>
             </Box>
           </Box>
