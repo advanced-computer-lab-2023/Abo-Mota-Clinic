@@ -47,8 +47,6 @@ Follow these steps:
 4. **Ensure your code adheres to the project's coding standards.**
 5. **Submit your pull request!**
 
-## Conduct
-
 ## Code of Conduct
 
 We are committed to upholding a welcoming and inclusive environment. This project adheres to the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/). We encourage all participants to read the [full text](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) to understand what behaviors are encouraged and which are not tolerated.
