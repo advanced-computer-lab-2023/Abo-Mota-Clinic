@@ -5,13 +5,13 @@ const items = [
     key: '1',
     icon: <FaUserMd />,
     label: 'View Doctors',
-    to: 'patient/doctors', // Assuming you are using react-router-dom for routing
+    to: 'doctors', // Assuming you are using react-router-dom for routing
   },
   {
     key: '2',
     icon: <FaCalendarCheck />,
     label: 'View My Appointments',
-    to: 'patient/appointments',
+    to: 'appointments',
   },
   {
     key: '3',
