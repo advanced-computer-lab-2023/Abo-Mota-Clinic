@@ -4,9 +4,11 @@ import  items  from "./sidebarItems";
 import { navBarItems } from "./navBarItems";
 import { useEffect } from "react";
 import { useFetchPatientQuery } from "../store";
+
+
 function Patient({socket}) {
 
-  const { data, error, isFetching } = useFetchPatientQuery();
+const { data, error, isFetching } = useFetchPatientQuery();
 
   useEffect(() => {
     !isFetching && socket.emit("user_connected", data._id)
