@@ -1,40 +1,46 @@
-import {
-  FaUserMd,
-  FaCalendarCheck,
-  FaNotesMedical,
-  FaUsers,
-  FaBoxOpen,
-  FaWallet,
-} from "react-icons/fa";
-export const items = [
+import { FaUserMd, FaCalendarCheck, FaNotesMedical, FaUsers, FaBoxOpen, FaWallet } from 'react-icons/fa';
+import { createElement } from 'react';
+const items = [
   {
-    name: "Doctors",
-    to: "doctors",
-    logo: <FaUserMd />, // FontAwesome: user-md or Material Icons: local_hospital
+    key: '1',
+    icon: <FaUserMd />,
+    label: 'View Doctors',
+    to: '/doctors', // Assuming you are using react-router-dom for routing
   },
   {
-    name: "My Appointments",
-    to: "appointments",
-    logo: <FaCalendarCheck />, // FontAwesome: calendar-check or Material Icons: event_available
+    key: '2',
+    icon: <FaCalendarCheck />,
+    label: 'View My Appointments',
+    to: '/appointments',
   },
   {
-    name: "My Prescriptions",
-    to: "prescriptions",
-    logo: <FaNotesMedical />, // FontAwesome: notes-medical or Material Icons: description
+    key: '3',
+    icon: <FaNotesMedical />,
+    label: 'View Prescriptions',
+    to: '/prescriptions',
   },
   {
-    name: "My Family Members",
-    to: "familyMembers",
-    logo: <FaUsers />, // FontAwesome: users or Material Icons: people_outline
+    key: '4',
+    icon: <FaUsers />,
+    label: 'View Family Members',
+    to: '/familyMembers',
   },
   {
-    name: "Health Packages",
-    to: "healthPackages",
-    logo: <FaBoxOpen />, // FontAwesome: box-open or Material Icons: local_offer
+    key: '5',
+    icon: <FaBoxOpen />,
+    label: 'View Health Packages Options',
+    to: '/healthPackages',
   },
   {
-    name: "My Wallet",
-    to: "wallet",
-    logo: <FaWallet />, // FontAwesome: wallet or Material Icons: account_balance_wallet
+    key: '6',
+    icon: <FaWallet />,
+    label: 'View my Wallet',
+    to: '/wallet',
   },
-];
+].map(item => ({
+  ...item,
+  icon: createElement(item.icon.type),
+  label: item.label,
+}));
+
+export default items;

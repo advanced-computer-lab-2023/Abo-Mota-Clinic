@@ -6,7 +6,7 @@ import { Typography } from "@mui/joy";
 import { usePayAppointmentByCardMutation } from "../../store";
 import { usePayAppointmentByWalletMutation } from "../../store";
 import { useBookAppointmentMutation } from "../../store";
-import { useSendNotificationMutation } from "../../store";
+import { useSendNotificationMutation, useSendEmailMutation } from "../../store";
 import { useFetchPatientQuery } from "../../store";
 import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
@@ -17,6 +17,7 @@ export default function StripeForm({ onSuccess, onFailure, selectedUser, socket,
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [sendNotification] = useSendNotificationMutation();
+  const [sendEmail] = useSendEmailMutation();
   const {
     data: patient,
     isFetching: isFetchingPatient,
@@ -72,6 +73,19 @@ export default function StripeForm({ onSuccess, onFailure, selectedUser, socket,
         contentDoctor: `You have a new appointment with ${patient.name} on ${details.date} at ${details.currentTime}`,
         contentPatient: `Your appointment is booked successfully with Dr. ${doctor.name} on ${details.date} at ${details.currentTime}`,
       });
+
+      sendEmail({
+        email: patient.email,
+        subject: 'New appointment',
+        text: `Your appointment with Dr. ${doctor.name} on ${details.date} at ${details.currentTime} got rescheduled`
+      });
+
+      sendEmail({
+        email: doctor.email,
+        subject: 'New appointment',
+        text: `Your appointment with ${patient.name} on ${details.date} at ${details.currentTime} got rescheduled`
+      });
+
     } else {
       onFailure();
     }

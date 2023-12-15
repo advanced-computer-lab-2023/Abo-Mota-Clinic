@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import Outline from "../shared/Outline";
-import { items } from "./sidebarItems";
+import  items  from "./sidebarItems";
 import { useFetchDoctorQuery } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../store/index";
-import { navBarItems } from "./navBarItems";
+import  {navBarItems}  from "./navBarItems";
 import Notification from "./components/Notification";
 function Doctor({socket}) {
   const { data, error, isFetching } = useFetchDoctorQuery();
   console.log(data);
   // const dispatch = useDispatch();
 
-  // useEffect(() => {
+  // useEffect(() s=> {
   // 	dispatch(getDoctors(data));
   // }, []);
 
@@ -21,12 +21,11 @@ function Doctor({socket}) {
   }, [isFetching]);
 
   return (
-    <div>
+    <>
       {isFetching && <div>Loading...</div>}
       {!isFetching &&
         <Outline items={items} navBarItems={navBarItems} socket={socket}/>}
-
-    </div>
+    </>
   );
 }
 

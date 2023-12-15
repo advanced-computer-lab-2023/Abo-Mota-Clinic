@@ -24,7 +24,7 @@ import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
-import ChangePassword from "./patient/components/ChangePassword";
+
 import Chat from "./patient/components/Chat";
 import ViewPatientFamilyAppointments from "./patient/pages/ViewPatientFamilyAppointments";
 
@@ -92,7 +92,6 @@ function App() {
         <Route element={<ProtectedRoute roles={["doctor"]} />}>
           <Route path="/doctor" element={<Doctor socket={socket} />}>
             <Route path="" element={<Notification socket={socket} />} />
-
             <Route
               path="contract"
               element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
