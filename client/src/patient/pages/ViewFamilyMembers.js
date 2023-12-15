@@ -233,7 +233,7 @@ export default function ViewFamilyMembers() {
 
               <FormControl id="multiple-limit-tags" sx={{ gridColumn: "1/-1" }}>
                 <FormLabel>Date of Birth</FormLabel>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     value={date}
                     onChange={handleDateChange}
@@ -243,7 +243,7 @@ export default function ViewFamilyMembers() {
                       "& .MuiInputBase-root": { height: "70%" },
                     }}
                   />
-                </LocalizationProvider>
+                </LocalizationProvider> */}
               </FormControl>
 
               <FormControl>
