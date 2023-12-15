@@ -61,7 +61,7 @@ function ChatBox({ socket, selectedRecipientId }) {
     const message = {
       content: messageContent,
       sender: loggedInUser._id,
-      selectedRecipientId
+      recipient: selectedRecipientId
     }
 
     if (ref.current)
