@@ -1,3 +1,48 @@
 .form-dialog {
   background-color: gray;
 }
+
+.error-pop-up-container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5); /* semi-transparent white */
+  position: fixed; /* or 'absolute' if you want it to be positioned relative to its parent */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+  z-index: 1000; /* High z-index to ensure it appears on top */
+}
+
+.error-pop-up-content {
+  width: 30%;
+  height: 20%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.error-pop-up-message {
+  text-align: center;
+  color: black;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+.error-pop-up-close {
+  cursor: pointer;
+  color: #000;
+  font-size: 20px;
+  align-self: flex-end;
+  padding-right: 10px;
+}
