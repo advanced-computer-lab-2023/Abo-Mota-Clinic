@@ -24,7 +24,7 @@ import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
-import ChangePassword from "./patient/components/ChangePassword";
+
 import Chat from "./patient/components/Chat";
 import ViewPatientFamilyAppointments from "./patient/pages/ViewPatientFamilyAppointments";
 
@@ -41,7 +41,7 @@ import PatientFollowUp from "./doctor/pages/PatientFollowUp";
 import Contract from "./doctor/pages/Contract";
 import Notification from "./doctor/components/Notification";
 import ViewPrescriptionsDoctor from "./doctor/pages/ViewPrescriptionsDoctor";
-
+import ViewFollowUpRequests from "./doctor/pages/ViewFollowUpRequests";
 // login
 import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
@@ -65,7 +65,10 @@ function App() {
           <Route path="/patient" element={<Patient socket={socket} />}>
             <Route path="" element={<PatientHome />} />
             <Route path="appointments" element={<ViewPatientAppointments socket={socket} />} />
-            <Route path="familyAppointments" element={<ViewPatientFamilyAppointments socket={socket} />} />
+            <Route
+              path="familyAppointments"
+              element={<ViewPatientFamilyAppointments socket={socket} />}
+            />
             <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
@@ -89,7 +92,6 @@ function App() {
         <Route element={<ProtectedRoute roles={["doctor"]} />}>
           <Route path="/doctor" element={<Doctor socket={socket} />}>
             <Route path="" element={<Notification socket={socket} />} />
-
             <Route
               path="contract"
               element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
@@ -99,13 +101,11 @@ function App() {
             <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
             <Route path="profile" element={<EditMyProfile />} />
-            <Route path="registerForm" element={<RegisterForm />} />
-            <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
-            <Route path="patients/patientInfo/:idx/video" element={<VideoChat />} />
-            <Route
-              path="patients/patientInfo/:idx/prescriptions"
-              element={<ViewPrescriptionsDoctor />}
-            />
+            <Route path="registerForm" element={<RegisterForm/>} />
+            <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo/>} />
+            <Route path="patients/patientInfo/:idx/video" element={<VideoChat/>} />
+            <Route path="patients/patientInfo/:idx/prescriptions" element={<ViewPrescriptionsDoctor />}/>
+            <Route path="followUpRequests" element={<ViewFollowUpRequests />} />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
           </Route>
         </Route>

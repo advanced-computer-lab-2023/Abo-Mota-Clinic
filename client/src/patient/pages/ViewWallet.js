@@ -48,7 +48,7 @@ function ViewWallet({ isPatient }) {
   ];
 
   return (
-    <Box className="w-full mx-20 my-10">
+    <Box className="mx-20 my-10">
       <Card className="mb-5">
         <Box className="">
           <Typography level="title-md">Total Balance</Typography>

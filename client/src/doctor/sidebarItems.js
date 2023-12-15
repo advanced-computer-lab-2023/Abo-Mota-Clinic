@@ -2,30 +2,37 @@ import Avatar from "@mui/joy/Avatar";
 import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 
-export const items = [
+const items = [
   {
-    name: "Patients",
-    to: "patients",
-    logo: <FaHospital />,
+    key: '1',
+    icon: <FaHospital />,
+    label: 'Patients',
+    to: '/patients', // Assuming you are using react-router-dom for routing
   },
   {
-    name: "Appointments",
-    to: "appointments",
-    logo: <FaCalendar />,
+    key: '2',
+    icon: <FaCalendar />,
+    label: 'Appointments',
+    to: '/appointments',
   },
   {
-    name: "View Contract",
-    to: "contract",
-    logo: <FaFileContract />,
+    key: '3',
+    icon: <FaFileContract />,
+    label: 'View Contract',
+    to: '/contract',
   },
   {
-    name: "View my Wallet",
-    to: "wallet",
-    logo: <FaWallet />,
+    key: '4',
+    icon: <FaWallet />,
+    label: 'View my Wallet',
+    to: '/wallet',
   },
   {
-    name: "Follow Up Requests",
-    to: "followUpRequests",
-    logo: <FaCodePullRequest />,
+    key: '5',
+    icon: <FaCodePullRequest />,
+    label: 'Follow Up Requests',
+    to: '/followUpRequests',
   },
 ];
+
+export default items;
