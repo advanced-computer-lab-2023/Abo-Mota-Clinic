@@ -11,7 +11,7 @@ const Outline = ({ items }) => {
   const onMenuClick = (e) => {
     const selectedItem = items.find(item => item.key === e.key);
     if (selectedItem && selectedItem.to) {
-      navigate(`/doctor${selectedItem.to}`);
+      navigate(`${selectedItem.to}`);
     }
   };
   const {

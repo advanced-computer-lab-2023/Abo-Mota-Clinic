@@ -2,26 +2,29 @@ import { FaBox, FaLaptop, FaUsers, FaKey } from 'react-icons/fa';
 
 export const items = [
   {
-    name: "Packages",
-    to: "packages",
-    logo: <FaBox />
-  }
-  ,
+    key: '1',
+    icon: <FaBox />,
+    label: 'Packages',
+    to: 'packages', // Assuming you're using react-router-dom for routing
+  },
   {
-    name: "Applications",
-    to: "applications",
-    logo: <FaLaptop />
-  }
-  ,
+    key: '2',
+    icon: <FaLaptop />,
+    label: 'Applications',
+    to: 'applications',
+  },
   {
-    name: "Manage Users",
-    to: "manageUsers",
-    logo: <FaUsers />
-  }
-  ,
+    key: '3',
+    icon: <FaUsers />,
+    label: 'Manage Users',
+    to: 'manageUsers',
+  },
   {
-    name: "Change Password",
-    to: "changePassword",
-    logo: <FaKey />
-  }
+    key: '4',
+    icon: <FaKey />,
+    label: 'Change Password',
+    to: 'changePassword',
+  },
 ];
+
+export default items;
