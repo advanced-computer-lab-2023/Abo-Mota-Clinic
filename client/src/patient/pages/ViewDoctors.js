@@ -78,7 +78,7 @@ function ViewDoctors() {
   }
 
   return (
-    <div className="mt-5 ml-20 w-full">
+    <div className="mt-5 px-5 ">
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
         <Link component={RouterLink} color="neutral" to="../">
           Home
