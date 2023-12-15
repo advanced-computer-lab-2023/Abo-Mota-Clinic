@@ -19,7 +19,13 @@ import { Link } from "react-router-dom";
 import SideBar from "./SideBar";
 import Dropdown from "@mui/joy/Dropdown";
 import { notification } from "antd";
-import { useFetchNotificationQuery } from "../../store";
+import { useFetchNotificationQuery, useFetchLoggedInQuery } from "../../store";
+import NotificationList from "./NotificationList";
+import CircularProgress from '@mui/joy/CircularProgress';
+
+
+
+import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,6 +68,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
+  const { userRoleClinic } = useSelector((state) => state.user);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -70,11 +78,18 @@ export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
   const [margin, setMargin] = useState(0);
 
   const { data, isFetching, error } = useFetchNotificationQuery();
+  const { data: loggedInUser, isFetching: isFetchingUser, isError } = useFetchLoggedInQuery();
   const [notifications, setNotifications] = useState([]);
+  const [notifCount, setNotifCount] = useState(0);
+  const [messages, setMessages] = useState([]);
+
+  console.log("NOTIF COUNT", notifCount);
 
   useEffect(() => {
     if (!isFetching) {
+      if (!data) return;
       console.log("NOTIF1", data.notifications);
+
       const notif = data.notifications
         .filter((notification) => notification != null)
         .map((notification, index) => notification.content);
@@ -88,16 +103,28 @@ export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
       if (contentDoctor) setNotifications((prev) => [...prev, contentDoctor]);
 
       if (contentPatient) setNotifications((prev) => [...prev, contentPatient]);
+
+      setNotifCount(notifCount + 1);
     };
 
+
+    const handleReceiveMessage = (message) => {
+      if(!isFetchingUser && message.recipient === loggedInUser._id.toString())
+        setMessages((prevMessages) => [...prevMessages, message]);
+      console.log(message);
+
+    }
+
     // Attach the event listener
+    if (!socket) return;
     socket.on("receive_notification_booked", handleReceiveNotification);
     socket.on("receive_notification_cancelled_by_patient", handleReceiveNotification);
     socket.on("receive_notification_cancelled_by_doctor", handleReceiveNotification);
+    socket.on("receive_message", handleReceiveMessage);
     socket.on("receive_notification_rescheduled_by_patient", handleReceiveNotification);
     socket.on("receive_notification_rescheduled_by_doctor", handleReceiveNotification);
-    
-  }, [socket]);
+  }, [socket, isFetchingUser]);
+
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -171,13 +198,24 @@ export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
         })}
 
       {isNotificationOpen &&
-        notifications.map((notification) => {
-          return (
-            <MenuItem size="sm" onClick={handleMenuClose}>
-              <div>{notification}</div>
-            </MenuItem>
-          );
-        })}
+        // notifications.map((notification) => {
+        //   return (
+        //     <MenuItem size="sm" onClick={handleMenuClose}>
+        //       <div>{notification}</div>
+        //     </MenuItem>
+        //   );
+        // })}
+        <NotificationList notifications={notifications} />}
+
+        {isMessageOpen && 
+          messages.map((message) => {
+            return (
+              <MenuItem size="sm" onClick={handleMenuClose}>
+                <div>{message.content}</div>
+              </MenuItem>
+            );
+          })
+        }
     </Menu>
   );
 
@@ -253,30 +291,36 @@ export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-              onClick={handleMessageClick}
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show notifications"
-              color="inherit"
-              onClick={handleNotificationClick}
-            >
-              {notifications.length > 0 ? (
-                <Badge badgeContent={notifications.length} color="error">
-                  <NotificationsIcon />
+            {socket && (
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+                onClick={handleMessageClick}
+              >
+                <Badge badgeContent={4} color="error">
+                  <MailIcon />
                 </Badge>
-              ) : (
-                <NotificationsIcon />
-              )}
-            </IconButton>
+              </IconButton>
+            )}
+
+            {socket && (
+              <IconButton
+                size="large"
+                aria-label="show notifications"
+                color="inherit"
+                onClick={handleNotificationClick}
+              >
+                {notifCount > 0 ? (
+                  <Badge badgeContent={notifCount} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                ) : (
+                  <NotificationsIcon />
+                )}
+              </IconButton>
+            )}
+
             {/* <Dropdown>
                 <Badge badgeContent={5} color="error">
                   <NotificationsIcon />
