@@ -3,6 +3,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import { TextField } from "@mui/material";
+import { Tooltip } from "antd";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import {
@@ -144,29 +145,35 @@ const MedicationListItem = ({
         </Box>
         {/* <Button onClick={handleDeleteMedicine}> */}
         {editPres ? (
-          <CancelOutlinedIcon
-            sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
-            onClick={handleCancelUpdate}
-          />
+          <Tooltip placement="top" title="Cancel editing">
+            <CancelOutlinedIcon
+              sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
+              onClick={handleCancelUpdate}
+            />
+          </Tooltip>
         ) : (
-          <DeleteForeverIcon
-            sx={{ cursor: "pointer", ":hover": { fontSize: 25 } }}
-            onClick={handleDeleteMedicine}
-          />
+          <Tooltip placement="top" title="Delete medicine">
+            <DeleteForeverIcon
+              sx={{ cursor: "pointer", ":hover": { fontSize: 25 } }}
+              onClick={handleDeleteMedicine}
+            />
+          </Tooltip>
         )}
         {editPres ? (
-          <CheckOutlinedIcon
-            sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
-            onClick={handleCorrectUpdate}
-          />
+          <Tooltip placement="top" title="Submit editing">
+            <CheckOutlinedIcon
+              sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
+              onClick={handleCorrectUpdate}
+            />
+          </Tooltip>
         ) : (
-          <EditIcon
-            sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
-            onClick={handleEditMedicine}
-          />
+          <Tooltip placement="top" title="Edit medicine">
+            <EditIcon
+              sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
+              onClick={handleEditMedicine}
+            />
+          </Tooltip>
         )}
-
-        {/* </Button> */}
       </Box>
     </ListItem>
   );

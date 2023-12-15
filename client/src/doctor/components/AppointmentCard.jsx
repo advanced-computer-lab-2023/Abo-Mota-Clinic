@@ -19,6 +19,7 @@ import { useSendNotificationMutation, useCancelAppointmentMutation } from "../..
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import RescheduleAppointment from "./RescheduleAppointment";
 import { useSendEmailMutation } from "../../store/apis/commonApi";
+import { Tooltip } from "antd";
 
 export default function AppointmentCard({ appointment, socket }) {
   const navigate = useNavigate(); // Hook to get the navigate function
@@ -176,9 +177,11 @@ export default function AppointmentCard({ appointment, socket }) {
               {["upcoming", "rescheduled"].includes(appointment.status) && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <RescheduleAppointment appointmentId={appointment._id} />
-                  <IconButton aria-label="call" size="md" onClick={handleShowModal}>
-                    <BiCalendarX fontSize={24} />
-                  </IconButton>
+                  <Tooltip placement="top" title="Cancel an appointment">
+                    <IconButton aria-label="call" size="md" onClick={handleShowModal}>
+                      <BiCalendarX fontSize={24} />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               )}
             </div>

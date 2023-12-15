@@ -5,6 +5,7 @@ import { Box, Button, FormControl, FormLabel, Input, Modal, Textarea } from "@mu
 import dayjs from "dayjs";
 import { useRescheduleAppointmentMutation } from "../../store";
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import { Tooltip } from "antd";
 import { IconButton } from "@mui/material";
 function RescheduleAppointment({ appointmentId }) {
   const [rescheduleDate, setRescheduleDate] = useState(null);
@@ -39,9 +40,12 @@ function RescheduleAppointment({ appointmentId }) {
   };
   return (
     <Box>
-      <IconButton onClick={handleOpen}>
-        <ScheduleIcon />
-      </IconButton>
+      <Tooltip placement="top" title="Reschedule an appointment">
+        <IconButton onClick={handleOpen}>
+          <ScheduleIcon />
+        </IconButton>
+      </Tooltip>
+
       <Modal
         sx={{ zIndex: 1 }}
         open={open}
