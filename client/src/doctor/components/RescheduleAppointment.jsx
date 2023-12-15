@@ -7,7 +7,7 @@ import { useRescheduleAppointmentMutation } from "../../store";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { Tooltip } from "antd";
 import { IconButton } from "@mui/material";
-function RescheduleAppointment({ appointmentId }) {
+function RescheduleAppointment({ appointmentId, handleClickNotif }) {
   const [rescheduleDate, setRescheduleDate] = useState(null);
   const [open, setOpen] = useState(false);
   const [rescheduleAppointment, results] = useRescheduleAppointmentMutation();
@@ -22,6 +22,7 @@ function RescheduleAppointment({ appointmentId }) {
     };
     await rescheduleAppointment(rescheduledAppointment);
     console.log(rescheduledAppointment);
+    handleClickNotif();
     handleClose();
     // if (followUpDate)
     //   const d = { patientUsername: patient.username, followUpDate: followUpDate };

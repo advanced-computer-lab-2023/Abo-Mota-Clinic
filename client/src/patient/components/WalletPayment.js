@@ -1,7 +1,7 @@
 import { useFetchPatientQuery, usePayByWalletMutation } from "../../store";
 import { Button, Typography } from "@mui/joy";
 import { useState } from "react";
-import { useSendNotificationMutation } from "../../store";
+import { useSendNotificationMutation, useSendEmailMutation } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 
 function WalletPayment({
@@ -21,6 +21,8 @@ function WalletPayment({
   const [payByWallet, walletResults] = usePayByWalletMutation();
   const [isProcessing, setIsProcessing] = useState(false);
   const [sendNotification] = useSendNotificationMutation();
+  const [sendEmail] = useSendEmailMutation();
+
 
   const handlePayByWallet = (e) => {
     e.preventDefault();
@@ -47,7 +49,7 @@ function WalletPayment({
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
 
-        // call sendNotification from to save notification in patient db
+        // call sendNotification to save notification in patient db
         sendNotification({
           recipientUsername: patient.username,
           recipientType: "patient",
@@ -69,7 +71,20 @@ function WalletPayment({
         onFailure();
         setIsProcessing(false);
       });
-  };
+
+      sendEmail({
+        email: patient.email,
+        subject: 'New appointment',
+        text: `Your appointment with Dr. ${doctor.name} on ${details.date} at ${details.currentTime} got rescheduled`
+      });
+
+      sendEmail({
+        email: doctor.email,
+        subject: 'New appointment',
+        text: `Your appointment with ${patient.name} on ${details.date} at ${details.currentTime} got rescheduled`
+      });
+
+    };
 
   if (isFetchingPatient) {
     return <LoadingIndicator />;
