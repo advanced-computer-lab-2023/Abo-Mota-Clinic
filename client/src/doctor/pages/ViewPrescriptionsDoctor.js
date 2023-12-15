@@ -1,239 +1,15 @@
 import { Box, Typography } from "@mui/joy";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PrescriptionAccordion from "../components/Prescriptions/PrescriptionAccordion";
 import AddPrescription from "../components/Prescriptions/AddPrescription";
 import BackArrow from "../../shared/Components/BackArrow";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import Button from "../../shared/Components/Button";
 import PrescriptionCard from "../components/Prescriptions/PrescriptionCard";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
-import { useLocation, useParams } from "react-router-dom";
-import {
-  useFetchDoctorPrescriptionsQuery,
-  useFetchDoctorQuery,
-  useFetchPatientsQuery,
-} from "../../store";
+import { useLocation } from "react-router-dom";
+import { useFetchDoctorPrescriptionsQuery } from "../../store";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 function ViewPrescriptionsDoctor() {
-  const dummy_data = [
-    {
-      date: "03/15/2023",
-      doctor: {
-        name: "Dr. Smith",
-        specialty: "Cardiology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine A",
-          },
-          dosage: 250,
-          frequency: "2",
-          duration: "10 days",
-        },
-        {
-          medicine: {
-            name: "Medicine B",
-          },
-          dosage: 100,
-          frequency: "1",
-          duration: "7 days",
-        },
-      ],
-      description: "General heart care and monitoring",
-      status: "filled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-    {
-      date: "04/22/2023",
-      doctor: {
-        name: "Dr. Williams",
-        specialty: "Neurology",
-      },
-      medicines: [
-        {
-          medicine: {
-            name: "Medicine C",
-          },
-          dosage: 150,
-          frequency: "3",
-          duration: "14 days",
-        },
-      ],
-      description: "Neurological examination follow-up",
-      status: "unfilled",
-    },
-  ];
   // const [openAllAccordions, setOpenAllAccordions] = useState(false);
   // const downloadPdfDocument = () => {
   //   // setOpenAllAccordions(true);
@@ -337,33 +113,57 @@ function ViewPrescriptionsDoctor() {
   const location = useLocation();
   const { patientId } = location.state;
   const { data, isFetching, error } = useFetchDoctorPrescriptionsQuery({ patientId });
+  const [selectedDate, setSelectedDate] = useState(null);
+  const handelDateChange = (date) => {
+    const formattedChosenDate = dayjs(date).format("MM/DD/YYYY");
+    if (formattedChosenDate === "Invalid Date") {
+      setSelectedDate(null);
+      return;
+    }
+    setSelectedDate(formattedChosenDate);
+    console.log(formattedChosenDate);
+  };
   if (isFetching) {
     return <LoadingIndicator />;
   }
-  console.log(data);
+  let prescriptions = data;
+  if (selectedDate !== null) {
+    prescriptions = prescriptions.filter((prescription) => {
+      return prescription.formattedDate === selectedDate;
+    });
+  } else {
+    prescriptions = data;
+  }
+  // console.log(data);
   return (
     <Box sx={{ width: "100%", m: 5 }}>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", width: "100%" }}>
         <Box sx={{ mr: 2 }}>
           <BackArrow />
         </Box>
-        <Typography>View Prescriptions</Typography>
       </Box>
       <Box sx={{ width: "100%", mt: 5 }}>
         {data.length === 0 ? (
           <h3>No Prescriptions</h3>
         ) : (
-          data.map((prescription, idx) => {
-            return (
-              <Box sx={{ mb: 5 }} key={idx}>
-                {/* <PrescriptionAccordion {...prescription} openAllAccordions={openAllAccordions} /> */}
-                <PrescriptionCard {...prescription} />
-              </Box>
-            );
-          })
+          <Box className="space-y-5">
+            <DatePicker format="MM/DD/YYYY" onChange={handelDateChange} style={{ width: "20%" }} />
+            {prescriptions.length !== 0 ? (
+              prescriptions.map((prescription, idx) => {
+                return (
+                  <Box sx={{ mb: 5 }} key={idx}>
+                    {/* <PrescriptionAccordion {...prescription} openAllAccordions={openAllAccordions} /> */}
+                    <PrescriptionCard {...prescription} />
+                  </Box>
+                );
+              })
+            ) : (
+              <Typography variant="h6">No Prescriptions on {selectedDate}</Typography>
+            )}
+          </Box>
         )}
       </Box>
-      <Box>
+      <Box sx={{ mt: 5 }}>
         <AddPrescription patientId={patientId} />
       </Box>
       {/* <Box sx={{ mt: 2 }}>

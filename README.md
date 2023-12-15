@@ -1,3 +1,41 @@
+<div id="top"></div>
+
+
+
+
+
+<!-- badges -->
+<div align="center" >
+   
+[![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://www.javascript.com)
+[![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://html.com/html5/)
+![Redux](https://img.shields.io/badge/Built%20with-Redux-%23f44336?style=for-the-badge)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+[![Nodejs](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/en/)
+[![ExpressJs](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://GitHub.com/Naereen/badges/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)](https://github.com/omar-sherif9992)
+![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
+![Tailwind](https://img.shields.io/badge/tailwindcss-0F172A?&logo=tailwindcss)
+
+
+
+</div>
+
+<br>
+
+<div align="center>
+   <img src="[https://www.cancham.org.eg/upload/logo.png](https://i.pinimg.com/736x/6c/9b/30/6c9b3009988b071b4b60484622e93f17.jpg)" alt="Logo" width="200" height="120">   
+</div>
+
+
+<a href=""><h1 align="center">Welcome to Abo Mota Clinic</h1></a>
+
+
+
+
 # Virtual Clinic - A Comprehensive Healthcare Management System
 
 ## Motivation
@@ -196,9 +234,25 @@ Remember to log out after your session to maintain the security of your account.
 
 ## Contribute
 
-We welcome contributions that help enhance the features and functionalities of the Pharmacy Management System. Please refer to the contribution guidelines for the process and standards we follow.
+We welcome contributions that help enhance the features and functionalities of the Clinic Management System. Please refer to the contribution guidelines for the process and standards we follow.
 
 ## Credits
+
+- [Mongoose docs](https://mongoosejs.com/docs/)
+- [MongoDB docs](https://www.mongodb.com/)
+- [Express docs](https://expressjs.com/en/4x/api.html)
+- [ReactJs docs](https://reactjs.org/docs/getting-started.html)
+- [Redux docs](https://redux.js.org/api/api-reference)
+- [NodeJs docs](https://nodejs.org/en/docs/)
+- [Ant Design website](https://ant.design/)
+- [Material UI website](https://mui.com/)
+- [Stripe docs](https://stripe.com/docs/)
+- [MERN Youtube](https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA)
+- [Stripe Youtube](https://youtu.be/1r-F3FIONl8)
+- [JWT](https://www.youtube.com/watch?v=mbsmsi7l3r4)
+- [Sockets.io docs](https://socket.io/)
+- [Tailwind docs](https://tailwindcss.com/docs/)
+
 
 ## License
 - The software is open source under the Apache 2.0 License.

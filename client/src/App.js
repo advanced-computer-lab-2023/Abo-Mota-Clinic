@@ -101,10 +101,13 @@ function App() {
             <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
             <Route path="profile" element={<EditMyProfile />} />
-            <Route path="registerForm" element={<RegisterForm/>} />
-            <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo/>} />
-            <Route path="patients/patientInfo/:idx/video" element={<VideoChat/>} />
-            <Route path="patients/patientInfo/:idx/prescriptions" element={<ViewPrescriptionsDoctor />}/>
+            <Route path="registerForm" element={<RegisterForm />} />
+            <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
+            <Route path="patients/patientInfo/:idx/video" element={<VideoChat />} />
+            <Route
+              path="patients/patientInfo/:idx/prescriptions"
+              element={<ViewPrescriptionsDoctor />}
+            />
             <Route path="followUpRequests" element={<ViewFollowUpRequests />} />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
           </Route>

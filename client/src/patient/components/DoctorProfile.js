@@ -42,7 +42,6 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
   const navigate = useNavigate();
 
   if (!isFetching && !error) {
-
     console.log("appointments @ DoctorProfile", data);
 
     const formattedAppointments = formatAppointments(data);
@@ -313,7 +312,11 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
         </Box>
         <Divider />
         <Sheet className="">
-          {appointmentContent}
+          {appointmentContent.length === 0 ? (
+            <Typography level="body-md">No available appointments</Typography>
+          ) : (
+            appointmentContent
+          )}
 
           <Box className="flex w-full justify-end space-x-3">
             <Button
@@ -325,6 +328,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
                 setAppointmentId(null);
                 setCurrentTimings([]);
               }}
+              disabled={selectedIdx === null}
             >
               Clear selection
             </Button>
@@ -341,12 +345,19 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
               }}
               variant="outlined"
               color="primary"
+              disabled={selectedIdx === null}
             >
               Make an appointment
             </Button>
-            <Link to={`appointment/${_id}/`}>
-              <Button color="primary">See more options</Button>
-            </Link>
+            <Button
+              disabled={appointmentContent.length === 0}
+              onClick={() => {
+                navigate(`appointment/${_id}`);
+              }}
+              color="primary"
+            >
+              See more options
+            </Button>
           </Box>
         </Sheet>
 

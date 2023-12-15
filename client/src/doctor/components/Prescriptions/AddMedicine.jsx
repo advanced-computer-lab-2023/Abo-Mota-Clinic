@@ -126,7 +126,7 @@ function AddMedicine({ prescriptionId }) {
                 />
               </Box>
             </Box>
-            <Button variant="contained" type="submit">
+            <Button isFilled={false} className="w-full" variant="contained" type="submit">
               Submit
             </Button>
           </Box>

@@ -51,7 +51,6 @@ function PaymentPage({
 
   const doctor = data[id];
 
-
   const buttonGroup = [
     {
       id: 1,
@@ -148,7 +147,8 @@ function PaymentPage({
                   onFailure={onPaymentFailure}
                   socket={socket}
                   doctor={doctor}
-                  details = {details}
+                  details={details}
+                  selectedUser={selectedUser}
                 />
               ) : (
                 <WalletPayment
@@ -157,7 +157,8 @@ function PaymentPage({
                   onFailure={onPaymentFailure}
                   socket={socket}
                   doctor={doctor}
-                  details = {details}
+                  details={details}
+                  selectedUser={selectedUser}
                 />
               )}
             </Card>

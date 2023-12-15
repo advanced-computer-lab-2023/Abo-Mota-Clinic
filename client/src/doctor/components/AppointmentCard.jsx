@@ -18,12 +18,16 @@ import dayjs from "dayjs";
 import { useSendNotificationMutation, useCancelAppointmentMutation } from "../../store";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import RescheduleAppointment from "./RescheduleAppointment";
+import { useSendEmailMutation } from "../../store/apis/commonApi";
+import { Tooltip } from "antd";
 
 export default function AppointmentCard({ appointment, socket }) {
   const navigate = useNavigate(); // Hook to get the navigate function
   const [showCancelModal, setShowCancelModal] = React.useState(false);
   const [sendNotification] = useSendNotificationMutation();
-  const [cancelAppointment, _]  = useCancelAppointmentMutation();
+  const [cancelAppointment, _] = useCancelAppointmentMutation();
+  const [sendEmail] = useSendEmailMutation();
+
   const navigateToPatientFollowUp = () => {
     navigate("PatientFollowUp", { state: appointment.patient }); // Use the patient to navigate
   };
@@ -52,8 +56,8 @@ export default function AppointmentCard({ appointment, socket }) {
 
     //add Cancel Appointment logic here
     await cancelAppointment({
-      appointmentId: appointment._id
-    })
+      appointmentId: appointment._id,
+    });
 
     sendNotification({
       recipientUsername: appointment.doctor.username,
@@ -89,9 +93,78 @@ export default function AppointmentCard({ appointment, socket }) {
       } on ${appointment.formattedDate.replace(",", " at")} got cancelled`,
     });
 
+    sendEmail({
+      email: appointment.patient.email,
+      subject: "Cancelled appointment",
+      text: `Your appointment with Dr. ${
+        appointment.doctor.name
+      } on ${appointment.formattedDate.replace(",", " at")} got cancelled`,
+    });
+
+    sendEmail({
+      email: appointment.doctor.email,
+      subject: "Cancelled appointment",
+      text: `Your appointment with ${
+        appointment.patient.name
+      } on ${appointment.formattedDate.replace(",", " at")} got cancelled`,
+    });
+
     setShowCancelModal(false);
   };
   const message = "Are you sure you want to cancel your appointment?";
+
+  const handleReschedule = async () => {
+    sendNotification({
+      recipientUsername: appointment.doctor.username,
+      recipientType: "doctor",
+      content: `Your appointment with ${
+        appointment.patient.name
+      } on ${appointment.formattedDate.replace(",", " at")} got rescheduled`,
+    })
+      .unwrap()
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
+    // call sendNotification from to save notification in patient db
+    sendNotification({
+      recipientUsername: appointment.patient.username,
+      recipientType: "patient",
+      content: `Your appointment with Dr. ${
+        appointment.doctor.name
+      } on ${appointment.formattedDate.replace(",", " at")} got rescheduled`,
+    })
+      .unwrap()
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
+    //send socket event to backend
+    socket.emit("send_notification_rescheduled_by_doctor", {
+      receiver: appointment.patient._id,
+      contentDoctor: `Your appointment with ${
+        appointment.patient.name
+      } on ${appointment.formattedDate.replace(",", " at")} got rescheduled`,
+      contentPatient: `Your appointment with Dr. ${
+        appointment.doctor.name
+      } on ${appointment.formattedDate.replace(",", " at")} got rescheduled`,
+    });
+
+    sendEmail({
+      email: appointment.patient.email,
+      subject: "Rescheduled appointment",
+      text: `Your appointment with Dr. ${
+        appointment.doctor.name
+      } on ${appointment.formattedDate.replace(",", " at")} got rescheduled`,
+    });
+
+    sendEmail({
+      email: appointment.doctor.email,
+      subject: "Rescheduled appointment",
+      text: `Your appointment with ${
+        appointment.patient.name
+      } on ${appointment.formattedDate.replace(",", " at")} got rescheduled`,
+    });
+
+  };
 
   return (
     <Box sx={{ width: "100%", marginBottom: "16px" }}>
@@ -162,12 +235,15 @@ export default function AppointmentCard({ appointment, socket }) {
                   Follow Up
                 </Button>
               )}
-              {appointment.status === "upcoming" && (
+
+              {["upcoming", "rescheduled"].includes(appointment.status) && (
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <RescheduleAppointment appointmentId={appointment._id} />
-                  <IconButton aria-label="call" size="md" onClick={handleShowModal}>
-                    <BiCalendarX fontSize={24} />
-                  </IconButton>
+                  <RescheduleAppointment appointmentId={appointment._id} handleClickNotif={handleReschedule}/>
+                  <Tooltip placement="top" title="Cancel an appointment">
+                    <IconButton aria-label="call" size="md" onClick={handleShowModal}>
+                      <BiCalendarX fontSize={24} />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               )}
             </div>
