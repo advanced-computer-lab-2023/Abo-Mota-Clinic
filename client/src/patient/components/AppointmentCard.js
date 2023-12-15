@@ -78,8 +78,15 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
     });
 
     sendEmail({
+      email: patient.email,
       subject: 'Cancelled appointment',
       text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',',' at')} got cancelled`
+    });
+
+    sendEmail({
+      email: doctor.email,
+      subject: 'Cancelled appointment',
+      text: `Your appointment with ${patient.name} on ${formattedDate.replace(',',' at')} got cancelled`
     });
     
     setShowCancelModal(false);
@@ -116,8 +123,15 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
     });
 
     sendEmail({
+      email: patient.email,
       subject: 'Rescheduled appointment',
       text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',',' at')} got rescheduled`
+    });
+
+    sendEmail({
+      email: doctor.email,
+      subject: 'Rescheduled appointment',
+      text: `Your appointment with ${patient.name} on ${formattedDate.replace(',',' at')} got rescheduled`
     });
 }
 

@@ -41,7 +41,7 @@ import PatientFollowUp from "./doctor/pages/PatientFollowUp";
 import Contract from "./doctor/pages/Contract";
 import Notification from "./doctor/components/Notification";
 import ViewPrescriptionsDoctor from "./doctor/pages/ViewPrescriptionsDoctor";
-
+import ViewFollowUpRequests from "./doctor/pages/ViewFollowUpRequests";
 // login
 import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
@@ -65,7 +65,10 @@ function App() {
           <Route path="/patient" element={<Patient socket={socket} />}>
             <Route path="" element={<PatientHome />} />
             <Route path="appointments" element={<ViewPatientAppointments socket={socket} />} />
-            <Route path="familyAppointments" element={<ViewPatientFamilyAppointments socket={socket} />} />
+            <Route
+              path="familyAppointments"
+              element={<ViewPatientFamilyAppointments socket={socket} />}
+            />
             <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
@@ -106,6 +109,7 @@ function App() {
               path="patients/patientInfo/:idx/prescriptions"
               element={<ViewPrescriptionsDoctor />}
             />
+            <Route path="followUpRequests" element={<ViewFollowUpRequests />} />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
           </Route>
         </Route>

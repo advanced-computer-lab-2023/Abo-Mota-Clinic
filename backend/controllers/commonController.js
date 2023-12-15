@@ -80,20 +80,12 @@ const getNotifications = async (req, res) => {
 
 const sendEmailNotif = async (req, res) => {
   try{
-    const {username} = req.userData;
     const { OTP_SENDER_MAIL } = process.env;
-
-    let recipientEmail;
-    if(req.userData.userType === 'doctor')
-      recipientEmail = await Doctor.findOne({username});
-    else
-      recipientEmail = await Patient.findOne({username});
-
-	  const { subject, text } = req.body;
+	  const { email, subject, text } = req.body;
     
 	  const mailOptions = {
 	    from: OTP_SENDER_MAIL,
-	    to: recipientEmail.email,
+	    to: email,
 	    subject: subject,
 	    text: text,
 	  };
