@@ -291,7 +291,7 @@ export default function ViewFamilyMembers() {
   );
 
   return (
-    <div className="ml-20 mr-20 mt-10 w-full">
+    <div className="ml-20 mr-20">
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
         <Link component={RouterLink} color="neutral" to="../">
           Home

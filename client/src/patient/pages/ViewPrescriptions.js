@@ -45,7 +45,7 @@ export default function ViewPrescriptions() {
   }
 
   return (
-    <div className="w-full ml-20 mr-20 mt-10">
+    <div className=" ml-20 mr-20 mt-10">
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
         <Link component={RouterLink} color="neutral" to="../">Home</Link>
         <Typography>Prescriptions</Typography>
