@@ -3,7 +3,7 @@ import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { useFetchAvailableAppointmentsQuery, usePatientRescheduleAppointmentMutation } from "../../store";
+import { useFetchAvailableAppointmentsQuery, usePatientRescheduleAppointmentMutation, useSendEmailMutation, useFet } from "../../store";
 import {
   Modal,
   Button,
@@ -23,10 +23,12 @@ import reschedule_img from "../../shared/assets/reschedule_img.jpg";
 import dayjs from "dayjs";
 
 
-function RescheduleModal({ doctorId, isRescheduleModalOpen, setIsRescheduleModalOpen, oldAppointmentId }) {
+function RescheduleModal({ doctorId, isRescheduleModalOpen, setIsRescheduleModalOpen, oldAppointmentId, handleClickLogic }) {
 
   const { data: appointments, isFetching: isFetchingAppointments, isError: isErrorAppointments } = useFetchAvailableAppointmentsQuery(doctorId);
+  
   const [rescheduleAppointment] = usePatientRescheduleAppointmentMutation();
+  const [sendEmail] = useSendEmailMutation();
 
   const [timings, setTimings] = useState([]);
   const [date, setDate] = useState(null);
@@ -47,6 +49,8 @@ function RescheduleModal({ doctorId, isRescheduleModalOpen, setIsRescheduleModal
     }
 
     rescheduleAppointment(body);
+
+    handleClickLogic();
 
     // TODO: ADD FEEDBACK
 

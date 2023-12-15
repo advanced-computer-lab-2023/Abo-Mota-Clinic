@@ -1,7 +1,7 @@
 import { useFetchPatientQuery, usePayByWalletMutation } from "../../store";
 import { Button, Typography } from "@mui/joy";
 import { useState } from "react";
-import { useSendNotificationMutation } from "../../store";
+import { useSendNotificationMutation, useSendEmailMutation } from "../../store";
 
 function WalletPayment({ deductible, onSuccess, onFailure, socket, doctor , details}) {
 
@@ -9,6 +9,8 @@ function WalletPayment({ deductible, onSuccess, onFailure, socket, doctor , deta
   const [payByWallet, walletResults] = usePayByWalletMutation();
   const [isProcessing, setIsProcessing] = useState(false);
   const [sendNotification] = useSendNotificationMutation();
+  const [sendEmail] = useSendEmailMutation();
+
 
   const handlePayByWallet = (e) => {
     e.preventDefault();
@@ -57,6 +59,11 @@ function WalletPayment({ deductible, onSuccess, onFailure, socket, doctor , deta
         onFailure();
         setIsProcessing(false);
 
+      });
+
+      sendEmail({
+        subject: 'New appointment',
+        text: `Your appointment with Dr. ${doctor.name} on ${details.date} got rescheduled`
       });
 
     };

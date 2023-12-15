@@ -93,7 +93,7 @@ const sendEmailNotif = async (req, res) => {
     
 	  const mailOptions = {
 	    from: OTP_SENDER_MAIL,
-	    to: recipientEmail,
+	    to: recipientEmail.email,
 	    subject: subject,
 	    text: text,
 	  };

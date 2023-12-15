@@ -53,6 +53,13 @@ io.on("connection", (socket) => {
 
   });
 
+  socket.on("send_notification_rescheduled_by_patient", ({receiver, contentDoctor, contentPatient}) => {
+    const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
+    socket.to(receiverSocket).emit("receive_notification_rescheduled_by_patient", {contentDoctor});
+    io.to(socket.id).emit("receive_notification_rescheduled_by_patient", {contentPatient}); // send notification to sender as well
+
+  });
+
   socket.on("send_notification_cancelled_by_doctor", ({receiver, contentDoctor, contentPatient}) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
     socket.to(receiverSocket).emit("receive_notification_cancelled_by_doctor", {contentPatient});
