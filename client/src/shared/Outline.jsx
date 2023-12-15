@@ -14,11 +14,6 @@ const { Header, Content, Footer, Sider } = Layout;
 
 
 const Outline = ({ items, navBarItems }) => {
-
-  
-
-  
-
   const [logout, results ] = useLogoutMutation(); 
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
