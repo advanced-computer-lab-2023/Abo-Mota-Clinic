@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 // import './stripe.css';
 
-export default function StripeForm({ onSuccess, onFailure }) {
+export default function StripeForm({ onSuccess, onFailure, selectedUser }) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -35,14 +35,12 @@ export default function StripeForm({ onSuccess, onFailure }) {
 
     if (paymentIntent && paymentIntent.status === "succeeded") {
       onSuccess();
-
     } else {
       onFailure();
     }
 
     setIsProcessing(false);
   };
-
 
   return (
     <form
@@ -64,15 +62,14 @@ export default function StripeForm({ onSuccess, onFailure }) {
       <Button
         type="submit"
         variant="solid"
-        disabled={isProcessing}
+        disabled={isProcessing || selectedUser === -1}
         id="submit"
         sx={{ width: "100%", my: 3, borderRadius: 1 }}
       >
         <span id="Button-text">{isProcessing ? "Processing ... " : "Pay"}</span>
       </Button>
 
-      <Typography level="body-sm">By clicking Pay you agree to the Terms & Conditions.</Typography>      
-
+      <Typography level="body-sm">By clicking Pay you agree to the Terms & Conditions.</Typography>
     </form>
   );
 }
