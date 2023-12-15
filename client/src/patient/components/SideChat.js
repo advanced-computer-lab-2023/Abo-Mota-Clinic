@@ -15,6 +15,8 @@ function SideChat({ selectedRecipientId, setSelectedRecipientId }) {
     return <div>Loading...</div>;
   }
 
+  console.log("Contacted Users: ", contactedUsers);
+
   const ContactCard = ({ user }) => {
     const text = "This is a very long text that should be truncated at some point.";
     const maxTextLength = 58;
