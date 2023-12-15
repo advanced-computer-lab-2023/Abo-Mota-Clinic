@@ -47,7 +47,7 @@ function WalletPayment({
           .then((res) => console.log(res))
           .catch((err) => console.log(err));
 
-        // call sendNotification from to save notification in patient db
+        // call sendNotification to save notification in patient db
         sendNotification({
           recipientUsername: patient.username,
           recipientType: "patient",
