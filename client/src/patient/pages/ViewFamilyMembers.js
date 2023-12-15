@@ -109,7 +109,7 @@ export default function ViewFamilyMembers() {
   } else {
     content = data.map((item) => {
       return (
-        <div>
+        <div className="mb-8">
           <MemberCard {...item} />
         </div>
       );
@@ -291,7 +291,7 @@ export default function ViewFamilyMembers() {
   );
 
   return (
-    <div className="ml-20 mr-20">
+    <div className="ml-20">
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
         <Link component={RouterLink} color="neutral" to="../">
           Home
@@ -299,7 +299,7 @@ export default function ViewFamilyMembers() {
         <Typography>Family</Typography>
       </Breadcrumbs>
 
-      <div className="flex ml-5 mt-5 mb-5 flex-wrap space-x-6">{content}</div>
+      <div className="flex mt-5 mb-5 flex-wrap space-x-6">{content}</div>
 
       <Box className="w-full flex justify-end space-x-2">
         <Button

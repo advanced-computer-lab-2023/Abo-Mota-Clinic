@@ -24,6 +24,7 @@ import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
+import Notifications from "./shared/pages/Notifications";
 
 import Chat from "./patient/components/Chat";
 import ViewPatientFamilyAppointments from "./patient/pages/ViewPatientFamilyAppointments";
@@ -85,6 +86,7 @@ function App() {
             <Route path="chat/:recipient" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Route>
 
