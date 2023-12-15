@@ -47,7 +47,6 @@ const Footer = () => {
   </ul>
 </div>
 
-
             <OpeningHours/>
           </div>
           <div className="text-center text-gray-400 text-sm mt-12">

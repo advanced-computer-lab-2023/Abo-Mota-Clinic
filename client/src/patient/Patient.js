@@ -1,6 +1,6 @@
 import React from "react";
 import Outline from "../shared/Outline";
-import { items } from "./sidebarItems";
+import  items  from "./sidebarItems";
 import { navBarItems } from "./navBarItems";
 import { useEffect } from "react";
 import { useFetchPatientQuery } from "../store";
