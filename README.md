@@ -303,6 +303,105 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - **Authentication**: JWT
 - **APIs**: Stripe
 - **Development tools**: Postman, Git, GitHub
+## Features
+<details>
+<summary>As a Guest I can</summary>
+
+- Register as a patient with username, name, email, password, date of birth, gender, mobile number, and emergency contact.
+- Submit a request to register as a doctor with username, name, email, password, date of birth, hourly rate, hospital affiliation, and educational background.
+- Upload and submit required documents for doctor registration such as ID, medical licenses, and medical degree.
+
+</details>
+
+<details>
+<summary>As a Patient I can</summary>
+
+- Upload and remove my medical history documents.
+- Add family members with their details.
+- Link another patient's account as a family member.
+- Pay for my appointment using my wallet or credit card.
+- Enter credit card details and pay for an appointment using Stripe.
+- View registered family members.
+- View and filter appointments by date/status.
+- View uploaded health records.
+- Subscribe to health packages for myself and my family members.
+- Choose payment methods for health packages.
+- View the status and manage the subscription of my health care package.
+- Cancel the subscription of a health package.
+- View a list of all doctors with their specialty and session price.
+- Search for doctors by name and/or specialty.
+- Filter doctors by specialty and/or availability.
+- Select a doctor from search/filter results and view their full details.
+- View all available appointments of a selected doctor.
+- Select an appointment date and time.
+- View a list of all my upcoming and past appointments.
+- Filter appointments by date or status.
+- Reschedule an appointment.
+- Cancel an appointment.
+- Request a follow-up to a previous appointment.
+- View the amount in my wallet.
+- Chat with a doctor.
+
+</details>
+
+<details>
+<summary>As a Doctor I can</summary>
+
+- Login and logout of the system.
+- Change my password and reset it via OTP.
+- Edit my email, hourly rate, or hospital affiliation.
+- View and accept the employment contract.
+- Add available time slots for appointments.
+- View information and health records of patients registered with me.
+- View all new and old prescriptions and their statuses.
+- Search for a patient by name.
+- Filter patients based on upcoming appointments.
+- Select a patient from the list.
+- Receive notifications of my appointments on the system and by mail.
+- Reschedule appointments for patients.
+- Schedule follow-up for a patient.
+- Add/delete medicine to/from the prescription from the pharmacy platform.
+- Add/update dosage for each medicine added to the prescription.
+- Add new health records for a patient.
+- Add a patient's prescription.
+- Update a patient's prescription before it's submitted to the pharmacy.
+- Accept or revoke a follow-up session request from a patient.
+- Chat with a patient.
+
+</details>
+
+<details>
+<summary>As an Administrator I can</summary>
+
+- Add another administrator with a set username and password.
+- Remove a doctor/patient/administrator from the system.
+- View all information uploaded by a doctor to apply to join the platform.
+- Accept or reject the request of a doctor to join the platform.
+- Add/update/delete health packages with different price ranges.
+
+</details>
+
+<details>
+<summary>Common Features for Doctor/Patient/Administrator</summary>
+
+- Change my password.
+- Reset a forgotten password through OTP sent to email.
+- View a list of all available medicines including picture, price, and description.
+- Search for medicine based on name.
+- Filter medicines based on medicinal use.
+- View cart items and manage them.
+- Pay directly for prescription items with wallet or credit card.
+- Download selected prescription (PDF).
+- Start/end a video call with the doctor/patient.
+- Receive a refund in my wallet when an appointment is canceled.
+- View the amount in my wallet.
+- Chat with a doctor/patient.
+
+</details>
+
+
+
+
 ## Installation
 
 ### Clone the repository:
