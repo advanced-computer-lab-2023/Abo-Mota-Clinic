@@ -3,31 +3,39 @@ import { useState } from 'react'
 import { Box, Avatar, Typography, Divider, Input } from '@mui/joy'
 import ListItemButton from '@mui/joy/ListItemButton';
 
-import { useFetchContactsQuery } from '../../store';
+import { useFetchContactsDetailsQuery, useInvalidateMessagesMutation } from '../../store';
+import timeAgo from '../functions/timeAgo';
 
 
 function SideChat({ selectedRecipientId, setSelectedRecipientId }) {
 
   const [searchTerm, setSearchTerm] = useState("");
-  const { data: contactedUsers, isFetching: isFetchingContactedUsers, isError: isErrorContactedUsers } = useFetchContactsQuery();
+  const { data: contactsDetails, isLoading: isLoadingContactsDetails, isFetching: isFetchingContactsDetails, isError: isErrorContactsDetails } = useFetchContactsDetailsQuery();
+  const [invalidateMessages] = useInvalidateMessagesMutation();
 
-  if (isFetchingContactedUsers) {
+
+  if (isLoadingContactsDetails) {
     return <div>Loading...</div>;
   }
 
-  console.log("Contacted Users: ", contactedUsers);
+  console.log("Contacts Details", contactsDetails);
 
-  const ContactCard = ({ user }) => {
-    const text = "This is a very long text that should be truncated at some point.";
+
+  const ContactCard = ({ contact, message }) => {
+    console.log("Received message is:", message);
+
+    const text = message.content;
     const maxTextLength = 58;
-    const hardcodedTime = "11:45 AM"
-
 
     return (
       <>
         <ListItemButton
           // className="flex space-x-5 px-2 py-3 rounded-md"
-          onClick={() => setSelectedRecipientId(user._id)}
+          onClick={() => {
+            setSelectedRecipientId(contact._id);
+            invalidateMessages();
+          }}
+          
           sx={{
             px: 1,
             py: 1,
@@ -37,22 +45,22 @@ function SideChat({ selectedRecipientId, setSelectedRecipientId }) {
             gap: 1.5,
           }}
 
-          selected={user._id === selectedRecipientId}
+          selected={contact._id === selectedRecipientId}
 
           className='bg-blue-300'
         >
-          <Avatar sx={{ width: '3.5em', height: '3.5em' }} color='primary'>{user.name[0]}</Avatar>
-          <Box className="space-y-1">
-            <Box className="flex justify-between">
+          <Avatar sx={{ width: '3.5em', height: '3.5em' }} color='primary'>{contact.name[0]}</Avatar>
+          <Box className="w-full space-y-1">
+            <Box className="flex w-full justify-between items-center">
               <Typography level="body-md" fontWeight={500}>
-                {user.name}
+                {contact.name}
               </Typography>
 
-              <Typography level="body-xs" color='textTertiary'>
-                {hardcodedTime}
+              <Typography color="secondary" level="body-xs">
+                {timeAgo(message.date)}
               </Typography>
             </Box>
-            <Typography level="body-xs">
+            <Typography level="body-sm">
               {text.length < maxTextLength ? text : text.substring(0, maxTextLength) + "..."}
             </Typography>
           </Box>
@@ -78,17 +86,17 @@ function SideChat({ selectedRecipientId, setSelectedRecipientId }) {
 
       <Box className="">
         {
-          contactedUsers
-            .filter(user => user.name.toLowerCase().includes(searchTerm))
-            .map((user, i) => {
-            console.log("User Name @ Chat.js: ", user.name);
-            return (
-              <>
-                <ContactCard user={user} />
-                {(i < contactedUsers.length - 1) && <Divider sx={{ opacity: '50%' }} />}
-              </>
-            )
-          })
+          contactsDetails
+            .filter(contactDetails => contactDetails.contact.name.toLowerCase().includes(searchTerm))
+            .map((contactDetails, i) => {
+              const { contact, message } = contactDetails;
+              return (
+                <>
+                  <ContactCard contact={contact} message={message} />
+                  {(i < contactsDetails.length - 1) && <Divider sx={{ opacity: '50%' }} />}
+                </>
+              )
+            })
         }
       </Box>
     </Box>

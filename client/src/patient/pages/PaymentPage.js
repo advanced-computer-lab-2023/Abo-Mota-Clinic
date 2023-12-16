@@ -20,7 +20,6 @@ import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import UserSelectionModal from "../components/UserSelectionModal";
 import { TextField } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useFetchDoctorsQuery } from "../../store";
 
 function PaymentPage({
   items,
@@ -45,9 +44,6 @@ function PaymentPage({
     error: errorPatient,
   } = useFetchPatientQuery();
 
-  const { id } = useParams();
-  const { data, isFetching: isFetchingDoctor, error: errorDoctor } = useFetchDoctorsQuery();
-  const doctor = data[id];
 
   const buttonGroup = [
     {

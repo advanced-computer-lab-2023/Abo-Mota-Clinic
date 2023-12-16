@@ -21,6 +21,8 @@ import {
   usePayAppointmentByWalletMutation,
   useCreditDoctorMutation,
   useBookAppointmentMutation,
+  useSendEmailMutation,
+  useSendNotificationMutation,
 } from "../../store";
 import round2dp from "../utils/round2dp";
 import dayjs from "dayjs";
@@ -50,6 +52,9 @@ export default function AppointmentStepper({ step = 0, socket }) {
     error: isFetchingDoctorError,
   } = useFetchDoctorsQuery();
 
+  const [sendNotification] = useSendNotificationMutation();
+  const [sendEmail] = useSendEmailMutation();
+
   const {
     data: patient,
     isFetching: isFetchingPatient,
@@ -78,7 +83,7 @@ export default function AppointmentStepper({ step = 0, socket }) {
   } else if (isFetchingDoctorError || isFetchingPatientError) {
     return <div> Error ... </div>;
   }
-  const { name, specialty, affiliation, rate } = doctors[id];
+  const { name, specialty, affiliation, rate , username, email} = doctors[id];
   const deductible = !(
     patient.healthPackage.package === null || patient.healthPackage.package === undefined
   )
@@ -168,6 +173,48 @@ export default function AppointmentStepper({ step = 0, socket }) {
         open: true,
         color: "success",
         message: "Payment completed successfully!",
+      });
+
+      //send notification to doctor and myself
+      
+      // call sendNotification from commonApi.js to save notification in doctor db
+      sendNotification({
+        recipientUsername: username,
+        recipientType: "doctor",
+        content: `You have a new appointment with ${patient.name} on ${date} at ${currentTime}`,
+      })
+        .unwrap()
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+
+      // call sendNotification to save notification in patient db
+      sendNotification({
+        recipientUsername: patient.username,
+        recipientType: "patient",
+        content: `Your appointment is booked successfully with Dr. ${name} on ${date} at ${currentTime}`,
+      })
+        .unwrap()
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+
+      //send socket event to backend
+      socket.emit("send_notification_booked", {
+        sender: patient._id,
+        receiver: doctorId,
+        contentDoctor: `You have a new appointment with ${patient.name} on ${date} at ${currentTime}`,
+        contentPatient: `Your appointment is booked successfully with Dr. ${name} on ${date} at ${currentTime}`,
+      });
+
+      sendEmail({
+      email: patient.email,
+      subject: 'New appointment',
+      text: `Your appointment with Dr. ${name} on ${date} at ${currentTime} got rescheduled`
+    });
+
+      sendEmail({
+        email: email,
+        subject: 'New appointment',
+        text: `Your appointment with ${patient.name} on ${date} at ${currentTime} got rescheduled`
       });
 
       setTimeout(() => {

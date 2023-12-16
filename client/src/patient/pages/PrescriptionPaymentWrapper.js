@@ -55,7 +55,6 @@ function PrescriptionPaymentWrapper() {
     };
   });
 
-
   const config = {
     items,
 
@@ -68,8 +67,8 @@ function PrescriptionPaymentWrapper() {
 
     usersState: {},
 
+    //TODO: Keep discount if cancelled? or unsubscribed? can't remember
     discount: patient.healthPackage?.package?.pharmacyDiscount || 0,
-
 
     onPaymentSuccess: () => {
       orderPrescription({ prescriptionId: prescription._id });
