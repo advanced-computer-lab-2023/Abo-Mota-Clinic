@@ -17,6 +17,7 @@ const prescriptionSchema = new Schema(
         dosage: Number,
         frequency: String,
         duration: String,
+        quantity: Number,
       },
     ],
     description: String,

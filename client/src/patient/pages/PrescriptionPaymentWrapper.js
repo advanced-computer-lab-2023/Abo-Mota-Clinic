@@ -1,26 +1,23 @@
 import { useNavigate, useParams } from "react-router-dom";
-
 import {
-  useFetchPackagesPatientQuery,
+  // useFetchPackagesPatientQuery,
   useFetchPatientQuery,
-  useSubscribeToHealthPackageMutation,
+  // useSubscribeToHealthPackageMutation,
+  useFetchPrescriptionsQuery,
+  useOrderPrescriptionMutation,
 } from "../../store";
-
 import PaymentPage from "./PaymentPage";
 import { Box } from "@mui/joy";
 import capitalize from "../utils/capitalize";
 import { useState } from "react";
 import Toast from "../components/Toast";
 
-function PackagePaymentWrapper() {
+function PrescriptionPaymentWrapper() {
   const { idx } = useParams();
   const navigate = useNavigate();
 
-  const {
-    data: packagesData,
-    isFetching: isFetchingPackages,
-    error: isErrorPackages,
-  } = useFetchPackagesPatientQuery();
+  const { data: prescriptions, isFetching: isFetchingPrescriptions, error: isErrorPrescriptions } = useFetchPrescriptionsQuery();
+  const [orderPrescription, results] = useOrderPrescriptionMutation();
 
   const {
     data: patient,
@@ -28,12 +25,12 @@ function PackagePaymentWrapper() {
     error: isErrorPatient,
   } = useFetchPatientQuery();
 
-  const [subscribeToHealthPackage, results] = useSubscribeToHealthPackageMutation();
-  const [selectedUser, setSelectedUser] = useState(-1);
   const [toast, setToast] = useState({
     open: false,
     duration: 4000,
   });
+
+  const [selectedUser, setSelectedUser] = useState(-1);
 
   const onToastClose = (event, reason) => {
     if (reason === "clickaway") return;
@@ -44,55 +41,48 @@ function PackagePaymentWrapper() {
     });
   };
 
-  if (isFetchingPackages || isFetchingPatient) {
+  if (isFetchingPatient || isFetchingPrescriptions) {
     return <div>Loading...</div>;
   }
 
-  const healthPackage = packagesData[idx];
-  console.log("healthPackage", healthPackage);
-  // { items, type, details, discount, onPaymentSuccess, onPaymentFailure }
+  const prescription = prescriptions[idx];
+
+  const items = prescription.medicines.map((prescriptionItem) => {
+    const { medicine: { name, price } } = prescriptionItem;
+    return {
+      label: name,
+      price: price,
+    };
+  });
 
   const config = {
-    items: [
-      {
-        label: `${capitalize(healthPackage.name)} Health Package (annual)`,
-        price: healthPackage.pricePerYear,
-      },
-    ],
+    items,
 
-    type: "package",
+    type: "prescription",
+
     details: {
-      packageName: `${capitalize(healthPackage.name)} - Health Package`,
-      packageDescription:
+      description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quam enim, tempus vel finibus ut, gravida aliquet augue. Duis dui ipsum, ultricies non velit pulvinar, viverra blandit nulla.",
     },
 
-    discount: patient?.familyDiscount || 0,
+    usersState: {},
 
-    usersState: {
-      selectedUser,
-      setSelectedUser,
-    },
-
-    isSubscribing: true,
+    //TODO: Keep discount if cancelled? or unsubscribed? can't remember
+    discount: patient.healthPackage?.package?.pharmacyDiscount || 0,
 
     onPaymentSuccess: () => {
-      subscribeToHealthPackage({
-        receiverId: selectedUser._id,
-        _id: healthPackage._id,
-      });
+      orderPrescription({ prescriptionId: prescription._id });
 
       setToast({
         ...toast,
         open: true,
         color: "success",
-        message: "Payment completed successfully!",
+        message: "Prescription purchased successfully!",
       });
 
       setTimeout(() => {
         navigate("/patient/");
       }, 1500);
-      // Subscribe route
     },
 
     onPaymentFailure: () => {
@@ -100,7 +90,7 @@ function PackagePaymentWrapper() {
         ...toast,
         open: true,
         color: "danger",
-        message: "Payment unsuccessful",
+        message: "Prescription purchase unsuccessful",
       });
     },
   };
@@ -113,4 +103,4 @@ function PackagePaymentWrapper() {
   );
 }
 
-export default PackagePaymentWrapper;
+export default PrescriptionPaymentWrapper;

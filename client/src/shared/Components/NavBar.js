@@ -21,7 +21,6 @@ import Dropdown from "@mui/joy/Dropdown";
 import { notification } from "antd";
 import { useFetchNotificationQuery, useFetchLoggedInQuery } from "../../store";
 import NotificationList from "./NotificationList";
-import CircularProgress from '@mui/joy/CircularProgress';
 
 
 

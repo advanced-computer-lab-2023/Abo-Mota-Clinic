@@ -1,17 +1,26 @@
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
-import { Typography, Avatar, Box, Stack, Chip } from '@mui/joy';
+import { Typography, Avatar, Box, Stack, Chip, IconButton } from '@mui/joy';
 import { Button } from "@mui/joy";
 import capitalize from "../utils/capitalize";
+import { IoMdDownload } from "react-icons/io";
 
-function DoctorHeader({ doctor: { name, specialty }, status, formattedDate, onToggle, expanded }) {
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
+
+import { useRef } from "react";
+
+function PrescriptionHeader({ doctor: { name, specialty }, status, formattedDate, onToggle, expanded, onDownload }) {
   const statusMap = {
     "filled": "success",
     "unfilled": "danger",
   }
 
+  const stackRef = useRef(null);
+
   return (
     <>
       <Stack
+        ref={stackRef}
         variant="plain"
         orientation="horizontal"
         sx={{
@@ -40,7 +49,16 @@ function DoctorHeader({ doctor: { name, specialty }, status, formattedDate, onTo
                 {formattedDate}
               </Typography>
             </Box>
-            <Chip color={statusMap[status]} variant='soft'>{capitalize(status)}</Chip>
+
+            <Box className="flex items-center space-x-2">
+              <Chip color={statusMap[status]} variant='soft'>
+                {capitalize(status)}
+              </Chip>
+
+              {/* <IconButton sx={{ borderRadius: '50%' }} onClick={onDownload}>
+                <IoMdDownload />
+              </IconButton> */}
+            </Box>
           </Box>
         </Box>
 
@@ -63,9 +81,6 @@ function DoctorHeader({ doctor: { name, specialty }, status, formattedDate, onTo
             </Box>
           </Box>
 
-          {/* <IconButton aria-label="expand" size="md" onClick={onToggle}>
-            {expanded ? <BiChevronUp /> : <BiChevronDown />}
-          </IconButton> */}
         </Box>
         <Box className="w-full flex justify-end">
           <Button
@@ -74,10 +89,10 @@ function DoctorHeader({ doctor: { name, specialty }, status, formattedDate, onTo
             onClick={onToggle}
             sx={{ height: 'auto' }}
             endDecorator={
-              expanded ? <BiChevronUp fontSize={18}/> : <BiChevronDown fontSize={18} />
+              expanded ? <BiChevronUp fontSize={18} /> : <BiChevronDown fontSize={18} />
             }
           >
-            VIEW MORE
+            {expanded ? "VIEW LESS" : "VIEW MORE"}
           </Button>
         </Box>
       </Stack>
@@ -85,4 +100,4 @@ function DoctorHeader({ doctor: { name, specialty }, status, formattedDate, onTo
   )
 }
 
-export default DoctorHeader;
+export default PrescriptionHeader;

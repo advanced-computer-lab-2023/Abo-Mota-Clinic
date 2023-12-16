@@ -112,7 +112,10 @@ export const {
   useLinkFamilyMemberMutation,
   useChangePatientPasswordMutation,
   usePatientRescheduleAppointmentMutation,
-  useFetchFamilyMemberAppointmentsQuery
+  useFetchFamilyMemberAppointmentsQuery,
+  usePatientCancelAppointmentMutation,
+  useRequestFollowUpMutation,
+  useOrderPrescriptionMutation,
 } = patientApi;
 
 export const { useCreatePaymentIntentMutation, useFetchStripeConfigQuery } = stripeApi;
@@ -122,10 +125,11 @@ export const {
   useSendMessageMutation,
   useFetchMessagesQuery,
   useFetchRecipientQuery,
-  useFetchContactsQuery,
+  useFetchContactsDetailsQuery,
   useSendNotificationMutation,
   useSendEmailMutation,
   useFetchNotificationQuery,
+  useInvalidateMessagesMutation,
 } = commonApi;
 
 export { logout, login } from "./slices/userSlice";
