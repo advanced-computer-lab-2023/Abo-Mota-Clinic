@@ -111,7 +111,7 @@ const Outline = ({ items, navBarItems }) => {
             </div>
         </Header>
         
-        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+        <Content style={{ overflow: 'initial' }}>
           <Outlet/>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
