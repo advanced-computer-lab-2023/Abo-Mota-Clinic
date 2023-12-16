@@ -438,13 +438,13 @@ Please adhere to this project's `code of conduct`.
 ### Stripe Routes
 
 #### Get Configurations
-- **Endpoint**: `GET /config`
+- **Endpoint**: `GET /api/stripe/config`
 - **Description**: Retrieves Stripe configuration details.
 - **Controller**: `config`
   - Returns Stripe publishable key.
 
 #### Create Payment Intent
-- **Endpoint**: `POST /create-payment-intent`
+- **Endpoint**: `POST /api/stripe/create-payment-intent`
 - **Description**: Creates a new payment intent for Stripe transactions.
 - **Controller**: `createPaymentIntent`
     - Stripe Payment Intent Creation.
@@ -458,7 +458,7 @@ Please adhere to this project's `code of conduct`.
 ### Common Routes (Notifications and Messages)
 
 #### Get Messages
-- **Endpoint**: `GET /message`
+- **Endpoint**: `GET /api/common/message`
 - **Description**: Retrieves messages for a user and certain recipient.
 - **Controller**: `getMessages`
   - Retrieves user-specific messages based on username and recipient. 
@@ -468,7 +468,7 @@ Please adhere to this project's `code of conduct`.
   | `recipient`  | string | Id of the recipient|
 
 #### Send Message
-- **Endpoint**: `POST /message`
+- **Endpoint**: `POST /api/common/message`
 - **Description**: Sends a new message.
 - **Controller**: `sendMessage`
   - Sends messages from users, storing sender and recipient info.
@@ -479,13 +479,13 @@ Please adhere to this project's `code of conduct`.
   | `recipient`  | string | Id of the recipient|
 
 #### Get Notifications
-- **Endpoint**: `GET /notifications`
+- **Endpoint**: `GET /api/common/notifications`
 - **Description**: Retrieves notifications for a user.
 - **Controller**: `getNotifications`
   - Retrieves all notifications for a user.
 
 #### Send Notification
-- **Endpoint**: `POST /notification`
+- **Endpoint**: `POST /api/common/notification`
 - **Description**: Sends a new notification.
 - **Controller**: `sendNotification`
   - Creates and sends notifications to specified recipients.
@@ -497,7 +497,7 @@ Please adhere to this project's `code of conduct`.
   | `content`         | string | Notification content      |
 
 #### Send Email Notification
-- **Endpoint**: `POST /send-email`
+- **Endpoint**: `POST /api/common/send-email`
 - **Description**: Sends an email notification.
 - **Controller**: `sendEmailNotif`
   - Sends email notifications using external email service.
@@ -509,13 +509,13 @@ Please adhere to this project's `code of conduct`.
   | `text`       | string | Email body text           |
 
 #### Get Logged In User
-- **Endpoint**: `GET /loggedIn`
+- **Endpoint**: `GET /api/common/loggedIn`
 - **Description**: Retrieves information of the logged-in user.
 - **Controller**: `getLoggedIn`
   - Retrieves currently logged-in user's details.
 
 #### Get Recipient
-- **Endpoint**: `GET /recipient`
+- **Endpoint**: `GET /api/common/recipient`
 - **Description**: Retrieves recipient details.
 - **Controller**: `getRecipient`
   - Fetches details of a specified recipient based on ID.
@@ -525,7 +525,7 @@ Please adhere to this project's `code of conduct`.
   | `recipientId`| string | ID of the recipient       |
 
 #### Get Contacted Users
-- **Endpoint**: `GET /contacts`
+- **Endpoint**: `GET /api/common/contacts`
 - **Description**: Retrieves users that have been contacted.
 - **Controller**: `getContactedUsers`
   - Retrieves users that have been in contact with the requester.
@@ -534,12 +534,12 @@ Please adhere to this project's `code of conduct`.
 ### Admin Routes
 
 #### Get Packages
-- **Endpoint**: `GET /packages`
+- **Endpoint**: `GET /api/admin/packages`
 - **Description**: Fetches available health packages.
 - **Controller**: `getPackages`
   - Retrieves all active health packages.
 #### Update Package
-- **Endpoint**: `PATCH /packages/:id`
+- **Endpoint**: `PATCH /api/admin/packages/:id`
 - **Description**: Modifies an existing package.
 - **Controller**: `updatePackage`
   - Updates specific health package details.
@@ -549,12 +549,12 @@ Please adhere to this project's `code of conduct`.
   | `id`      | string | Package identifier  |
 
 #### Add Package
-- **Endpoint**: `POST /packages`
+- **Endpoint**: `POST /api/admin/packages`
 - **Description**: Creates a new package.
 - **Controller**: `addPackage`
   - Adds a new health package.
 #### Delete Package
-- **Endpoint**: `DELETE /packages/:id`
+- **Endpoint**: `DELETE /api/admin/packages/:id`
 - **Description**: Deactivates a package.
 - **Controller**: `deletePackage`
   - Soft deletes a health package.
@@ -564,13 +564,13 @@ Please adhere to this project's `code of conduct`.
   | `id`      | string | Package identifier  |
 
 #### Get Applications
-- **Endpoint**: `GET /applications`
+- **Endpoint**: `GET /api/admin/applications`
 - **Description**: Retrieves all pending doctor applications.
 - **Controller**: `getApplications`
   - Fetches all pending doctor applications.
 
 #### View Application Info
-- **Endpoint**: `GET /applications/:id`
+- **Endpoint**: `GET /api/admin/applications/:id`
 - **Description**: Fetches details of a pending doctor application.
 - **Controller**: `getApplicationInfo`
   - Views specific pending doctor application details.
@@ -580,7 +580,7 @@ Please adhere to this project's `code of conduct`.
   | `id`      | string | Doctor identifier       |
 
 #### Handle Application
-- **Endpoint**: `PATCH /applications/:id`
+- **Endpoint**: `PATCH /api/admin/applications/:id`
 - **Description**: Manages a doctor application.
 - **Controller**: `handleApplication`
   - Approves or rejects doctor applications.
@@ -595,7 +595,7 @@ Please adhere to this project's `code of conduct`.
 
 
 #### Add Admin
-- **Endpoint**: `POST /admins`
+- **Endpoint**: `POST /api/admin/admins`
 - **Description**: Creates an admin account.
 - **Controller**: `addAdmin`
   - Registers a new admin user.
@@ -608,7 +608,7 @@ Please adhere to this project's `code of conduct`.
 
 
 #### Delete Admin
-- **Endpoint**: `DELETE /admins`
+- **Endpoint**: `DELETE /api/admin/admins`
 - **Description**: Deletes an admin user.
 - **Controller**: `deleteAdmin`
   - Removes an admin user.
@@ -618,7 +618,7 @@ Please adhere to this project's `code of conduct`.
   | `username`  | string | Username of removed admin|
 
 #### Delete Doctor
-- **Endpoint**: `DELETE /doctors`
+- **Endpoint**: `DELETE /api/admin/doctors`
 - **Description**: Deletes an approved doctor user.
 - **Controller**: `deleteDoctor`
   - Removes an approved doctor user.
@@ -628,7 +628,7 @@ Please adhere to this project's `code of conduct`.
   | `username`  | string |Username of removed doctor|
   
 #### Delete Patient
-- **Endpoint**: `DELETE /patients`
+- **Endpoint**: `DELETE /api/admin/patients`
 - **Description**: Deletes a patient user.
 - **Controller**: `deletePatient`
   - Removes a patient user.
@@ -639,7 +639,7 @@ Please adhere to this project's `code of conduct`.
   
 
 #### Change Password
-- **Endpoint**: `PATCH /changePassword`
+- **Endpoint**: `PATCH /api/admin/changePassword`
 - **Description**: Updates logged in admin's password.
 - **Controller**: `changePassword`
   - Changes admin user's password.
@@ -648,6 +648,7 @@ Please adhere to this project's `code of conduct`.
   |-----------|--------|------------------------------|
   | `oldPassword`  | string | Old password of current admin|
   | `newPassword`  | string | New password of current admin|
+
 
 ## Credits
 
