@@ -400,7 +400,7 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 
 </details>
 
-## Code Examples 🐱‍💻
+## Code Examples
 
 <details>
     <summary>
