@@ -36,6 +36,7 @@ import RegisterForm from "./doctor/pages/RegisterForm";
 import ViewPatientInfo from "./doctor/pages/ViewPatientInfo";
 import HealthPackages from "./patient/pages/HealthPackages";
 import Profile from "./patient/pages/Profile";
+import DoctorHome from "./doctor/pages/DoctorHome";
 import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
 import PatientFollowUp from "./doctor/pages/PatientFollowUp";
 import Contract from "./doctor/pages/Contract";
@@ -104,6 +105,7 @@ function App() {
             <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
             <Route path="profile" element={<EditMyProfile />} />
+            <Route path="" element={<DoctorHome/>}/>
             <Route path="chat/:recipient" element={<Chat socket={socket} />} />
             <Route path="registerForm" element={<RegisterForm />} />
             <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />

@@ -125,10 +125,9 @@ const commonApi = createApi({
       }),
 
       fetchUser: builder.query({
-        query: (data) => {
+        query: (id) => {
           return {
-            url: `/user`,
-            body: data,
+            url: `/user?id=${id}`,
             method: "GET",
           };
         },
