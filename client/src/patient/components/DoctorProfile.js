@@ -66,7 +66,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
             {`${getDayName(key)}, ${getMonthName(key)} ${dateSplit[1]}`}
           </Typography>
 
-          <Box className="flex w-full space-x-6 mr-10">
+          <Box className="flex space-x-6 mr-10">
             {timings.map(([id, appointment], colIdx) => {
               const concat = `${rowIdx}${colIdx}}`;
               return (
@@ -104,7 +104,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
 
   return (
     <Box
-      className="w-full ml-20 mr-20 mt-5"
+      className="ml-12 mt-5"
       sx={{
         width: "100%",
         position: "relative",
@@ -153,7 +153,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
               <img src={DoctorImg} loading="lazy" alt="Doctor" />
             </AspectRatio>
 
-            <Box name="side-body" className="w-full">
+            <Box name="side-body" className="">
               <Typography level="h1" fontWeight="lg">
                 Dr. {name}
               </Typography>
@@ -318,7 +318,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
             appointmentContent
           )}
 
-          <Box className="flex w-full justify-end space-x-3">
+          <Box className="flex justify-end space-x-3">
             <Button
               variant="plain"
               onClick={() => {

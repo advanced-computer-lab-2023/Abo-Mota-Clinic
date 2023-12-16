@@ -109,7 +109,7 @@ function ChatBox({ socket, selectedRecipientId }) {
 
   const RecipientHeader = ({ recipientName }) => {
     return (
-      <Box className="pl-4 pt-2 bg-white">
+      <Box className="pl-4 py-2 bg-white" sx={{ borderBottom: '1px solid #cccccc' }}>
         <Box className="flex justify-between items-center ">
           <Box className="flex items-center">
             <Avatar color='warning' className="mr-3"> {recipientName[0]} </Avatar>
@@ -118,11 +118,10 @@ function ChatBox({ socket, selectedRecipientId }) {
             </Typography>
           </Box>
 
-          <Box className="">
+          <Box className="mr-5">
             <IconButton><IoVideocamOutline /></IconButton>
           </Box>
         </Box>
-        <Divider sx={{ marginTop: 1 }} />
       </Box>
 
     );
@@ -130,11 +129,10 @@ function ChatBox({ socket, selectedRecipientId }) {
 
   return (
     <>
-      <Box className='bg-white'>
+      <Box className='grow flex flex-col h-full' sx={{ position: 'relative' }}>
         <RecipientHeader recipientName={recipientData.name} />
 
-
-        <Box className="chatbox" sx={{ height: '555px', px: '2em', py: '1em', overflowY: 'scroll' }}>
+        <Box className="grow chatbox h-full overflow-auto" sx={{ height: '5px', px: '2em' }}>
           {/* <ScrollToBottom style={{ overflowY: 'scroll'}}> */}
           {
             messages.map(({ sender, content, date }, i) => {
@@ -163,10 +161,14 @@ function ChatBox({ socket, selectedRecipientId }) {
               );
             })
           }
-          <div > </div>
-
         </Box>
-        <Box sx={{ px: 3, my: 1 }}>
+
+        <Box sx={{
+          px: 3,
+          my: 2,
+          position: 'sticky',
+          bottom: 0,
+        }}>
           <Input
             value={messageContent}
             className='w-full p-1'
@@ -176,10 +178,13 @@ function ChatBox({ socket, selectedRecipientId }) {
             endDecorator={<IconButton onClick={onSendMessage} aria-label="Send message">
               <SendIcon />
             </IconButton>}
-            sx={{ borderRadius: '1.5em' }}
+            sx={{
+              borderRadius: '1.5em', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)' /* Slight drop shadow */
+            }}
           />
         </Box>
-      </Box>
+
+      </Box >
     </>
   )
 }

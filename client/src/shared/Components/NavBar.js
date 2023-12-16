@@ -18,53 +18,9 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
 import SideBar from "./SideBar";
 import Dropdown from "@mui/joy/Dropdown";
-import { notification } from "antd";
-import { useFetchNotificationQuery, useFetchLoggedInQuery } from "../../store";
 import NotificationList from "./NotificationList";
-
-
-
 import { useSelector } from "react-redux";
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
 
 export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
   const { userRoleClinic } = useSelector((state) => state.user);
@@ -76,53 +32,9 @@ export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [margin, setMargin] = useState(0);
 
-  const { data, isFetching, error } = useFetchNotificationQuery();
-  const { data: loggedInUser, isFetching: isFetchingUser, isError } = useFetchLoggedInQuery();
-  const [notifications, setNotifications] = useState([]);
-  const [notifCount, setNotifCount] = useState(0);
-  const [messages, setMessages] = useState([]);
+  
 
-  console.log("NOTIF COUNT", notifCount);
-
-  useEffect(() => {
-    if (!isFetching) {
-      if (!data) return;
-      console.log("NOTIF1", data.notifications);
-
-      const notif = data.notifications
-        .filter((notification) => notification != null)
-        .map((notification, index) => notification.content);
-      setNotifications(notif);
-    }
-  }, [isFetching]);
-
-  useEffect(() => {
-    const handleReceiveNotification = ({ contentDoctor, contentPatient }) => {
-      console.log(contentDoctor);
-      if (contentDoctor) setNotifications((prev) => [...prev, contentDoctor]);
-
-      if (contentPatient) setNotifications((prev) => [...prev, contentPatient]);
-
-      setNotifCount(notifCount + 1);
-    };
-
-
-    const handleReceiveMessage = (message) => {
-      if(!isFetchingUser && message.recipient === loggedInUser._id.toString())
-        setMessages((prevMessages) => [...prevMessages, message]);
-      console.log(message);
-
-    }
-
-    // Attach the event listener
-    if (!socket) return;
-    socket.on("receive_notification_booked", handleReceiveNotification);
-    socket.on("receive_notification_cancelled_by_patient", handleReceiveNotification);
-    socket.on("receive_notification_cancelled_by_doctor", handleReceiveNotification);
-    socket.on("receive_message", handleReceiveMessage);
-    socket.on("receive_notification_rescheduled_by_patient", handleReceiveNotification);
-    socket.on("receive_notification_rescheduled_by_doctor", handleReceiveNotification);
-  }, [socket, isFetchingUser]);
+  
 
 
   const toggleSideBar = () => {
@@ -196,7 +108,7 @@ export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
           );
         })}
 
-      {isNotificationOpen &&
+      {/* {isNotificationOpen &&
         // notifications.map((notification) => {
         //   return (
         //     <MenuItem size="sm" onClick={handleMenuClose}>
@@ -214,7 +126,7 @@ export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
               </MenuItem>
             );
           })
-        }
+        } */}
     </Menu>
   );
 
@@ -310,13 +222,13 @@ export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
                 color="inherit"
                 onClick={handleNotificationClick}
               >
-                {notifCount > 0 ? (
+                {/* {notifCount > 0 ? (
                   <Badge badgeContent={notifCount} color="error">
                     <NotificationsIcon />
                   </Badge>
                 ) : (
                   <NotificationsIcon />
-                )}
+                )} */}
               </IconButton>
             )}
 

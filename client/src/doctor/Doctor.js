@@ -5,7 +5,7 @@ import { useFetchDoctorQuery } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../store/index";
 import  {navBarItems}  from "./navBarItems";
-import Notification from "./components/Notification";
+
 function Doctor({socket}) {
   const { data, error, isFetching } = useFetchDoctorQuery();
   console.log(data);

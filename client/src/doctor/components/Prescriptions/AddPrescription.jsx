@@ -29,6 +29,7 @@ function AddPrescription({ patientId }) {
     dosage: 0,
     frequency: "",
     duration: "",
+    quantity: 0,
   });
   if (isFetching) {
     return <LoadingIndicator />;
@@ -60,7 +61,8 @@ function AddPrescription({ patientId }) {
       medicineData.medicineName === "" ||
       medicineData.dosage === 0 ||
       medicineData.frequency === "" ||
-      medicineData.duration === ""
+      medicineData.duration === "" ||
+      medicineData.quantity === 0
     ) {
       return;
     }
@@ -69,7 +71,11 @@ function AddPrescription({ patientId }) {
       ...prescription,
       medicines: [
         ...prescription.medicines,
-        { ...medicineData, dosage: parseInt(medicineData.dosage) },
+        {
+          ...medicineData,
+          dosage: parseInt(medicineData.dosage),
+          quantity: parseInt(medicineData.quantity),
+        },
       ],
     });
     setMedicineData({
@@ -78,6 +84,7 @@ function AddPrescription({ patientId }) {
       dosage: 0,
       frequency: "",
       duration: "",
+      quantity: 0,
     });
   };
 
@@ -96,8 +103,8 @@ function AddPrescription({ patientId }) {
     const modifiedPrescription = {
       ...prescription,
       medicines: prescription.medicines.map((currMedicine) => {
-        const { dosage, frequency, duration, medicine } = currMedicine;
-        return { dosage, frequency, duration, medicine };
+        const { dosage, frequency, duration, medicine, quantity } = currMedicine;
+        return { dosage, frequency, duration, medicine, quantity };
       }),
     };
     console.log(modifiedPrescription);
@@ -150,6 +157,7 @@ function AddPrescription({ patientId }) {
                       dosage={medicine.dosage}
                       frequency={medicine.frequency}
                       duration={medicine.duration}
+                      quantity={medicine.quantity}
                       onClose={() => {
                         setPrescription({
                           ...prescription,
@@ -185,21 +193,30 @@ function AddPrescription({ patientId }) {
                 <TextField
                   label="Dosage"
                   name="dosage"
+                  type="number"
                   value={medicineData.dosage}
                   onChange={handleInputChange}
                   sx={{ mb: 2, width: "100%" }}
                 />
                 <TextField
                   label="Frequency"
-                  name="Frequency"
+                  name="frequency"
                   value={medicineData.frequency}
                   onChange={handleInputChange}
                   sx={{ mb: 2, width: "100%" }}
                 />
                 <TextField
                   label="Duration"
-                  name="Duration"
+                  name="duration"
                   value={medicineData.duration}
+                  onChange={handleInputChange}
+                  sx={{ mb: 2, width: "100%" }}
+                />
+                <TextField
+                  label="Quantity"
+                  name="quantity"
+                  type="number"
+                  value={medicineData.quantity}
                   onChange={handleInputChange}
                   sx={{ mb: 2, width: "100%" }}
                 />
@@ -210,7 +227,8 @@ function AddPrescription({ patientId }) {
                   medicineData.medicine === "" ||
                   medicineData.frequency === "" ||
                   medicineData.duration === "" ||
-                  medicineData.medicineName === ""
+                  medicineData.medicineName === "" ||
+                  medicineData.quantity === 0
                 }
                 onClick={addMedicine}
               >
