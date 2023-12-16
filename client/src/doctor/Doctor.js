@@ -15,16 +15,23 @@ function Doctor({socket}) {
   // 	dispatch(getDoctors(data));
   // }, []);
 
-
+  const percent = 75;
+  
   useEffect(() => {
     !isFetching && socket.emit("user_connected", data._id)
   }, [isFetching]);
+ 
 
   return (
     <>
       {isFetching && <div>Loading...</div>}
-      {!isFetching &&
-        <Outline items={items} navBarItems={navBarItems} socket={socket}/>}
+      {!isFetching &&(
+        <>
+        <Outline items={items} navBarItems={navBarItems} socket={socket}/>
+
+        
+        </>
+      )}
     </>
   );
 }
