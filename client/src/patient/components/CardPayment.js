@@ -10,6 +10,7 @@ function Payment({ deductible, onSuccess, onFailure, selectedUser }) {
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
 
+  
   const [createPaymentIntent, results] = useCreatePaymentIntentMutation();
   const { data: config, isFetching, error } = useFetchStripeConfigQuery();
 
