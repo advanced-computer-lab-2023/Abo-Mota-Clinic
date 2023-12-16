@@ -17,7 +17,10 @@ const prescriptionSchema = new Schema(
         dosage: Number,
         frequency: String,
         duration: String,
-        quantity: Number,
+        quantity: {
+          type: Number,
+          default: 1,
+        },
       },
     ],
     description: String,
