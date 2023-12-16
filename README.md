@@ -1034,7 +1034,8 @@ Please adhere to this project's `code of conduct`.
 
 ## API Reference
 
-### Guest Routes
+<details>
+<summary><h3>Guest Routes</h3></summary>
 
 #### Register Patient
 - **Endpoint**: `POST /api/guest/registerPatient`
@@ -1119,11 +1120,13 @@ Please adhere to this project's `code of conduct`.
   -  Logs out the user.
 
 
+</details>
 
 
-### Stripe Routes
-
-#### Get Configurations
+<details>
+   <summary><h3>Stripe Routes</h3></summary>
+   
+   #### Get Configurations
 - **Endpoint**: `GET /api/stripe/config`
 - **Description**: Retrieves Stripe configuration details.
 - **Controller**: `config`
@@ -1140,10 +1143,13 @@ Please adhere to this project's `code of conduct`.
   | `beneficiary` | string | Description of beneficiary|
   | `amount`      | number | Transaction amount in USD |
 
+</details>
 
-### Common Routes (Notifications and Messages)
 
-#### Get Messages
+<details>
+   <summary><h3>Common Routes (Notifications and Messages)</h1></summary>
+   
+   #### Get Messages
 - **Endpoint**: `GET /api/common/message`
 - **Description**: Retrieves messages for a user and certain recipient.
 - **Controller**: `getMessages`
@@ -1215,11 +1221,12 @@ Please adhere to this project's `code of conduct`.
 - **Description**: Retrieves users that have been contacted.
 - **Controller**: `getContactedUsers`
   - Retrieves users that have been in contact with the requester.
+</details>
 
-
-### Admin Routes
-
-#### Get Packages
+<details>
+   <summary><h3>Admin Routes</h3></summary>
+   
+   #### Get Packages
 - **Endpoint**: `GET /api/admin/packages`
 - **Description**: Fetches available health packages.
 - **Controller**: `getPackages`
@@ -1334,9 +1341,17 @@ Please adhere to this project's `code of conduct`.
   |-----------|--------|------------------------------|
   | `oldPassword`  | string | Old password of current admin|
   | `newPassword`  | string | New password of current admin|
+</details>
 
-### Doctor Routes
-#### Get Doctor Profile
+
+<details>
+   <summary>
+      <h3>
+         Doctor Routes
+      </h3>
+   </summary>
+   
+   #### Get Doctor Profile
 - **Endpoint**: `GET /api/doctor`
 - **Description**: Retrieve the profile of the currently logged in doctor
 - **Controller**: `getDoctorProfile`
@@ -1526,9 +1541,17 @@ Please adhere to this project's `code of conduct`.
     | `followUpId` | string | Follow up request ObjectId |
     | `choice`| string | The choice of the doctor, can be either "accept" or "revoke"|
 
-### Patient Routes
+</details>
 
-#### Get Logged In Patient
+<details>
+   <summary>
+      <h3>
+         Patient Routes
+      </h3>
+   </summary>
+   
+   #### Get Logged In Patient
+
 - **Endpoint**: `GET /api/patient/`
 - **Description**: Retrieves logged in patient information
 - **Controller**: `getPatient`
@@ -1741,6 +1764,9 @@ Please adhere to this project's `code of conduct`.
     | Parameter | Type   | Description                  |
     |-----------|--------|------------------------------|
     | `prescriptionId` | string | ObjectId of prescription we wish to order |
+
+</details>
+
 
 ## Credits
 
