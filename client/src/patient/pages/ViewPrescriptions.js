@@ -1,7 +1,7 @@
 import { useFetchPrescriptionsQuery } from "../../store";
 import { useState } from "react";
 import filter from "../utils/filter";
-import { FormControl, FormLabel, Autocomplete, Box, Link, Breadcrumbs, Typography } from "@mui/joy";
+import { FormControl, FormLabel, Autocomplete, Box, Link, Breadcrumbs, Typography, Button, Alert } from "@mui/joy";
 import PrescriptionAccordion from "../components/PrescriptionAccordion";
 import { Link as RouterLink } from "react-router-dom";
 import { DatePicker } from "antd";
@@ -12,6 +12,8 @@ export default function ViewPrescriptions() {
   const [config, setConfig] = useState({});
   const [date, setDate] = useState(null);
   const dateFormat = "MM/DD/YYYY"
+
+  const [isPharmacyAlertOpen, setIsPharmacyAlertOpen] = useState(true);
 
   console.log(data);
 
@@ -33,10 +35,10 @@ export default function ViewPrescriptions() {
       }
     });
 
-    content = filteredData.map((pres) => {
+    content = filteredData.map((pres, idx) => {
       return (
         <Box>
-          <PrescriptionAccordion {...pres} />
+          <PrescriptionAccordion {...pres} idx={idx} />
         </Box>
       )
     });
@@ -45,11 +47,39 @@ export default function ViewPrescriptions() {
   }
 
   return (
-    <div className=" ml-20 mr-20 mt-10">
+    <div className="ml-20 mr-20 mt-10">
+      {
+        isPharmacyAlertOpen
+        && <Alert
+          variant="soft"
+          color="primary"
+          outlined
+          size="lg"
+          // startDecorator={<PlaylistAddCheckCircleRoundedIcon />}
+          endDecorator={
+            <Button size="sm" variant="plain" color="primary" onClick={() => setIsPharmacyAlertOpen}>
+              Hide
+            </Button>
+          }
+        >
+          <Box>
+            <Typography level="title-lg" mb={1}>
+              Level up your experience!
+            </Typography>
+            <Typography level="body-sm">
+              Link your pharmacy account and purchase all your prescriptions right here with one click.
+            </Typography>
+          </Box>
+        </Alert>
+
+      }
+
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
         <Link component={RouterLink} color="neutral" to="../">Home</Link>
         <Typography>Prescriptions</Typography>
       </Breadcrumbs>
+
+
 
       <Box className="flex space-x-8">
 

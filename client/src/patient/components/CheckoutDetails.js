@@ -41,6 +41,20 @@ function CheckoutDetails({ type, details }) {
     );
   }
 
+  else if (type === "prescription") {
+    return (
+      <Box id="prescription-review" className="mb-5">
+        <Typography level="title-lg" sx={{ marginBottom: 1 }}>
+          Details
+        </Typography>
+
+        <Typography level="body-md" startDecorator={<BsClock />}>
+          {details.description}
+        </Typography>
+      </Box>
+    );
+  }
+
 
   return (
     <div>

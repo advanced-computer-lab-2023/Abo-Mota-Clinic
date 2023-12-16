@@ -51,6 +51,7 @@ import LandingPage from "./shared/pages/LandingPage/LandingPage";
 
 import io from "socket.io-client";
 import VideoChat from "./shared/pages/VideoChat/VideoChat";
+import PrescriptionPaymentWrapper from "./patient/pages/PrescriptionPaymentWrapper";
 // Socket.io
 const socket = io.connect("http://localhost:5000");
 
@@ -72,6 +73,7 @@ function App() {
             />
             <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
+            <Route path="prescriptions/:idx" element={<PrescriptionPaymentWrapper />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
             <Route path="test" element={<PatientTest />} />
             <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />

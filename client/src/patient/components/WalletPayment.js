@@ -8,9 +8,6 @@ function WalletPayment({
   deductible,
   onSuccess,
   onFailure,
-  socket,
-  doctor,
-  details,
   selectedUser,
 }) {
   const {
@@ -22,7 +19,6 @@ function WalletPayment({
   const [isProcessing, setIsProcessing] = useState(false);
   const [sendNotification] = useSendNotificationMutation();
   const [sendEmail] = useSendEmailMutation();
-
 
   const handlePayByWallet = (e) => {
     e.preventDefault();
@@ -40,51 +36,51 @@ function WalletPayment({
 
         //send notification to doctor and myself
         // call sendNotification from commonApi.js to save notification in doctor db
-        sendNotification({
-          recipientUsername: doctor.username,
-          recipientType: "doctor",
-          content: `You have a new appointment with ${patient.name} on ${details.date} at ${details.currentTime}`,
-        })
-          .unwrap()
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
+        // sendNotification({
+        //   recipientUsername: doctor.username,
+        //   recipientType: "doctor",
+        //   content: `You have a new appointment with ${patient.name} on ${details.date} at ${details.currentTime}`,
+        // })
+        //   .unwrap()
+        //   .then((res) => console.log(res))
+        //   .catch((err) => console.log(err));
 
         // call sendNotification to save notification in patient db
-        sendNotification({
-          recipientUsername: patient.username,
-          recipientType: "patient",
-          content: `Appointment booked successfully with Dr. ${doctor.name} on ${details.date} at ${details.currentTime}`,
-        })
-          .unwrap()
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
+        // sendNotification({
+        //   recipientUsername: patient.username,
+        //   recipientType: "patient",
+        //   content: `Your appointment is booked successfully with Dr. ${doctor.name} on ${details.date} at ${details.currentTime}`,
+        // })
+        //   .unwrap()
+        //   .then((res) => console.log(res))
+        //   .catch((err) => console.log(err));
 
         //send socket event to backend
-        socket.emit("send_notification_booked", {
-          sender: patient._id,
-          receiver: doctor._id,
-          contentDoctor: `You have a new appointment with ${patient.name} on ${details.date} at ${details.currentTime}`,
-          contentPatient: `Your appointment is booked successfully with Dr. ${doctor.name} on ${details.date} at ${details.currentTime}`,
-        });
+        // socket.emit("send_notification_booked", {
+        //   sender: patient._id,
+        //   receiver: doctor._id,
+        //   contentDoctor: `You have a new appointment with ${patient.name} on ${details.date} at ${details.currentTime}`,
+        //   contentPatient: `Your appointment is booked successfully with Dr. ${doctor.name} on ${details.date} at ${details.currentTime}`,
+        // });
       })
       .catch((err) => {
         onFailure();
         setIsProcessing(false);
       });
 
-      sendEmail({
-        email: patient.email,
-        subject: 'New appointment',
-        text: `Your appointment with Dr. ${doctor.name} on ${details.date} at ${details.currentTime} got rescheduled`
-      });
+    // sendEmail({
+    //   email: patient.email,
+    //   subject: 'New appointment',
+    //   text: `Your appointment with Dr. ${doctor.name} on ${details.date} at ${details.currentTime} got rescheduled`
+    // });
 
-      sendEmail({
-        email: doctor.email,
-        subject: 'New appointment',
-        text: `Your appointment with ${patient.name} on ${details.date} at ${details.currentTime} got rescheduled`
-      });
+    // sendEmail({
+    //   email: doctor.email,
+    //   subject: 'New appointment',
+    //   text: `Your appointment with ${patient.name} on ${details.date} at ${details.currentTime} got rescheduled`
+    // });
 
-    };
+  };
 
   if (isFetchingPatient) {
     return <LoadingIndicator />;
@@ -103,7 +99,7 @@ function WalletPayment({
         disabled={isProcessing || selectedUser === -1 || patient.wallet < deductible}
         id="submit"
         sx={{ width: "100%", my: 3, borderRadius: 1 }}
-        // onClick={handlePayByWallet}
+      // onClick={handlePayByWallet}
       >
         <span id="Button-text">{isProcessing ? "Processing ... " : "Pay"}</span>
       </Button>

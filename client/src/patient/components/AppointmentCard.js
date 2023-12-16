@@ -13,11 +13,17 @@ import Chip from "@mui/joy/Chip";
 import capitalize from "../utils/capitalize";
 import { useEffect, useState } from "react";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
-import { useSendNotificationMutation, useSendEmailMutation } from "../../store";
+import { useSendNotificationMutation, usePatientCancelAppointmentMutation, useRequestFollowUpMutation, usePatientRescheduleAppointmentMutation, useSendEmailMutation } from "../../store";
 import RescheduleModal from "./RescheduleModal";
+import Dropdown from '@mui/joy/Dropdown';
+import Menu from '@mui/joy/Menu';
+import MenuButton from '@mui/joy/MenuButton';
+import MenuItem from '@mui/joy/MenuItem';
+import MoreVert from '@mui/icons-material/MoreVert';
+import reschedule_img from "../../shared/assets/reschedule_img.jpg";
+import followup_img from "../../shared/assets/followup_img.jpg";
 
 import dayjs from "dayjs";
-
 
 import {
   Modal,
@@ -35,6 +41,10 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
   const [sendNotification] = useSendNotificationMutation();
   const [sendEmail] = useSendEmailMutation();
   const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
+  const [isFollowUpModalOpen, setIsFollowUpModalOpen] = useState(false);
+  const [cancelAppointment] = usePatientCancelAppointmentMutation();
+  const [requestFollowUp] = useRequestFollowUpMutation();
+  const [rescheduleAppointment] = usePatientRescheduleAppointmentMutation();
 
   // const [rescheduleDate, setRescheduleDate] = useState(null);
   // const [rescheduleDoctorId, setRescheduleDoctorId] = useState(null);
@@ -48,8 +58,12 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
 
   const handleShowModal = () => setShowCancelModal(true);
   const handleCloseModal = () => setShowCancelModal(false);
+
   const handleCancel = () => {
-    //add Cancel Appointment logic here
+    //add cancel appointment logic here
+    //TODO: add cancelling feedback
+    cancelAppointment({ appointmentId });
+
     sendNotification({
       recipientUsername: doctor.username,
       recipientType: "doctor",
@@ -80,21 +94,25 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
     sendEmail({
       email: patient.email,
       subject: 'Cancelled appointment',
-      text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',',' at')} got cancelled`
+      text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',', ' at')} got cancelled`
     });
 
     sendEmail({
       email: doctor.email,
       subject: 'Cancelled appointment',
-      text: `Your appointment with ${patient.name} on ${formattedDate.replace(',',' at')} got cancelled`
+      text: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got cancelled`
     });
-    
+
     setShowCancelModal(false);
   }
-  const message = 'Are you sure you want to cancel your appointment?'
+  const message = 'Are you sure you want to cancel your appointment?';
 
-  const handleReschedule = () => {
-    //add rescheduled Appointment logic here
+  const handleReschedule = (body) => {
+    // add rescheduled Appointment logic here
+    rescheduleAppointment(body);
+
+    // notifications logic
+
     sendNotification({
       recipientUsername: doctor.username,
       recipientType: "doctor",
@@ -125,15 +143,40 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
     sendEmail({
       email: patient.email,
       subject: 'Rescheduled appointment',
-      text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',',' at')} got rescheduled`
+      text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',', ' at')} got rescheduled`
     });
 
     sendEmail({
       email: doctor.email,
       subject: 'Rescheduled appointment',
-      text: `Your appointment with ${patient.name} on ${formattedDate.replace(',',' at')} got rescheduled`
+      text: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got rescheduled`
     });
-}
+  }
+  
+  const rescheduleModalConfig = {
+    isModalOpen: isRescheduleModalOpen,
+    setIsModalOpen: setIsRescheduleModalOpen,
+    doctorId: doctor._id,
+    oldAppointmentId: appointmentId,
+    onConfirm: handleReschedule,
+    placeholderImage: <img src={reschedule_img} alt="reschedule" style={{ marginRight: 5, marginLeft: 5, height: '13em' }} />,
+    placeholderText: "Rescheduling isn't always a bad thing!",
+    title: "Reschedule your apppointment",
+    subtitle: "Pick a new date for your appointment from the date picker below.",
+  };
+
+  const followUpModalConfig = {
+    isModalOpen: isFollowUpModalOpen,
+    setIsModalOpen: setIsFollowUpModalOpen,
+    doctorId: doctor._id,
+    oldAppointmentId: appointmentId,
+    onConfirm: requestFollowUp,
+    placeholderImage: <img src={followup_img} alt="reschedule" style={{ marginRight: 10, marginLeft: 10, marginBottom: -40, height: '20em' }} />,
+    placeholderText: "Hurry up and book your follow up!",
+    title: "Request a follow up",
+    subtitle: "Pick a date for your follow up from the date picker below.",
+  }
+
 
   return (
     <Card
@@ -156,9 +199,30 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
               Appointment
             </Typography>
 
-            <Chip color={colors[status]} variant="soft">
-              <Typography level="title-lg">{capitalize(status)}</Typography>
-            </Chip>
+            <Box className="flex justify-center items-center space-x-2">
+              <Chip color={colors[status]} variant="soft">
+                <Typography level="title-lg">{capitalize(status)}</Typography>
+              </Chip>
+
+              <Dropdown>
+                <MenuButton
+                  slots={{ root: IconButton }}
+                  slotProps={{ root: { variant: 'plain', color: 'neutral' } }}
+                  sx={{ borderRadius: 40, width: 38 }}
+                  disabled={status === "cancelled"}
+
+                >
+                  <MoreVert />
+                </MenuButton>
+                <Menu placement="bottom-start">
+                  <MenuItem onClick={() => setIsRescheduleModalOpen(true)}>Reschedule</MenuItem>
+                  <MenuItem onClick={() => setIsFollowUpModalOpen(true)}>Follow Up</MenuItem>
+                  <Divider />
+                  <MenuItem color="danger" onClick={handleShowModal}>Cancel</MenuItem>
+                </Menu>
+
+              </Dropdown>
+            </Box>
           </Box>
 
           <Typography
@@ -188,11 +252,11 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
           </Box>
 
           <Box className="flex space-x-4">
-            <IconButton aria-label="call" size="md" onClick={handleShowModal}>
+            {/* <IconButton disabled={status === "cancelled"} aria-label="call" size="md" onClick={handleShowModal}>
               <BiCalendarX fontSize={24} />
-            </IconButton>
+            </IconButton> */}
 
-            <IconButton aria-label="call" size="md">
+            <IconButton disabled={status === "cancelled"} aria-label="call" size="md">
               <BiChat fontSize={24} />
             </IconButton>
           </Box>
@@ -204,16 +268,17 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
           <Typography level="body-sm">
             Patient: {name}
           </Typography>
-          <Button variant="plain" onClick={() => setIsRescheduleModalOpen(true)}>
+          {/* <Button disabled={status === "cancelled"} variant="plain" onClick={() => setIsRescheduleModalOpen(true)}>
             Reschedule
-          </Button>
-          <RescheduleModal isRescheduleModalOpen={isRescheduleModalOpen} setIsRescheduleModalOpen={setIsRescheduleModalOpen} doctorId={doctor._id} oldAppointmentId={appointmentId} handleClickLogic = {handleReschedule}/>
+          </Button> */}
+          <RescheduleModal {...rescheduleModalConfig} />
+          <RescheduleModal {...followUpModalConfig} />
         </Box>
-
 
       </CardContent>
     </Card>
   );
 }
+
 
 export default AppointmentCard;
