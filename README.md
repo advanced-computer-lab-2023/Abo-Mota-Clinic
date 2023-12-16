@@ -1344,6 +1344,7 @@ Please adhere to this project's `code of conduct`.
  - **Controller**: `scheduleFollowUp`
     - Creates a follow up appointment for a given patient
  - **Body Parameters**:
+
   | Parameter | Type   | Description                  |
   |-----------|--------|------------------------------|
   | `patientUsername` | string | Follow up appointment's patient |
