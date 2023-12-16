@@ -151,18 +151,14 @@ function PaymentPage({
                   deductible={deductible}
                   onSuccess={onPaymentSuccess}
                   onFailure={onPaymentFailure}
-                  socket={socket}
-                  doctor={doctor}
-                  details={details}
+                  selectedUser={selectedUser}
                 />
               ) : (
                 <WalletPayment
                   deductible={deductible}
                   onSuccess={onPaymentSuccess}
                   onFailure={onPaymentFailure}
-                  socket={socket}
-                  doctor={doctor}
-                  details={details}
+                  selectedUser={selectedUser}
                 />
               )}
             </Card>

@@ -3,8 +3,9 @@ import { loadStripe } from "@stripe/stripe-js";
 import StripeForm from "./StripeForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { useFetchStripeConfigQuery, useCreatePaymentIntentMutation } from "../../store";
+import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 
-function Payment({ deductible, onSuccess, onFailure, socket }) {
+function Payment({ deductible, onSuccess, onFailure, selectedUser }) {
   const currencyMultiplier = 100;
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
@@ -22,15 +23,14 @@ function Payment({ deductible, onSuccess, onFailure, socket }) {
     createPaymentIntent(currencyMultiplier * deductible)
       .unwrap()
       .then((res) => setClientSecret(res.clientSecret));
-  }, [])
-
+  }, []);
 
   if (isFetching) {
-    return <div>Loading...</div>; // Show loading or some other placeholder until everything is loaded
+    return <LoadingIndicator />; // Show loading or some other placeholder until everything is loaded
   }
 
   if (!stripePromise || !clientSecret) {
-    return <div>Loading...</div>; // Show loading or some other placeholder until everything is loaded
+    return <LoadingIndicator />; // Show loading or some other placeholder until everything is loaded
   }
 
   return (
@@ -40,6 +40,7 @@ function Payment({ deductible, onSuccess, onFailure, socket }) {
           deductible={deductible}
           onSuccess={onSuccess}
           onFailure={onFailure}
+          selectedUser={selectedUser}
         />
       </Elements>
     </>

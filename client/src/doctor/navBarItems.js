@@ -1,6 +1,6 @@
 export const navBarItems = [
   {
-    name: "Logout",
-    to: "../"
+    name: "Profile",
+    to: "profile"
   }
 ];

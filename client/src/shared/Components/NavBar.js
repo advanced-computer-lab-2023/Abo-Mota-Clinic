@@ -1,26 +1,31 @@
-import {useState, useEffect}  from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import logoImage from '../assets/logo.png'
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import { Link } from 'react-router-dom';
-import SideBar from './SideBar';
-import Dropdown from '@mui/joy/Dropdown';
-import { notification } from 'antd';
-import { useFetchNotificationQuery } from "../../store";
+import { useState, useEffect } from "react";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import logoImage from "../assets/logo.png";
+import InputBase from "@mui/material/InputBase";
+import Badge from "@mui/material/Badge";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MailIcon from "@mui/icons-material/Mail";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import { Link } from "react-router-dom";
+import SideBar from "./SideBar";
+import Dropdown from "@mui/joy/Dropdown";
+import { notification } from "antd";
+import { useFetchNotificationQuery, useFetchLoggedInQuery } from "../../store";
+import NotificationList from "./NotificationList";
+import CircularProgress from '@mui/joy/CircularProgress';
 
+
+
+import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,7 +67,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
+export default function NavBar({ items, sideBarOpen, setSideBarOpen, socket }) {
+  const { userRoleClinic } = useSelector((state) => state.user);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -71,38 +77,54 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [margin, setMargin] = useState(0);
 
-  const { data, isFetching , error } = useFetchNotificationQuery();
+  const { data, isFetching, error } = useFetchNotificationQuery();
+  const { data: loggedInUser, isFetching: isFetchingUser, isError } = useFetchLoggedInQuery();
   const [notifications, setNotifications] = useState([]);
+  const [notifCount, setNotifCount] = useState(0);
+  const [messages, setMessages] = useState([]);
+
+  console.log("NOTIF COUNT", notifCount);
 
   useEffect(() => {
-    if(!isFetching){
+    if (!isFetching) {
+      if (!data) return;
       console.log("NOTIF1", data.notifications);
-      const notif = data.notifications.filter((notification) => notification != null)
-                                      .map((notification, index) => notification.content);
+
+      const notif = data.notifications
+        .filter((notification) => notification != null)
+        .map((notification, index) => notification.content);
       setNotifications(notif);
+    }
+  }, [isFetching]);
+
+  useEffect(() => {
+    const handleReceiveNotification = ({ contentDoctor, contentPatient }) => {
+      console.log(contentDoctor);
+      if (contentDoctor) setNotifications((prev) => [...prev, contentDoctor]);
+
+      if (contentPatient) setNotifications((prev) => [...prev, contentPatient]);
+
+      setNotifCount(notifCount + 1);
+    };
+
+
+    const handleReceiveMessage = (message) => {
+      if(!isFetchingUser && message.recipient === loggedInUser._id.toString())
+        setMessages((prevMessages) => [...prevMessages, message]);
+      console.log(message);
 
     }
 
-  }, [isFetching]);
-
-  
-  useEffect(() => {
-    const handleReceiveNotification = ({ contentDoctor ,contentPatient }) => {
-      console.log(contentDoctor);
-      if(contentDoctor) 
-        setNotifications(prev => [...prev, contentDoctor]);
-
-      if(contentPatient) 
-        setNotifications(prev => [...prev, contentPatient]);
-    };
-
     // Attach the event listener
+    if (!socket) return;
     socket.on("receive_notification_booked", handleReceiveNotification);
     socket.on("receive_notification_cancelled_by_patient", handleReceiveNotification);
     socket.on("receive_notification_cancelled_by_doctor", handleReceiveNotification);
+    socket.on("receive_message", handleReceiveMessage);
+    socket.on("receive_notification_rescheduled_by_patient", handleReceiveNotification);
+    socket.on("receive_notification_rescheduled_by_doctor", handleReceiveNotification);
+  }, [socket, isFetchingUser]);
 
-    
-  }, [socket]);
 
   const toggleSideBar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -131,21 +153,18 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  
-
   const handleNotificationClick = () => {
-    setAnchorEl(true)
+    setAnchorEl(true);
     setIsNotificationOpen(true);
     setIsMessageOpen(false);
     setIsProfileOpen(false);
-
-  }
+  };
   const handleMessageClick = () => {
-    setAnchorEl(true)
+    setAnchorEl(true);
     setIsMessageOpen(true);
     setIsNotificationOpen(false);
     setIsProfileOpen(false);
-  }
+  };
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -158,39 +177,47 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
+        vertical: "bottom",
+        horizontal: "right",
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
       style={{
-        marginTop: '35px', // Add margin-top property
+        marginTop: "35px", // Add margin-top property
         marginRight: `10px`,
       }}
       size="sm"
-      >
-      {
-        isProfileOpen && items.map(({name,to})=>{
-          return <MenuItem onClick={handleMenuClose}>
-            <Link to={to}>{name}</Link>
-          </MenuItem>
-        })
-      }
+    >
+      {isProfileOpen &&
+        items.map(({ name, to }) => {
+          return (
+            <MenuItem onClick={handleMenuClose}>
+              <Link to={to}>{name}</Link>
+            </MenuItem>
+          );
+        })}
 
-      {
-        isNotificationOpen && notifications.map((notification)=>{
-          return <MenuItem size='sm' onClick={handleMenuClose}>
-            <div>{notification}</div>
-          </MenuItem>
-        })
-      }
-      
+      {isNotificationOpen &&
+        // notifications.map((notification) => {
+        //   return (
+        //     <MenuItem size="sm" onClick={handleMenuClose}>
+        //       <div>{notification}</div>
+        //     </MenuItem>
+        //   );
+        // })}
+        <NotificationList notifications={notifications} />}
+
+        {isMessageOpen && 
+          messages.map((message) => {
+            return (
+              <MenuItem size="sm" onClick={handleMenuClose}>
+                <div>{message.content}</div>
+              </MenuItem>
+            );
+          })
+        }
     </Menu>
   );
-
-  
-
-  
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -217,11 +244,8 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem >
-        <IconButton
-          size="large"
-          aria-label="show 5 new notifications"
-          color="inherit">
+      <MenuItem>
+        <IconButton size="large" aria-label="show 5 new notifications" color="inherit">
           <Badge badgeContent={5} color="error">
             <NotificationsIcon />
           </Badge>
@@ -263,27 +287,40 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            Clinic
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit"
-            onClick={handleMessageClick}
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show notifications"
-              color="inherit"
-              onClick={handleNotificationClick}
-            >
-              {notifications.length > 0 ? <Badge badgeContent={notifications.length} color="error">
-                <NotificationsIcon />
-              </Badge> : <NotificationsIcon />}
-            </IconButton>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            {socket && (
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+                onClick={handleMessageClick}
+              >
+                <Badge badgeContent={4} color="error">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+            )}
+
+            {socket && (
+              <IconButton
+                size="large"
+                aria-label="show notifications"
+                color="inherit"
+                onClick={handleNotificationClick}
+              >
+                {notifCount > 0 ? (
+                  <Badge badgeContent={notifCount} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                ) : (
+                  <NotificationsIcon />
+                )}
+              </IconButton>
+            )}
+
             {/* <Dropdown>
                 <Badge badgeContent={5} color="error">
                   <NotificationsIcon />
@@ -323,8 +360,6 @@ export default function NavBar({items, sideBarOpen, setSideBarOpen, socket}) {
 
       {renderMobileMenu}
       {renderMenu}
-
     </Box>
   );
 }
-

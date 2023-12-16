@@ -6,7 +6,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MedicineCard from "./MedicineCard";
 import { useGetAllMedicinesQuery, useAddPrescriptionMutation } from "../../../store";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
-
+import { CiCirclePlus } from "react-icons/ci";
 function AddPrescription({ patientId }) {
   const [open, setOpen] = useState(false);
   const { data, isFetching, error } = useGetAllMedicinesQuery();
@@ -135,7 +135,7 @@ function AddPrescription({ patientId }) {
         <Box sx={modalStyle}>
           <Box component="form" onSubmit={handleSubmit}>
             <Box sx={{ marginBottom: 2 }}>
-              <Typography id="prescription-modal-title" variant="h6" component="h2">
+              <Typography id="prescription-modal-title" variant="h4" component="h2">
                 Added Medicines
               </Typography>
 
@@ -164,7 +164,7 @@ function AddPrescription({ patientId }) {
               )}
             </Box>
             <Box>
-              <Typography id="prescription-modal-title" variant="h6" component="h2">
+              <Typography id="prescription-modal-title" variant="h4" component="h2">
                 Add Medicine
               </Typography>
               <Box>
@@ -204,18 +204,38 @@ function AddPrescription({ patientId }) {
                   sx={{ mb: 2, width: "100%" }}
                 />
               </Box>
-              <Button onClick={addMedicine}>Add Medicine</Button>
+              <Button
+                disabled={
+                  medicineData.dosage === 0 ||
+                  medicineData.medicine === "" ||
+                  medicineData.frequency === "" ||
+                  medicineData.duration === "" ||
+                  medicineData.medicineName === ""
+                }
+                onClick={addMedicine}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <CiCirclePlus />
+                  Add Medicine
+                </Box>
+              </Button>
               <TextField
                 label="Description"
                 name="description"
                 value={prescription.description}
                 onChange={handleDescriptionChange}
-                sx={{ mb: 2, width: "100%" }}
+                sx={{ mt: 2, mb: 2, width: "100%" }}
                 multiline
                 rows={4}
               />
             </Box>
-            <Button variant="contained" type="submit">
+            <Button
+              variant="contained"
+              disabled={prescription.description === "" || prescription.medicines.length === 0}
+              isFilled={false}
+              className="w-full"
+              type="submit"
+            >
               Submit
             </Button>
           </Box>

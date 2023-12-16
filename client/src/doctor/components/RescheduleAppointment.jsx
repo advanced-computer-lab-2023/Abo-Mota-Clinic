@@ -5,8 +5,9 @@ import { Box, Button, FormControl, FormLabel, Input, Modal, Textarea } from "@mu
 import dayjs from "dayjs";
 import { useRescheduleAppointmentMutation } from "../../store";
 import ScheduleIcon from "@mui/icons-material/Schedule";
+import { Tooltip } from "antd";
 import { IconButton } from "@mui/material";
-function RescheduleAppointment({ appointmentId }) {
+function RescheduleAppointment({ appointmentId, handleClickNotif }) {
   const [rescheduleDate, setRescheduleDate] = useState(null);
   const [open, setOpen] = useState(false);
   const [rescheduleAppointment, results] = useRescheduleAppointmentMutation();
@@ -21,13 +22,14 @@ function RescheduleAppointment({ appointmentId }) {
     };
     await rescheduleAppointment(rescheduledAppointment);
     console.log(rescheduledAppointment);
+    handleClickNotif();
     handleClose();
     // if (followUpDate)
     //   const d = { patientUsername: patient.username, followUpDate: followUpDate };
   };
   const modalStyle = {
     position: "absolute",
-    top: "40%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     maxHeight: "99vh",
@@ -39,9 +41,12 @@ function RescheduleAppointment({ appointmentId }) {
   };
   return (
     <Box>
-      <IconButton onClick={handleOpen}>
-        <ScheduleIcon />
-      </IconButton>
+      <Tooltip placement="top" title="Reschedule an appointment">
+        <IconButton onClick={handleOpen}>
+          <ScheduleIcon />
+        </IconButton>
+      </Tooltip>
+
       <Modal
         sx={{ zIndex: 1 }}
         open={open}

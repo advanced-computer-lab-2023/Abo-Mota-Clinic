@@ -30,6 +30,7 @@ const format = (date) => (date ? dayjs(date).format("dddd Do [of] MMMM YYYY") : 
 
 export default function AppointmentStepper({ step = 0, socket }) {
   const navigate = useNavigate();
+  const { id: doctorIdx } = useParams();
   const location = useLocation();
   const { initialDate, initialTime, initialAppointmentId, initialTimings } = location.state
     ? location.state
@@ -73,7 +74,7 @@ export default function AppointmentStepper({ step = 0, socket }) {
   };
 
   if (isFetchingDoctor || isFetchingPatient) {
-    return <div>Loading ...</div>;
+    return <LoadingIndicator />;
   } else if (isFetchingDoctorError || isFetchingPatientError) {
     return <div> Error ... </div>;
   }
@@ -91,7 +92,11 @@ export default function AppointmentStepper({ step = 0, socket }) {
   };
 
   const handleBack = () => {
-    if (activeStep === 0) return;
+    if (activeStep === 0) {
+      console.log(doctorIdx);
+      navigate(`/patient/doctors/info/${doctorIdx}/`);
+      return;
+    }
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -278,7 +283,7 @@ export default function AppointmentStepper({ step = 0, socket }) {
             <Typography level="body-sm">Discount</Typography>
             <Typography level="body-sm" color="success">
               {" "}
-              - $({rate - deductible})
+              - $({parseFloat((rate - deductible).toFixed(2))})
             </Typography>
           </Box>
 
@@ -286,14 +291,14 @@ export default function AppointmentStepper({ step = 0, socket }) {
 
           <Box className="flex justify-between">
             <Typography level="title-md">Total</Typography>
-            <Typography level="title-md">${deductible}</Typography>
+            <Typography level="title-md">${parseFloat(deductible.toFixed(2))}</Typography>
           </Box>
 
-          <Box className="w-full" sx={{ marginTop: 15 }}>
+          {/* <Box className="w-full" sx={{ marginTop: 15 }}>
             <Button className="w-full" variant="outlined">
               Proceed to Payment
             </Button>
-          </Box>
+          </Box> */}
         </Box>
       </Card>
     </Box>
@@ -329,14 +334,16 @@ export default function AppointmentStepper({ step = 0, socket }) {
           {stepElements[activeStep]}
 
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
+            <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
-            </Button>
+            {activeStep === steps.length - 1 ? null : (
+              <Button onClick={handleNext}>
+                {/* {activeStep === steps.length - 1 ? "Finish" : "Next"} */}
+                Next
+              </Button>
+            )}
           </Box>
         </Fragment>
       )}

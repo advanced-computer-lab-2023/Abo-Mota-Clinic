@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { IoVideocamOutline } from "react-icons/io5";
-
 import { useFetchLoggedInQuery, useSendMessageMutation, useFetchMessagesQuery, useFetchRecipientQuery, useFetchContactsQuery } from '../../store';
 
 
@@ -61,7 +60,7 @@ function ChatBox({ socket, selectedRecipientId }) {
     const message = {
       content: messageContent,
       sender: loggedInUser._id,
-      selectedRecipientId
+      recipient: selectedRecipientId
     }
 
     if (ref.current)

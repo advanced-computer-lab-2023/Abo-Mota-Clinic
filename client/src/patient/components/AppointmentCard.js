@@ -13,7 +13,7 @@ import Chip from "@mui/joy/Chip";
 import capitalize from "../utils/capitalize";
 import { useEffect, useState } from "react";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
-import { useSendNotificationMutation, usePatientCancelAppointmentMutation, useRequestFollowUpMutation, usePatientRescheduleAppointmentMutation } from "../../store";
+import { useSendNotificationMutation, usePatientCancelAppointmentMutation, useRequestFollowUpMutation, usePatientRescheduleAppointmentMutation, useSendEmailMutation } from "../../store";
 import RescheduleModal from "./RescheduleModal";
 import Dropdown from '@mui/joy/Dropdown';
 import Menu from '@mui/joy/Menu';
@@ -39,6 +39,7 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
 
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [sendNotification] = useSendNotificationMutation();
+  const [sendEmail] = useSendEmailMutation();
   const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
   const [isFollowUpModalOpen, setIsFollowUpModalOpen] = useState(false);
   const [cancelAppointment] = usePatientCancelAppointmentMutation();
@@ -90,16 +91,74 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
 
     });
 
+    sendEmail({
+      email: patient.email,
+      subject: 'Cancelled appointment',
+      text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',', ' at')} got cancelled`
+    });
+
+    sendEmail({
+      email: doctor.email,
+      subject: 'Cancelled appointment',
+      text: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got cancelled`
+    });
+
     setShowCancelModal(false);
   }
-  const message = 'Are you sure you want to cancel your appointment?'
+  const message = 'Are you sure you want to cancel your appointment?';
 
+  const handleReschedule = (body) => {
+    // add rescheduled Appointment logic here
+    rescheduleAppointment(body);
+
+    // notifications logic
+
+    sendNotification({
+      recipientUsername: doctor.username,
+      recipientType: "doctor",
+      content: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got rescheduled`
+    })
+      .unwrap()
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+
+    // call sendNotification from to save notification in patient db
+    sendNotification({
+      recipientUsername: patient.username,
+      recipientType: "patient",
+      content: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',', ' at')} got rescheduled`
+    })
+      .unwrap()
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+
+    //send socket event to backend
+    socket.emit("send_notification_rescheduled_by_patient", {
+      receiver: doctor._id,
+      contentDoctor: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got rescheduled`,
+      contentPatient: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',', ' at')} got rescheduled`,
+
+    });
+
+    sendEmail({
+      email: patient.email,
+      subject: 'Rescheduled appointment',
+      text: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',', ' at')} got rescheduled`
+    });
+
+    sendEmail({
+      email: doctor.email,
+      subject: 'Rescheduled appointment',
+      text: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got rescheduled`
+    });
+  }
+  
   const rescheduleModalConfig = {
     isModalOpen: isRescheduleModalOpen,
     setIsModalOpen: setIsRescheduleModalOpen,
     doctorId: doctor._id,
     oldAppointmentId: appointmentId,
-    onConfirm: rescheduleAppointment,
+    onConfirm: handleReschedule,
     placeholderImage: <img src={reschedule_img} alt="reschedule" style={{ marginRight: 5, marginLeft: 5, height: '13em' }} />,
     placeholderText: "Rescheduling isn't always a bad thing!",
     title: "Reschedule your apppointment",

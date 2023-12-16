@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "../../../shared/Components/Button";
 import { useUpdateDescriptionMutation } from "../../../store";
+import { Tooltip } from "antd";
 
 function PrescriptionDescription({ prescriptionId, description }) {
   const [editDescription, setEditDescription] = useState(false);
@@ -61,10 +62,12 @@ function PrescriptionDescription({ prescriptionId, description }) {
           <Typography variant="body1" sx={{ fontWeight: 600, mr: 1 }}>
             {descriptionValue}
           </Typography>
-          <EditIcon
-            sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
-            onClick={handleEditDescription}
-          />
+          <Tooltip placement="top" title="Edit description">
+            <EditIcon
+              sx={{ cursor: "pointer", fontSize: 20, ":hover": { fontSize: 25 } }}
+              onClick={handleEditDescription}
+            />
+          </Tooltip>
         </Box>
       )}
     </>

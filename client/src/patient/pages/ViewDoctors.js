@@ -78,58 +78,58 @@ function ViewDoctors() {
   }
 
   return (
-    <div className="mt-5 ml-20 w-full">
-      <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
-        <Link component={RouterLink} color="neutral" to="../">
-          Home
-        </Link>
-        <Typography>Doctors</Typography>
-      </Breadcrumbs>
+        <div className="mt-5 px-14">
+        <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
+          <Link component={RouterLink} color="neutral" to="../">
+            Home
+          </Link>
+          <Typography>Doctors</Typography>
+        </Breadcrumbs>
 
-      <Box className="header flex mb-8 pr-10 space-x-5">
-        <FormControl id="multiple-limit-tags">
-          <FormLabel>Doctor name</FormLabel>
-          <SearchBar
-            placeholder="Search for doctors ..."
-            onChange={(value) => setDoctorSearchTerm(value)}
-          />
-        </FormControl>
+        <Box className="header flex mb-8 pr-10 space-x-5">
+          <FormControl id="multiple-limit-tags">
+            <FormLabel>Doctor name</FormLabel>
+            <SearchBar
+              placeholder="Search for doctors ..."
+              onChange={(value) => setDoctorSearchTerm(value)}
+            />
+          </FormControl>
 
-        <FormControl id="multiple-limit-tags">
-          <FormLabel>Specialties</FormLabel>
-          <Autocomplete
-            multiple
-            id="tags-default"
-            placeholder="Specialties"
-            loading={isFetching}
-            options={specialties}
-            endDecorator={
-              isFetching ? (
-                <CircularProgress size="sm" sx={{ bgcolor: "background.surface" }} />
-              ) : null
-            }
-            limitTags={2}
-            onChange={(event, newValue) => {
-              setConfig({ ...config, specialty: newValue });
-            }}
-          />
-        </FormControl>
+          <FormControl id="multiple-limit-tags">
+            <FormLabel>Specialties</FormLabel>
+            <Autocomplete
+              multiple
+              id="tags-default"
+              placeholder="Specialties"
+              loading={isFetching}
+              options={specialties}
+              endDecorator={
+                isFetching ? (
+                  <CircularProgress size="sm" sx={{ bgcolor: "background.surface" }} />
+                ) : null
+              }
+              limitTags={2}
+              onChange={(event, newValue) => {
+                setConfig({ ...config, specialty: newValue });
+              }}
+            />
+          </FormControl>
 
-        <FormControl id="multiple-limit-tags">
-          <FormLabel>Date</FormLabel>
-          <DatePicker
-            format="MM/DD/YYYY HH:mm A"
-            onChange={(date, dateString) => setDate(date)}
-            showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
-            className="h-full w-56"
-          />
-        </FormControl>
-      </Box>
+          <FormControl id="multiple-limit-tags">
+            <FormLabel>Date</FormLabel>
+            <DatePicker
+              format="MM/DD/YYYY HH:mm A"
+              onChange={(date, dateString) => setDate(date)}
+              showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+              className="h-full w-56"
+            />
+          </FormControl>
+        </Box>
 
-      <div>{(isFetching || isFetchingPatient) && <GeometrySkeleton transition="pulse" />}</div>
+        <div>{(isFetching || isFetchingPatient) && <GeometrySkeleton transition="pulse" />}</div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-5">{content}</div>
-    </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-5">{content}</div>
+      </div>
   );
 }
 

@@ -55,7 +55,7 @@ export default function ViewPatientAppointments({ socket }) {
   }
 
   return (
-    <Box className="w-full ml-20 mt-10 mr-20 space-y-5">
+    <Box className=" ml-20 mt-10 mr-20 space-y-5">
       <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
         <Link component={RouterLink} color="neutral" to="../">
           Home

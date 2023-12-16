@@ -3,7 +3,7 @@ import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { useFetchAvailableAppointmentsQuery, usePatientRescheduleAppointmentMutation } from "../../store";
+import { useFetchAvailableAppointmentsQuery, usePatientRescheduleAppointmentMutation, useSendEmailMutation, useFet } from "../../store";
 import {
   Modal,
   Button,
@@ -21,17 +21,16 @@ import formatAppointments from "../functions/AppointmentsAdjustment";
 
 import dayjs from "dayjs";
 
-
-function RescheduleModal({ doctorId, isModalOpen, setIsModalOpen, oldAppointmentId, onConfirm, placeholderImage, placeholderText, title, subtitle }) {
+function RescheduleModal({ isModalOpen, setIsModalOpen, oldAppointmentId, onConfirm, placeholderImage, placeholderText, title, subtitle, doctorId }) {
 
   const { data: appointments, isFetching: isFetchingAppointments, isError: isErrorAppointments } = useFetchAvailableAppointmentsQuery(doctorId);
-  // const [rescheduleAppointment] = usePatientRescheduleAppointmentMutation();
+
+  const [rescheduleAppointment] = usePatientRescheduleAppointmentMutation();
+  const [sendEmail] = useSendEmailMutation();
 
   const [timings, setTimings] = useState([]);
   const [date, setDate] = useState(null);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
-
-
 
   if (isFetchingAppointments)
     return <div> Loading </div>;
@@ -151,9 +150,6 @@ function RescheduleModal({ doctorId, isModalOpen, setIsModalOpen, oldAppointment
                     </Box>
                   )
               }
-
-
-
 
             </Box>
 

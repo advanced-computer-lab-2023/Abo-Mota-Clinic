@@ -127,6 +127,7 @@ export const {
   useFetchRecipientQuery,
   useFetchContactsQuery,
   useSendNotificationMutation,
+  useSendEmailMutation,
   useFetchNotificationQuery,
 } = commonApi;
 

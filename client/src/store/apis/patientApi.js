@@ -97,9 +97,6 @@ const patientApi = createApi({
         query: (patientId) => {
           return {
             url: "/prescriptions/",
-            params: {
-              patientId,
-            },
             method: "GET",
           };
         },
@@ -231,6 +228,7 @@ const patientApi = createApi({
           };
         },
       }),
+
       fetchWalletPatient: builder.query({
         query: () => {
           return {
