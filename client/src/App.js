@@ -94,7 +94,7 @@ function App() {
         <Route path="/doctorRegistration" element={<RegisterForm />} />
         <Route element={<ProtectedRoute roles={["doctor"]} />}>
           <Route path="/doctor" element={<Doctor socket={socket} />}>
-            <Route path="" element={<Notification socket={socket} />} />
+            {/* <Route path="" element={<Notification socket={socket} />} /> */}
             <Route
               path="contract"
               element={<Contract contractTitle="Doctor Contract" name="Karim Gamaleldin" doctor />}
