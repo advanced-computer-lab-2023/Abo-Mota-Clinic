@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { Typography as JoyTypography } from '@mui/joy';
 
 
+
 export default function NotificationList({notifications, loggedInUser}) {
 
   console.log(loggedInUser);

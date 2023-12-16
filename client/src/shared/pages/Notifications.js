@@ -10,6 +10,8 @@ import TabPanel from '@mui/joy/TabPanel';
 import NotificationCard from "../Components/NotificationCard";
 import {useState} from "react";
 import dayjs from "dayjs";
+import timeAgo from "../../patient/functions/timeAgo";
+
 export default function Notifications(){
 
     const { data, error, isFetching: isFetchingNotifications } = useFetchNotificationQuery();
@@ -32,7 +34,7 @@ export default function Notifications(){
     })
 
     todayContent = todayContent.map((notification) => {
-      return <NotificationCard {...notification} formattedDate={notification.formattedDate.split(",")[1]}/>
+      return <NotificationCard {...notification} formattedDate={timeAgo(notification.date)}/>
     });
 
 

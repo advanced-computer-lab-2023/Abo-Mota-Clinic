@@ -8,6 +8,9 @@ import Typography from '@mui/material/Typography';
 import { capitalizeFirstLetter } from '../../doctor/components/AppointmentCard';
 import { useFetchUserQuery } from '../../store';
 import {useNavigate} from "react-router-dom";
+import timeAgo from '../../patient/functions/timeAgo';
+import { Typography as JoyTypography } from '@mui/joy';
+
 
 export default function MessageItem({message , key}){
 
@@ -17,8 +20,8 @@ export default function MessageItem({message , key}){
     //     recipient: selectedRecipientId,
     //     date: new Date(),
     //   }
-    console.log("MESSAGE", message);
-    const { data, isFetching, error } = useFetchUserQuery({id: message.sender});
+    console.log("MESSAGE", message.sender);
+    const { data, isFetching, error } = useFetchUserQuery(message.sender);
     const navigate = useNavigate();
     if(isFetching) return <div>Loading...</div>;
 
@@ -26,17 +29,23 @@ export default function MessageItem({message , key}){
 
     return(
         <ListItem alignItems="flex-start" key={key} 
-            className='group/item hover:bg-slate-100 cursor-pointer rounded-lg'
-            onClick={()=> {navigate(`chat/${message.recipient}`)}}>
+            className='group/item hover:bg-slate-100 cursor-pointer rounded-lg '
+            onClick={()=> {navigate(`chat/${message.sender}`)}}>
             <ListItemAvatar> <Avatar size="md"> {capitalizeFirstLetter((data.name).charAt(0))}</Avatar> </ListItemAvatar>
             <ListItemText
               primary={data.name}
               secondary={
                 <React.Fragment>
                   {message.content}
+                  
                 </React.Fragment>
               }
             />
+
+            <JoyTypography level="body-sm" color="neutral">
+                {timeAgo(message.date)}
+            </JoyTypography>
+        
           </ListItem>
     )
 }
