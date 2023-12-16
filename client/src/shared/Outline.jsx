@@ -1,6 +1,6 @@
 import { useState, createElement } from 'react';
 import { Outlet, useNavigate, Link } from "react-router-dom";
-import { MenuFoldOutlined, MenuUnfoldOutlined ,BellOutlined, MessageOutlined, UserOutlined} from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined, BellOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
 import PopOver from './Components/Popover';
 import Logo from './assets/logo.png'
@@ -10,7 +10,7 @@ const { Header, Content, Footer, Sider } = Layout;
 
 
 const Outline = ({ items, navBarItems }) => {
-  const [logout, results ] = useLogoutMutation(); 
+  const [logout, results] = useLogoutMutation();
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
   // Function to handle menu item click
@@ -24,32 +24,32 @@ const Outline = ({ items, navBarItems }) => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     navigate('/');
     logout();
   }
   const profileContent = (
     <div>
-      {navBarItems.map(item => (  
-          <Link key={item.name} to={item.to} style={{ display: 'block', margin: '10px 0' }}>
-            {item.name}
-          </Link>
+      {navBarItems.map(item => (
+        <Link key={item.name} to={item.to} style={{ display: 'block', margin: '10px 0' }}>
+          {item.name}
+        </Link>
       ))}
       <div onClick={handleLogout} style={{ cursor: 'pointer', margin: '10px 0' }}>
-            Logout
-        </div>
+        Logout
+      </div>
     </div>
   );
 
   const messageContent = <p>Messages Content</p>;
   const notificationContent = <p>Notifications Content</  p>;
-  
+
 
   return (
     <Layout hasSider>
       <Sider
-        trigger={null} 
-        collapsible 
+        trigger={null}
+        collapsible
         collapsed={collapsed}
         style={{
           overflow: 'auto',
@@ -61,34 +61,38 @@ const Outline = ({ items, navBarItems }) => {
         }}
       >
         <div className="demo-logo-vertical">
-        <img src={Logo} alt="Logo" style={{ width: '100px', padding: '16px', margin: '0 auto' }} />
-      </div>
+          <img src={Logo} alt="Logo" style={{ width: '100px', padding: '16px', margin: '0 auto' }} />
+        </div>
         <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['4']}
-          items={items.map(item => ({...item, icon: createElement(item.icon.type)}))}
+          items={items.map(item => ({ ...item, icon: createElement(item.icon.type) }))}
           onClick={onMenuClick} // Add onClick handler
         />
       </Sider>
+
       <Layout
         style={{
           marginLeft: collapsed ? '80px' : '200px',
           transition: 'margin-left 0.2s',
+          // backgroundColor: "green",
+          // height: '100%',
+          minHeight: '100vh'
         }}
       >
-        <Header style={{ position: 'sticky', top: '0', zIndex: '1000',display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px', background: colorBgContainer }}>
-        <div>
-        <Button
-          type="text"
-          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          onClick={() => setCollapsed(!collapsed)}
-          style={{ fontSize: '16px', border: 'none' }}
-          />
-        </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <PopOver
+        <Header style={{ position: 'sticky', top: '0', zIndex: '1000', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 20px', background: colorBgContainer }}>
+          <div>
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{ fontSize: '16px', border: 'none' }}
+            />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <PopOver
               logo={<MessageOutlined style={{ fontSize: '16px', cursor: 'pointer' }} />}
               content={messageContent}
               placement="bottom"
@@ -106,10 +110,11 @@ const Outline = ({ items, navBarItems }) => {
               placement="bottomLeft"
               trigger="click"
             />
-            </div>
+          </div>
         </Header>
+
         <Content style={{ overflow: 'initial' }}>
-        <Outlet/>
+          <Outlet style={{  }} />
         </Content>
         {/* <Footer style={{ width: '100%', textAlign: 'center' }}>
           <CustomFooter/>

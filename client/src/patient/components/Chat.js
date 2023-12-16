@@ -23,14 +23,14 @@ function Chat({ socket }) {
   }
   
   return (
-    <Box className="flex w-full h-full">
-      <Box>
+    <Box className="h-full flex flex-row">
+      <Box className="flex flex-row h-full">
         <SideChat selectedRecipientId={selectedRecipientId} setSelectedRecipientId={setSelectedRecipientId} />
       </Box>
 
       <Divider orientation='vertical' />
 
-      <Box className="h-full w-full">
+      <Box className="grow h-full flex flex-row">
         {
           selectedRecipientId
             ? <ChatBox socket={socket} selectedRecipientId={selectedRecipientId} />
