@@ -6,6 +6,7 @@ import PopOver from './Components/PopOver';
 import Logo from './assets/logo.png'
 import { navBarItems } from '../patient/navBarItems';
 import { useLogoutMutation } from '../store';
+import CustomFooter from './Components/Footer';
 const { Header, Content, Footer, Sider } = Layout;
 
 
@@ -110,19 +111,16 @@ const Outline = ({ items, navBarItems }) => {
             />
             </div>
         </Header>
-        
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <Outlet/>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
+        {/* <Footer style={{ width: '100%', textAlign: 'center' }}>
+          <CustomFooter/>
+        </Footer> */}
       </Layout>
     </Layout>
   );
 };
-
-
 
 
 export default Outline;
