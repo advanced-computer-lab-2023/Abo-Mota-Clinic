@@ -1,11 +1,11 @@
-import { useState, createElement, useEffect } from 'react';
-import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
+import { useState, createElement } from 'react';
+import { Outlet, useNavigate, Link } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined ,BellOutlined, MessageOutlined, UserOutlined} from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
-import PopOver from './Components/PopOver';
+import PopOver from './Components/Popover';
 import Logo from './assets/logo.png'
-import { navBarItems } from '../patient/navBarItems';
 import { useLogoutMutation } from '../store';
+import CustomFooter from './Components/Footer';
 const { Header, Content, Footer, Sider } = Layout;
 
 
@@ -94,14 +94,12 @@ const Outline = ({ items, navBarItems }) => {
               placement="bottom"
               trigger="click"
             />
-
             <PopOver
               logo={<BellOutlined style={{ fontSize: '16px', cursor: 'pointer' }} />}
               content={notificationContent}
               placement="bottom"
               trigger="click"
             />
-
             <PopOver
               logo={<UserOutlined style={{ fontSize: '16px', cursor: 'pointer' }} />}
               content={profileContent}
@@ -110,19 +108,16 @@ const Outline = ({ items, navBarItems }) => {
             />
             </div>
         </Header>
-        
-        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-          <Outlet/>
+        <Content style={{ overflow: 'initial' }}>
+        <Outlet/>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
+        {/* <Footer style={{ width: '100%', textAlign: 'center' }}>
+          <CustomFooter/>
+        </Footer> */}
       </Layout>
     </Layout>
   );
 };
-
-
 
 
 export default Outline;

@@ -3,7 +3,6 @@ import Patient from "./patient/Patient";
 import Doctor from "./doctor/Doctor";
 import Admin from "./admin/Admin";
 import HomePage from "./HomePage";
-import NavBar from "./shared/Components/NavBar";
 
 // Admin
 import Packages from "./admin/pages/Packages";
@@ -85,7 +84,7 @@ function App() {
             />
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="chat/:recipient" element={<Chat socket={socket} />} />
+            <Route path="chat/:recipient?" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
             <Route path="notifications" element={<Notifications />} />

@@ -33,7 +33,7 @@ const sendMessage = async (req, res) => {
   try {
     const username = req.userData.username;
     const userType = req.userData.userType;
-    const { content, recipient } = req.body;
+    const { content, recipient, date } = req.body;
 
     let sender;
 
@@ -46,7 +46,7 @@ const sendMessage = async (req, res) => {
       content,
       sender: sender._id,
       recipient: recipient,
-      // date: Date.now(), 
+      date,
     }
 
     await Message.create(message);
@@ -58,83 +58,83 @@ const sendMessage = async (req, res) => {
 };
 
 const getNotifications = async (req, res) => {
-    try{
-        const {username , userType }= req.userData;
+  try {
+    const { username, userType } = req.userData;
 
-        let user;
-        if(userType.toLowerCase() === 'patient')
-            user = await Patient.findOne({ username });
-        if(userType.toLowerCase() === 'doctor')
-            user = await Doctor.findOne({ username });
+    let user;
+    if (userType.toLowerCase() === 'patient')
+      user = await Patient.findOne({ username });
+    if (userType.toLowerCase() === 'doctor')
+      user = await Doctor.findOne({ username });
 
-        const notifications = await Promise.all(user.notifications.map(async (notificationId) => {
-          return await Notification.findOne({ _id: notificationId });
-        }));     
-                          
-        res.status(200).json({ notifications: notifications});
+    const notifications = await Promise.all(user.notifications.map(async (notificationId) => {
+      return await Notification.findOne({ _id: notificationId });
+    }));
 
-    }catch(error){
-        res.status(500).json({ error: error.message });
-    }
+    res.status(200).json({ notifications: notifications });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 const sendEmailNotif = async (req, res) => {
-  try{
+  try {
     const { OTP_SENDER_MAIL } = process.env;
-	  const { email, subject, text } = req.body;
-    
-	  const mailOptions = {
-	    from: OTP_SENDER_MAIL,
-	    to: email,
-	    subject: subject,
-	    text: text,
-	  };
+    const { email, subject, text } = req.body;
+
+    const mailOptions = {
+      from: OTP_SENDER_MAIL,
+      to: email,
+      subject: subject,
+      text: text,
+    };
 
     await sendEmail(mailOptions);
-		res.status(200).send('Email sent successfully');
-  } catch(error){
+    res.status(200).send('Email sent successfully');
+  } catch (error) {
     console.error(error);
   }
 }
 
 const sendNotification = async (req, res) => {
-    try{
-        const {username , userType }= req.userData;
-        const { recipientUsername, recipientType , content } = req.body;
+  try {
+    const { username, userType } = req.userData;
+    const { recipientUsername, recipientType, content } = req.body;
 
-        let recipient;
-        if(recipientType.toLowerCase() === 'patient')
-          recipient = await Patient.findOne({ username: recipientUsername.toLowerCase() });
-        if(recipientType.toLowerCase() === 'doctor')
-          recipient = await Doctor.findOne({ username: recipientUsername.toLowerCase() });
+    let recipient;
+    if (recipientType.toLowerCase() === 'patient')
+      recipient = await Patient.findOne({ username: recipientUsername.toLowerCase() });
+    if (recipientType.toLowerCase() === 'doctor')
+      recipient = await Doctor.findOne({ username: recipientUsername.toLowerCase() });
 
-        if(!recipient)
-          throw new Error("This recipient does not exist");
+    if (!recipient)
+      throw new Error("This recipient does not exist");
 
-        const notification = {
-            sender: {
-                username: username,
-                userType,
-            },
-            recipient: {
-                username: recipientUsername.toLowerCase(),
-                userType: recipientType,
-            },
-            content: content,
-            date: Date.now(),
-        }
-
-        const savedNotification = await Notification.create(notification);
-
-        //update recipient
-        recipient.notifications.push(savedNotification._id);
-        await recipient.save();
-
-        res.status(200).json({ message: "Notification sent successfully!" });
-
-    }catch(error){
-        res.status(500).json({ error: error.message });
+    const notification = {
+      sender: {
+        username: username,
+        userType,
+      },
+      recipient: {
+        username: recipientUsername.toLowerCase(),
+        userType: recipientType,
+      },
+      content: content,
+      date: Date.now(),
     }
+
+    const savedNotification = await Notification.create(notification);
+
+    //update recipient
+    recipient.notifications.push(savedNotification._id);
+    await recipient.save();
+
+    res.status(200).json({ message: "Notification sent successfully!" });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 
 };
 
@@ -176,39 +176,59 @@ const getRecipient = async (req, res) => {
   }
 };
 
-const getUserDetails = async (userIds, collection) => {
-  const users = await Promise.all(userIds.map(async (userId) => {
-    return await collection.findById(userId).lean();
+const getContactDetails = async (loggedIn, contactIds, collection) => {
+  const details = await Promise.all(contactIds.map(async (contactId) => {
+
+    const latestMessage = await Message.findOne({
+      $or: [
+        { sender: loggedIn._id, recipient: contactId },
+        { sender: contactId, recipient: loggedIn._id }
+      ]
+    }).sort({ date: -1 }).lean();
+
+    return {
+      contact: await collection.findById(contactId).lean(),
+      message: latestMessage,
+    }
   }));
 
-  return users;
+  return details.sort((a, b) => {
+    const dateA = new Date(a.message.date);
+    const dateB = new Date(b.message.date);
+
+    // Sort in descending order (newest to oldest)
+    return dateB - dateA;
+  });
 }
 
 
 const getContactedUsers = async (req, res) => {
   try {
+
     const username = req.userData.username;
     const userType = req.userData.userType;
 
     const sameCollection = userType.toLowerCase() === 'patient' ? Patient : Doctor;
     const oppositeCollection = userType.toLowerCase() === 'patient' ? Doctor : Patient;
 
-    const sender = await sameCollection.findOne({ username });
-
-    const sentMessages = await Message.find({ sender: sender._id });
-    const receivedMessages = await Message.find({ recipient: sender._id });
+    const loggedIn = await sameCollection.findOne({ username });
+    const sentMessages = await Message.find({ sender: loggedIn._id });
+    const receivedMessages = await Message.find({ recipient: loggedIn._id });
 
     // duplicate-free contacted users
     const recipientIds = [...new Set(sentMessages.map(message => message.recipient.toString()))];
     const senderIds = [...new Set(receivedMessages.map(message => message.sender.toString()))];
     const contactedUserIds = [...new Set([...recipientIds, ...senderIds])];
-
-    const contactedUsers = await getUserDetails(contactedUserIds, oppositeCollection);
+    const contactedUsers = await getContactDetails(loggedIn, contactedUserIds, oppositeCollection);
 
     res.status(200).json(contactedUsers);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+}
+
+const nil = async (req, res) => {
+  res.status(200).json("You just wasted everyone's itme");
 }
 
 module.exports = {
@@ -219,5 +239,6 @@ module.exports = {
   sendNotification,
   getLoggedIn,
   getRecipient,
-  getContactedUsers
+  getContactedUsers,
+  nil
 };

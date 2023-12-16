@@ -1,8 +1,14 @@
 import Avatar from "@mui/joy/Avatar";
-import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet } from "react-icons/fa";
+import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet, FaHome } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 
 const items = [
+  {
+    key: '0',
+    icon: <FaHome />,
+    label: 'Home',
+    to: '/doctor', // Empty string for the route to home
+  },
   {
     key: '1',
     icon: <FaHospital />,

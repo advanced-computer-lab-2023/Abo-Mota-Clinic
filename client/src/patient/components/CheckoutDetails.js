@@ -48,7 +48,7 @@ function CheckoutDetails({ type, details }) {
           Details
         </Typography>
 
-        <Typography level="body-md" startDecorator={<BsClock />}>
+        <Typography level="body-md">
           {details.description}
         </Typography>
       </Box>

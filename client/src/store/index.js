@@ -125,10 +125,11 @@ export const {
   useSendMessageMutation,
   useFetchMessagesQuery,
   useFetchRecipientQuery,
-  useFetchContactsQuery,
+  useFetchContactsDetailsQuery,
   useSendNotificationMutation,
   useSendEmailMutation,
   useFetchNotificationQuery,
+  useInvalidateMessagesMutation,
 } = commonApi;
 
 export { logout, login } from "./slices/userSlice";

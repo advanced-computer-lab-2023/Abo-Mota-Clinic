@@ -8,10 +8,9 @@ import * as yup from "yup";
 import Header from "../../../shared/Components/Header";
 import { Formik } from "formik";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
-import { login, useRegisterDoctorMutation } from "../../../store";
+import { useRegisterDoctorMutation } from "../../../store";
 import DropDown from "../../../shared/Components/DropDown";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../../shared/Components/NavBar";
 import FileInput from "../../../shared/Components/FileInput";
 import { useDispatch } from "react-redux";
 import FormErrorDialog from "../../../shared/Components/FormErrorDialog/index.js";
@@ -20,7 +19,7 @@ const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [registerDoctor, results] = useRegisterDoctorMutation();
   const [isError, setIsError] = useState("");
-  const navigateq = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = async (values, { resetForm }) => {
     // values contains all the data needed for registeration
@@ -222,8 +221,7 @@ const RegisterForm = () => {
   console.log(results);
   return (
     <div className='registesr-div'>
-      {/*<NavBar >*/}
-
+      
       <FormErrorDialog
         isError={isError}
         setClose={() => setIsError("")}
