@@ -113,6 +113,7 @@ function App() {
             />
             <Route path="followUpRequests" element={<ViewFollowUpRequests />} />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute roles={["admin"]} />}>

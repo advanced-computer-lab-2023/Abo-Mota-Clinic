@@ -53,7 +53,7 @@ function WalletPayment({
         sendNotification({
           recipientUsername: patient.username,
           recipientType: "patient",
-          content: `Your appointment is booked successfully with Dr. ${doctor.name} on ${details.date} at ${details.currentTime}`,
+          content: `Appointment booked successfully with Dr. ${doctor.name} on ${details.date} at ${details.currentTime}`,
         })
           .unwrap()
           .then((res) => console.log(res))
