@@ -4,6 +4,7 @@ import Image from '../../assets/testimonial picture.png';
 import nada from '../../assets/nada-ibrahim.png';
 import mabrouk from '../../assets/mohamed-mabrouk.jpg'
 import mervat from '../../assets/mervat.jpg';
+import amr from '../../assets/amr diab.jpg'
 import starIcon from '../../assets/star-icon.png'
 import { RxDragHandleDots1 } from "react-icons/rx";
 const testimonialsData = [
@@ -25,12 +26,11 @@ const testimonialsData = [
     {
       quote: "Their scrum master really outdone himself!",
       author: "Amr Diab",
-      avatar: mabrouk
+      avatar: amr
     }
   ];
 
 const Testimonials = () => {
-  
     return (
           <section className="py-12 bg-white relative text-center">
       <div className="container mx-auto px-6 relative mb-24">
@@ -52,7 +52,7 @@ const Testimonials = () => {
           <TestimonialCard quote={testimonialsData[3].quote} author={testimonialsData[3].author} avatar={testimonialsData[3].avatar} />
         </div>
         <div className="absolute  left-0 transform translate-x-20  -translate-y-4">
-        <RxDragHandleDots1 className=" w-32 h-32" style={{ color: '#7ccafc' }}/>
+          <RxDragHandleDots1 className=" w-32 h-32" style={{ color: '#7ccafc' }}/>
       </div>
       </div>
       <div className="absolute top-0 right-0 transform -translate-x-56 translate-y-12">
@@ -63,7 +63,6 @@ const Testimonials = () => {
     </section>
       );
 };
-
 
 
 const TestimonialCard = ({ quote, author, avatar }) => {
