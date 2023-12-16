@@ -1343,7 +1343,7 @@ Please adhere to this project's `code of conduct`.
  - **Description**: Schedule follow up appointment for a given patient
  - **Controller**: `scheduleFollowUp`
     - Creates a follow up appointment for a given patient
- - **Body Parameters**
+ - **Body Parameters**:
   | Parameter | Type   | Description                  |
   |-----------|--------|------------------------------|
   | `patientUsername` | string | Follow up appointment's patient |
