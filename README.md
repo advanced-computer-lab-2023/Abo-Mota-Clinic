@@ -402,6 +402,7 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - filter appointments by date or status.
 - cancel an appointment for myself or for a family member
 - receive a notification that my appointment is cancelled or rescheduled on the system and by mail
+- receive a notification of my appointment on the system and by mail 
   
 </details>
 
