@@ -136,7 +136,7 @@ function ViewPrescriptionsDoctor() {
   }
   // console.log(data);
   return (
-    <Box sx={{ width: "100%", m: 5 }}>
+    <Box sx={{ m: 5 }}>
       <Box sx={{ display: "flex", width: "100%" }}>
         <Box sx={{ mr: 2 }}>
           <BackArrow />

@@ -16,6 +16,7 @@ const MedicationListItem = ({
   frequency,
   duration,
   prescriptionId,
+  quantity,
 }) => {
   const [editPres, setEditPres] = useState(false);
   const [newMedicine, setNewMedicine] = useState({
@@ -24,6 +25,7 @@ const MedicationListItem = ({
     dosage,
     frequency,
     duration,
+    quantity,
   });
   // const [newDosage, setNewDosage] = useState(dosage);
   // const [newFrequency, setNewFrequency] = useState(frequency);
@@ -57,7 +59,11 @@ const MedicationListItem = ({
     // add new dosage to database
     setEditPres(false);
 
-    await updateMedinPres({ ...newMedicine, dosage: parseInt(newMedicine.dosage) });
+    await updateMedinPres({
+      ...newMedicine,
+      dosage: parseInt(newMedicine.dosage),
+      quantity: parseInt(newMedicine.quantity),
+    });
     // setNewDosage(newDosage);
     console.log(newMedicine);
     console.log("correct dosage");
@@ -73,6 +79,7 @@ const MedicationListItem = ({
       dosage,
       frequency,
       duration,
+      quantity,
     });
     console.log("cancel dosage");
   };
@@ -141,6 +148,23 @@ const MedicationListItem = ({
             />
           ) : (
             <Typography level="title-sm">{newMedicine.duration}</Typography>
+          )}
+        </Box>
+        <Box className="justify-items-end">
+          <Typography level="body-xs">Quantity</Typography>
+          {editPres ? (
+            <TextField
+              value={newMedicine.quantity}
+              id="outlined-basic"
+              // label="Frequency"
+              variant="outlined"
+              name="quantity"
+              size="small"
+              sx={{ width: "30%", mt: 1 }}
+              onChange={handleInputChange}
+            />
+          ) : (
+            <Typography level="title-sm">{newMedicine.quantity}</Typography>
           )}
         </Box>
         {/* <Button onClick={handleDeleteMedicine}> */}
