@@ -346,7 +346,7 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - view health package options and details
 - view subscribed health package  for myself and my family members (if any)
 - receive a notification of my appointment on the system and by mail 
-
+- Receive a refund in my wallet when an appointment is canceled.
 
 
 </details>
@@ -374,10 +374,7 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - Chat with a patient.
 - view information and health records of patient registered with me
 - view a list of all my patients
-- view a list of all my upcoming / past appointments
-- filter appointments by date or status (upcoming, completed, cancelled, rescheduled)
-- cancel an appointment for myself or for a family member
-- receive a notification that my appointment is cancelled or rescheduled on the system and by mail 
+
 
 </details>
 
@@ -391,24 +388,29 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - Add/update/delete health packages with different price ranges.
 
 </details>
-
 <details>
-<summary>Common Features for Doctor/Patient/Administrator</summary>
-
-- Login and logout of the system.
-- Change my password.
-- Reset a forgotten password through OTP sent to email.
-- View a list of all available medicines including picture, price, and description.
-- Search for medicine based on name.
-- Filter medicines based on medicinal use.
+<summary>Common Features for Doctor/Patient</summary>
+   
 - View cart items and manage them.
+- view all new and old prescriptions and their statuses (filled/ not filled)
 - Pay directly for prescription items with wallet or credit card.
 - Download selected prescription (PDF).
 - Start/end a video call with the doctor/patient.
-- Receive a refund in my wallet when an appointment is canceled.
 - View the amount in my wallet.
 - Chat with a doctor/patient.
+- view a list of all my upcoming / past appointments
+- filter appointments by date or status.
+- cancel an appointment for myself or for a family member
+- receive a notification that my appointment is cancelled or rescheduled on the system and by mail
+  
+</details>
 
+<details>
+<summary>Common Features for Doctor/Patient/Administrator</summary>
+   
+- Login and logout of the system.
+- Change my password.
+- Reset a forgotten password through OTP sent to email.
 </details>
 
 ## Code Examples
