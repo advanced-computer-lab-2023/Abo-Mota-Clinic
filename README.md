@@ -354,8 +354,6 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 <details>
 <summary>As a Doctor I can</summary>
 
-- Login and logout of the system.
-- Change my password and reset it via OTP.
 - Edit my email, hourly rate, or hospital affiliation.
 - View and accept the employment contract.
 - Add available time slots for appointments.
@@ -397,6 +395,7 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 <details>
 <summary>Common Features for Doctor/Patient/Administrator</summary>
 
+- Login and logout of the system.
 - Change my password.
 - Reset a forgotten password through OTP sent to email.
 - View a list of all available medicines including picture, price, and description.
