@@ -28,10 +28,12 @@ import * as Yup from "yup";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { LinkOutlined } from "@mui/icons-material";
 import LinkFamilyMember from "../components/LinkFamilyMember";
+import { DatePicker } from "antd";
+import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 
 // Home / Patient / View Family Members
 
@@ -67,7 +69,15 @@ export default function ViewFamilyMembers() {
     dateOfBirth: null,
     email: null,
   });
-
+  const handelDateChange = (date) => {
+    const formattedChosenDate = dayjs(date).format("MM/DD/YYYY");
+    if (formattedChosenDate === "Invalid Date") {
+      setFormState({ ...formState, dateOfBirth: null });
+      return;
+    }
+    setFormState({ ...formState, dateOfBirth: formattedChosenDate });
+    console.log(formattedChosenDate);
+  };
   const [toast, setToast] = useState({
     open: false,
     duration: 4000,
@@ -103,7 +113,7 @@ export default function ViewFamilyMembers() {
   let content;
 
   if (isFetching) {
-    content = <div>Loading skeleton...</div>;
+    content = <LoadingIndicator />;
   } else if (error) {
     content = <div> Error ... </div>;
   } else {
@@ -118,6 +128,7 @@ export default function ViewFamilyMembers() {
 
   const onFormSubmit = (e) => {
     e.preventDefault();
+    console.log(formState);
     addFamilyMember({ ...formState })
       .unwrap()
       .then((payload) => {
@@ -153,18 +164,18 @@ export default function ViewFamilyMembers() {
   };
   const dateFormat = "MM/DD/YYYY";
 
-  const handleDateChange = (dateString) => {
-    const newDate = dayjs(dateString.$d).format(dateFormat);
-    setFormState({ ...formState, dateOfBirth: newDate });
-    setDate(newDate);
-    // console.log(newDate);
-  };
-  const [date, setDate] = useState(null);
+  // const handleDateChange = (dateString) => {
+  //   const newDate = dayjs(dateString.$d).format(dateFormat);
+  //   setFormState({ ...formState, dateOfBirth: newDate });
+  //   setDate(newDate);
+  //   // console.log(newDate);
+  // };
+  // const [date, setDate] = useState(null);
 
   const buttonModal = (
     <React.Fragment>
-      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ModalDialog sx={{ overflowY: "auto", maxHeight: "90vh" }}>
+      <Modal sx={{ zIndex: 1 }} open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <ModalDialog sx={{ zIndex: 2, overflowY: "auto", maxHeight: "90vh" }}>
           <ModalClose onClick={() => setIsModalOpen(false)} />
           <DialogTitle>Add a family member to your account</DialogTitle>
           <DialogContent>Fill in the information of your family member.</DialogContent>
@@ -231,9 +242,11 @@ export default function ViewFamilyMembers() {
                 />
               </FormControl>
 
-              <FormControl id="multiple-limit-tags" sx={{ gridColumn: "1/-1" }}>
+              <FormControl id="multiple-limit-tags" sx={{ gridColumn: "1/-1", zIndex: 1000 }}>
                 <FormLabel>Date of Birth</FormLabel>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker format="MM/DD/YYYY" onChange={handelDateChange} />
+
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     value={date}
                     onChange={handleDateChange}
@@ -243,7 +256,7 @@ export default function ViewFamilyMembers() {
                       "& .MuiInputBase-root": { height: "70%" },
                     }}
                   />
-                </LocalizationProvider>
+                </LocalizationProvider> */}
               </FormControl>
 
               <FormControl>

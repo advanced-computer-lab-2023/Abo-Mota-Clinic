@@ -78,8 +78,7 @@ function ViewDoctors() {
   }
 
   return (
-    <div>
-        <div className="mt-5 ml-14">
+        <div className="mt-5 px-14">
         <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
           <Link component={RouterLink} color="neutral" to="../">
             Home
@@ -131,7 +130,6 @@ function ViewDoctors() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-5">{content}</div>
       </div>
-    </div>
   );
 }
 
