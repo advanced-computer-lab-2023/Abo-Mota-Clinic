@@ -355,7 +355,7 @@ Please adhere to this project's `code of conduct`.
 - **Description**: Registers a new patient.
 - **Controller**: `registerPatient`
     - Handles patient registration.
-
+- **Body Parameters**: 
   | Parameter   | Type   | Description    |
   |-------------|--------|----------------|
   | `name`      | string | Patient's name |
@@ -375,6 +375,7 @@ Please adhere to this project's `code of conduct`.
 - **Description**: Registers a new doctor with file uploads for credentials.
 - **Controller**: `registerDoctor`
   - Manages doctor registration and file uploads.
+- **Body Parameters**: 
   | Parameter   | Type   | Description       |
   |-------------|--------|-------------------|
   | `name`      | string | Patient's name |
@@ -396,7 +397,8 @@ Please adhere to this project's `code of conduct`.
 - **Endpoint**: `POST /api/guest/otp`
 - **Description**: Requests a new OTP for password reset.
 - **Controller**: `requestOtp`
-  -  Requests OTP for password reset..
+  -  Requests OTP for password reset.
+- **Body Parameters**:   
   | Parameter   | Type   | Description    |
   |-------------|--------|----------------|
   | `email`     | string | Email address  |
@@ -406,7 +408,7 @@ Please adhere to this project's `code of conduct`.
 - **Description**: Reset forgotten passwords.
 - **Controller**: `forgotPassword`
   -  Resets forgotten passwords.
-
+- **Body Parameters**: 
   | Parameter   | Type   | Description    |
   |-------------|--------|----------------|
   | `email`     | string | Email address  |
@@ -418,7 +420,7 @@ Please adhere to this project's `code of conduct`.
 - **Description**: Authenticates a user and logs them in.
 - **Controller**: `login`
   -  Handles user login.
-
+- **Body Parameters**: 
   | Parameter   | Type   | Description    |
   |-------------|--------|----------------|
   | `username`  | string | User's username|
@@ -446,7 +448,7 @@ Please adhere to this project's `code of conduct`.
 - **Description**: Creates a new payment intent for Stripe transactions.
 - **Controller**: `createPaymentIntent`
     - Stripe Payment Intent Creation.
-
+- **Body Parameters**: 
   | Parameter     | Type   | Description               |
   |---------------|--------|---------------------------|
   | `beneficiary` | string | Description of beneficiary|
