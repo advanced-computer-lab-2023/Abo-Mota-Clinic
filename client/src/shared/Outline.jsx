@@ -2,7 +2,7 @@ import { useState, createElement, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation, Link } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined ,BellOutlined, MessageOutlined, UserOutlined} from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
-import PopOver from './Components/Popover';
+import PopOver from './Components/PopOver';
 import Logo from './assets/logo.png'
 import { navBarItems } from '../patient/navBarItems';
 import { useLogoutMutation } from '../store';
