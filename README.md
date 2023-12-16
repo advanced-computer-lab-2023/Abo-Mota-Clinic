@@ -1,10 +1,10 @@
+
 <div id="top"></div>
 
 
 
 
 
-<!-- badges -->
 <div align="center" >
    
 [![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://www.javascript.com)
@@ -258,3 +258,110 @@ We welcome contributions that help enhance the features and functionalities of t
 - The software is open source under the Apache 2.0 License.
 
 - The Stripe is licensed under the Apache License 2.0
+ 
+<!--  # Abo Mota Clinic
+
+
+
+
+## Motivation
+Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made with the MERN stack. Abo Mota Clinic aims to easily connect patients to high quality healthcare professionals, as well as provide an opportunity for doctors of all disciplines to practice their craft and communicate constantly with their patients to offer the best online healthcare experience possible.
+## Build Status
+- The project is currently in development.
+- The project needs to be deployed through services.
+- The project needs a robust unit test suite made with frameworks such as Jest. 
+- A message broker needs to be added to the application to handle asynchronous tasks such as sending emails and notifications.
+## Code Style
+- [Eslint](https://eslint.org/docs/latest/user-guide/getting-started) : in the backend and the frontend to write the most optimum clean code possible and to define rules for the team to be able to write code in the same code style
+- [Prettier](https://prettier.io/) : it is a code formatter that runs automatically before each commit on the whole code so that the codes looks well formatted across the whole project
+## Tech Stack
+<div align="center" >
+   
+[![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://www.javascript.com)
+[![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://html.com/html5/)
+![Redux](https://img.shields.io/badge/Built%20with-Redux-%23f44336?style=for-the-badge)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+[![Nodejs](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/en/)
+[![ExpressJs](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://GitHub.com/Naereen/badges/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)](https://github.com/omar-sherif9992)
+![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
+![Tailwind](https://img.shields.io/badge/tailwindcss-0F172A?&logo=tailwindcss)
+
+</div>
+
+- **Backend**: Node.js, Express, Mongoose, Socket.io, Nodemailer
+- **Frontend**: React.js, Material-UI, Ant ,Redux , Socket.io, Tailwind
+- **Database**: MongoDB
+- **Authentication**: JWT
+- **APIs**: Stripe
+- **Development tools**: Postman, Git, GitHub
+## Installation
+
+### Clone the repository:
+
+   ```bash
+   git clone https://github.com/advanced-computer-lab-2023/Abo-Mota-Clinic.git
+   cd Abo-Mota-Clinic
+   ```
+   
+### Install client dependencies
+
+  ```bash
+  cd client
+  npm install
+```
+### Install server dependencies
+  ```bash
+    cd backend
+    npm install
+```
+    
+## How to use
+#### Start the client:
+ ```bash
+cd client
+cd src
+npm start
+```
+The client server will run on http://localhost:3000.
+#### Start the server:
+ ```bash
+cd backend
+nodemon server.js
+ ```
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
+
+
+## Credits
+
+- [Mongoose docs](https://mongoosejs.com/docs/)
+- [MongoDB docs](https://www.mongodb.com/)
+- [Express docs](https://expressjs.com/en/4x/api.html)
+- [ReactJs docs](https://reactjs.org/docs/getting-started.html)
+- [Redux docs](https://redux.js.org/api/api-reference)
+- [NodeJs docs](https://nodejs.org/en/docs/)
+- [Ant Design website](https://ant.design/)
+- [Material UI website](https://mui.com/)
+- [Stripe docs](https://stripe.com/docs/)
+- [MERN Youtube](https://www.youtube.com/channel/UC29ju8bIPH5as8OGnQzwJyA)
+- [Stripe Youtube](https://youtu.be/1r-F3FIONl8)
+- [JWT](https://www.youtube.com/watch?v=mbsmsi7l3r4)
+- [Sockets.io docs](https://socket.io/)
+- [Tailwind docs](https://tailwindcss.com/docs/)
+
+
+## License
+
+Portions of this software utilize Stripe, which is licensed under the Apache License 2.0. You can find the details of this license [here](https://www.apache.org/licenses/LICENSE-2.0).
+
+The rest of the software is open source and licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/).
+ -->
