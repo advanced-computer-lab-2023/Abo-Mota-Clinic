@@ -108,8 +108,8 @@ const Outline = ({ items, navBarItems }) => {
             />
             </div>
         </Header>
-        <Content style={{  overflow: 'initial' }}>
-          <Outlet/>
+        <Content style={{ overflow: 'initial' }}>
+        <Outlet/>
         </Content>
         {/* <Footer style={{ width: '100%', textAlign: 'center' }}>
           <CustomFooter/>

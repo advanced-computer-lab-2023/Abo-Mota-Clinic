@@ -1,10 +1,10 @@
 
 
-export default GetStarted(){
+export default function GetStarted(){
 
     return (
         <div>
-            
+            ahmed
         </div>
-    )
+    );
 }
