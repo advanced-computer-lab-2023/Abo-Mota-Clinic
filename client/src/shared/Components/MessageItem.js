@@ -28,12 +28,17 @@ export default function MessageItem({message , key}){
     console.log("DATA", data);
 
     return(
-        <ListItem alignItems="flex-start" key={key} 
+        <ListItem alignItems="flex-start min-w-full" key={key} 
             className='group/item hover:bg-slate-100 cursor-pointer rounded-lg '
             onClick={()=> {navigate(`chat/${message.sender}`)}}>
             <ListItemAvatar> <Avatar size="md"> {capitalizeFirstLetter((data.name).charAt(0))}</Avatar> </ListItemAvatar>
             <ListItemText
-              primary={data.name}
+              primary={<div className='flex justify-between min-w-full'>
+                {data.name}
+                <JoyTypography level="body-sm" color="neutral">
+                {timeAgo(message.date)}
+                </JoyTypography>
+              </div>}
               secondary={
                 <React.Fragment>
                   {message.content}
@@ -42,10 +47,6 @@ export default function MessageItem({message , key}){
               }
             />
 
-            <JoyTypography level="body-sm" color="neutral">
-                {timeAgo(message.date)}
-            </JoyTypography>
-        
-          </ListItem>
+        </ListItem>
     )
 }
