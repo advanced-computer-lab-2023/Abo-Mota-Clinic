@@ -1,7 +1,13 @@
-import { FaBox, FaLaptop, FaUsers, FaKey } from "react-icons/fa";
+import { FaBox, FaLaptop, FaUsers, FaKey, FaHome } from "react-icons/fa";
 
 export const items = [
   {
+    key:"0",
+    icon:<FaHome/>,
+    label: 'Home',
+    to:'/admin'
+  }
+  ,{
     key: "1",
     icon: <FaBox />,
     label: "Packages",
