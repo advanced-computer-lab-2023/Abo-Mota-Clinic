@@ -932,6 +932,60 @@ export default LoginForm;
 
 </details>
 
+## Testing
+The testing is done using `Postman`. 
+
+<details>
+
+<summary>
+   Example Testing get Packages
+</summary>
+
+```javascript
+
+pm.test("Response status code is 200", function () {
+    pm.expect(pm.response.code).to.equal(200);
+});
+
+
+pm.test("Prescriptions and appointments have valid date format", function () {
+    const responseData = pm.response.json();
+    
+    responseData.prescriptions.forEach(function(prescription) {
+…    const responseData = pm.response.json();
+    
+    pm.expect(responseData.prescriptions).to.be.an('array').and.to.have.lengthOf.at.least(0);
+    pm.expect(responseData.appointments).to.be.an('array').and.to.have.lengthOf.at.least(0);
+    pm.expect(responseData.familyMembers).to.be.an('array').and.to.have.lengthOf.at.least(0);
+});
+
+```
+</details>
+
+<details>
+
+<summary>
+   Example Testing Login
+</summary>
+
+```javascript
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+pm.test("Response has the required fields - message, token, and userType", function () {
+    const responseData = pm.response.json();
+
+    pm.expect(responseData).to.be.an('object');
+…
+  pm.expect(responseData.userType).to.be.oneOf(['admin', 'guest', 'customer']);
+});
+
+
+```
+</details>
 
 
 
