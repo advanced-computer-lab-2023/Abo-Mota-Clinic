@@ -399,6 +399,529 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 
 </details>
 
+## Code Examples 🐱‍💻
+
+<details>
+    <summary>
+    Get Prescription Controller
+    </summary>
+
+```javascript
+const getPrescriptions = async (req, res) => {
+    try {
+        const username = req.userData.username;
+        const { _id } = await Patient.findOne({ username });
+        const prescriptions = await Prescription.find({ patient: _id }).populate([
+            {
+                path: "medicines.medicine",
+                model: "Medicine",
+            },
+            {
+                path: "doctor",
+                model: "Doctor",
+            },
+        ]);
+        res.status(200).json(prescriptions);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+```
+
+
+</details>
+
+<details>
+    
+<summary>Appointments Model</summary>
+
+```javascript
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+const appointmentSchema = new Schema(
+    {
+        date: Date,
+        status: {
+            type: String,
+            enum: ["completed", "upcoming", "cancelled", "unbooked", "rescheduled"],
+            default: "unbooked",
+        },
+        doctor: {
+            type: Schema.Types.ObjectId,
+            ref: "Doctor",
+        },
+        patient: {
+            type: Schema.Types.ObjectId,
+            default: null,
+            ref: "ClinicPatient",
+        },
+        pricePaid: {
+            type: Number,
+            default: null,
+        },
+    },
+    { toJSON: { virtuals: true } }
+);
+
+const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+};
+
+appointmentSchema.virtual("formattedDate").get(function () {
+    return new Intl.DateTimeFormat("en-US", options).format(this.date);
+});
+
+const Appointment = mongoose.model("Appointment", appointmentSchema);
+module.exports = Appointment;
+```
+
+
+</details>
+
+<details>
+
+<summary>
+    Admin Routes
+</summary> 
+
+```javascript
+const express = require("express");
+const router = express.Router();
+const {
+    getPackages,
+    updatePackage,
+    addPackage,
+    deletePackage,
+    getApplications,
+    getApplicationInfo,
+    handleApplication,
+    addAdmin,
+    deleteAdmin,
+    deletePatient,
+    deleteDoctor,
+    changePassword,
+} = require("../controllers/adminController");
+const authorize = require('../middlewares/authorization')
+
+// View All Packages
+router.get("/packages", authorize, getPackages);
+
+// Update Package
+router.patch("/packages/:id", authorize, updatePackage);
+
+// Add Package
+router.post("/packages",authorize, addPackage);
+
+// Delete Package
+router.delete("/packages/:id", authorize, deletePackage);
+
+// Get all doctor applications
+router.get("/applications", authorize, getApplications);
+
+// View doctor application info
+router.get("/applications/:id", authorize, getApplicationInfo);
+
+// Handle doctor application
+router.patch("/applications/:id", authorize, handleApplication);
+
+// Add an admin
+router.post("/admins", authorize,addAdmin);
+
+// DELETES TBD IF PARAMS IN URL
+// Delete a specific Admin
+router.delete("/admins",authorize, deleteAdmin);
+
+// Delete a specific patient
+router.delete("/patients", authorize, deletePatient);
+
+// Delete a specific doctor
+router.delete("/doctors", authorize, deleteDoctor);
+
+// Change Password
+router.patch("/changePassword", authorize, changePassword);
+
+module.exports = router;
+```
+
+</details>
+
+
+<details>
+    <summary>
+        Authorization middleware
+    </summary> 
+
+```javascript
+const jwt = require("jsonwebtoken");
+
+const authToken = (req, res, next) => {
+    console.log("COOKIES", req.cookies);
+    const token = req.cookies.jwt;
+
+
+    if(token){
+
+            jwt.verify(token, process.env.JWT_SECRET, (err, userData) => {
+                if(err)
+                    return res.status(404).json({message: "Unauthorized", isLoggedIn: false, error: err.message});
+                
+                req.userData = userData;  //userData is the payload included in the token
+                const userType = userData.userType;
+                //check if the user type allowed for the current route
+            
+                if(userType === 'admin' && (req.baseUrl).includes('/admin')){
+                    console.log("OKAY")
+                    next();
+                }
+                else if(userType === 'doctor' && ((req.baseUrl).includes('/doctor') || (req.baseUrl).includes('/common')))
+                    next();
+                else if (userType === 'patient' && ((req.baseUrl).includes('/patient') || (req.baseUrl).includes('/stripe') || (req.baseUrl).includes('/common')))
+                    next();
+                else
+                    return res.status(403).json({ message: "Forbidden"});
+            });
+         
+
+    }else{
+        res.status(500).json({message: 'Unauthorized', isLoggedIn: false})
+    }
+
+}
+
+module.exports = authToken;
+```
+
+</details>
+
+<details>
+
+<summary>  Patient Profile Page </summary>
+
+```javascript
+import PersonalInfoSection from '../components/PersonalInfoSection';
+  import EmergencyContactCard from '../components/EmergencyContactCard';
+  import FileUploadSection from '../../shared/pages/FileUploadSection';
+  import { useFetchPatientQuery } from '../../store';
+  import ChangePasswordSection from '../../shared/pages/ChangePasswordSection';
+
+  function Profile() {
+    
+
+    const {data, error, isFetching} = useFetchPatientQuery();
+    
+    return (
+      <div className="bg-gray-100 p-8 w-full space-y-8">
+        {isFetching ||
+          <>
+            <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-5">
+              <div className="p-5 border-gray-200">
+                <h2 className="text-xl font-bold text-gray-900">Patient Profile</h2>
+              </div>
+              <PersonalInfoSection patient={data} />
+              <div className="flex flex-wrap -mx-3 md:mx-6">
+                <div className="w-full md:w-1/2 px-3 md:px-6 py-4">
+                <ChangePasswordSection isAdmin />
+                  <EmergencyContactCard patient={data} />
+                </div>
+                <div className="w-full md:w-1/2 px-3 md:px-6 py-4">
+                  <FileUploadSection files={data.medicalHistory} medicalHistory />
+                  <FileUploadSection files={data.healthRecords} />
+                </div>
+              </div>
+            </div>
+          </>}
+      </div>
+
+    );
+  }
+
+  export default Profile;
+```
+
+</details>
+
+
+<details>
+
+<summary>
+   App sidebar
+</summary>
+
+```javascript
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { Link } from "react-router-dom";
+
+export default function SideBar({ open, links }) {
+  // Assuming the navbar height is set as a CSS variable --navbar-height
+  const sidebarStyle = {
+    height: `calc(100vh - var(--navbar-height))`, // Adjust var(--navbar-height) accordingly
+    overflowY: 'auto' // Add scroll to sidebar if contents exceed its height
+  };
+
+  return (
+    <div style={sidebarStyle}>
+      <Sidebar
+        collapsedWidth="0px"
+        collapsed={!open}
+        backgroundColor="var(--primary-color-very-dark)"
+      >
+        <div style={{ padding: "1rem", display: "flex", alignItems: "center"}}>
+          <h2 className="text-[var(--text-color-primary)] font-semibold">Abo Mota Clinic</h2>
+        </div>
+        <Menu
+          closeOnClick={true}
+          className="text-white"
+          menuItemStyles={{
+            button: ({ level, active, disabled }) => {
+              if (level === 0)
+                return {
+                  color: disabled ? "#f5d9ff" : "#FFFFFF",
+                  backgroundColor: active ? "#232232" : undefined,
+                  ":hover": {
+                    backgroundColor: "#add8e6",
+                    color: "#000000",
+                  },
+                };
+            },
+          }}
+        >
+          {links.map((link, index) => {
+            return (
+              <Link key={index} to={link.to}>
+                <MenuItem icon={link.logo}>{link.name}</MenuItem>
+              </Link>
+            );
+          })}
+        </Menu>
+      </Sidebar>
+    </div>
+  );
+}
+
+```
+
+</details>
+
+
+<details>
+
+   <summary>
+        Login Form
+   </summary> 
+   
+```javascript
+import KimoButton from "../../Components/KimoButton";
+import { useEffect, useState } from "react";
+import Input from "../../Components/InputField";
+import logo from "../../../shared/assets/logo.png";
+import * as yup from "yup";
+import { Formik } from "formik";
+import LoadingIndicator from "../../Components/LoadingIndicator";
+import { useNavigate } from "react-router-dom";
+import "./styles.css";
+import { useLoginMutation, login } from "../../../store";
+import ForgetPasswordScreen from "../ForgetPasswordScreen";
+import OtpScreen from "../OtpScreen";
+import { useDispatch } from "react-redux";
+import FormErrorDialog from "../../Components/FormErrorDialog";
+
+const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [forgetPassword, setForgetPassword] = useState(false);
+  const [otpOpen, setOtpOpen] = useState(false);
+  const navigate = useNavigate();
+  const [loginMutation, results] = useLoginMutation();
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    if (results.isError) {
+      setIsError(true);
+    }
+  }, [results]);
+
+  const handleSubmit = async (values, { resetForm }) => {
+    const user = {
+      username: values.username,
+      password: values.password,
+    };
+
+    setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    try {
+      const result = await loginMutation(user).unwrap();
+      console.log(result);
+      // Use the result for navigation or other side effects
+      if (result.userType === "patient") {
+        dispatch(login({ role: "patient" })); // Dispatch login action with role
+        navigate("/patient");
+      } else if (result.userType === "doctor") {
+        dispatch(login({ role: "doctor" })); // Dispatch login action with role
+        navigate("/doctor");
+      } else if (result.userType === "admin") {
+        dispatch(login({ role: "admin" })); // Dispatch login action with role
+        navigate("/admin");
+      }
+      resetForm({ values: "" });
+    } catch (error) {
+      console.error("Failed to login:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const forgetPasswordOnClick = () => {
+    console.log("forget password");
+  };
+
+  const UserForm = (
+    <Formik
+      initialValues={initialUserValues}
+      validationSchema={UserSchema}
+      onSubmit={handleSubmit}
+    >
+      {(formik) => (
+        <form onSubmit={formik.handleSubmit}>
+          <div className='form-container'>
+            <Input
+              label='Username*'
+              icon
+              type='text'
+              id='username'
+              error={formik.errors.username}
+              touch={formik.touched.username}
+              {...formik.getFieldProps("username")}
+            />
+          </div>
+          <div className='form-container'>
+            <Input
+              label='Password*'
+              icon
+              type='password'
+              id='password'
+              error={formik.errors.password}
+              touch={formik.touched.password}
+              {...formik.getFieldProps("password")}
+            />
+          </div>
+          <div className='submit-add-medicine-button-container'>
+            {
+              isLoading ? (
+                <LoadingIndicator />
+              ) : (
+                // <Link to='medicine'>
+                <KimoButton type='submit'>Log in</KimoButton>
+              )
+              // </Link>
+            }
+          </div>
+        </form>
+      )}
+    </Formik>
+  );
+
+  return (
+    <div className='login-div'>
+      <div className='login-portal'>
+        <div className='login-part'>
+          <div className='login-logo-div'>
+            {" "}
+            <img className='login-logo' src={logo} alt='logo' />{" "}
+          </div>
+          {/* <Header header="Welcome Back!" type="login-header" /> */}
+        </div>
+        <p className='login-word'>Login</p>
+        {UserForm}
+        <div className='flex justify-between mr-8 ml-8'>
+          <div className='flex space-x-4'>
+            <button
+              className='forget-password-button'
+              onClick={() => {
+                navigate("/doctorRegistration");
+              }}
+            >
+              Register as Doctor?
+            </button>
+            <button
+              className='forget-password-button'
+              onClick={() => {
+                navigate("/patientRegistration");
+              }}
+            >
+              Register as Patient?
+            </button>
+          </div>
+          <button
+            className='forget-password-button'
+            onClick={() => {
+              setForgetPassword(true);
+            }}
+          >
+            Forget Password?
+          </button>
+        </div>
+      </div>
+      {forgetPassword && (
+        <ForgetPasswordScreen
+          closeForm={() => {
+            setForgetPassword(false);
+          }}
+          goToOtp={() => {
+            setOtpOpen(true);
+          }}
+          setEmail={setEmail}
+        />
+      )}
+      {otpOpen && (
+        <OtpScreen
+          closeForm={() => {
+            setOtpOpen(false);
+          }}
+          email={email}
+        />
+      )}
+      <FormErrorDialog
+        isError={isError}
+        setClose={() => {
+          setIsError(false);
+        }}
+      />
+    </div>
+  );
+};
+
+const UserSchema = yup.object().shape({
+  username: yup
+    .string("Invalid username")
+    .required("Please enter a valid username"),
+
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .matches(/[a-zA-Z]/, "Password must contain at least one letter")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .required("Please enter a valid password"),
+});
+
+const initialUserValues = {
+  username: "",
+  password: "",
+};
+
+export default LoginForm;
+
+```
+
+</details>
+
 
 
 
@@ -765,6 +1288,9 @@ Please adhere to this project's `code of conduct`.
 - [JWT](https://www.youtube.com/watch?v=mbsmsi7l3r4)
 - [Sockets.io docs](https://socket.io/)
 - [Tailwind docs](https://tailwindcss.com/docs/)
+- [Formik docs](https://formik.org/docs/tutorial)
+- [React pro sidebar](https://www.npmjs.com/package/react-pro-sidebar)
+- [React Router](https://reactrouter.com/en/main) 
 
 
 ## License
