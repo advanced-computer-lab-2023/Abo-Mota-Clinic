@@ -1,4 +1,4 @@
-import { useFetchPrescriptionsQuery } from "../../store";
+import { useFetchPrescriptionsQuery, useFetchPatientQuery } from "../../store";
 import { useState } from "react";
 import filter from "../utils/filter";
 import { FormControl, FormLabel, Autocomplete, Box, Link, Breadcrumbs, Typography, Button, Alert } from "@mui/joy";
@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 
 export default function ViewPrescriptions() {
   const { data, isFetching, error } = useFetchPrescriptionsQuery();
+  const { data: patient, isFetching: isFetchingPatient, error: isErrorPatient } = useFetchPatientQuery();
   const [config, setConfig] = useState({});
   const [date, setDate] = useState(null);
   const dateFormat = "MM/DD/YYYY"
@@ -20,9 +21,9 @@ export default function ViewPrescriptions() {
   let content;
   let doctorNames = [];
 
-  if (isFetching) {
+  if (isFetching || isFetchingPatient) {
     content = <div> Loading ... </div>
-  } else if (error) {
+  } else if (error || isErrorPatient) {
     content = <div> Error ... </div>
   } else {
     let filteredData = filter(data, config);
@@ -49,12 +50,12 @@ export default function ViewPrescriptions() {
   return (
     <div className="ml-20 mr-20 mt-10">
       {
-        isPharmacyAlertOpen
-        && <Alert
+        isPharmacyAlertOpen &&
+        !patient.pharmacyPatient && <Alert
           variant="soft"
           color="primary"
-          outlined
           size="lg"
+          sx={{ mb: 2 }}
           // startDecorator={<PlaylistAddCheckCircleRoundedIcon />}
           endDecorator={
             <Button size="sm" variant="plain" color="primary" onClick={() => setIsPharmacyAlertOpen}>
@@ -86,16 +87,11 @@ export default function ViewPrescriptions() {
         <FormControl id="multiple-limit-tags">
           <FormLabel>Doctor name</FormLabel>
           <Autocomplete
-            // multiple
             id="tags-default"
             placeholder="Name"
             loading={isFetching}
             options={doctorNames}
-            // endDecorator={
-            //   isFetching ? (
-            //     <CircularProgress thickness={2} size="sm" sx={{ bgcolor: 'background.surface' }} />
-            //   ) : null
-            // }
+
             onChange={(event, newValue) => {
               setConfig({ ...config, "doctor.name": newValue })
               console.log("New value:", newValue);
@@ -111,11 +107,6 @@ export default function ViewPrescriptions() {
             placeholder="Status"
             loading={isFetching}
             options={["Filled", "Unfilled"]}
-            // endDecorator={
-            //   isFetching ? (
-            //     <CircularProgress size="sm" sx={{ bgcolor: 'background.surface' }} />
-            //   ) : null
-            // }
             limitTags={2}
             onChange={(event, newValue) => {
               setConfig({ ...config, status: newValue })

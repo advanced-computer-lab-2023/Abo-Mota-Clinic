@@ -84,7 +84,7 @@ function App() {
             />
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="chat/:recipient" element={<Chat socket={socket} />} />
+            <Route path="chat/:recipient?" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
           </Route>
