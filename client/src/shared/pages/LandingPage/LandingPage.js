@@ -3,7 +3,7 @@ import Header from './Header';
 import Testimonials from './Testimonials'; 
 import Services from './Services';
 import About from './About';
-import Footer from './Footer';
+import Footer from '../../Components/Footer';
 // For the navigation and headline section
 // import Services from './Services'; // For listing the services offered
 // import AboutUs from './AboutUs'; // For the "About the Clinic" section
