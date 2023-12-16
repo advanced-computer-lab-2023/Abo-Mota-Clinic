@@ -123,6 +123,16 @@ const commonApi = createApi({
           };
         },
       }),
+
+      fetchUser: builder.query({
+        query: (data) => {
+          return {
+            url: `/user`,
+            body: data,
+            method: "GET",
+          };
+        },
+      }),
     }
   },
 });
@@ -137,6 +147,7 @@ export const {
   useFetchNotificationQuery,
   useSendEmailMutation,
   useInvalidateMessagesMutation,
+  useFetchUserQuery,
 } = commonApi;
 
 export { commonApi };

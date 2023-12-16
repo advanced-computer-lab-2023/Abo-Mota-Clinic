@@ -39,10 +39,10 @@ io.on("connection", (socket) => {
 
   //----------Notifications----------------//
 
-  socket.on("send_notification_booked", ({receiver, contentDoctor, contentPatient}) => {
+  socket.on("send_notification_booked", ({sender,receiver, contentDoctor, contentPatient}) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    socket.to(receiverSocket).emit("receive_notification_booked", {contentDoctor});
-    io.to(socket.id).emit("receive_notification_booked", {contentPatient}); // send notification to sender as well
+    socket.to(receiverSocket).emit("receive_notification_booked", {contentDoctor, sender});
+    io.to(socket.id).emit("receive_notification_booked", {contentPatient, sender}); // send notification to sender as well
 
   });
 
