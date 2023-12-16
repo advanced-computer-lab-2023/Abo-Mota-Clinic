@@ -342,6 +342,12 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - Request a follow-up to a previous appointment.
 - View the amount in my wallet.
 - Chat with a doctor.
+- view all new and old prescriptions and their statuses (filled/ not filled)
+- view health package options and details
+- view subscribed health package  for myself and my family members (if any)
+- receive a notification of my appointment on the system and by mail 
+
+
 
 </details>
 
@@ -368,6 +374,12 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - Update a patient's prescription before it's submitted to the pharmacy.
 - Accept or revoke a follow-up session request from a patient.
 - Chat with a patient.
+- view information and health records of patient registered with me
+- view a list of all my patients
+- view a list of all my upcoming / past appointments
+- filter appointments by date or status (upcoming, completed, cancelled, rescheduled)
+- cancel an appointment for myself or for a family member
+- receive a notification that my appointment is cancelled or rescheduled on the system and by mail 
 
 </details>
 
