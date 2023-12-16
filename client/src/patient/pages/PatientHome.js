@@ -21,7 +21,7 @@ function PatientHome() {
         <Typography level="h2" fontWeight={400} className="mt-3">
           Welcome, {data.name}!
         </Typography>
-        
+        <Divider/>
       </Box>
     );
   };
@@ -29,8 +29,8 @@ function PatientHome() {
 
   return (
     
-    <div className="relative h-screen m-0 p-0 border-0 text-center flex flex-row justify-center">
-    <div className="h-screen m-0 p-0 border-0 absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+    <div className="relative h-screen m-0 p-0 border-0 text-center flex flex-row justify-center object-fill" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
+    
     <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundColor: 'rgba(0, 60, 130, 0.5)' }}></div>
     
     <Box className="absolute font-semibold text-lg text-center">
