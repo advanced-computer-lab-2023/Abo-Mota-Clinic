@@ -46,9 +46,7 @@ function PaymentPage({
   } = useFetchPatientQuery();
 
   const { id } = useParams();
-
   const { data, isFetching: isFetchingDoctor, error: errorDoctor } = useFetchDoctorsQuery();
-
   const doctor = data[id];
 
   const buttonGroup = [
@@ -70,6 +68,7 @@ function PaymentPage({
     return <LoadingIndicator />;
   }
   const users = [patient].concat(familyMembers);
+
   return (
     <Box className="mt-15 space-y-5">
       <Box sx={{ py: 2 }}>
@@ -82,35 +81,42 @@ function PaymentPage({
         <Box id="card-body" className="w-full flex justify-between space-x-20">
           <Box sx={{ width: "60%" }}>
             <CheckoutDetails type={type} details={details} />
-            <Typography level="h4" sx={{ mt: 5 }}>
-              Select Desired User
-            </Typography>
-            <Box
-              sx={{
-                mt: 3,
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <TextField
-                disabled
-                label="Selected User"
-                variant="outlined"
-                value={selectedUser !== -1 ? selectedUser.name : ""}
-                InputLabelProps={{
-                  readOnly: true,
-                }}
-              />
-              <Box sx={{ ml: 3 }}>
-                <UserSelectionModal
-                  selectedUser={selectedUser}
-                  setSelectedUser={setSelectedUser}
-                  users={users}
-                  isSubscribing={isSubscribing}
-                />
-              </Box>
-            </Box>
+
+            {
+              type !== "prescription" && (
+                <>
+                  <Typography level="h4" sx={{ mt: 5 }}>
+                    Select Desired User
+                  </Typography>
+                  <Box
+                    sx={{
+                      mt: 3,
+                      display: "flex",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <TextField
+                      disabled
+                      label="Selected User"
+                      variant="outlined"
+                      value={selectedUser !== -1 ? selectedUser.name : ""}
+                      InputLabelProps={{
+                        readOnly: true,
+                      }}
+                    />
+                    <Box sx={{ ml: 3 }}>
+                      <UserSelectionModal
+                        selectedUser={selectedUser}
+                        setSelectedUser={setSelectedUser}
+                        users={users}
+                        isSubscribing={isSubscribing}
+                      />
+                    </Box>
+                  </Box>
+                </>
+              )
+            }
 
             <Typography level="h3" sx={{ mt: 5 }}>
               Payment Method
@@ -145,9 +151,6 @@ function PaymentPage({
                   deductible={deductible}
                   onSuccess={onPaymentSuccess}
                   onFailure={onPaymentFailure}
-                  socket={socket}
-                  doctor={doctor}
-                  details={details}
                   selectedUser={selectedUser}
                 />
               ) : (
@@ -155,9 +158,6 @@ function PaymentPage({
                   deductible={deductible}
                   onSuccess={onPaymentSuccess}
                   onFailure={onPaymentFailure}
-                  socket={socket}
-                  doctor={doctor}
-                  details={details}
                   selectedUser={selectedUser}
                 />
               )}

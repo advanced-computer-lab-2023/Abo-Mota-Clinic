@@ -26,6 +26,7 @@ const {
 	cancelAppointment,
 	requestFollowUp,
 	getFamilyMemberAppointments,
+	orderPrescription,
 } = require("../controllers/patientController");
 
 const router = express.Router();
@@ -127,4 +128,7 @@ router.post("/followUp", authorize, requestFollowUp);
 
 // Get Family Member Appointments
 router.get("/familyAppointments", authorize, getFamilyMemberAppointments);
+
+// Create a prescription's order
+router.post("/prescription", authorize, orderPrescription);
 module.exports = router;
