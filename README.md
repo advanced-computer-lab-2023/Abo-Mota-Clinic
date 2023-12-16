@@ -303,6 +303,61 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - **Authentication**: JWT
 - **APIs**: Stripe
 - **Development tools**: Postman, Git, GitHub
+## Features
+<details>
+<summary>As a Guest I can</summary>
+
+- Register as a patient with personal and emergency contact details.
+- Submit a request to register as a doctor with my professional details and required documentation.
+
+</details>
+
+<details>
+<summary>As a Patient I can</summary>
+
+- Upload and remove my medical documents.
+- Add and manage family members in my account.
+- Manage payment options and transactions.
+- Schedule, view, reschedule, cancel, and request follow-up appointments.
+- View and subscribe to health packages, manage subscriptions, and view package statuses.
+- View, filter, and select health records and prescriptions; pay for prescriptions.
+- Interact via chat and video calls with doctors.
+- Receive notifications and view wallet balances.
+
+</details>
+
+<details>
+<summary>As a Doctor I can</summary>
+
+- Login to my profile, edit professional details, and view employment contracts.
+- Add available timeslots and manage appointments and follow-ups.
+- View and filter patient lists, health records, and manage prescriptions.
+- Interact via chat and video calls with patients.
+- Receive and manage notifications of appointment changes.
+
+</details>
+
+<details>
+<summary>As an Administrator I can</summary>
+
+- Add or remove any user and manage other administrators.
+- Review and manage doctor registration requests and their contracts.
+- Create, update, and delete health packages with varying price ranges.
+
+</details>
+
+<details>
+<summary>Shared Features for Patients, Doctors, and Administrators</summary>
+
+- Secure login and logout processes.
+- Password changes and reset functions through OTP.
+- View and filter detailed lists of doctors, patients, and health records.
+- Financial management including wallet transactions and refund processing.
+
+</details>
+
+
+
 ## Installation
 
 ### Clone the repository:
