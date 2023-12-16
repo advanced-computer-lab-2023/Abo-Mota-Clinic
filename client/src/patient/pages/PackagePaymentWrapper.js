@@ -1,9 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
+
 import {
   useFetchPackagesPatientQuery,
   useFetchPatientQuery,
   useSubscribeToHealthPackageMutation,
 } from "../../store";
+
 import PaymentPage from "./PaymentPage";
 import { Box } from "@mui/joy";
 import capitalize from "../utils/capitalize";
@@ -66,7 +68,7 @@ function PackagePaymentWrapper() {
     },
 
     discount: patient?.familyDiscount || 0,
-    
+
     usersState: {
       selectedUser,
       setSelectedUser,

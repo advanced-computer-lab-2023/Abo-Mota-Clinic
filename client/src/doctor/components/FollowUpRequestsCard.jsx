@@ -13,11 +13,11 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import MarkunreadIcon from "@mui/icons-material/Markunread";
 import Divider from "@mui/joy/Divider";
 import Chip from "@mui/joy/Chip";
-import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import { useState } from "react";
 import { useHandleFollowUpMutation } from "../../store";
+
 export default function FollowUpRequestsCard({ followUpRequest }) {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [handleFollowUp, results] = useHandleFollowUpMutation();

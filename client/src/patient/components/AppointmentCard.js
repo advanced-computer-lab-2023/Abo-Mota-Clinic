@@ -22,6 +22,7 @@ import MenuItem from '@mui/joy/MenuItem';
 import MoreVert from '@mui/icons-material/MoreVert';
 import reschedule_img from "../../shared/assets/reschedule_img.jpg";
 import followup_img from "../../shared/assets/followup_img.jpg";
+import { useNavigate } from "react-router-dom";
 
 import dayjs from "dayjs";
 
@@ -36,6 +37,7 @@ import {
 function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, appointmentId, name }) {
   // console.log("name: ", name);
   // console.log("doctor: ", specialty);
+  const navigate = useNavigate();
 
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [sendNotification] = useSendNotificationMutation();
@@ -152,7 +154,7 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
       text: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got rescheduled`
     });
   }
-  
+
   const rescheduleModalConfig = {
     isModalOpen: isRescheduleModalOpen,
     setIsModalOpen: setIsRescheduleModalOpen,
@@ -256,7 +258,13 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
               <BiCalendarX fontSize={24} />
             </IconButton> */}
 
-            <IconButton disabled={status === "cancelled"} aria-label="call" size="md">
+            <IconButton
+              disabled={status === "cancelled"}
+              aria-label="call" size="md"
+              onClick={() => navigate(`../chat/${doctor._id}`)}
+              // sx={{ my: 2, ml: 1, p: 2, borderRadius: '50%' }}
+              sx={{ height: '1em', p: 0.75, borderRadius: '50%'}}
+            >
               <BiChat fontSize={24} />
             </IconButton>
           </Box>

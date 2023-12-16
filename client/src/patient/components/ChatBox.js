@@ -5,7 +5,7 @@ import { IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { IoVideocamOutline } from "react-icons/io5";
 import { useFetchLoggedInQuery, useSendMessageMutation, useFetchMessagesQuery, useFetchRecipientQuery, useFetchContactsQuery } from '../../store';
-
+import convertToCairoTime from '../functions/convertToCairoTime';
 
 function ChatBox({ socket, selectedRecipientId }) {
 
@@ -17,12 +17,22 @@ function ChatBox({ socket, selectedRecipientId }) {
 
   const { data: recipientData, isFetching: isFetchingRecipient, isError: isErrorRecipient } = useFetchRecipientQuery(selectedRecipientId);
   const { data: loggedInUser, isFetching: isFetchingUser, isError } = useFetchLoggedInQuery();
-  const { data: messagesData, isFetching: isFetchingMessages, isError: isErrorMessages } = useFetchMessagesQuery(selectedRecipientId);
+  const { data: messagesData, isLoading: isLoadingMessages, isFetching: isFetchingMessages, isError: isErrorMessages } = useFetchMessagesQuery(selectedRecipientId);
+
+  const scrollToBottom = () => {
+    if (ref.current) {
+      const container = ref.current.closest('.chatbox'); // Replace with your actual container class or ID
+
+      // Scroll to the bottom of the container
+      container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
 
       setMessages((prevMessages) => {
+        // prevMessages[prevMessages.length - 1].showTime = false;
         const newMessages = [...prevMessages, data];
         return newMessages;
       });
@@ -31,21 +41,39 @@ function ChatBox({ socket, selectedRecipientId }) {
   }, [socket]);
 
   useEffect(() => {
-    if (!isFetchingUser)
+    if (!isFetchingUser) {
       socket.emit("user_connected", loggedInUser._id);
+    }
   }, [isFetchingUser]);
 
   useEffect(() => {
     if (!isFetchingMessages) {
-      if (messagesData)
+      if (messagesData) {
         setMessages(messagesData.messages);
+      }
     }
-  }, [isFetchingMessages, selectedRecipientId])
+  }, [isFetchingMessages, selectedRecipientId]);
 
+  useEffect(() => scrollToBottom());
 
-  if (isFetchingUser || isFetchingMessages || isFetchingRecipient) {
+  if (isFetchingUser || isLoadingMessages || isFetchingRecipient) {
     return <div>Loading...</div>;
   }
+
+  // const scrollToElement = () => {
+  //   if (targetRef.current) {
+  //     const container = targetRef.current.closest('.scroll-container'); // Replace with your actual container class or ID
+  //     const elementRect = targetRef.current.getBoundingClientRect();
+  //     const containerRect = container.getBoundingClientRect();
+
+  //     // Calculate the scroll position to show more of the element
+  //     const desiredScrollTop = elementRect.top - containerRect.top - container.clientHeight / 4;
+
+  //     // Scroll to the calculated position
+  //     container.scrollTo({ top: desiredScrollTop, behavior: 'smooth' });
+  //   }
+  // };
+
 
 
   const onSendMessage = async () => {
@@ -60,11 +88,19 @@ function ChatBox({ socket, selectedRecipientId }) {
     const message = {
       content: messageContent,
       sender: loggedInUser._id,
-      recipient: selectedRecipientId
+      recipient: selectedRecipientId,
+      date: new Date(),
     }
 
-    if (ref.current)
-      ref.current.scrollIntoView();
+    // if (ref.current) {
+    //   ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    //   console.log("About to scroll to: ", ref.current);
+    // }
+    setTimeout(() => {
+      scrollToBottom()
+    }, 100);
+
+    // scrollToElement();
 
     await socket.emit("send_message", message);
 
@@ -73,7 +109,7 @@ function ChatBox({ socket, selectedRecipientId }) {
 
   const RecipientHeader = ({ recipientName }) => {
     return (
-      <Box className="pl-4 pt-2 bg-white">
+      <Box className="pl-4 py-2 bg-white" sx={{ borderBottom: '1px solid #cccccc' }}>
         <Box className="flex justify-between items-center ">
           <Box className="flex items-center">
             <Avatar color='warning' className="mr-3"> {recipientName[0]} </Avatar>
@@ -82,66 +118,73 @@ function ChatBox({ socket, selectedRecipientId }) {
             </Typography>
           </Box>
 
-          <Box className="">
+          <Box className="mr-5">
             <IconButton><IoVideocamOutline /></IconButton>
           </Box>
         </Box>
-        <Divider sx={{ marginTop: 1 }} />
       </Box>
 
     );
   }
 
   return (
-      <>
-        <Box className='bg-white'>
-          <RecipientHeader recipientName={recipientData.name} />
+    <>
+      <Box className='grow flex flex-col h-full' sx={{ position: 'relative' }}>
+        <RecipientHeader recipientName={recipientData.name} />
 
+        <Box className="grow chatbox h-full overflow-auto" sx={{ height: '5px', px: '2em' }}>
+          {/* <ScrollToBottom style={{ overflowY: 'scroll'}}> */}
+          {
+            messages.map(({ sender, content, date }, i) => {
 
-          <Box sx={{ height: '555px', px: '2em', py: '1em', overflowY: 'scroll' }}>
-            {/* <ScrollToBottom style={{ overflowY: 'scroll'}}> */}
-            {
-              messages.map(({ sender, content }, i) => {
+              const fromMe = sender === loggedInUser._id;
+              const containerClassName = fromMe ? "chat chat-end" : "chat chat-start";
+              const messageClassName = fromMe ? "text-white chat-bubble" : "text-black chat-bubble";
+              const bgColor = fromMe ? '#248bf5' : '#c7c7cb';
+              const timeClassName = "w-full flex px-2 " + (fromMe ? "justify-end" : "justify-start");
 
-                const fromMe = sender === loggedInUser._id;
-                const containerClassName = fromMe ? "chat chat-end" : "chat chat-start";
-                const messageClassName = fromMe ? "text-white chat-bubble" : "text-black chat-bubble";
-                const bgColor = fromMe ? '#248bf5' : '#c7c7cb';
-
-                return (
+              return (
+                <div>
                   <div key={i} className={containerClassName} style={{ height: 50 }}>
                     <div style={{ backgroundColor: bgColor, height: 20 }} className={messageClassName}>
                       {content}
                     </div>
-
-                    {/* <div>
-          Sender: {sender === loggedInUser._id ? "You" : "Other"}
-        </div> */}
                   </div>
-                );
-              })
-            }
-            <div ref={ref} style={{ height: 40 }}></div>
 
-          </Box>
-
-
-          <Box sx={{ px: 3, my: 1 }}>
-            <Input
-              value={messageContent}
-              className='w-full p-1'
-              placeholder='Type your message here ...'
-              onKeyPress={(e) => e.key === 'Enter' && onSendMessage()}
-              onChange={(e) => setMessageContent(e.target.value)}
-              endDecorator={<IconButton onClick={onSendMessage} aria-label="Send message">
-                <SendIcon />
-              </IconButton>}
-              sx={{ borderRadius: '1.5em' }}
-            />
-          </Box>
-
-
+                  <div className={timeClassName} ref={ref}
+                  >
+                    {/* display time on last message  */}
+                    {i === messages.length - 1 && <Typography ref={ref}
+                      level="body-xs">{convertToCairoTime(date)}</Typography>}
+                  </div>
+                </div>
+              );
+            })
+          }
         </Box>
+
+        <Box sx={{
+          px: 3,
+          my: 2,
+          position: 'sticky',
+          bottom: 0,
+        }}>
+          <Input
+            value={messageContent}
+            className='w-full p-1'
+            placeholder='Type your message here ...'
+            onKeyPress={(e) => e.key === 'Enter' && onSendMessage()}
+            onChange={(e) => setMessageContent(e.target.value)}
+            endDecorator={<IconButton onClick={onSendMessage} aria-label="Send message">
+              <SendIcon />
+            </IconButton>}
+            sx={{
+              borderRadius: '1.5em', boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)' /* Slight drop shadow */
+            }}
+          />
+        </Box>
+
+      </Box >
     </>
   )
 }

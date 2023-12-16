@@ -17,6 +17,7 @@ function AddMedicine({ prescriptionId }) {
     dosage: 0,
     frequency: "",
     duration: "",
+    quantity: 0,
   });
   if (isFetching) {
     return <LoadingIndicator />;
@@ -48,18 +49,25 @@ function AddMedicine({ prescriptionId }) {
       medicineData.medicineName === "" ||
       medicineData.dosage === 0 ||
       medicineData.frequency === "" ||
-      medicineData.duration === ""
+      medicineData.duration === "" ||
+      medicineData.quantity === 0
     ) {
       return;
     }
     console.log(medicineData);
-    await addMedInPres({ ...medicineData, prescriptionId, dosage: parseInt(medicineData.dosage) });
+    await addMedInPres({
+      ...medicineData,
+      prescriptionId,
+      dosage: parseInt(medicineData.dosage),
+      quantity: parseInt(medicineData.quantity),
+    });
     setMedicineData({
       medicineName: "",
       medicineId: "",
       dosage: 0,
       frequency: "",
       duration: "",
+      quantity: 0,
     });
     handleClose();
 
@@ -106,6 +114,7 @@ function AddMedicine({ prescriptionId }) {
                 <TextField
                   label="Dosage"
                   name="dosage"
+                  type="number"
                   value={medicineData.dosage}
                   onChange={handleInputChange}
                   sx={{ mb: 2, width: "100%" }}
@@ -121,6 +130,14 @@ function AddMedicine({ prescriptionId }) {
                   label="Duration"
                   name="Duration"
                   value={medicineData.duration}
+                  onChange={handleInputChange}
+                  sx={{ mb: 2, width: "100%" }}
+                />
+                <TextField
+                  label="Quantity"
+                  name="quantity"
+                  type="number"
+                  value={medicineData.quantity}
                   onChange={handleInputChange}
                   sx={{ mb: 2, width: "100%" }}
                 />

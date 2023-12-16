@@ -53,22 +53,24 @@ export default function NotificationCard({content, formattedDate, sender, recipi
                 <Box className="mr-10">
                     
                     {title}
-                  <Typography level="body-lg" aria-describedby="card-description" mb={1}>
-                    {content}
-                  </Typography>
+                  <Box className="">
+                    <Typography level="body-md" aria-describedby="card-description" mb={1}>
+                      {content}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
     
             </Box>
     
-            <Divider sx={{ marginBottom: 1 }} />
+            <Divider sx={{ marginBottom: 0.5 }} />
 
             <Box className="w-full flex justify-end">
               <Typography
                 level="body-md"
                 aria-describedby="card-description"
               >
-                {formattedDate.replace(",", " -")}
+                {formattedDate.includes(",") ? formattedDate.replace(",", " -") : formattedDate}
               </Typography>
             </Box>
     

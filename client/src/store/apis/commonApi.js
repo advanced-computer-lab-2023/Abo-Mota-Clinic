@@ -27,9 +27,9 @@ const commonApi = createApi({
       }),
 
       sendMessage: builder.mutation({
-        // invalidatesTags: (result, error, p) => {
-        //   return [{ type: "Package", id: p._id }];
-        // },
+        invalidatesTags: (result, error, p) => {
+          return ["contactsDetails"];
+        },
         query: (data) => {
           return {
             url: "/message",
@@ -47,6 +47,9 @@ const commonApi = createApi({
         //   tags.push({ type: "Package", id: 123 });
         //   return tags;
         // },
+        providesTags: (result, error, recipient) => {
+          return ["messages"];
+        },
 
         query: (recipient) => {
           return {
@@ -65,7 +68,11 @@ const commonApi = createApi({
         },
       }),
 
-      fetchContacts: builder.query({
+      fetchContactsDetails: builder.query({
+        providesTags: (result, error, contactIds) => {
+          return ["contactsDetails"];
+        },
+
         query: () => {
           return {
             url: `/contacts`,
@@ -75,7 +82,7 @@ const commonApi = createApi({
       }),
 
       sendNotification: builder.mutation({
-    
+
         query: (data) => {
           return {
             url: "/notification",
@@ -86,7 +93,6 @@ const commonApi = createApi({
       }),
 
       fetchNotification: builder.query({
-
         query: () => {
           return {
             url: "/notifications",
@@ -96,12 +102,34 @@ const commonApi = createApi({
       }),
 
       sendEmail: builder.mutation({
-
         query: (data) => {
           return {
             url: "/send-email",
             body: data,
             method: "POST",
+          };
+        },
+      }),
+
+      invalidateMessages: builder.mutation({
+        invalidatesTags: (result, error, p) => {
+          return ["messages"];
+        },
+
+        query: (data) => {
+          return {
+            url: "/nil",
+            method: "POST",
+          };
+        },
+      }),
+
+      fetchUser: builder.query({
+        query: (data) => {
+          return {
+            url: `/user`,
+            body: data,
+            method: "GET",
           };
         },
       }),
@@ -114,10 +142,12 @@ export const {
   useSendMessageMutation,
   useFetchMessagesQuery,
   useFetchRecipientQuery,
-  useFetchContactsQuery,
+  useFetchContactsDetailsQuery,
   useSendNotificationMutation,
   useFetchNotificationQuery,
   useSendEmailMutation,
+  useInvalidateMessagesMutation,
+  useFetchUserQuery,
 } = commonApi;
 
 export { commonApi };

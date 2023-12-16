@@ -9,8 +9,10 @@ import FormLabel from '@mui/joy/FormLabel';
 import FormControl from '@mui/joy/FormControl';
 import { blue } from '@mui/material/colors';
 import { useAddFreeSlotsMutation } from '../../store';
+import { useNavigate } from "react-router-dom";
 
 function FreeSlotsAppointments() {
+  const navigate = useNavigate();
   const [date, setDate] = useState(null); 
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
@@ -40,6 +42,10 @@ function FreeSlotsAppointments() {
     setDate(null);
     setStartTime("");
     setEndTime("");
+
+    setTimeout(() => {
+      navigate("/doctor/");
+    }, 1500);
   };
 
   const handleDateChange = (e) => {
