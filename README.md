@@ -273,9 +273,10 @@ We welcome contributions that help enhance the features and functionalities of t
 Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made with the MERN stack. Abo Mota Clinic aims to easily connect patients to high quality healthcare professionals, as well as provide an opportunity for doctors of all disciplines to practice their craft and communicate constantly with their patients to offer the best online healthcare experience possible.
 ## Build Status
 - The project is currently in development.
-- The project needs to be deployed through services.
+- The project needs to be deployed through cloud services.
 - The project needs a robust unit test suite made with frameworks such as Jest. 
 - A message broker needs to be added to the application to handle asynchronous tasks such as sending emails and notifications.
+- Adding types to complex parts in the codebase by transitioning to Typescript.
 ## Code Style
 - [Eslint](https://eslint.org/docs/latest/user-guide/getting-started) : in the backend and the frontend to write the most optimum clean code possible and to define rules for the team to be able to write code in the same code style
 - [Prettier](https://prettier.io/) : it is a code formatter that runs automatically before each commit on the whole code so that the codes looks well formatted across the whole project
