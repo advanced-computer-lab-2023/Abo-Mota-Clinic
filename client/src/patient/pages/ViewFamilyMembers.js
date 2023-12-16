@@ -293,7 +293,24 @@ export default function ViewFamilyMembers() {
                 </Select>
               </FormControl>
 
-              <Button loading={isAdding} sx={{ gridColumn: "1/-1" }} type="submit">
+              <Button
+                loading={isAdding}
+                sx={{ gridColumn: "1/-1" }}
+                type="submit"
+                disabled={
+                  formState.name === null ||
+                  formState.nationalId === null ||
+                  formState.age === null ||
+                  formState.confirmPassword === null ||
+                  formState.password === null ||
+                  formState.username === null ||
+                  formState.phoneNumber === null ||
+                  formState.dateOfBirth === null ||
+                  formState.email === null ||
+                  formState.gender === null ||
+                  formState.relationToPatient === null
+                }
+              >
                 Submit
               </Button>
             </Stack>
