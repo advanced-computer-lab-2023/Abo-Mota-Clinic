@@ -24,6 +24,7 @@ import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
+import Notifications from "./shared/pages/Notifications";
 
 import Chat from "./patient/components/Chat";
 import ViewPatientFamilyAppointments from "./patient/pages/ViewPatientFamilyAppointments";
@@ -50,6 +51,7 @@ import LandingPage from "./shared/pages/LandingPage/LandingPage";
 
 import io from "socket.io-client";
 import VideoChat from "./shared/pages/VideoChat/VideoChat";
+import PrescriptionPaymentWrapper from "./patient/pages/PrescriptionPaymentWrapper";
 // Socket.io
 const socket = io.connect("http://localhost:5000");
 
@@ -71,6 +73,7 @@ function App() {
             />
             <Route path="doctors" element={<ViewDoctors socket={socket} />} />
             <Route path="prescriptions" element={<ViewPrescriptions />} />
+            <Route path="prescriptions/:idx" element={<PrescriptionPaymentWrapper />} />
             <Route path="familyMembers" element={<ViewFamilyMembers />} />
             <Route path="test" element={<PatientTest />} />
             <Route path="doctors/info/:id/" element={<ViewDoctorProfile />} />
@@ -85,6 +88,7 @@ function App() {
             <Route path="chat/:recipient" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Route>
 
@@ -111,6 +115,7 @@ function App() {
             />
             <Route path="followUpRequests" element={<ViewFollowUpRequests />} />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute roles={["admin"]} />}>

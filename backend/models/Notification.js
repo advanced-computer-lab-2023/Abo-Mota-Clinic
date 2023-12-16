@@ -12,7 +12,9 @@ const notificationSchema = new Schema({
     userType: String,
   },
   date: Date,
-});
+},
+{ toJSON: { virtuals: true } }
+);
 
 const options = {
   year: "numeric",

@@ -5,11 +5,12 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useFetchStripeConfigQuery, useCreatePaymentIntentMutation } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 
-function Payment({ deductible, onSuccess, onFailure, socket, doctor, details, selectedUser }) {
+function Payment({ deductible, onSuccess, onFailure, selectedUser }) {
   const currencyMultiplier = 100;
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState(null);
 
+  
   const [createPaymentIntent, results] = useCreatePaymentIntentMutation();
   const { data: config, isFetching, error } = useFetchStripeConfigQuery();
 
@@ -41,9 +42,6 @@ function Payment({ deductible, onSuccess, onFailure, socket, doctor, details, se
           onSuccess={onSuccess}
           onFailure={onFailure}
           selectedUser={selectedUser}
-          socket={socket}
-          doctor={doctor}
-          details={details}
         />
       </Elements>
     </>
