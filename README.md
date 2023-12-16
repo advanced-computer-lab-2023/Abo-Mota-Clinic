@@ -1272,6 +1272,196 @@ Please adhere to this project's `code of conduct`.
   | `oldPassword`  | string | Old password of current admin|
   | `newPassword`  | string | New password of current admin|
 
+### Doctor Routes
+#### Get Doctor Profile
+- **Endpoint**: `GET /api/doctor`
+- **Description**: Retrieve the profile of the currently logged in doctor
+- **Controller**: `getDoctorProfile`
+  - Returns doctor user object
+
+#### Edit Account details
+- **Endpoint**: `PATCH /api/doctor`
+- **Description**: Edit email, rate or affiliation
+- **Controller**: `editDetails`
+  - Updates logged in doctor's email, rate and affiliation
+- **Body Parameters**:
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `email`       | string | New email of logged in doctor|
+  | `rate`        | number | New rate of logged in doctor|
+  | `affiliation` | string | New affiliation of logged in doctor|
+#### Get Doctor's Appointments
+- **Endpoint**: `GET /api/doctor/appointments`
+- **Description**: Retrieve all appointments of currently logged in doctor
+- **Controller**: `getDoctorAppointments`
+  - Returns array of all logged in doctor's appointment objects
+#### Get Doctor's patients
+- **Endpoint**: `GET /api/doctor/patients`
+- **Description**: Retrieve all patients who have or have had appointments with the logged in doctor
+- **Controller**: `getDoctorPatients`
+  - Retrieves an array of objects containing all patients who have had or appointments with the logged in doctor
+#### Upload Health Record
+- **Endpoint**: `POST /api/doctor/uploadHealthRecord`
+- **Description**: Upload health records of a certain patient
+- **Controller**: `uploadHealthRecords`
+  - Uploads health record file for a given patient
+- **Body Paramaters**:
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `username`       | string | Username of patient we wish to upload health record to|
+  | `healthRecord`   | file   | Health record file we wish to upload|
+#### Change Password
+- **Endpoint**: `PATCH /api/doctor/changePassword`
+- **Description**: Changes current logged in doctor's password
+- **Controller**: `changePassword`
+  - Edit password in logged in doctor's account
+- **Body Parameters**:
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `oldPassword`       | string | Current password of logged in doctor|
+  | `newPassword`   | string     | Requested new password|
+#### Add Free Appointment Slots
+- **Endpoint**: `POST /api/doctor/addFreeAppointmentSlots`
+- **Description**: Create free appointments slots for logged in doctor
+- **Controller**: `addFreeAppointmentSlots`
+  - Creates free appointments slots based on doctor's requester
+- **Body Parameters**:
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `date`   | date | Date of the appointments slots|
+  | `startTime`| string | Starting time of first appointment slot |
+  | `endTime`  | string | End time of last appointment slot|
+  | `appointmentDuration`| number | Duration of each appointment slot in minutes|
+  | `buffer`| number | Time between each appointment slot in minutes|
+#### Accept Contract
+- **Endpoint**: `PATCH /api/doctor/acceptContract`
+- **Description**: Accept contract offer from platform to logged in doctor
+- **Controller**: `acceptContract`
+  - Sets contract to approved in logged in doctor's account
+#### Schedule Follow Up Appointment
+ - **Endpoint**: `POST /api/doctor/scheduleFollowUp`
+ - **Description**: Schedule follow up appointment for a given patient
+ - **Controller**: `scheduleFollowUp`
+    - Creates a follow up appointment for a given patient
+ - **Body Parameters**
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `patientUsername` | string | Follow up appointment's patient |
+  | `followUpDate`| date | Date and time of the appointment |
+
+#### View Wallet
+ - **Endpoint**: `GET /api/doctor/wallet`
+ - **Description**: Retrieves balance in wallet of logged in doctor
+ - **Controller**: `viewWallet`
+    - Returns amount in logged in doctor's wallet
+#### Get All Medicines
+ - **Endpoint**: `GET /api/doctor/medicines`
+ - **Description**: Retrieves all medicines that are or were available in the pharmacy
+- **Controller**: `getAllMedicines`
+  - Returns an array of all medicine objects
+#### Get Prescriptions
+- **Endpoint**: `GET /api/doctor/prescriptions`
+- **Description**: Retrieves all prescriptions written by logged in doctor belonging to a specific patient
+- **Controller**: `viewPrescriptions`
+  - Returns all prescriptions belonging to patient specified in query parameters
+- **Query Parameters**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `patientId` | string | ObjectID of patient document we wish to retrieve       prescriptions for |
+#### Reschedule Patient Appointment
+- **Endpoint**: `POST /api/doctor/rescheduleAppointment`
+- **Description**: Change the date and time of a specific patients appointment
+- **Controller**: `reschedulePatientAppointment`
+  - Changes the date and time of a given appointment
+- **Body Parameters**:
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `appointmentId` | string | ObjectID of appointment we wish reschedule |
+  | `newDate`| date | Date and time we wish to reschedule appointment to|
+
+#### Cancel Appointment
+- **Endpoint**: `PATCH /api/doctor/cancelAppointments`
+- **Description**: Cancels a given appointment belonging to the logged in doctor
+- **Controller**: `cancelAppointment`
+  - Cancels a specific appointment
+- **Body Parameters**:
+  | Parameter | Type     | Description                  |
+  |-----------|--------  |------------------------------|
+  | `appointmentID` | string | ObjectID of appointment to be cancelled |
+
+#### Add Medicine To Prescription
+- **Endpoint**: `PATCH /api/doctor/addMedToPrescription`
+- **Description**: Adds a given medicine and its usage information to a patient's prescription
+- **Controller**: `addMedicineToPrescription`
+  - Adds a medicine to a patient's prescription
+- **Body Parameters**:
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `prescriptionId`   | string | ObjectID of prescription document to be edited|
+  | `medicineName`| string | Name of the medicine to be added |
+  | `dosage`  | number | Dosage of the medicine to be added |
+  | `frequency`| string | How frequently patient should consume the medicine|
+  | `duration`| string | How long the patient should take the medicine|
+#### Delete Medicine From Prescription
+- **Endpoint**: `PATCH /api/doctor/deleteMedFromPrescription`
+- **Description**: Deletes a given medicine from a patient's prescription
+- **Controller**: `deleteMedicineFromPrescription`
+  - Deletes a medicine by given name from the prescription
+- **Body Parameters**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `prescriptionId` | string | ObjectID of prescription we wish to delete from |
+  | `medicineName`| string | Name of medicine we wish to delete|
+#### Update Medicine in Prescription
+- **Endpoint**: `PATCH /api/doctor/updateMedInPrescription`
+- **Description**: Edits medicine details within a given prescription
+- **Controller**: `updateMedicineInPrescription`
+  - Updates the details of a given medicine within a patient's prescription
+- **Body Parameters**:
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `prescriptionId`   | string | ObjectID of prescription document to be edited|
+  | `name`| string | Name of the medicine to be edited |
+  | `dosage`  | number | Dosage of the medicine |
+  | `frequency`| string | How frequently patient should consume the medicine|
+  | `duration`| string | How long the patient should take the medicine|
+#### Add Prescriptions
+- **Endpoint**: `POST /api/doctor/addPrescription`
+- **Description**: Upload prescription to Database
+- **Controller**: ``addPrescription`
+  - Creates prescription document with given body parameters
+- **Body Parameters**:
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `medicines` | array | Array of objects representing medicine and consumption details|
+  | `description`| string | Descriptions or extra reminders written by the doctor in the prescription|
+  | `patient` | string | ObjectID of patient who owns this prescription |
+#### Update Prescription Description
+  - **Endpoint**: `PATCH /api/doctor/updateDescription`
+  - **Description**: Edit description within a patient's prescription
+  - **Controller**: `updatePrescriptionDesc`
+    - Changes description within a prescription document
+  - **Body Paramaters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `description` | string | Description in prescription document |
+    | `prescriptionId`| string | ObjectID of prescription to be edited|
+#### Get Follow Up Requests
+- **Endpoint**: `GET /api/doctor/followUps`
+- **Description**: Retrieves follow up requests sent by patients of the logged in doctor
+- **Controller**: `getFollowUpRequests`
+  - Retrieves follow up documents of a certain patient and with the logged in doctor's ID
+#### Handle Follow Up Request
+- **Endpoint**: `POST /api/doctor/handleFollowUp`
+- **Description**: Accept or revoke an incoming follow up request sent by a patient to the logged in docto
+- **Controller**: `handleFollowUpRequest`
+  - Deletes or accepts follow up request document and schedules new appointment if accepted
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `followUpId` | string | Follow up request ObjectId |
+    | `choice`| string | The choice of the doctor, can be either "accept" or "revoke"|
+
 
 ## Credits
 
