@@ -1472,6 +1472,221 @@ Please adhere to this project's `code of conduct`.
     | `followUpId` | string | Follow up request ObjectId |
     | `choice`| string | The choice of the doctor, can be either "accept" or "revoke"|
 
+### Patient Routes
+
+#### Get Logged In Patient
+- **Endpoint**: `GET /api/patient/`
+- **Description**: Retrieves logged in patient information
+- **Controller**: `getPatient`
+  - Fetches logged in patient's account object
+#### Get Logged In Patient's Prescriptions
+- **Endpoint**: `GET api/patient/prescriptions`
+- **Description**: Retrieves all prescriptions belonging to logged in patient
+- **Controller**: `getPrescriptions`
+  - Returns array of prescriptions belonging to the logged in patient
+#### Get Family Members
+- **Endpoint**: `GET /api/patient/family`
+- **Description**: Retrieves all family members linked to logged in patient
+- **Controller**: `getFamilyMembers`
+  - Returns array of family members along with their relation to the logged in patient
+#### Add Family Members
+- **Endpoint**: `POST /api/patient/family`
+- **Description**: Register logged in patient's family member on the platform
+- **Controller**: `addFamilyMember`
+  - Registers a family member to the platform and links them to the logged in patient
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `name` | string | Name of family  member |
+    | `email`| string | Email of family member|
+    | `nationalId`| string | National ID of family member|
+    | `age`| number | Age of family member|
+    | `gender`| string | Gender of the family member, either "male" or "female"|
+    | `relationToPatient`| string | Relation to the logged in patient, either "wife", "husband" or "child"|
+    | `phoneNumber`| string | Family Member's phone number|
+    | `username`| string | Family member's username|
+    | `password`| string | Family member's password|
+    | `dob`| date | Family member's date of birth|
+#### Get Doctors
+- **Endpoint**: `GET /api/patient/doctors`
+- **Description**: Retrieve all approved doctor on the platform
+- **Controller**: `getDoctors`
+  - Returns an array of all doctors on the platform who have been approved and accepted their contract
+#### Get Appointments
+- **Endpoint**: `GET /api/patient/appointments`
+- **Description**: Retrieve all logged in patient's appointments
+- **Controller**: `getAppointments`
+  - Returns an array of all appointments belonging to the logged in patient
+#### Upload Medical History
+- **Endpoint**: `POST /api/patient/uploadMedicalHistory`
+- **Description**: Upload medical history file to logged in patient's account
+- **Controller**: `uploadMedicalHistory`
+  - Uploads medical history file to patient's document in Database
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `medicalHistory` | file | Medical history file |
+#### Delete Medical History
+- **Endpoint**: `PATCH /api/patient/deleteMedicalHistory/:id`
+- **Description**: Deletes a specific medical history file from account of logged in patient
+- **Controller**: `deleteMedicalHistory`
+  - Deletes medical history based on id passed in Params
+- **Path Parameters (Params)**
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `id` | string | Medical history file identifier |
+#### Change Password
+- **Endpoint**: `PATCH /api/patient/changePassword`
+- **Description**: Change password of logged in patient
+- **Controller**: `changePassword`
+  - Edits password of logged in patient and restores hashed version in Database
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `oldPassword` | string | Current logged in patient's password |
+    | `newPassword` | string | New password |
+#### Get all Health Packages
+- **Endpoint**: `GET /api/patient/packages`
+- **Description**: Retrieves all available health packages on the platform
+- **Controller**: `getPackages`
+  - Returns an array of all activated packages on the platform
+#### Get Available Appointments
+- **Endpoint**: `GET /api/patient/availableAppointments`
+- **Description**: Retrieves all available appointments belonging to a certain doctor based on the query string
+- **Controller**: `getAvailableAppointment`
+  - Uses doctorId in query string to retrieve all available appointments of that doctor
+- **Query Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `doctorId` | string | ObjectId of a specific doctor in the database |
+#### Link Family Member
+- **Endpoint**: `POST /api/patient/linkFamily`
+- **Description**: Link a family member's account to the logged in patient's account
+- **Controller**: `linkFamilyMember`
+  - Links family member's account to patient's and vice versa 
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `email` | string | Email of family member (Either this or mobile) |
+    | `mobile` | string| Phone Number of family member (Either this or email) |
+    | `relationToPatient` | string | Family member's relation to patient, either "wife", "husband" or "child" |
+#### Pay by wallet
+- **Endpoint**: `POST /api/patient/payWallet`
+- **Description**: Subtracts deductible amount from logged in patient's wallet
+- **Controller**: `payByWallet`
+  - Decrements wallet balance of logged in patient by deductible in body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `deductible` | number | Amount to be deducted from logged in patient's wallet |
+#### Credit Doctor
+- **Endpoint**: `PATCH /api/patient/creditDoctor`
+- **Description**: Credit doctor's wallet with credit amount in body
+- **Controller**: `creditDoctor`
+  - Credits a given doctor's wallet depending on the id in the body
+- **Body Parameters**: 
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `doctor_id` | string | ObjectId of doctor to credit |
+    | `credit`    | number       | Amount to add to doctor's wallet|
+#### Subscribe to health package
+- **Endpoint**: `POST /api/patient/subscribe`
+- **Description**: Subscribes receiver patient to a specific health package
+- **Controller**: `subscribeToHealthPackage`
+  - Subscribes a specific patient to a health package depending on the receiver ID passed in the body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `_id` | string | ObjectId of package we wish to subscribe to |
+    | `receiverId` | string | ObjectID of patient who will receive the health package | 
+#### Get My Health Package
+- **Endpoint**: `GET /api/patient/myPackage`
+- **Description**: Retrieves logged in patient's subscribed health package if it exists
+- **Controller**: `getMyPackage`
+  - Returns logged in patient's subscribed health package information
+#### Get Family Member's Health Packages
+- **Endpoint**: `GET /api/patient/familyPackages`
+- **Description**: Retrieves all family members' subscribed health packages
+- **Controller**: `getFamilyPackages`
+  - Retrieves an array of all logged in patient's family members and their subscribed packages 
+#### Book Appointment
+- **Endpoint**: `POST /api/patient/bookAppointment`
+- **Description**: Book an appointment for the patient who's username is given in the body
+- **Controller**: `bookAppointment`
+  - Updates selected appointment with patient ID of the patient whose username is in the body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `username` | string | Username of patient we wish to book an appointment for |
+    | `appointmentId`    | string| ObjectID of appointment we wish to book|
+    | `price` | number | Final price patient will pay for the appointment|
+#### Get Wallet
+- **Endpoint**: `GET /api/patient/wallet`
+- **Description**: Retrieves wallet balance of logged in Patient
+- **Controller**: `viewWallet`
+  - Returns balance in logged in patient's wallet
+#### Cancel My Subscription
+- **Endpoint**: `POST /api/patient/cancelMySub`
+- **Description**: Cancels logged in patient's health package subscription
+- **Controller**: `selfCancelSubscription`
+  - Cancels logged in patients' health package and removes all privileges
+#### Cancel Family Members' Subscription
+- **Endpoint**: `POST /api/patient/cancelFamilySub`
+- **Description**: Cancels a given family member's health package subscription
+- **Controller**: `familyCancelSubscription`
+  - Cancels a given family member's subscribed package depending on the username provided in the body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `familyMemberUsername` | string | Username of family member to cancel subscription for |
+#### Unsubscribe from package
+- **Endpoint**: `POST /api/patient/unsubscribe`
+- **Description**: Unsubscribes patient from package but does not remove privileges until expirty date
+- **Controller**: `packageUnsubscribe`
+  - Unsubscribes logged in patient from health package but does not revoke priviliges
+#### Reschedule Appointment
+- **Endpoint**: `PATCH /api/patient/rescheduleAppointment`
+- **Description**: Reschedules appointment by setting an available appointment's patient to the logged in patient ID, and also frees up the old appointment
+- **Controller**: `rescheduleAppointment`
+  - Sets another appointment's patient to the currently logged in patient's ID and frees up the old rescheduled appointment to be booked by someone else
+- **Body Parameters**
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `oldAppointmentId` | string | Original appointment ID|
+    | `newAppointmentId`    | string| Appointment ID patient wishes to reschedule to|
+#### Cancel Appointment
+- **Endpoint**: `PATCH /api/patient/cancelAppointment`
+- **Description**: Cancels appointment belonging to the logged in user
+- **Controller**: `cancelAppointment`
+  - Sets appointment status to cancelled depending on the appointment ID provided in the body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `appointmentId` | string | ID of appointment we wish to cancel|
+#### Request Follow Up
+- **Endpoint**: `POST /api/patient/followUp`
+- **Description**: Sends a follow up appointment request to a doctor
+- **Controller**: `requestFollowUp`
+  - Given the old appointment Id, sends a follow up appointment request with the new appointment identifier
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `oldAppointmentId` | string | Patient's original appointment ID|
+    | `newAppointmentId`    | string| Appointment ID patient wishes to follow up with|
+#### Get Family Member Appointments
+- **Endpoint**: `GET /api/patient/familyAppointments`
+- **Description**: Retrieves all upcoming or rescheduled family member appointments
+- **Controller**: `getFamilyMemberAppointments`
+  - Returns an array of all upcoming or rescheduled appointments belonging to logged in patient's
+#### Order Prescription
+- **Endpoint**: `POST /api/patient/prescription`
+- **Description**: Orders medicines in patient's prescriptions from pharmacy platform
+- **Controller**: `orderPrescription`
+  - Creates an order in the pharmacy with the contents of the logged in patient's prescription
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `prescriptionId` | string | ObjectId of prescription we wish to order |
 
 ## Credits
 
