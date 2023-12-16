@@ -18,7 +18,7 @@ function PatientHome() {
   } else {
     content = (
       <Box className="">
-        <Typography level="h2" fontWeight={400} className="mt-3">
+        <Typography level="h2" fontWeight={400} className="mt-3 text-blue-600">
           Welcome, {data.name}!
         </Typography>
         <Divider/>
@@ -33,7 +33,7 @@ function PatientHome() {
     
     <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundColor: 'rgba(0, 60, 130, 0.5)' }}></div>
     
-    <Box className="absolute font-semibold text-lg text-center">
+    <Box className="absolute font-semibold text-lg text-center text-blue-600">
       {content} 
     </Box>
   <div className="flex flex-row justify-center mt-5">

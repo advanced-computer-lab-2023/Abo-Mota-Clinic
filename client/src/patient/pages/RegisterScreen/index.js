@@ -9,10 +9,8 @@ import Header from "../../../shared/Components/Header";
 import { Formik } from "formik";
 import LoadingIndicator from "../../../shared/Components/LoadingIndicator";
 import DropDown from "../../../shared/Components/DropDown";
-import { login, useRegisterPatientMutation } from "../../../store";
+import { useRegisterPatientMutation } from "../../../store";
 import { useNavigate } from "react-router-dom";
-import NavBar from "../../../shared/Components/NavBar";
-import { navBarItems } from "../../navBarItems";
 import { useDispatch } from "react-redux";
 import FormErrorDialog from "../../../shared/Components/FormErrorDialog";
 const RegisterScreen = () => {

@@ -3,7 +3,6 @@ import Patient from "./patient/Patient";
 import Doctor from "./doctor/Doctor";
 import Admin from "./admin/Admin";
 import HomePage from "./HomePage";
-import NavBar from "./shared/Components/NavBar";
 
 // Admin
 import Packages from "./admin/pages/Packages";
@@ -24,6 +23,7 @@ import AppointmentStepper from "./patient/pages/AppointmentStepper";
 import Subscription from "./patient/pages/Subscription";
 import PaymentPage from "./patient/pages/PaymentPage";
 import PackagePaymentWrapper from "./patient/pages/PackagePaymentWrapper";
+import Notifications from "./shared/pages/Notifications";
 
 import Chat from "./patient/components/Chat";
 import ViewPatientFamilyAppointments from "./patient/pages/ViewPatientFamilyAppointments";
@@ -87,6 +87,7 @@ function App() {
             <Route path="chat/:recipient?" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Route>
 
@@ -113,6 +114,7 @@ function App() {
             />
             <Route path="followUpRequests" element={<ViewFollowUpRequests />} />
             <Route path="wallet" element={<ViewWallet isPatient={false} />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute roles={["admin"]} />}>
