@@ -1,4 +1,4 @@
-
+<!--
 <div id="top"></div>
 
 
@@ -258,8 +258,13 @@ We welcome contributions that help enhance the features and functionalities of t
 - The software is open source under the Apache 2.0 License.
 
 - The Stripe is licensed under the Apache License 2.0
+-->
+
+
+
+
  
-<!--  # Abo Mota Clinic
+ # Abo Mota Clinic
 
 
 
@@ -341,6 +346,307 @@ See `contributing.md` for ways to get started.
 Please adhere to this project's `code of conduct`.
 
 
+## API Reference
+
+### Guest Routes
+
+#### Register Patient
+- **Endpoint**: `POST /api/guest/registerPatient`
+- **Description**: Registers a new patient.
+- **Controller**: `registerPatient`
+    - Handles patient registration.
+
+  | Parameter   | Type   | Description    |
+  |-------------|--------|----------------|
+  | `name`      | string | Patient's name |
+  | `username`  | string | User's username|
+  | `nationalId`| string | National ID    |
+  | `password`  | string | Account password|
+  | `email`     | string | Email address  |
+  | `dob`       | date   | Date of Birth  |
+  | `mobile`    | number | Phone Number |
+  | `gender`    | string | Gender (male or female) |
+   | `emergencyContact.name`        | string | Emergency contact's name       |
+  | `emergencyContact.mobile`      | string | Emergency contact's mobile     |
+  | `emergencyContact.relation`    | string | Relation to emergency contact  |
+
+#### Register Doctor
+- **Endpoint**: `POST /api/guest/registerDoctor`
+- **Description**: Registers a new doctor with file uploads for credentials.
+- **Controller**: `registerDoctor`
+  - Manages doctor registration and file uploads.
+  | Parameter   | Type   | Description       |
+  |-------------|--------|-------------------|
+  | `name`      | string | Patient's name |
+  | `username`  | string | User's username|
+  | `nationalId`| file | National ID File |
+  | `password`  | string | Account password|
+  | `email`     | string | Email address  |
+  | `dob`       | date   | Date of Birth  |
+  | `specialty` | string | Specialty like (heart, etc.)|
+  | `educationalBackground` | string | Educational Background|
+  | `affiliation` | string | Affiliation of Dr. |
+  | `specialty` | string | Specialty of Dr. |
+  | `mobile`    | number | Phone Number |
+  | `gender`    | string | Gender (male or female) |
+  | `medicalLicense`| file| Medical license file|
+  | `medicalDegree`| file | Medical degree file|
+
+#### Request OTP
+- **Endpoint**: `POST /api/guest/otp`
+- **Description**: Requests a new OTP for password reset.
+- **Controller**: `requestOtp`
+  -  Requests OTP for password reset..
+  | Parameter   | Type   | Description    |
+  |-------------|--------|----------------|
+  | `email`     | string | Email address  |
+
+#### Forgot Password
+- **Endpoint**: `POST /api/guest/forgotPassword`
+- **Description**: Reset forgotten passwords.
+- **Controller**: `forgotPassword`
+  -  Resets forgotten passwords.
+
+  | Parameter   | Type   | Description    |
+  |-------------|--------|----------------|
+  | `email`     | string | Email address  |
+  | `otp`       | string | OTP code       |
+  | `newPassword`| string| New password   |
+
+#### Login
+- **Endpoint**: `POST /api/guest/login`
+- **Description**: Authenticates a user and logs them in.
+- **Controller**: `login`
+  -  Handles user login.
+
+  | Parameter   | Type   | Description    |
+  |-------------|--------|----------------|
+  | `username`  | string | User's username|
+  | `password`  | string | Account password|
+
+#### Logout
+- **Endpoint**: `POST /api/guest/logout`
+- **Description**: Logs out the current user.
+- **Controller**: `logout`
+  -  Logs out the user.
+
+
+
+
+### Stripe Routes
+
+#### Get Configurations
+- **Endpoint**: `GET /config`
+- **Description**: Retrieves Stripe configuration details.
+- **Controller**: `config`
+  - Returns Stripe publishable key.
+
+#### Create Payment Intent
+- **Endpoint**: `POST /create-payment-intent`
+- **Description**: Creates a new payment intent for Stripe transactions.
+- **Controller**: `createPaymentIntent`
+    - Stripe Payment Intent Creation.
+
+  | Parameter     | Type   | Description               |
+  |---------------|--------|---------------------------|
+  | `beneficiary` | string | Description of beneficiary|
+  | `amount`      | number | Transaction amount in USD |
+
+
+### Common Routes (Notifications and Messages)
+
+#### Get Messages
+- **Endpoint**: `GET /message`
+- **Description**: Retrieves messages for a user and certain recipient.
+- **Controller**: `getMessages`
+  - Retrieves user-specific messages based on username and recipient. 
+- **Query Parameters**: 
+  | Parameter    | Type   | Description              |
+  |--------------|--------|--------------------------|
+  | `recipient`  | string | Id of the recipient|
+
+#### Send Message
+- **Endpoint**: `POST /message`
+- **Description**: Sends a new message.
+- **Controller**: `sendMessage`
+  - Sends messages from users, storing sender and recipient info.
+- **Body Parameters**: 
+  | Parameter    | Type   | Description              |
+  |--------------|--------|--------------------------|
+  | `content`    | string | Message content          |
+  | `recipient`  | string | Id of the recipient|
+
+#### Get Notifications
+- **Endpoint**: `GET /notifications`
+- **Description**: Retrieves notifications for a user.
+- **Controller**: `getNotifications`
+  - Retrieves all notifications for a user.
+
+#### Send Notification
+- **Endpoint**: `POST /notification`
+- **Description**: Sends a new notification.
+- **Controller**: `sendNotification`
+  - Creates and sends notifications to specified recipients.
+- **Body Parameters**: 
+  | Parameter         | Type   |Description               |
+  |-------------------|--------|---------------------------|
+  | `recipientUsername`| string | Recipient's username      |
+  | `recipientType`   | string | Recipient's user type     |
+  | `content`         | string | Notification content      |
+
+#### Send Email Notification
+- **Endpoint**: `POST /send-email`
+- **Description**: Sends an email notification.
+- **Controller**: `sendEmailNotif`
+  - Sends email notifications using external email service.
+- **Body Parameters**: 
+  | Parameter    | Type   | Description               |
+  |--------------|--------|---------------------------|
+  | `email`      | string | Recipient email address   |
+  | `subject`    | string | Email subject             |
+  | `text`       | string | Email body text           |
+
+#### Get Logged In User
+- **Endpoint**: `GET /loggedIn`
+- **Description**: Retrieves information of the logged-in user.
+- **Controller**: `getLoggedIn`
+  - Retrieves currently logged-in user's details.
+
+#### Get Recipient
+- **Endpoint**: `GET /recipient`
+- **Description**: Retrieves recipient details.
+- **Controller**: `getRecipient`
+  - Fetches details of a specified recipient based on ID.
+- **Query Parameters**: 
+  | Parameter    | Type   | Description               |
+  |--------------|--------|---------------------------|
+  | `recipientId`| string | ID of the recipient       |
+
+#### Get Contacted Users
+- **Endpoint**: `GET /contacts`
+- **Description**: Retrieves users that have been contacted.
+- **Controller**: `getContactedUsers`
+  - Retrieves users that have been in contact with the requester.
+
+
+### Admin Routes
+
+#### Get Packages
+- **Endpoint**: `GET /packages`
+- **Description**: Fetches available health packages.
+- **Controller**: `getPackages`
+  - Retrieves all active health packages.
+#### Update Package
+- **Endpoint**: `PATCH /packages/:id`
+- **Description**: Modifies an existing package.
+- **Controller**: `updatePackage`
+  - Updates specific health package details.
+- **Path Parameters (Params)**: 
+  | Parameter | Type   | Description         |
+  |-----------|--------|---------------------|
+  | `id`      | string | Package identifier  |
+
+#### Add Package
+- **Endpoint**: `POST /packages`
+- **Description**: Creates a new package.
+- **Controller**: `addPackage`
+  - Adds a new health package.
+#### Delete Package
+- **Endpoint**: `DELETE /packages/:id`
+- **Description**: Deactivates a package.
+- **Controller**: `deletePackage`
+  - Soft deletes a health package.
+- **Path Parameters (Params)**: 
+  | Parameter | Type   | Description         |
+  |-----------|--------|---------------------|
+  | `id`      | string | Package identifier  |
+
+#### Get Applications
+- **Endpoint**: `GET /applications`
+- **Description**: Retrieves all pending doctor applications.
+- **Controller**: `getApplications`
+  - Fetches all pending doctor applications.
+
+#### View Application Info
+- **Endpoint**: `GET /applications/:id`
+- **Description**: Fetches details of a pending doctor application.
+- **Controller**: `getApplicationInfo`
+  - Views specific pending doctor application details.
+- **Path Parameters (Params)**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `id`      | string | Doctor identifier       |
+
+#### Handle Application
+- **Endpoint**: `PATCH /applications/:id`
+- **Description**: Manages a doctor application.
+- **Controller**: `handleApplication`
+  - Approves or rejects doctor applications.
+- **Path Parameters (Params)**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `id`      | string | Application identifier       |
+- **Body Parameters**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `registrationStatus` | string | status of doctor's application|
+
+
+#### Add Admin
+- **Endpoint**: `POST /admins`
+- **Description**: Creates an admin account.
+- **Controller**: `addAdmin`
+  - Registers a new admin user.
+- **Body Parameters**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `username`      | string | Username of added admin |
+  | `password`      | string | Password of added admin|
+  | `email`      | string | Email of added admin|
+
+
+#### Delete Admin
+- **Endpoint**: `DELETE /admins`
+- **Description**: Deletes an admin user.
+- **Controller**: `deleteAdmin`
+  - Removes an admin user.
+- **Body Parameters**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `username`  | string | Username of removed admin|
+
+#### Delete Doctor
+- **Endpoint**: `DELETE /doctors`
+- **Description**: Deletes an approved doctor user.
+- **Controller**: `deleteDoctor`
+  - Removes an approved doctor user.
+- **Body Parameters**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `username`  | string |Username of removed doctor|
+  
+#### Delete Patient
+- **Endpoint**: `DELETE /patients`
+- **Description**: Deletes a patient user.
+- **Controller**: `deletePatient`
+  - Removes a patient user.
+- **Body Parameters**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `username`  | string |Username of removed patient|
+  
+
+#### Change Password
+- **Endpoint**: `PATCH /changePassword`
+- **Description**: Updates logged in admin's password.
+- **Controller**: `changePassword`
+  - Changes admin user's password.
+- **Body Parameters**: 
+  | Parameter | Type   | Description                  |
+  |-----------|--------|------------------------------|
+  | `oldPassword`  | string | Old password of current admin|
+  | `newPassword`  | string | New password of current admin|
+
 ## Credits
 
 - [Mongoose docs](https://mongoosejs.com/docs/)
@@ -364,4 +670,4 @@ Please adhere to this project's `code of conduct`.
 Portions of this software utilize Stripe, which is licensed under the Apache License 2.0. You can find the details of this license [here](https://www.apache.org/licenses/LICENSE-2.0).
 
 The rest of the software is open source and licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/).
- -->
+
