@@ -19,21 +19,19 @@ import {
 import { useEffect, useState } from 'react';
 import formatAppointments from "../functions/AppointmentsAdjustment";
 
-import reschedule_img from "../../shared/assets/reschedule_img.jpg";
 import dayjs from "dayjs";
 
 
-function RescheduleModal({ doctorId, isRescheduleModalOpen, setIsRescheduleModalOpen, oldAppointmentId }) {
+function RescheduleModal({ doctorId, isModalOpen, setIsModalOpen, oldAppointmentId, onConfirm, placeholderImage, placeholderText, title, subtitle }) {
 
   const { data: appointments, isFetching: isFetchingAppointments, isError: isErrorAppointments } = useFetchAvailableAppointmentsQuery(doctorId);
-  const [rescheduleAppointment] = usePatientRescheduleAppointmentMutation();
+  // const [rescheduleAppointment] = usePatientRescheduleAppointmentMutation();
 
   const [timings, setTimings] = useState([]);
   const [date, setDate] = useState(null);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
 
-  // console.log("timings", timings);
-  // const [date, setDate] = useState(null);
+
 
   if (isFetchingAppointments)
     return <div> Loading </div>;
@@ -43,10 +41,10 @@ function RescheduleModal({ doctorId, isRescheduleModalOpen, setIsRescheduleModal
   const handleRescheduleClick = () => {
     const body = {
       oldAppointmentId,
-      newAppointmentId: selectedAppointmentId
+      newAppointmentId: selectedAppointmentId,
     }
 
-    rescheduleAppointment(body);
+    onConfirm(body);
 
     // TODO: ADD FEEDBACK
 
@@ -67,7 +65,7 @@ function RescheduleModal({ doctorId, isRescheduleModalOpen, setIsRescheduleModal
   };
 
   const onModalClose = () => {
-    setIsRescheduleModalOpen(false);
+    setIsModalOpen(false);
     setSelectedAppointmentId(null);
     setTimings([]);
     setDate(null);
@@ -81,27 +79,20 @@ function RescheduleModal({ doctorId, isRescheduleModalOpen, setIsRescheduleModal
 
 
   return (
-    <Modal open={isRescheduleModalOpen} onClose={onModalClose}>
+    <Modal open={isModalOpen} onClose={onModalClose}>
       <ModalDialog sx={{ overflowY: "auto", maxHeight: "90vh" }}>
-        <ModalClose onClick={() => setIsRescheduleModalOpen(false)} />
-        <DialogTitle>Reschedule your apppointment</DialogTitle>
-        <DialogContent>Pick a new date for your appointment from the date picker below.</DialogContent>
+        <ModalClose onClick={() => setIsModalOpen(false)} />
+        <DialogTitle>{title}</DialogTitle>
+        <DialogContent>{subtitle}</DialogContent>
         <form>
           <Box>
             <Box className="flex">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <StaticDatePicker
-                  // value={dayjs(date, { format: "MM/DD/YYYY" })}
                   shouldDisableDate={shouldDisableDate}
                   onChange={handleDateChange}
                   slots={{ actionBar: () => <></> }}
-                  // slotProps={{
-                  //   actionBar: {
-                  //     actions: ['today'],
-                  //   },
-                  // }}
                   disablePast
-                // orientation="landscape"
                 />
               </LocalizationProvider>
 
@@ -112,12 +103,12 @@ function RescheduleModal({ doctorId, isRescheduleModalOpen, setIsRescheduleModal
                   ? (
                     <Box className="flex flex-grow justify-center items-center">
                       <Box className="flex flex-col justify-center items-center">
-                        <img src={reschedule_img} alt="reschedule" style={{ marginRight: 5, marginLeft: 5, height: '13em' }} />
+                        {placeholderImage}
                         <Typography level="body-xs">
-                          Rescheduling isn't always a bad thing!
+                          {placeholderText}
                         </Typography>
                       </Box>
-                    </Box>
+                    </Box >
                   )
                   : (
                     <Box

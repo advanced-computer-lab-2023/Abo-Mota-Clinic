@@ -4,6 +4,9 @@ const Appointment = require("../models/Appointment");
 const Prescription = require("../models/Prescription");
 const HealthPackage = require("../models/HealthPackage");
 const FollowUp = require("../models/FollowUp");
+const PharmacyPatient = require("../models/PharmacyPatient");
+const Medicine = require("../models/Medicine");
+const Order = require("../models/Order");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const mongoose = require("mongoose");
@@ -1006,11 +1009,14 @@ function isWithin24Hours(date1, date2) {
 const cancelAppointment = async (req, res) => {
 	try {
 		const { appointmentId } = req.body;
+
 		const appointment = await Appointment.findOne({ _id: appointmentId });
+
 		const cancelAppointment = await Appointment.updateOne(
 			{ _id: appointmentId },
 			{ status: "cancelled" }
 		);
+
 		const currentDate = new Date(Date.now());
 		if (!isWithin24Hours(currentDate, appointment.date)) {
 			const refundPatient = await Patient.updateOne(
@@ -1022,6 +1028,15 @@ const cancelAppointment = async (req, res) => {
 				{ $inc: { wallet: -appointment.pricePaid } }
 			);
 		}
+
+		const freedUpAppointment = await Appointment.create({
+			doctor: appointment.doctor,
+			date: appointment.date,
+			status: "unbooked",
+			patient: null,
+			pricePaid: null,
+		});
+
 		res.status(200).json(cancelAppointment);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
@@ -1054,20 +1069,114 @@ const getFamilyMemberAppointments = async (req, res) => {
 
 const requestFollowUp = async (req, res) => {
 	try {
-		const { patientId, doctorId, oldDate, followUpDate } = req.body;
+
+		const { oldAppointmentId, newAppointmentId } = req.body;
+
 		const oldAppointment = await Appointment.findOne({
-			patient: patientId,
-			doctor: doctorId,
-			date: oldDate,
+			_id: oldAppointmentId,
 		});
+
+		const newAppointment = await Appointment.findOne({
+			_id: newAppointmentId,
+		});
+
 		const followUp = await FollowUp.create({
-			date: followUpDate,
-			oldDate,
-			patient: patientId,
-			doctor: doctorId,
+			date: newAppointment.date,
+			oldDate: oldAppointment.date,
+			patient: oldAppointment.patient,
+			doctor: oldAppointment.doctor,
 			pricePaid: oldAppointment.pricePaid,
 		});
+
 		res.status(200).json(followUp);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
+// panadol: sales => 10, quantity => 199
+// novaldol: sales => 1, quantity => 99
+// status: filled
+// order created with id: 657cc57937fa4e59139bb9e8
+// presc id: 657b89886061ff3761a1115e
+
+//TODO: fix images
+const orderPrescription = async (req, res) => {
+	try {
+		const username = req.userData.username;
+		const { prescriptionId } = req.body;
+		const pharmacyPatient = await PharmacyPatient.findOne({ username });
+
+		const clinicPatient = await Patient.findOne({ username }).populate(
+			"healthPackage.package"
+		);
+		const prescription = await Prescription.findOne({ _id: prescriptionId }).populate([
+			{
+				path: "medicines.medicine",
+				model: "Medicine",
+			}]);
+
+		const medicines = prescription.medicines;
+
+
+		let totalPrice = 0;
+
+		medicines.forEach((prescriptionItem) => {
+			// medicine is sold out, throw error (can only buy prescription if all its medicines are available)
+
+			if (prescriptionItem.quantity > prescriptionItem.medicine.quantity) {
+				throw new Error("Not enough quantity of medicine in stock");
+			}
+
+			totalPrice += prescriptionItem.medicine.price * prescriptionItem.quantity;
+		});
+
+		if (
+			clinicPatient &&
+			(clinicPatient.healthPackage.status === "subscribed" ||
+				clinicPatient.healthPackage.status === "unsubscribed")
+		) {
+			totalPrice *= 1 - clinicPatient.healthPackage.pharmacyDiscount;
+		}
+
+		const updatedMedicines = medicines.map(async (prescriptionItem) => {
+			const dbMedicine = await Medicine.findOne({ name: prescriptionItem.medicine.name });
+
+			if (!dbMedicine) throw new Error("This medicine does not exist");
+
+			const updatedMedicine = await Medicine.updateOne(
+				{ _id: dbMedicine._id },
+				{
+					sales: dbMedicine.sales + prescriptionItem.quantity,
+					quantity: dbMedicine.quantity - prescriptionItem.quantity,
+				}
+			);
+		});
+
+		const updatedPrescription = await Prescription.updateOne(
+			{ _id: prescriptionId },
+			{ status: "filled" }
+		);
+
+		const orderMedicines = medicines.map((prescriptionItem) => {
+			const { quantity, medicine: { name, price, medicineImage } } = prescriptionItem;
+
+			return {
+				name,
+				price,
+				medicineImage,
+				quantity,
+			};
+		});
+
+		const order = await Order.create({
+			medicines: orderMedicines,
+			date: new Date(),
+			patient: pharmacyPatient._id,
+			totalPrice,
+		});
+
+		res.status(200).json({ order, updatedMedicines });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -1100,4 +1209,5 @@ module.exports = {
 	cancelAppointment,
 	requestFollowUp,
 	getFamilyMemberAppointments,
+	orderPrescription,
 };

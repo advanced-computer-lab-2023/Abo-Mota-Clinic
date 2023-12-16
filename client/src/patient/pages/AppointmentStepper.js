@@ -44,10 +44,11 @@ export default function AppointmentStepper({ step = 0, socket }) {
   const [selectedUser, setSelectedUser] = useState(-1);
 
   const {
-    data: doctor,
+    data: doctors,
     isFetching: isFetchingDoctor,
     error: isFetchingDoctorError,
   } = useFetchDoctorsQuery();
+
   const {
     data: patient,
     isFetching: isFetchingPatient,
@@ -76,7 +77,7 @@ export default function AppointmentStepper({ step = 0, socket }) {
   } else if (isFetchingDoctorError || isFetchingPatientError) {
     return <div> Error ... </div>;
   }
-  const { name, specialty, affiliation, rate } = doctor[id];
+  const { name, specialty, affiliation, rate } = doctors[id];
   const deductible = !(
     patient.healthPackage.package === null || patient.healthPackage.package === undefined
   )
@@ -178,6 +179,7 @@ export default function AppointmentStepper({ step = 0, socket }) {
       });
     },
   };
+  
   const payment = <PaymentPage {...config} socket={socket} />;
 
   const review = (

@@ -90,8 +90,7 @@ io.on("connection", (socket) => {
       socket.to(recipientSocketId).emit("receive_message", message);
     }
 
-    // forward to listening recipients
-    // io.to(room).emit("receive_message", message);
+
   });
 
   //----------------------

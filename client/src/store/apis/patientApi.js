@@ -28,6 +28,10 @@ const patientApi = createApi({
       }),
 
       fetchPatientAppointments: builder.query({
+        providesTags: (result, error) => {
+          return ["patientAppointments"];
+        },
+
         query: (patient_id) => {
           return {
             url: "/appointments/",
@@ -121,7 +125,14 @@ const patientApi = createApi({
           };
         },
       }),
+
       fetchAvailableAppointments: builder.query({
+        providesTags: (result, error, doctorId) => {
+          return [
+            "doctorAppointments"
+          ];
+        },
+
         query: (doctorId) => {
           return {
             url: "/availableAppointments",
@@ -144,6 +155,11 @@ const patientApi = createApi({
       }),
 
       payByWallet: builder.mutation({
+        invalidatesTags: (result, error, data) => {
+          return [
+            "patientAppointments"
+          ];
+        },
         query: (data) => {
           return {
             url: "/payWallet",
@@ -179,6 +195,10 @@ const patientApi = createApi({
         },
       }),
       bookAppointment: builder.mutation({
+        invalidatesTags: (result, error, data) => {
+          return ["doctorAppointments"];
+        },
+
         query: (data) => {
           return {
             url: "/bookAppointment",
@@ -286,6 +306,10 @@ const patientApi = createApi({
       }),
 
       patientRescheduleAppointment: builder.mutation({
+        invalidatesTags: (result, error, data) => {
+          return ["patientAppointments"];
+        },
+
         query: (data) => {
           return {
             url: "/rescheduleAppointment",
@@ -303,6 +327,41 @@ const patientApi = createApi({
           };
         },
       }),
+
+      patientCancelAppointment: builder.mutation({
+        invalidatesTags: (result, error, data) => {
+          return ["patientAppointments"];
+        },
+
+        query: (data) => {
+          return {
+            url: "/cancelAppointment",
+            method: "PATCH",
+            body: data,
+          };
+        },
+      }),
+
+      requestFollowUp: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/followUp",
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
+
+      orderPrescription: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/prescription",
+            method: "POST",
+            body: data,
+          };
+        },
+      }),
+
     };
   },
 });
@@ -331,7 +390,9 @@ export const {
   useChangePatientPasswordMutation,
   usePatientRescheduleAppointmentMutation,
   useFetchFamilyMemberAppointmentsQuery,
-
+  usePatientCancelAppointmentMutation,
+  useRequestFollowUpMutation,
+  useOrderPrescriptionMutation,
 } = patientApi;
 
 export { patientApi };
