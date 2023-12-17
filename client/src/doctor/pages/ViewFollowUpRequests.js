@@ -94,7 +94,7 @@ function ViewFollowUpRequests() {
   return (
     <div className="mx-auto w-full mr-2">
       {!isFetching && (
-        <div className="ml-20 flex flex-col space-y-4 ">
+        <div className="ml-20 flex flex-col space-y-4 mr-20">
           <div className="flex justify-between items-center space-x-4 w-full mt-10">
             <RangePicker onChange={handleDateRange} format={"MM/DD/YYYY"} />
 

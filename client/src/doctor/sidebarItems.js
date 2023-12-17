@@ -1,5 +1,5 @@
 import Avatar from "@mui/joy/Avatar";
-import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet, FaHome } from "react-icons/fa";
+import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet, FaHome, FaCalendarAlt } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 
 const items = [
@@ -38,6 +38,12 @@ const items = [
     icon: <FaCodePullRequest />,
     label: 'Follow Up Requests',
     to: 'followUpRequests',
+  },
+  {
+    key: '6',
+    icon: <FaCalendarAlt />,
+    label: 'Add Free Slots',
+    to: 'FreeSlotsAppointments',
   },
 ];
 

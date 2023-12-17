@@ -49,9 +49,6 @@ function ViewDoctorAppointments({ socket }) {
       return same || inRange;
     });
   }
-  const navigateToFreeSlots = () => {
-    navigate("/doctor/FreeSlotsAppointments");
-  };
 
   filteredAppointments = filteredAppointments.filter((appointment) => {
     const name = appointment.patient.name.toLowerCase();
@@ -77,7 +74,7 @@ function ViewDoctorAppointments({ socket }) {
   return (
     <div className="mx-auto">
       {!isFetching && (
-        <div className="ml-20 flex flex-col space-y-4 ">
+        <div className="ml-20 flex flex-col space-y-4 mr-20">
           <div className="flex justify-between items-center space-x-4 w-full mt-10">
             <RangePicker onChange={handleDateRange} format={"MM/DD/YYYY"} />
 
@@ -105,16 +102,6 @@ function ViewDoctorAppointments({ socket }) {
               onChange={(value) => setSearchTerm(value)}
             />
 
-            {/* Button to navigate to Free Slots Appointments */}
-            <Button
-              variant="solid"
-              sx={{
-                alignSelf: "center",
-              }}
-              onClick={navigateToFreeSlots}
-            >
-              Modify Free Slots
-            </Button>
           </div>
 
           {renderedAppointments}

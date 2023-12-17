@@ -1,5 +1,6 @@
 const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor");
+const Admin = require("../models/Admin");
 const Message = require("../models/Message");
 const Notification = require("../models/Notification");
 const sendEmail = require("../utils/sendEmail");
@@ -151,7 +152,7 @@ const getLoggedIn = async (req, res) => {
       user = await Doctor.findOne({ username });
 
     if (userType.toLowerCase() === 'admin')
-      user = await Doctor.findOne({ username });
+      user = await Admin.findOne({ username });
 
     res.status(200).json(user);
   } catch (error) {
