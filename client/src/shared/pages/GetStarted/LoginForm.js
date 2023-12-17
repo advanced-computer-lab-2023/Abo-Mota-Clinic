@@ -12,7 +12,7 @@ import OtpScreen from "../OtpScreen";
 import { useDispatch } from "react-redux";
 import FormErrorDialog from "../../Components/FormErrorDialog";
 import Button from "../../Components/Button";
-
+import Toast from "../../../patient/components/Toast";
 
 
 export default function LoginForm(){
@@ -24,9 +24,30 @@ export default function LoginForm(){
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [isError, setIsError] = useState(false);
+    
+    const [toast, setToast] = useState({
+      open: false,
+      duration: 4000,
+    });
+
+    const onToastClose = (event, reason) => {
+      if (reason === "clickaway") return;
+  
+      setToast({
+        ...toast,
+        open: false,
+      });
+    };
+
     useEffect(() => {
         if (results.isError) {
-          setIsError(true);
+          // setIsError(true);
+          setToast({
+            ...toast,
+            open: true,
+            color: "danger",
+            message: "Invalid username or password",
+          });
         }
       }, [results]);
 
@@ -139,12 +160,17 @@ return (
         email={email}
       />
     )}
-    <FormErrorDialog
+    {/* <FormErrorDialog
       isError={isError}
       setClose={() => {
         setIsError(false);
       }}
-    />
+    /> */}
+
+      <div>
+        <Toast {...toast} onClose={onToastClose} />
+      </div>    
+    
     </>
   );
 }
