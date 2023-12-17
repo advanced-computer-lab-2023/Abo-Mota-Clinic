@@ -1773,6 +1773,49 @@ pm.test("Email is in a valid format", function () {
 ```
 </details>
 
+<details>
+   <summary>
+      Example Testing Get Family Members
+   </summary>
+
+   ```javascript
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+pm.test("Content type is application/json", function () {
+    pm.expect(pm.response.headers.get("Content-Type")).to.include("application/json");
+});
+
+pm.test("Emergency contact object is present in the response", function () {
+    const responseData = pm.response.json();
+    
+    pm.expect(responseData).to.be.an('array').that.is.not.empty;
+    responseData.forEach(function(patient) {
+        pm.expect(patient.emergencyContact).to.exist;
+    });
+});
+
+pm.test("HealthPackage object is present with required fields", function () {
+    const responseData = pm.response.json();
+    
+    pm.expect(responseData).to.be.an('array').that.is.not.empty;
+    
+    responseData.forEach(function(patient) {
+        pm.expect(patient.healthPackage).to.exist;
+        pm.expect(patient.healthPackage.status).to.exist;
+        pm.expect(patient.healthPackage.package).to.exist;
+        pm.expect(patient.healthPackage.endDate).to.exist;
+        pm.expect(patient.healthPackage.pricePaid).to.exist;
+    });
+});
+
+
+```
+</details>
+
 ## How to use
 #### Start the client:
  ```bash
