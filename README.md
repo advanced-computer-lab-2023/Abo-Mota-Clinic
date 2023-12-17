@@ -348,6 +348,7 @@ Patient
 <img width="1000" alt="login" src="./screenshots/patient/hp.png">
 <img width="1000" alt="login" src="./screenshots/patient/presc1.png">
 <img width="1000" alt="login" src="./screenshots/patient/presc2.png">
+</details>
 
 <details>
 <summary>
