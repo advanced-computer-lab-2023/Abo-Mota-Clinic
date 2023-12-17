@@ -18,6 +18,7 @@ const commonRouter = require("./routes/common");
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const axios = require("axios");
 
 const io = new Server(server, {
   cors: {
@@ -39,38 +40,38 @@ io.on("connection", (socket) => {
 
   //----------Notifications----------------//
 
-  socket.on("send_notification_booked", ({receiver, contentDoctor, contentPatient}) => {
+  socket.on("send_notification_booked", ({ receiver, contentDoctor, contentPatient }) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    socket.to(receiverSocket).emit("receive_notification_booked", {contentDoctor});
-    io.to(socket.id).emit("receive_notification_booked", {contentPatient}); // send notification to sender as well
+    socket.to(receiverSocket).emit("receive_notification_booked", { contentDoctor });
+    io.to(socket.id).emit("receive_notification_booked", { contentPatient }); // send notification to sender as well
 
   });
 
-  socket.on("send_notification_cancelled_by_patient", ({receiver, contentDoctor, contentPatient}) => {
+  socket.on("send_notification_cancelled_by_patient", ({ receiver, contentDoctor, contentPatient }) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    socket.to(receiverSocket).emit("receive_notification_cancelled_by_patient", {contentDoctor});
-    io.to(socket.id).emit("receive_notification_cancelled_by_patient", {contentPatient}); // send notification to sender as well
+    socket.to(receiverSocket).emit("receive_notification_cancelled_by_patient", { contentDoctor });
+    io.to(socket.id).emit("receive_notification_cancelled_by_patient", { contentPatient }); // send notification to sender as well
 
   });
 
-  socket.on("send_notification_rescheduled_by_patient", ({receiver, contentDoctor, contentPatient}) => {
+  socket.on("send_notification_rescheduled_by_patient", ({ receiver, contentDoctor, contentPatient }) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    socket.to(receiverSocket).emit("receive_notification_rescheduled_by_patient", {contentDoctor});
-    io.to(socket.id).emit("receive_notification_rescheduled_by_patient", {contentPatient}); // send notification to sender as well
+    socket.to(receiverSocket).emit("receive_notification_rescheduled_by_patient", { contentDoctor });
+    io.to(socket.id).emit("receive_notification_rescheduled_by_patient", { contentPatient }); // send notification to sender as well
 
   });
 
-  socket.on("send_notification_cancelled_by_doctor", ({receiver, contentDoctor, contentPatient}) => {
+  socket.on("send_notification_cancelled_by_doctor", ({ receiver, contentDoctor, contentPatient }) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    socket.to(receiverSocket).emit("receive_notification_cancelled_by_doctor", {contentPatient});
-    io.to(socket.id).emit("receive_notification_cancelled_by_doctor", {contentDoctor}); // send notification to sender as well
+    socket.to(receiverSocket).emit("receive_notification_cancelled_by_doctor", { contentPatient });
+    io.to(socket.id).emit("receive_notification_cancelled_by_doctor", { contentDoctor }); // send notification to sender as well
 
   });
 
-  socket.on("send_notification_rescheduled_by_doctor", ({receiver, contentDoctor, contentPatient}) => {
+  socket.on("send_notification_rescheduled_by_doctor", ({ receiver, contentDoctor, contentPatient }) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    socket.to(receiverSocket).emit("receive_notification_rescheduled_by_doctor", {contentPatient});
-    io.to(socket.id).emit("receive_notification_rescheduled_by_doctor", {contentDoctor}); // send notification to sender as well
+    socket.to(receiverSocket).emit("receive_notification_rescheduled_by_doctor", { contentPatient });
+    io.to(socket.id).emit("receive_notification_rescheduled_by_doctor", { contentDoctor }); // send notification to sender as well
 
   });
 
@@ -90,21 +91,39 @@ io.on("connection", (socket) => {
   //   console.log(`User with id ${socket.id} joined room ${data}`);
   // });
 
-  socket.on("send_message", async (message) => {
-    // add message to database
-    // await Message.create(message);
+  socket.on("send_message", async (data) => {
+    const {
+      message,
+      isRelayToPharmacy
+    } = data;
+
+    // const isRelayToPharmacy = true;
 
     const { sender, recipient } = message;
+
     const senderSocketId = activeUsers[sender];
-    const recipientSocketId = activeUsers[recipient];
-    
     io.to(senderSocketId).emit("receive_message", message);
 
-    if(recipientSocketId) {
+    if (isRelayToPharmacy)
+      await axios.post("http://localhost:8000/pharmaApi/relay", { message });
+
+    else {
+      const recipientSocketId = activeUsers[recipient];
+
+      if (recipientSocketId) {
+        socket.to(recipientSocketId).emit("receive_message", message);
+      }
+    }
+  });
+
+  app.post("/api/relay", (req, res) => {
+    const { message } = req.body;
+    const { recipient } = message;
+    const recipientSocketId = activeUsers[recipient];
+
+    if (recipientSocketId) {
       socket.to(recipientSocketId).emit("receive_message", message);
     }
-
-
   });
 
   //----------------------

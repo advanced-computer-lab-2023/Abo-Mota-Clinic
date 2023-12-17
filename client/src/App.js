@@ -104,7 +104,7 @@ function App() {
             <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
             <Route path="profile" element={<EditMyProfile />} />
-            <Route path="chat/:recipient" element={<Chat socket={socket} />} />
+            <Route path="chat/:recipient?" element={<Chat socket={socket} />} />
             <Route path="registerForm" element={<RegisterForm />} />
             <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
             <Route path="patients/patientInfo/:idx/video" element={<VideoChat />} />

@@ -5,12 +5,17 @@ const messageSchema = new Schema({
   content: String,
   sender: {
     type: Schema.Types.ObjectId,
-    ref: "ClinicPatient",
+  },
+  actualSender: {
+    type: Schema.Types.ObjectId,
+    default: function () {
+      return this.sender;
+    },
   },
   recipient: {
     type: Schema.Types.ObjectId,
-    ref: "Doctor",
   },
+  recipientType: String,
   date: Date,
 });
 
