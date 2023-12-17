@@ -84,6 +84,7 @@ export default function AppointmentCard({ appointment, socket }) {
 
     //send socket event to backend
     socket.emit("send_notification_cancelled_by_doctor", {
+      sender: appointment.doctor.name,
       receiver: appointment.patient._id,
       contentDoctor: `Your appointment with ${
         appointment.patient.name
@@ -139,6 +140,7 @@ export default function AppointmentCard({ appointment, socket }) {
 
     //send socket event to backend
     socket.emit("send_notification_rescheduled_by_doctor", {
+      sender: appointment.doctor.name,
       receiver: appointment.patient._id,
       contentDoctor: `Your appointment with ${
         appointment.patient.name

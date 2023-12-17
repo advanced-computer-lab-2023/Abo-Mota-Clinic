@@ -1,7 +1,7 @@
 import ChangePassword from "./ChangePassword";
 
 function PasswordSection({ patient }) {
-  return (<div className="mt-6">
+  return (<div className="mt-6 mr-16">
     <h3 className="text-lg font-medium text-gray-900">Password Settings</h3>
     <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200 mb-2">
       <div className="py-3 flex justify-between text-sm font-medium">

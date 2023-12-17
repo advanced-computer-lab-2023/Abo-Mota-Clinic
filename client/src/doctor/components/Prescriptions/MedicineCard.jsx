@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Button } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 
-const MedicineCard = ({ medicineName, dosage, frequency, duration, onClose }) => {
+const MedicineCard = ({ medicineName, dosage, frequency, duration, onClose, quantity }) => {
   return (
     <Card
       title={medicineName}
@@ -18,6 +18,9 @@ const MedicineCard = ({ medicineName, dosage, frequency, duration, onClose }) =>
       </p>
       <p>
         <b>Duration:</b> {duration}
+      </p>
+      <p>
+        <b>Quantity:</b> {quantity}
       </p>
     </Card>
   );

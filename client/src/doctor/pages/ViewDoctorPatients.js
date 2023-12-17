@@ -76,7 +76,7 @@ function ViewDoctorPatients() {
     <div>
       {isFetching && <div>Loading...</div>}
       {!isFetching && (
-        <div className="ml-20 flex flex-col space-y-4 ">
+        <div className="ml-20 flex flex-col space-y-4 mr-20 ">
           <div className="flex justify-between items-center space-x-4 w-full mt-10">
             <Button size="md" variant="soft" color="neutral" onClick={handleViewApp}>
               View Upcoming Appointments

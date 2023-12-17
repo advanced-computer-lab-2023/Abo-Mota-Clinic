@@ -87,6 +87,7 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
 
     //send socket event to backend
     socket.emit("send_notification_cancelled_by_patient", {
+      sender: patient.name,
       receiver: doctor._id,
       contentDoctor: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got cancelled`,
       contentPatient: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',', ' at')} got cancelled`,
@@ -136,6 +137,7 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
 
     //send socket event to backend
     socket.emit("send_notification_rescheduled_by_patient", {
+      sender: patient.name,
       receiver: doctor._id,
       contentDoctor: `Your appointment with ${patient.name} on ${formattedDate.replace(',', ' at')} got rescheduled`,
       contentPatient: `Your appointment with Dr. ${doctor.name} on ${formattedDate.replace(',', ' at')} got rescheduled`,
