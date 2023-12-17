@@ -48,7 +48,7 @@ export default function Notifications(){
     }
 
     return(
-        <div className="ml-14 mt-4 mb-96">
+        <div className="ml-14 mt-4 mb-96 mr-14">
             <Typography level="h2" gutterBottom endDecorator={<BiBell />}>
                 Notifications 
             </Typography>

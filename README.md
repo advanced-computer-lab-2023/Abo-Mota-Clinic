@@ -280,6 +280,9 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 ## Code Style
 - [Eslint](https://eslint.org/docs/latest/user-guide/getting-started) : in the backend and the frontend to write the most optimum clean code possible and to define rules for the team to be able to write code in the same code style
 - [Prettier](https://prettier.io/) : it is a code formatter that runs automatically before each commit on the whole code so that the codes looks well formatted across the whole project
+
+## Screenshots
+
 ## Tech Stack
 <div align="center" >
    
@@ -340,13 +343,11 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - Reschedule an appointment.
 - Cancel an appointment.
 - Request a follow-up to a previous appointment.
-- View the amount in my wallet.
-- Chat with a doctor.
 - view all new and old prescriptions and their statuses (filled/ not filled)
 - view health package options and details
 - view subscribed health package  for myself and my family members (if any)
 - receive a notification of my appointment on the system and by mail 
-
+- Receive a refund in my wallet when an appointment is canceled.
 
 
 </details>
@@ -354,17 +355,13 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 <details>
 <summary>As a Doctor I can</summary>
 
-- Login and logout of the system.
-- Change my password and reset it via OTP.
 - Edit my email, hourly rate, or hospital affiliation.
 - View and accept the employment contract.
 - Add available time slots for appointments.
 - View information and health records of patients registered with me.
-- View all new and old prescriptions and their statuses.
 - Search for a patient by name.
 - Filter patients based on upcoming appointments.
 - Select a patient from the list.
-- Receive notifications of my appointments on the system and by mail.
 - Reschedule appointments for patients.
 - Schedule follow-up for a patient.
 - Add/delete medicine to/from the prescription from the pharmacy platform.
@@ -373,13 +370,9 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - Add a patient's prescription.
 - Update a patient's prescription before it's submitted to the pharmacy.
 - Accept or revoke a follow-up session request from a patient.
-- Chat with a patient.
 - view information and health records of patient registered with me
 - view a list of all my patients
-- view a list of all my upcoming / past appointments
-- filter appointments by date or status (upcoming, completed, cancelled, rescheduled)
-- cancel an appointment for myself or for a family member
-- receive a notification that my appointment is cancelled or rescheduled on the system and by mail 
+
 
 </details>
 
@@ -393,23 +386,30 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - Add/update/delete health packages with different price ranges.
 
 </details>
-
 <details>
-<summary>Common Features for Doctor/Patient/Administrator</summary>
-
-- Change my password.
-- Reset a forgotten password through OTP sent to email.
-- View a list of all available medicines including picture, price, and description.
-- Search for medicine based on name.
-- Filter medicines based on medicinal use.
+<summary>Common Features for Doctor/Patient</summary>
+   
 - View cart items and manage them.
+- view all new and old prescriptions and their statuses (filled/ not filled)
 - Pay directly for prescription items with wallet or credit card.
 - Download selected prescription (PDF).
 - Start/end a video call with the doctor/patient.
-- Receive a refund in my wallet when an appointment is canceled.
 - View the amount in my wallet.
 - Chat with a doctor/patient.
+- view a list of all my upcoming / past appointments
+- filter appointments by date or status.
+- cancel an appointment for myself or for a family member
+- receive a notification that my appointment is cancelled or rescheduled on the system and by mail
+- receive a notification of my appointment on the system and by mail 
+  
+</details>
 
+<details>
+<summary>Common Features for Doctor/Patient/Administrator</summary>
+   
+- Login and logout of the system.
+- Change my password.
+- Reset a forgotten password through OTP sent to email.
 </details>
 
 ## Code Examples
@@ -937,7 +937,6 @@ export default LoginForm;
 
 
 
-
 ## Installation
 
 ### Clone the repository:
@@ -959,31 +958,12 @@ export default LoginForm;
     npm install
 ```
     
-## How to use
-#### Start the client:
- ```bash
-cd client
-cd src
-npm start
-```
-The client server will run on http://localhost:3000.
-#### Start the server:
- ```bash
-cd backend
-nodemon server.js
- ```
-## Contributing
-
-Contributions are always welcome!
-
-See `contributing.md` for ways to get started.
-
-Please adhere to this project's `code of conduct`.
 
 
 ## API Reference
 
-### Guest Routes
+<details>
+<summary><h3>Guest Routes</h3></summary>
 
 #### Register Patient
 - **Endpoint**: `POST /api/guest/registerPatient`
@@ -1068,11 +1048,13 @@ Please adhere to this project's `code of conduct`.
   -  Logs out the user.
 
 
+</details>
 
 
-### Stripe Routes
-
-#### Get Configurations
+<details>
+   <summary><h3>Stripe Routes</h3></summary>
+   
+   #### Get Configurations
 - **Endpoint**: `GET /api/stripe/config`
 - **Description**: Retrieves Stripe configuration details.
 - **Controller**: `config`
@@ -1089,10 +1071,13 @@ Please adhere to this project's `code of conduct`.
   | `beneficiary` | string | Description of beneficiary|
   | `amount`      | number | Transaction amount in USD |
 
+</details>
 
-### Common Routes (Notifications and Messages)
 
-#### Get Messages
+<details>
+   <summary><h3>Common Routes (Notifications and Messages)</h1></summary>
+   
+   #### Get Messages
 - **Endpoint**: `GET /api/common/message`
 - **Description**: Retrieves messages for a user and certain recipient.
 - **Controller**: `getMessages`
@@ -1164,11 +1149,12 @@ Please adhere to this project's `code of conduct`.
 - **Description**: Retrieves users that have been contacted.
 - **Controller**: `getContactedUsers`
   - Retrieves users that have been in contact with the requester.
+</details>
 
-
-### Admin Routes
-
-#### Get Packages
+<details>
+   <summary><h3>Admin Routes</h3></summary>
+   
+   #### Get Packages
 - **Endpoint**: `GET /api/admin/packages`
 - **Description**: Fetches available health packages.
 - **Controller**: `getPackages`
@@ -1283,9 +1269,17 @@ Please adhere to this project's `code of conduct`.
   |-----------|--------|------------------------------|
   | `oldPassword`  | string | Old password of current admin|
   | `newPassword`  | string | New password of current admin|
+</details>
 
-### Doctor Routes
-#### Get Doctor Profile
+
+<details>
+   <summary>
+      <h3>
+         Doctor Routes
+      </h3>
+   </summary>
+   
+   #### Get Doctor Profile
 - **Endpoint**: `GET /api/doctor`
 - **Description**: Retrieve the profile of the currently logged in doctor
 - **Controller**: `getDoctorProfile`
@@ -1475,6 +1469,307 @@ Please adhere to this project's `code of conduct`.
     | `followUpId` | string | Follow up request ObjectId |
     | `choice`| string | The choice of the doctor, can be either "accept" or "revoke"|
 
+</details>
+
+<details>
+   <summary>
+      <h3>
+         Patient Routes
+      </h3>
+   </summary>
+   
+   #### Get Logged In Patient
+
+- **Endpoint**: `GET /api/patient/`
+- **Description**: Retrieves logged in patient information
+- **Controller**: `getPatient`
+  - Fetches logged in patient's account object
+#### Get Logged In Patient's Prescriptions
+- **Endpoint**: `GET api/patient/prescriptions`
+- **Description**: Retrieves all prescriptions belonging to logged in patient
+- **Controller**: `getPrescriptions`
+  - Returns array of prescriptions belonging to the logged in patient
+#### Get Family Members
+- **Endpoint**: `GET /api/patient/family`
+- **Description**: Retrieves all family members linked to logged in patient
+- **Controller**: `getFamilyMembers`
+  - Returns array of family members along with their relation to the logged in patient
+#### Add Family Members
+- **Endpoint**: `POST /api/patient/family`
+- **Description**: Register logged in patient's family member on the platform
+- **Controller**: `addFamilyMember`
+  - Registers a family member to the platform and links them to the logged in patient
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `name` | string | Name of family  member |
+    | `email`| string | Email of family member|
+    | `nationalId`| string | National ID of family member|
+    | `age`| number | Age of family member|
+    | `gender`| string | Gender of the family member, either "male" or "female"|
+    | `relationToPatient`| string | Relation to the logged in patient, either "wife", "husband" or "child"|
+    | `phoneNumber`| string | Family Member's phone number|
+    | `username`| string | Family member's username|
+    | `password`| string | Family member's password|
+    | `dob`| date | Family member's date of birth|
+#### Get Doctors
+- **Endpoint**: `GET /api/patient/doctors`
+- **Description**: Retrieve all approved doctor on the platform
+- **Controller**: `getDoctors`
+  - Returns an array of all doctors on the platform who have been approved and accepted their contract
+#### Get Appointments
+- **Endpoint**: `GET /api/patient/appointments`
+- **Description**: Retrieve all logged in patient's appointments
+- **Controller**: `getAppointments`
+  - Returns an array of all appointments belonging to the logged in patient
+#### Upload Medical History
+- **Endpoint**: `POST /api/patient/uploadMedicalHistory`
+- **Description**: Upload medical history file to logged in patient's account
+- **Controller**: `uploadMedicalHistory`
+  - Uploads medical history file to patient's document in Database
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `medicalHistory` | file | Medical history file |
+#### Delete Medical History
+- **Endpoint**: `PATCH /api/patient/deleteMedicalHistory/:id`
+- **Description**: Deletes a specific medical history file from account of logged in patient
+- **Controller**: `deleteMedicalHistory`
+  - Deletes medical history based on id passed in Params
+- **Path Parameters (Params)**
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `id` | string | Medical history file identifier |
+#### Change Password
+- **Endpoint**: `PATCH /api/patient/changePassword`
+- **Description**: Change password of logged in patient
+- **Controller**: `changePassword`
+  - Edits password of logged in patient and restores hashed version in Database
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `oldPassword` | string | Current logged in patient's password |
+    | `newPassword` | string | New password |
+#### Get all Health Packages
+- **Endpoint**: `GET /api/patient/packages`
+- **Description**: Retrieves all available health packages on the platform
+- **Controller**: `getPackages`
+  - Returns an array of all activated packages on the platform
+#### Get Available Appointments
+- **Endpoint**: `GET /api/patient/availableAppointments`
+- **Description**: Retrieves all available appointments belonging to a certain doctor based on the query string
+- **Controller**: `getAvailableAppointment`
+  - Uses doctorId in query string to retrieve all available appointments of that doctor
+- **Query Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `doctorId` | string | ObjectId of a specific doctor in the database |
+#### Link Family Member
+- **Endpoint**: `POST /api/patient/linkFamily`
+- **Description**: Link a family member's account to the logged in patient's account
+- **Controller**: `linkFamilyMember`
+  - Links family member's account to patient's and vice versa 
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `email` | string | Email of family member (Either this or mobile) |
+    | `mobile` | string| Phone Number of family member (Either this or email) |
+    | `relationToPatient` | string | Family member's relation to patient, either "wife", "husband" or "child" |
+#### Pay by wallet
+- **Endpoint**: `POST /api/patient/payWallet`
+- **Description**: Subtracts deductible amount from logged in patient's wallet
+- **Controller**: `payByWallet`
+  - Decrements wallet balance of logged in patient by deductible in body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `deductible` | number | Amount to be deducted from logged in patient's wallet |
+#### Credit Doctor
+- **Endpoint**: `PATCH /api/patient/creditDoctor`
+- **Description**: Credit doctor's wallet with credit amount in body
+- **Controller**: `creditDoctor`
+  - Credits a given doctor's wallet depending on the id in the body
+- **Body Parameters**: 
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `doctor_id` | string | ObjectId of doctor to credit |
+    | `credit`    | number       | Amount to add to doctor's wallet|
+#### Subscribe to health package
+- **Endpoint**: `POST /api/patient/subscribe`
+- **Description**: Subscribes receiver patient to a specific health package
+- **Controller**: `subscribeToHealthPackage`
+  - Subscribes a specific patient to a health package depending on the receiver ID passed in the body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `_id` | string | ObjectId of package we wish to subscribe to |
+    | `receiverId` | string | ObjectID of patient who will receive the health package | 
+#### Get My Health Package
+- **Endpoint**: `GET /api/patient/myPackage`
+- **Description**: Retrieves logged in patient's subscribed health package if it exists
+- **Controller**: `getMyPackage`
+  - Returns logged in patient's subscribed health package information
+#### Get Family Member's Health Packages
+- **Endpoint**: `GET /api/patient/familyPackages`
+- **Description**: Retrieves all family members' subscribed health packages
+- **Controller**: `getFamilyPackages`
+  - Retrieves an array of all logged in patient's family members and their subscribed packages 
+#### Book Appointment
+- **Endpoint**: `POST /api/patient/bookAppointment`
+- **Description**: Book an appointment for the patient who's username is given in the body
+- **Controller**: `bookAppointment`
+  - Updates selected appointment with patient ID of the patient whose username is in the body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `username` | string | Username of patient we wish to book an appointment for |
+    | `appointmentId`    | string| ObjectID of appointment we wish to book|
+    | `price` | number | Final price patient will pay for the appointment|
+#### Get Wallet
+- **Endpoint**: `GET /api/patient/wallet`
+- **Description**: Retrieves wallet balance of logged in Patient
+- **Controller**: `viewWallet`
+  - Returns balance in logged in patient's wallet
+#### Cancel My Subscription
+- **Endpoint**: `POST /api/patient/cancelMySub`
+- **Description**: Cancels logged in patient's health package subscription
+- **Controller**: `selfCancelSubscription`
+  - Cancels logged in patients' health package and removes all privileges
+#### Cancel Family Members' Subscription
+- **Endpoint**: `POST /api/patient/cancelFamilySub`
+- **Description**: Cancels a given family member's health package subscription
+- **Controller**: `familyCancelSubscription`
+  - Cancels a given family member's subscribed package depending on the username provided in the body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `familyMemberUsername` | string | Username of family member to cancel subscription for |
+#### Unsubscribe from package
+- **Endpoint**: `POST /api/patient/unsubscribe`
+- **Description**: Unsubscribes patient from package but does not remove privileges until expirty date
+- **Controller**: `packageUnsubscribe`
+  - Unsubscribes logged in patient from health package but does not revoke priviliges
+#### Reschedule Appointment
+- **Endpoint**: `PATCH /api/patient/rescheduleAppointment`
+- **Description**: Reschedules appointment by setting an available appointment's patient to the logged in patient ID, and also frees up the old appointment
+- **Controller**: `rescheduleAppointment`
+  - Sets another appointment's patient to the currently logged in patient's ID and frees up the old rescheduled appointment to be booked by someone else
+- **Body Parameters**
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `oldAppointmentId` | string | Original appointment ID|
+    | `newAppointmentId`    | string| Appointment ID patient wishes to reschedule to|
+#### Cancel Appointment
+- **Endpoint**: `PATCH /api/patient/cancelAppointment`
+- **Description**: Cancels appointment belonging to the logged in user
+- **Controller**: `cancelAppointment`
+  - Sets appointment status to cancelled depending on the appointment ID provided in the body
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `appointmentId` | string | ID of appointment we wish to cancel|
+#### Request Follow Up
+- **Endpoint**: `POST /api/patient/followUp`
+- **Description**: Sends a follow up appointment request to a doctor
+- **Controller**: `requestFollowUp`
+  - Given the old appointment Id, sends a follow up appointment request with the new appointment identifier
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `oldAppointmentId` | string | Patient's original appointment ID|
+    | `newAppointmentId`    | string| Appointment ID patient wishes to follow up with|
+#### Get Family Member Appointments
+- **Endpoint**: `GET /api/patient/familyAppointments`
+- **Description**: Retrieves all upcoming or rescheduled family member appointments
+- **Controller**: `getFamilyMemberAppointments`
+  - Returns an array of all upcoming or rescheduled appointments belonging to logged in patient's
+#### Order Prescription
+- **Endpoint**: `POST /api/patient/prescription`
+- **Description**: Orders medicines in patient's prescriptions from pharmacy platform
+- **Controller**: `orderPrescription`
+  - Creates an order in the pharmacy with the contents of the logged in patient's prescription
+- **Body Parameters**:
+    | Parameter | Type   | Description                  |
+    |-----------|--------|------------------------------|
+    | `prescriptionId` | string | ObjectId of prescription we wish to order |
+
+</details>
+
+## Testing
+The testing is done using `Postman`. 
+
+<details>
+
+<summary>
+   Example Testing get Packages
+</summary>
+
+```javascript
+
+pm.test("Response status code is 200", function () {
+    pm.expect(pm.response.code).to.equal(200);
+});
+
+
+pm.test("Prescriptions and appointments have valid date format", function () {
+    const responseData = pm.response.json();
+    
+    responseData.prescriptions.forEach(function(prescription) {
+…    const responseData = pm.response.json();
+    
+    pm.expect(responseData.prescriptions).to.be.an('array').and.to.have.lengthOf.at.least(0);
+    pm.expect(responseData.appointments).to.be.an('array').and.to.have.lengthOf.at.least(0);
+    pm.expect(responseData.familyMembers).to.be.an('array').and.to.have.lengthOf.at.least(0);
+});
+
+```
+</details>
+
+<details>
+
+<summary>
+   Example Testing Login
+</summary>
+
+```javascript
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+pm.test("Response has the required fields - message, token, and userType", function () {
+    const responseData = pm.response.json();
+
+    pm.expect(responseData).to.be.an('object');
+…
+  pm.expect(responseData.userType).to.be.oneOf(['admin', 'guest', 'customer']);
+});
+
+
+```
+</details>
+
+## How to use
+#### Start the client:
+ ```bash
+cd client
+cd src
+npm start
+```
+The client server will run on http://localhost:3000.
+#### Start the server:
+ ```bash
+cd backend
+nodemon server.js
+ ```
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
 
 ## Credits
 
