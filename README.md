@@ -7,13 +7,13 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 ## Build Status
 
 - The project is currently in development.
+- A CI/CD pipeline needs to be implemented.
 - The project needs to be deployed through cloud services.
 - The project needs a robust unit test suite made with frameworks such as Jest.
 - A message broker needs to be added to the application to handle asynchronous tasks such as sending emails and notifications.
 - Adding types to complex parts in the codebase by transitioning to Typescript.
 - Additional features are currently under development.
 - Form validation and additional loading indicators should be developed more strongly, uniformly, and in a reusable manner in the frontend.
-- A CI/CD pipeline needs to be implemented.
   
 ## Code Style
 
