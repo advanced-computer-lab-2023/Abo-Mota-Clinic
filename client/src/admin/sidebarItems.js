@@ -1,36 +1,27 @@
 import { FaBox, FaLaptop, FaUsers, FaKey, FaHome } from "react-icons/fa";
 
 export const items = [
+  
   {
-    key:"0",
-    icon:<FaHome/>,
-    label: 'Home',
-    to:'/admin'
-  }
-  ,{
-    key: "1",
+    key: "0",
     icon: <FaBox />,
     label: "Packages",
     to: "packages", // Assuming you're using react-router-dom for routing
   },
   {
-    key: "2",
+    key: "1",
     icon: <FaLaptop />,
     label: "Applications",
     to: "applications",
   },
   {
-    key: "3",
+    key: "2",
     icon: <FaUsers />,
     label: "Manage Users",
     to: "manageUsers",
   },
-  {
-    key: "4",
-    icon: <FaKey />,
-    label: "Change Password",
-    to: "changePassword",
-  },
+  
+    
 ];
 
 export default items;
