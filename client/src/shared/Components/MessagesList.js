@@ -1,9 +1,11 @@
 import * as React from 'react';
 import List from '@mui/material/List';
+import { Navigate } from 'react-router-dom';
 import { Typography as JoyTypography, Divider } from '@mui/joy';
 import MessageItem from './MessageItem';
 import Typography from '@mui/material/Typography';
 export default function MessagesList({messages}) {
+  const navigate = Navigate();
     
   let content = messages.map((message, index) => {
     return  <>
