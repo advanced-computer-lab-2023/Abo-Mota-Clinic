@@ -273,7 +273,8 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 - The project needs a robust unit test suite made with frameworks such as Jest.
 - A message broker needs to be added to the application to handle asynchronous tasks such as sending emails and notifications.
 - Adding types to complex parts in the codebase by transitioning to Typescript.
-
+- Additional features are currently under development.
+  
 ## Code Style
 
 - [Eslint](https://eslint.org/docs/latest/user-guide/getting-started) : in the backend and the frontend to write the most optimum clean code possible and to define rules for the team to be able to write code in the same code style
