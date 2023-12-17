@@ -291,9 +291,25 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 
 ### Login
 
+<img width="1000" alt="login" src="./screenshots/login/login.png">
+
 ### SignUp
 
+<img width="1000" alt="login" src="./screenshots/signup/s1.png">
+<img width="1000" alt="login" src="./screenshots/signup/s2.png">
+<img width="1000" alt="login" src="./screenshots/signup/s3.png">
+
 ### Doctor
+
+<img width="1000" alt="login" src="./screenshots/doctor/appointments.png">
+<img width="1000" alt="login" src="./screenshots/doctor/contract.png">
+<img width="1000" alt="login" src="./screenshots/doctor/d1.png">
+<img width="1000" alt="login" src="./screenshots/doctor/d2.png">
+<img width="1000" alt="login" src="./screenshots/doctor/followup.png">
+<img width="1000" alt="login" src="./screenshots/doctor/freeslots.png">
+<img width="1000" alt="login" src="./screenshots/doctor/notif.png">
+<img width="1000" alt="login" src="./screenshots/doctor/presc.png">
+<img width="1000" alt="login" src="./screenshots/doctor/wallet.png">
 
 ### Patient
 
