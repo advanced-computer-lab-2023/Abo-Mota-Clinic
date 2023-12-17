@@ -21,7 +21,7 @@ export default function NotificationList({notifications, loggedInUser}) {
 
   const navigate = useNavigate();
 
-  const content = notifications.map((notification, index) => {
+  const content = notifications.reverse().map((notification, index) => {
     let avatar;
     console.log("SENDER", notification.sender);
     console.log("LOGGED IN USER", loggedInUser.username);
@@ -43,7 +43,7 @@ export default function NotificationList({notifications, loggedInUser}) {
     }else
         title = <Typography level="title-lg" id="card-description"> Appointment Confirmation</Typography>
 
-    if(index>10)
+    if(index>5)
       return;
     
     return <ListItem alignItems="flex-start" key={index} 
