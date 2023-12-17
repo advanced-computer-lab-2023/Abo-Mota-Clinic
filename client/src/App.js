@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Patient from "./patient/Patient";
 import Doctor from "./doctor/Doctor";
 import Admin from "./admin/Admin";
-import HomePage from "./HomePage";
+
 
 // Admin
 import Packages from "./admin/pages/Packages";
@@ -48,6 +48,7 @@ import LoginForm from "./shared/pages/LoginForm";
 import ProtectedRoute from "./ProtectedRoute";
 import PasswordSection from "./admin/pages/PasswordSection";
 import LandingPage from "./shared/pages/LandingPage/LandingPage";
+import GetStarted from "./shared/pages/GetStarted/GetStarted";
 
 import io from "socket.io-client";
 import VideoChat from "./shared/pages/VideoChat/VideoChat";
@@ -60,9 +61,9 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<GetStarted task='Sign In' />} />
         <Route path="/" element={<LandingPage />} />
-        <Route path="/patientRegistration" element={<RegisterScreen />} />
+        <Route path="/patientRegistration" element={<GetStarted task='Sign Up' />} />
         <Route element={<ProtectedRoute roles={["patient"]} />}>
           <Route path="/patient" element={<Patient socket={socket} />}>
             <Route path="" element={<PatientHome />} />
@@ -92,7 +93,7 @@ function App() {
           </Route>
         </Route>
 
-        <Route path="/doctorRegistration" element={<RegisterForm />} />
+        <Route path="/doctorRegistration" element={<GetStarted task='Join the team' />} />
         <Route element={<ProtectedRoute roles={["doctor"]} />}>
           <Route path="/doctor" element={<Doctor socket={socket} />}>
             {/* <Route path="" element={<Notification socket={socket} />} /> */}

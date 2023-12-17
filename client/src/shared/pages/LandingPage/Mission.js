@@ -19,7 +19,7 @@ const Mission = () => {
           <blockquote className="text-xl md:text-2xl">
             <FaQuoteLeft className="text-4xl mr-4 text-blue-900"  />
             <p className="italic text-blue-800" >
-              An apple a day keeps the doctor away. No more apples motherfucker.
+              An apple a day keeps the doctor away. No more apples negro.
             </p>
           </blockquote>
           <p className="font-semibold text-lg mt-4">Ahmed Labib, CEO of Abo Mota</p>
