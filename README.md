@@ -281,25 +281,47 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 
 ## Screenshots
 
-### Landing Page
-
+<details>
+<summary>
+<h3>
+Landing Page
+</h3>
+</summary>
 <img width="1000" alt="login" src="./screenshots/landing page/lp1.png">
 <img width="1000" alt="login" src="./screenshots/landing page/lp2.png">
 <img width="1000" alt="login" src="./screenshots/landing page/lp3.png">
 <img width="1000" alt="login" src="./screenshots/landing page/lp4.png">
 <img width="1000" alt="login" src="./screenshots/landing page/lp5.png">
+</details>
 
-### Login
+<details>
+<summary>
+<h3>
+Login
+</h3>
+</summary>
 
 <img width="1000" alt="login" src="./screenshots/login/login.png">
+</details>
 
-### SignUp
+<details>
+<summary>
+<h3>
+SignUp
+</h3>
+</summary>
 
 <img width="1000" alt="login" src="./screenshots/signup/s1.png">
 <img width="1000" alt="login" src="./screenshots/signup/s2.png">
 <img width="1000" alt="login" src="./screenshots/signup/s3.png">
+</details>
 
-### Doctor
+<details>
+<summary>
+<h3>
+Doctor
+</h3>
+</summary>
 
 <img width="1000" alt="login" src="./screenshots/doctor/appointments.png">
 <img width="1000" alt="login" src="./screenshots/doctor/contract.png">
@@ -310,9 +332,14 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 <img width="1000" alt="login" src="./screenshots/doctor/notif.png">
 <img width="1000" alt="login" src="./screenshots/doctor/presc.png">
 <img width="1000" alt="login" src="./screenshots/doctor/wallet.png">
+</details>
 
-### Patient
-
+<details>
+<summary>
+<h3>
+Patient
+</h3>
+</summary>
 <img width="1000" alt="login" src="./screenshots/patient/appointments.png">
 <img width="1000" alt="login" src="./screenshots/patient/d1.png">
 <img width="1000" alt="login" src="./screenshots/patient/d2.png">
@@ -322,10 +349,13 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 <img width="1000" alt="login" src="./screenshots/patient/presc1.png">
 <img width="1000" alt="login" src="./screenshots/patient/presc2.png">
 
-### Admin
-
+<details>
+<summary>
+<h3>Admin</h3>
+</summary>
 <img width="1000" alt="login" src="./screenshots/admin/applications.png">
 <img width="1000" alt="login" src="./screenshots/admin/packages.png">
+</details>
 
 ## Tech Stack
 
