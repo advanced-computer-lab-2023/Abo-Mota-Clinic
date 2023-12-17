@@ -8,7 +8,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
-import PopOver from "./Components/Popover";
+import PopOver from "./Components/PopOver";
 import Logo from "./assets/logo.png";
 import {
   useLogoutMutation,
