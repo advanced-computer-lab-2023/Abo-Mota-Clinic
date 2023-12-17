@@ -21,6 +21,7 @@ import LoadingIndicator from "../../Components/LoadingIndicator";
 import { useParams } from "react-router-dom";
 import { set } from "date-fns";
 import Button from "../../Components/Button";
+import BackArrow from "../../Components/BackArrow";
 const socket = io.connect("http://localhost:5000");
 function VideoChat() {
   const user = useSelector((state) => state.user);
@@ -211,59 +212,61 @@ function VideoChat() {
   // }
 
   return (
-    <div className="video-chat-container">
-      <h1 className="video-caller">Calling {callerName}</h1>
-      <div>
-        {receivingCall && !callAccepted ? (
-          <div className="caller">
-            <h1>{callerName} is calling...</h1>
-            <Button variant="contained" color="primary" onClick={answerCall}>
-              Answer
-            </Button>
-          </div>
-        ) : null}
-      </div>
-      <div className="video-call-div">
-        <div className="my-video">
-          <video
-            className="video-player"
-            playsInline
-            muted
-            ref={myVideo}
-            autoPlay
-            style={{ width: "300px" }}
-          />
+    <div>
+      <BackArrow />
+      <div className="video-chat-container">
+        <h1 className="video-caller">Calling {callerName}</h1>
+        <div>
+          {receivingCall && !callAccepted ? (
+            <div className="caller">
+              <h1>{callerName} is calling...</h1>
+              <Button variant="contained" color="primary" onClick={answerCall}>
+                Answer
+              </Button>
+            </div>
+          ) : null}
         </div>
-        <div className="other-video">
-          {callAccepted && !callEnded ? (
+        <div className="video-call-div">
+          <div className="my-video">
             <video
-              className="video-player main-video"
+              className="video-player"
               playsInline
-              ref={userVideo}
+              muted
+              ref={myVideo}
               autoPlay
+              style={{ width: "300px" }}
             />
-          ) : (
-            <div className="no-call-placeholder">Calling ...</div>
-          )}
+          </div>
+          <div className="other-video">
+            {callAccepted && !callEnded ? (
+              <video className="video-player main-video" playsInline ref={userVideo} autoPlay />
+            ) : (
+              <div className="no-call-placeholder">Calling ...</div>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="video-chat-button-terminal">
-        <button className="video-chat-button blue-video-button" onClick={toggleMute}>
-          {isMuted ? <IoMicSharp size={40} /> : <IoMicOffSharp size={40} />}
-        </button>
-        {callAccepted && !callEnded ? (
-          <button className="video-chat-button red-video-button" onClick={leaveCall}>
-            <PiPhoneSlashFill size={40} />
+        <div className="video-chat-button-terminal">
+          <button className="video-chat-button blue-video-button" onClick={toggleMute}>
+            {isMuted ? <IoMicSharp size={40} /> : <IoMicOffSharp size={40} />}
           </button>
-        ) : (
-          <button className="video-chat-button green-video-button" onClick={callUser}>
-            <MdPhone size={40} />
-          </button>
-        )}
+          {callAccepted && !callEnded ? (
+            <button className="video-chat-button red-video-button" onClick={leaveCall}>
+              <PiPhoneSlashFill size={40} />
+            </button>
+          ) : (
+            <button className="video-chat-button green-video-button" onClick={callUser}>
+              <MdPhone size={40} />
+            </button>
+          )}
 
-        <button className="video-chat-button blue-video-button" onClick={toggleCamera}>
-          {cameraOff ? <BsFillCameraVideoFill size={40} /> : <BsFillCameraVideoOffFill size={40} />}
-        </button>
+          <button className="video-chat-button blue-video-button" onClick={toggleCamera}>
+            {cameraOff ? (
+              <BsFillCameraVideoFill size={40} />
+            ) : (
+              <BsFillCameraVideoOffFill size={40} />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

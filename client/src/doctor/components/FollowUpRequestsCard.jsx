@@ -3,7 +3,7 @@ import IconButton from "@mui/joy/IconButton";
 import { BiCalendarX } from "react-icons/bi";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
+import Button from "../../shared/Components/Button";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
@@ -130,8 +130,12 @@ export default function FollowUpRequestsCard({ followUpRequest }) {
                 {followUpRequest.patient.mobile}
               </Typography>
               <Box className="space-x-2" sx={{ display: "flex", alignItems: "center" }}>
-                <Button onClick={handleAcceptRequest}>Accept</Button>
-                <Button onClick={handleShowModal}>Reject</Button>
+                <Button type="secondary" isFilled={false} onClick={handleAcceptRequest}>
+                  Accept
+                </Button>
+                <Button type="danger" isFilled={false} onClick={handleShowModal}>
+                  Reject
+                </Button>
               </Box>
             </div>
           </Box>

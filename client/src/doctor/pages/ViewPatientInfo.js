@@ -115,14 +115,17 @@ export default function ViewPatientInfo() {
               </Typography>
               {/* <Link to="prescriptions"> */}
               <Button
+                type="primary"
+                isFilled={false}
+                className="text-s mt-2"
                 onClick={() => navigate("prescriptions", { state: { patientId: patientData._id } })}
               >
                 View Prescriptions
               </Button>
               {/* </Link> */}
             </div>
-            <div>
-              <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+            <div className="flex">
+              <Typography level="body-md" sx={{ mr: 2 }} fontWeight="lg" textColor="text.tertiary">
                 Want to video call {patientData.name.split(" ")[0]}?
               </Typography>
               <Link to="video">

@@ -135,7 +135,12 @@ function AddPrescription({ patientId }) {
   //   console.log(data);
   return (
     <div>
-      <Button startIcon={<AddCircleOutlineIcon />} onClick={handleOpen}>
+      <Button
+        type="primary"
+        isFilled={false}
+        startIcon={<AddCircleOutlineIcon />}
+        onClick={handleOpen}
+      >
         Add Prescription
       </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="prescription-modal-title">

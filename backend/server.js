@@ -18,6 +18,7 @@ const commonRouter = require("./routes/common");
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const axios = require("axios");
 
 const io = new Server(server, {
   cors: {
@@ -90,21 +91,39 @@ io.on("connection", (socket) => {
   //   console.log(`User with id ${socket.id} joined room ${data}`);
   // });
 
-  socket.on("send_message", async (message) => {
-    // add message to database
-    // await Message.create(message);
+  socket.on("send_message", async (data) => {
+    const {
+      message,
+      isRelayToPharmacy
+    } = data;
+
+    // const isRelayToPharmacy = true;
 
     const { sender, recipient } = message;
+
     const senderSocketId = activeUsers[sender];
-    const recipientSocketId = activeUsers[recipient];
-    
     io.to(senderSocketId).emit("receive_message", message);
 
-    if(recipientSocketId) {
+    if (isRelayToPharmacy)
+      await axios.post("http://localhost:8000/pharmaApi/relay", { message });
+
+    else {
+      const recipientSocketId = activeUsers[recipient];
+
+      if (recipientSocketId) {
+        socket.to(recipientSocketId).emit("receive_message", message);
+      }
+    }
+  });
+
+  app.post("/api/relay", (req, res) => {
+    const { message } = req.body;
+    const { recipient } = message;
+    const recipientSocketId = activeUsers[recipient];
+
+    if (recipientSocketId) {
       socket.to(recipientSocketId).emit("receive_message", message);
     }
-
-
   });
 
   //----------------------

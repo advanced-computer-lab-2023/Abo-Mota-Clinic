@@ -5,6 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Button from "../../../shared/Components/Button";
 import { useUpdateDescriptionMutation } from "../../../store";
 import { Tooltip } from "antd";
+import { TfiWrite } from "react-icons/tfi";
 
 function PrescriptionDescription({ prescriptionId, description }) {
   const [editDescription, setEditDescription] = useState(false);
@@ -28,7 +29,15 @@ function PrescriptionDescription({ prescriptionId, description }) {
     setDescriptionValue(descriptionValue);
   };
   return (
-    <>
+    <Box>
+      <Typography
+        level="title-lg"
+        sx={{ marginBottom: 1 }}
+        startDecorator={<TfiWrite style={{ marginRight: 1 }} />}
+      >
+        Doctor's notes
+      </Typography>
+
       {editDescription ? (
         <Box
           sx={{
@@ -70,7 +79,7 @@ function PrescriptionDescription({ prescriptionId, description }) {
           </Tooltip>
         </Box>
       )}
-    </>
+    </Box>
   );
 }
 

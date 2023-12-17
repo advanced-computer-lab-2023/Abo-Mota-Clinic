@@ -60,21 +60,6 @@ function ChatBox({ socket, selectedRecipientId }) {
     return <div>Loading...</div>;
   }
 
-  // const scrollToElement = () => {
-  //   if (targetRef.current) {
-  //     const container = targetRef.current.closest('.scroll-container'); // Replace with your actual container class or ID
-  //     const elementRect = targetRef.current.getBoundingClientRect();
-  //     const containerRect = container.getBoundingClientRect();
-
-  //     // Calculate the scroll position to show more of the element
-  //     const desiredScrollTop = elementRect.top - containerRect.top - container.clientHeight / 4;
-
-  //     // Scroll to the calculated position
-  //     container.scrollTo({ top: desiredScrollTop, behavior: 'smooth' });
-  //   }
-  // };
-
-
 
   const onSendMessage = async () => {
     if (messageContent === "")
@@ -102,7 +87,12 @@ function ChatBox({ socket, selectedRecipientId }) {
 
     // scrollToElement();
 
-    await socket.emit("send_message", message);
+    await socket.emit(
+      "send_message",
+      {
+        message,
+        isRelayToPharmacy: recipientData.recipientType.toLowerCase() === "pharmacist"
+      });
 
     sendMessage(message);
   };

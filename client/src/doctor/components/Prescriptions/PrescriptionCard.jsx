@@ -19,6 +19,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
 import { toPng } from "html-to-image";
+import { MdOutlineFileDownload } from "react-icons/md";
 
 export default function PrescriptionCard({
   medicines,
@@ -113,7 +114,18 @@ export default function PrescriptionCard({
         <PrescriptionDescription prescriptionId={_id} description={description} />
         <Divider inset="none" sx={{ height: 2 }} />
         <CardActions>
-          <Button onClick={downloadPdfDocument}>Download</Button>
+          <Button
+            variant="plain"
+            onClick={downloadPdfDocument}
+            startDecorator={
+              <MdOutlineFileDownload
+                style={{ fontSize: 20 }} // Adjust font size and margin as needed
+              />
+            }
+          >
+            Download
+          </Button>
+          {/* <Button onClick={downloadPdfDocument}>Download</Button> */}
           <AddMedicine prescriptionId={_id} />
         </CardActions>
       </Card>

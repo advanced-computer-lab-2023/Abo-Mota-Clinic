@@ -43,7 +43,7 @@ export default function NotificationList({notifications, loggedInUser}) {
     }else
         title = <Typography level="title-lg" id="card-description"> Appointment Confirmation</Typography>
 
-    if(index>5)
+    if(index>4)
       return;
     
     return <ListItem alignItems="flex-start" key={index} 

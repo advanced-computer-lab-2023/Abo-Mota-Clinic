@@ -12,6 +12,8 @@ const BackArrow = () => {
 
   return (
     <Button
+      type="primary"
+      isFilled={false}
       onClick={goBack}
       // sx={{
       //   border: "none",
