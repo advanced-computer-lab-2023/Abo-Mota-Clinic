@@ -1033,6 +1033,8 @@ npm install
 
 ## API Reference
 
+Check out our API Documentation on Postman by clicking [here](https://documenter.getpostman.com/view/28691126/2s9Ykn81p5).
+
 <details>
 <summary><h3>Guest Routes</h3></summary>
 
