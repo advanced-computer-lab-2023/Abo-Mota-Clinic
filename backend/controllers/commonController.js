@@ -1,6 +1,6 @@
 const Patient = require("../models/Patient");
 const Doctor = require("../models/Doctor");
-const Admin = require("../models/Admin");
+const Admin = require("../models/ClinicAdmin");
 const Message = require("../models/Message");
 const Notification = require("../models/Notification");
 const sendEmail = require("../utils/sendEmail");
