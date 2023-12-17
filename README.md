@@ -280,6 +280,9 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 ## Code Style
 - [Eslint](https://eslint.org/docs/latest/user-guide/getting-started) : in the backend and the frontend to write the most optimum clean code possible and to define rules for the team to be able to write code in the same code style
 - [Prettier](https://prettier.io/) : it is a code formatter that runs automatically before each commit on the whole code so that the codes looks well formatted across the whole project
+
+## Screenshots
+
 ## Tech Stack
 <div align="center" >
    
@@ -932,61 +935,6 @@ export default LoginForm;
 
 </details>
 
-## Testing
-The testing is done using `Postman`. 
-
-<details>
-
-<summary>
-   Example Testing get Packages
-</summary>
-
-```javascript
-
-pm.test("Response status code is 200", function () {
-    pm.expect(pm.response.code).to.equal(200);
-});
-
-
-pm.test("Prescriptions and appointments have valid date format", function () {
-    const responseData = pm.response.json();
-    
-    responseData.prescriptions.forEach(function(prescription) {
-…    const responseData = pm.response.json();
-    
-    pm.expect(responseData.prescriptions).to.be.an('array').and.to.have.lengthOf.at.least(0);
-    pm.expect(responseData.appointments).to.be.an('array').and.to.have.lengthOf.at.least(0);
-    pm.expect(responseData.familyMembers).to.be.an('array').and.to.have.lengthOf.at.least(0);
-});
-
-```
-</details>
-
-<details>
-
-<summary>
-   Example Testing Login
-</summary>
-
-```javascript
-
-pm.test("Response status code is 200", function () {
-    pm.response.to.have.status(200);
-});
-
-
-pm.test("Response has the required fields - message, token, and userType", function () {
-    const responseData = pm.response.json();
-
-    pm.expect(responseData).to.be.an('object');
-…
-  pm.expect(responseData.userType).to.be.oneOf(['admin', 'guest', 'customer']);
-});
-
-
-```
-</details>
-
 
 
 ## Installation
@@ -1010,26 +958,6 @@ pm.test("Response has the required fields - message, token, and userType", funct
     npm install
 ```
     
-## How to use
-#### Start the client:
- ```bash
-cd client
-cd src
-npm start
-```
-The client server will run on http://localhost:3000.
-#### Start the server:
- ```bash
-cd backend
-nodemon server.js
- ```
-## Contributing
-
-Contributions are always welcome!
-
-See `contributing.md` for ways to get started.
-
-Please adhere to this project's `code of conduct`.
 
 
 ## API Reference
@@ -1767,6 +1695,81 @@ Please adhere to this project's `code of conduct`.
 
 </details>
 
+## Testing
+The testing is done using `Postman`. 
+
+<details>
+
+<summary>
+   Example Testing get Packages
+</summary>
+
+```javascript
+
+pm.test("Response status code is 200", function () {
+    pm.expect(pm.response.code).to.equal(200);
+});
+
+
+pm.test("Prescriptions and appointments have valid date format", function () {
+    const responseData = pm.response.json();
+    
+    responseData.prescriptions.forEach(function(prescription) {
+…    const responseData = pm.response.json();
+    
+    pm.expect(responseData.prescriptions).to.be.an('array').and.to.have.lengthOf.at.least(0);
+    pm.expect(responseData.appointments).to.be.an('array').and.to.have.lengthOf.at.least(0);
+    pm.expect(responseData.familyMembers).to.be.an('array').and.to.have.lengthOf.at.least(0);
+});
+
+```
+</details>
+
+<details>
+
+<summary>
+   Example Testing Login
+</summary>
+
+```javascript
+
+pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+pm.test("Response has the required fields - message, token, and userType", function () {
+    const responseData = pm.response.json();
+
+    pm.expect(responseData).to.be.an('object');
+…
+  pm.expect(responseData.userType).to.be.oneOf(['admin', 'guest', 'customer']);
+});
+
+
+```
+</details>
+
+## How to use
+#### Start the client:
+ ```bash
+cd client
+cd src
+npm start
+```
+The client server will run on http://localhost:3000.
+#### Start the server:
+ ```bash
+cd backend
+nodemon server.js
+ ```
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
 
 ## Credits
 
