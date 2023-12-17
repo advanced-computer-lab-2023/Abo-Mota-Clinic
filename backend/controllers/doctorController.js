@@ -376,7 +376,7 @@ const cancelAppointment = async (req, res) => {
 };
 const getAllMedicines = async (req, res) => {
   try {
-    const medicines = await Medicine.find({});
+    const medicines = await Medicine.find({ status: "unarchived" });
     res.status(200).json(medicines);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -384,7 +384,7 @@ const getAllMedicines = async (req, res) => {
 };
 const addMedicineToPrescription = async (req, res) => {
   try {
-    const { prescriptionId, medicineName, dosage, frequency, duration } = req.body;
+    const { prescriptionId, medicineName, dosage, frequency, duration, quantity } = req.body;
     const medicine = await Medicine.findOne({
       name: medicineName,
       status: "unarchived",
@@ -403,6 +403,7 @@ const addMedicineToPrescription = async (req, res) => {
             dosage,
             frequency,
             duration,
+            quantity,
           },
         },
       }
@@ -437,7 +438,7 @@ const deleteMedicineFromPrescription = async (req, res) => {
 
 const updateMedicineInPrescription = async (req, res) => {
   try {
-    const { prescriptionId, name, dosage, duration, frequency } = req.body;
+    const { prescriptionId, name, dosage, duration, frequency, quantity } = req.body;
     const medicine = await Medicine.findOne({ name });
     if (!medicine) {
       throw new Error("A medicine with this name doesn't exist");
@@ -452,6 +453,7 @@ const updateMedicineInPrescription = async (req, res) => {
           "medicines.$.dosage": dosage,
           "medicines.$.duration": duration,
           "medicines.$.frequency": frequency,
+          "medicines.$.quantity": quantity,
         },
       }
     );

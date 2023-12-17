@@ -136,7 +136,7 @@ function ViewPrescriptionsDoctor() {
   }
   // console.log(data);
   return (
-    <Box sx={{ width: "100%", m: 5 }}>
+    <Box sx={{ m: 5 }}>
       <Box sx={{ display: "flex", width: "100%" }}>
         <Box sx={{ mr: 2 }}>
           <BackArrow />
@@ -144,10 +144,21 @@ function ViewPrescriptionsDoctor() {
       </Box>
       <Box sx={{ width: "100%", mt: 5 }}>
         {data.length === 0 ? (
-          <h3>No Prescriptions</h3>
+          <Box className="flex justify-between">
+            <h3>No Prescriptions</h3>
+            <AddPrescription patientId={patientId} />
+          </Box>
         ) : (
           <Box className="space-y-5">
-            <DatePicker format="MM/DD/YYYY" onChange={handelDateChange} style={{ width: "20%" }} />
+            <Box className="flex justify-between">
+              <DatePicker
+                format="MM/DD/YYYY"
+                onChange={handelDateChange}
+                style={{ width: "20%" }}
+              />
+              <AddPrescription patientId={patientId} />
+            </Box>
+
             {prescriptions.length !== 0 ? (
               prescriptions.map((prescription, idx) => {
                 return (
@@ -163,9 +174,7 @@ function ViewPrescriptionsDoctor() {
           </Box>
         )}
       </Box>
-      <Box sx={{ mt: 5 }}>
-        <AddPrescription patientId={patientId} />
-      </Box>
+
       {/* <Box sx={{ mt: 2 }}>
         <Button onClick={downloadPdfDocument}>Download PDF</Button>
       </Box> */}

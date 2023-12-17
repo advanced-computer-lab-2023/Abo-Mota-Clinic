@@ -199,7 +199,7 @@ export default function AppointmentStepper({ step = 0, socket }) {
 
       //send socket event to backend
       socket.emit("send_notification_booked", {
-        sender: patient._id,
+        sender: patient.name,
         receiver: doctorId,
         contentDoctor: `You have a new appointment with ${patient.name} on ${date} at ${currentTime}`,
         contentPatient: `Your appointment is booked successfully with Dr. ${name} on ${date} at ${currentTime}`,

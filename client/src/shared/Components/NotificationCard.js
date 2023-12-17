@@ -70,7 +70,7 @@ export default function NotificationCard({content, formattedDate, sender, recipi
                 level="body-md"
                 aria-describedby="card-description"
               >
-                {formattedDate.replace(",", " -")}
+                {formattedDate.includes(",") ? formattedDate.replace(",", " -") : formattedDate}
               </Typography>
             </Box>
     

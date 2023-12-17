@@ -1,14 +1,16 @@
 import { useFetchNotificationQuery } from "../../store"
 import {CircularProgress , Typography, Divider, Box} from '@mui/joy';
 import { BiBell } from "react-icons/bi";
+import { PiBellDuotone } from "react-icons/pi";
 import Chip from '@mui/joy/Chip';
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
 import NotificationCard from "../Components/NotificationCard";
 import {useState} from "react";
 import dayjs from "dayjs";
+import timeAgo from "../../patient/functions/timeAgo";
+
 export default function Notifications(){
 
     const { data, error, isFetching: isFetchingNotifications } = useFetchNotificationQuery();
@@ -31,18 +33,22 @@ export default function Notifications(){
     })
 
     todayContent = todayContent.map((notification) => {
-      return <NotificationCard {...notification} />
+      return <NotificationCard {...notification} formattedDate={timeAgo(notification.date)}/>
     });
 
 
+
     if(todayContent.length === 0){
-        todayContent = <Box className="flex justify-center mt-8">
-           <Typography level="body-md">No new notifications for today.....</Typography>
+        todayContent = <Box className="flex flex-col items-center mt-20 space-y-8">
+          <Chip size="lg" variant="soft" color="neutral" sx={{"--Chip-radius": "100px"}}> 
+          <PiBellDuotone fontSize={100} className="rounded"/> 
+          </Chip>
+           <Typography level="h4" color="neutral">No New Notifications</Typography>
         </Box>
     }
 
     return(
-        <div className="ml-14 mt-4 mb-96">
+        <div className="ml-14 mt-4 mb-96 mr-14">
             <Typography level="h2" gutterBottom endDecorator={<BiBell />}>
                 Notifications 
             </Typography>

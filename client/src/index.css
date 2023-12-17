@@ -36,8 +36,8 @@ body {
 	/* Primary color */
 	--primary-color: #0056b3; /* Dark blue */
 	--primary-color-light: #507fba; /* Lighter shade of blue */
-	--primary-color-dark: #003c82; /* Darker shade of blue */
-	--primary-color-very-dark: #000088; /* Very dark blue */
+	--primary-color-dark: rgb(0, 60, 130); /* Darker shade of blue */
+	--primary-color-very-dark: rgb(0, 0, 136); /* Very dark blue */
 	
 	/* Secondary color */
 	--secondary-color: #f50057; /* Example secondary color */
@@ -47,12 +47,12 @@ body {
 	/* Text color */
 	 
 	--text-color-secondary: #000000; /* Black text color */
-	--text-color-primary: #FFFFFF;
+	--text-color-primary: #ffffff;
 
 
 	/* Background colors */
 	--background-color: #efefef; /* White background */
-	--background-color-light: #f8f9fa; /* Light gray background */
+	--background-color-light: rgb(248, 249, 250); /* Light gray background */
 	--background-color-dark: #343a40; /* Dark gray background */
 
 
