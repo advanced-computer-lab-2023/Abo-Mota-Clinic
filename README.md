@@ -324,6 +324,9 @@ Abo Mota Clinic is a full-stack, fully featured virtual clinic platform made wit
 
 ### Admin
 
+<img width="1000" alt="login" src="./screenshots/admin/applications.png">
+<img width="1000" alt="login" src="./screenshots/admin/packages.png">
+
 ## Tech Stack
 
 <div align="center" >
