@@ -52,7 +52,7 @@ const Outline = ({ items, navBarItems, socket }) => {
             sender: notification.sender.username,
           };
         });
-      setNotifications(notif);
+      setNotifications(notif.reverse());
     }
   }, [isFetching]);
 
@@ -65,14 +65,14 @@ const Outline = ({ items, navBarItems, socket }) => {
       console.log(contentDoctor);
       if (contentDoctor)
         setNotifications((prev) => [
-          ...prev,
           { sender, content: contentDoctor },
+          ...prev,
         ]);
 
       if (contentPatient)
         setNotifications((prev) => [
-          ...prev,
           { sender, content: contentPatient },
+          ...prev,
         ]);
 
       setNotifCount(notifCount + 1);
@@ -80,7 +80,7 @@ const Outline = ({ items, navBarItems, socket }) => {
 
     const handleReceiveMessage = (message) => {
       if (!isFetchingUser && message.recipient === loggedInUser._id.toString())
-        setMessages((prevMessages) => [...prevMessages, message]);
+        setMessages((prevMessages) => [message, ...prevMessages]);
       console.log(message);
     };
 
