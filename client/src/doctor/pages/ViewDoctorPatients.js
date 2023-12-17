@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Button from "@mui/joy/Button";
+import {Button, Typography, Breadcrumbs} from "@mui/joy";
 import { isAfter, isSameDay } from "date-fns"; // Import date-fns functions
 import { useSelector } from "react-redux";
 import { useFetchPatientsQuery, useFetchDoctorQuery } from "../../store";
 import SearchBar from "../../patient/components/SearchBar";
 import PatientCard from "../components/PatientCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink, Link } from "react-router-dom";
 import dayjs from "dayjs";
 
 function ViewDoctorPatients() {
@@ -77,6 +77,14 @@ function ViewDoctorPatients() {
       {isFetching && <div>Loading...</div>}
       {!isFetching && (
         <div className="ml-20 flex flex-col space-y-4 mr-20 ">
+          <Breadcrumbs aria-label="breadcrumbs" className="mb-2 mt-4">
+            <Link component={RouterLink} color="neutral" to="../">
+              Home
+            </Link>      
+            <Typography>
+              Patients
+            </Typography>
+          </Breadcrumbs>
           <div className="flex justify-between items-center space-x-4 w-full mt-10">
             <Button size="md" variant="soft" color="neutral" onClick={handleViewApp}>
               View Upcoming Appointments
