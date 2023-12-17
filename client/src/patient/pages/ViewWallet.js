@@ -1,7 +1,8 @@
-import { Box, Card, Typography, Divider, Button, Avatar } from "@mui/joy";
+import { Box, Card, Typography, Divider, Button, Avatar, Breadcrumbs } from "@mui/joy";
 import { useFetchPatientQuery } from "../../store/apis/patientApi";
 import { useFetchWalletPatientQuery, useFetchWalletDoctorQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+import { Link as RouterLink, Link } from "react-router-dom";
 
 function ViewWallet({ isPatient }) {
   // const { data, error, isLoading } = useFetchPatientQuery();
@@ -49,6 +50,12 @@ function ViewWallet({ isPatient }) {
 
   return (
     <Box className="mx-20 my-10">
+      <Breadcrumbs aria-label="breadcrumbs" className="mb-2 mt-5">
+          <Link component={RouterLink} color="neutral" to="../">
+            Home
+          </Link>
+          <Typography>Wallet</Typography>
+      </Breadcrumbs>
       <Card className="mb-5">
         <Box className="">
           <Typography level="title-md">Total Balance</Typography>

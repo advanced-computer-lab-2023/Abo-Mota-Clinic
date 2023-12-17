@@ -12,7 +12,6 @@ import { useRegisterDoctorMutation } from "../../../store";
 import DropDown from "../../../shared/Components/DropDown";
 import { useNavigate } from "react-router-dom";
 import FileInput from "../../../shared/Components/FileInput";
-import { useDispatch } from "react-redux";
 import FormErrorDialog from "../../../shared/Components/FormErrorDialog/index.js";
 
 const RegisterForm = () => {
@@ -20,7 +19,6 @@ const RegisterForm = () => {
   const [registerDoctor, results] = useRegisterDoctorMutation();
   const [isError, setIsError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const handleSubmit = async (values, { resetForm }) => {
     // values contains all the data needed for registeration
     const doctor = {

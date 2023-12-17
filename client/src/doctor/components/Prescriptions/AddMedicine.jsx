@@ -87,7 +87,9 @@ function AddMedicine({ prescriptionId }) {
   };
   return (
     <Box className="w-full flex justify-end">
-      <Button onClick={handleOpen}>Add Medicine</Button>
+      <Button type="tertiary" isFilled={false} onClick={handleOpen}>
+        Add Medicine
+      </Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="prescription-modal-title">
         <Box sx={modalStyle}>
           <Box component="form" onSubmit={handleSubmit}>

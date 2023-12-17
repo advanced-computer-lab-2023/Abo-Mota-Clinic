@@ -1,14 +1,15 @@
-import { Box, Typography } from "@mui/joy";
+import { Box, Typography, Breadcrumbs } from "@mui/joy";
 import React, { useState } from "react";
 import PrescriptionAccordion from "../components/Prescriptions/PrescriptionAccordion";
 import AddPrescription from "../components/Prescriptions/AddPrescription";
 import BackArrow from "../../shared/Components/BackArrow";
 import PrescriptionCard from "../components/Prescriptions/PrescriptionCard";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link as RouterLink, Link } from "react-router-dom";
 import { useFetchDoctorPrescriptionsQuery } from "../../store";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+
 function ViewPrescriptionsDoctor() {
   // const [openAllAccordions, setOpenAllAccordions] = useState(false);
   // const downloadPdfDocument = () => {
@@ -111,7 +112,7 @@ function ViewPrescriptionsDoctor() {
   //   }
   // },[isFetchingPatients])
   const location = useLocation();
-  const { patientId } = location.state;
+  const { patientId, patientName, idx } = location.state;
   const { data, isFetching, error } = useFetchDoctorPrescriptionsQuery({ patientId });
   const [selectedDate, setSelectedDate] = useState(null);
   const handelDateChange = (date) => {
@@ -137,10 +138,23 @@ function ViewPrescriptionsDoctor() {
   // console.log(data);
   return (
     <Box sx={{ m: 5 }}>
+      <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
+        <Link component={RouterLink} color="neutral" to="../">
+          Home
+        </Link>
+        <Link component={RouterLink} color="neutral" to="../patients">
+          Patients
+        </Link>
+        <Link component={RouterLink} color="neutral" to= {`../patients/patientInfo/${idx}`}>
+          {patientName}
+        </Link>
+        <Typography>
+          Prescriptions
+        </Typography>
+      </Breadcrumbs>
+
       <Box sx={{ display: "flex", width: "100%" }}>
-        <Box sx={{ mr: 2 }}>
-          <BackArrow />
-        </Box>
+        
       </Box>
       <Box sx={{ width: "100%", mt: 5 }}>
         {data.length === 0 ? (

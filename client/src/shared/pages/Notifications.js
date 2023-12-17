@@ -6,7 +6,6 @@ import Chip from '@mui/joy/Chip';
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
-import TabPanel from '@mui/joy/TabPanel';
 import NotificationCard from "../Components/NotificationCard";
 import {useState} from "react";
 import dayjs from "dayjs";
@@ -22,7 +21,7 @@ export default function Notifications(){
 
     console.log(data.notifications);
 
-    const content = data.notifications.map((notification) => {
+    const content = (data.notifications).map((notification) => {
         return <NotificationCard {...notification} />
     });
 

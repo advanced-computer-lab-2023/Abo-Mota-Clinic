@@ -43,30 +43,33 @@ export default function NotificationList({notifications, loggedInUser}) {
     }else
         title = <Typography level="title-lg" id="card-description"> Appointment Confirmation</Typography>
 
-    if(index>10)
+    if(index>4)
       return;
     
-    return <ListItem alignItems="flex-start" key={index} 
-          className='group/item hover:bg-slate-100 cursor-pointer rounded-lg' onClick={() => {navigate("notifications/")}}>
-            {/* {index !== 0 ? <Divider/>: null} */}
-            <ListItemAvatar> {avatar} </ListItemAvatar>
-            <ListItemText
-              primary={title}
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: 'inline' }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    {capitalizeFirstLetter(notification.sender)}
-                  </Typography>
-                  {` - ${notification.content}`}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
+    return <>
+            <ListItem alignItems="flex-start" key={index} 
+                  className='group/item hover:bg-slate-100 cursor-pointer rounded-lg' onClick={() => {navigate("notifications/")}}>
+                    {/* {index !== 0 ? <Divider/>: null} */}
+                    <ListItemAvatar> {avatar} </ListItemAvatar>
+                    <ListItemText
+                      primary={title}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: 'inline' }}
+                            component="span"
+                            variant="body2"
+                            color="text.primary"
+                          >
+                            {capitalizeFirstLetter(notification.sender)}
+                          </Typography>
+                          {` - ${notification.content}`}
+                        </React.Fragment>
+                      }
+                    />
+              </ListItem>
+              {notifications.length > 1 && <Divider sx={{ opacity: '50%' }} />}
+          </>
   });
   return (
     <div>

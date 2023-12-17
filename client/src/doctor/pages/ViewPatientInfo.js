@@ -3,7 +3,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { capitalizeFirstLetter } from "../components/AppointmentCard";
 import Sheet from "@mui/joy/Sheet";
 import Card from "@mui/joy/Card";
-import { Box } from "@mui/joy";
+import { Box, Breadcrumbs } from "@mui/joy";
 import { Divider } from "@mui/material";
 import MiniAppointmentCard from "../components/MiniAppointmentCard";
 import PdfViewer from "../components/PdfViewer";
@@ -16,7 +16,8 @@ import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import { VideoChatRounded } from "@mui/icons-material";
 import BackArrow from "../../shared/Components/BackArrow";
 import Button from "../../shared/Components/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,  Link as RouterLink  } from "react-router-dom";
+
 
 export default function ViewPatientInfo() {
   const location = useLocation();
@@ -73,7 +74,16 @@ export default function ViewPatientInfo() {
 
   return (
     <div className="mt-8 ml-8 mr-8 mb-8 space-y-5 items-center">
-      <BackArrow />
+      <Breadcrumbs aria-label="breadcrumbs" className="mb-2">
+        <Link component={RouterLink} color="neutral" to="../">
+          Home
+        </Link>
+        <Link component={RouterLink} color="neutral" to="../patients">
+          Patients
+        </Link>
+        <Typography>{patientData.name}</Typography>
+      </Breadcrumbs>
+
       <Typography level="h2">
         {capitalizeFirstLetter(patientData.name.split(" ")[0])}'s Medical Record
       </Typography>
@@ -115,14 +125,17 @@ export default function ViewPatientInfo() {
               </Typography>
               {/* <Link to="prescriptions"> */}
               <Button
-                onClick={() => navigate("prescriptions", { state: { patientId: patientData._id } })}
+                type="primary"
+                isFilled={false}
+                className="text-sm mt-2"
+                onClick={() => navigate("prescriptions", { state: { patientId: patientData._id, patientName: patientData.name, idx } })}
               >
                 View Prescriptions
               </Button>
               {/* </Link> */}
             </div>
-            <div>
-              <Typography level="body-md" fontWeight="lg" textColor="text.tertiary">
+            <div className="flex">
+              <Typography level="body-md" sx={{ mr: 2 }} fontWeight="lg" textColor="text.tertiary">
                 Want to video call {patientData.name.split(" ")[0]}?
               </Typography>
               <Link to="video">
