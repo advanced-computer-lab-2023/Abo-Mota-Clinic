@@ -214,7 +214,7 @@ const Outline = ({ items, navBarItems, socket }) => {
               style={{ fontSize: "16px", border: "none" }}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
             {socket && (
               <PopOver
                 logo={

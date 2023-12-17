@@ -21,7 +21,7 @@ export default function Notifications(){
 
     console.log(data.notifications);
 
-    const content = data.notifications.map((notification) => {
+    const content = (data.notifications).map((notification) => {
         return <NotificationCard {...notification} />
     });
 
