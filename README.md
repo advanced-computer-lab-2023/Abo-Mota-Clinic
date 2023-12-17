@@ -1876,7 +1876,7 @@ Check out our API Documentation on Postman by clicking [here](https://documenter
 
 ## Testing
 
-The testing is done using `Postman`.
+The testing is done using `Postman`. Below you can see some tests. For more tests see the api documenatation above in the API reference section.
 
 <details>
 
