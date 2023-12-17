@@ -1750,6 +1750,29 @@ pm.test("Response has the required fields - message, token, and userType", funct
 ```
 </details>
 
+<details>
+   <summary>
+      Example Testing Request OTP
+   </summary>
+   
+   ```javascript
+
+   pm.test("Response status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+
+pm.test("Email is in a valid format", function () {
+    const responseData = pm.response.json();
+    
+    pm.expect(responseData.email).to.be.a('string');
+    pm.expect(responseData.email).to.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Email format is invalid");
+});
+
+
+```
+</details>
+
 ## How to use
 #### Start the client:
  ```bash
