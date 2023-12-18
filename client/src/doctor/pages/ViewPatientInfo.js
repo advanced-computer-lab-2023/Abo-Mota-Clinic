@@ -14,6 +14,7 @@ import AddHealthRecordScreen from "./AddHealthRecordScreen";
 import { useFetchPatientQuery, useFetchPatientsQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import { VideoChatRounded } from "@mui/icons-material";
+import ChatIcon from '@mui/icons-material/Chat';
 import BackArrow from "../../shared/Components/BackArrow";
 import Button from "../../shared/Components/Button";
 import { useNavigate } from "react-router-dom";
@@ -124,13 +125,23 @@ export default function ViewPatientInfo() {
               </Button>
               {/* </Link> */}
             </div>
-            <div className="flex">
-              <Typography level="body-md" sx={{ mr: 2 }} fontWeight="lg" textColor="text.tertiary">
-                Want to video call {patientData.name.split(" ")[0]}?
-              </Typography>
-              <Link to="video">
-                <VideoChatRounded />
-              </Link>
+            <div>
+              <div className="flex">
+                <Typography level="body-md" sx={{ mr: 2 }} fontWeight="lg" textColor="text.tertiary">
+                  Want to video call {patientData.name.split(" ")[0]}?
+                </Typography>
+                <Link to="video">
+                  <VideoChatRounded />
+                </Link>
+              </div>
+              <div className="flex">
+                <Typography level="body-md" sx={{ mr: 2 }} fontWeight="lg" textColor="text.tertiary">
+                  Want to chat with {patientData.name.split(" ")[0]}?
+                </Typography>
+                <Link to={`../chat/${patientData._id}`}>
+                  <ChatIcon />
+                </Link>
+              </div>
             </div>
           </div>
         </Card>

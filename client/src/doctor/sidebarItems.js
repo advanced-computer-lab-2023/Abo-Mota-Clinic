@@ -1,6 +1,9 @@
 import Avatar from "@mui/joy/Avatar";
 import { FaUser, FaHospital, FaCalendar, FaFileContract, FaWallet, FaHome, FaCalendarAlt } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
+import { FaHandHoldingMedical } from "react-icons/fa";
+import { IoChatbubblesSharp } from "react-icons/io5";
+
 
 const items = [
   {
@@ -45,6 +48,19 @@ const items = [
     label: 'Add Free Slots',
     to: 'FreeSlotsAppointments',
   },
+  {
+    key: '7',
+    icon: <IoChatbubblesSharp />,
+    label: 'Chat',
+    to: 'chat',
+  },
+  {
+    key: '8',
+    icon: <FaHandHoldingMedical />,
+    label: 'PharmaService',
+    to: 'chat/000000000000000000000000',
+  },
+
 ];
 
 export default items;

@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { Box, Avatar, Typography, Divider, Input } from '@mui/joy'
 import ListItemButton from '@mui/joy/ListItemButton';
+import ListItemContent from '@mui/joy/ListItemContent';
 
 import { useFetchContactsDetailsQuery, useInvalidateMessagesMutation } from '../../store';
 import timeAgo from '../functions/timeAgo';
@@ -50,7 +51,7 @@ function SideChat({ selectedRecipientId, setSelectedRecipientId }) {
           className='bg-blue-300'
         >
           <Avatar sx={{ width: '3.5em', height: '3.5em' }} color='primary'>{contact.name[0]}</Avatar>
-          <Box className="w-full space-y-1">
+          <ListItemContent className="w-full space-y-1">
             <Box className="flex w-full justify-between items-center">
               <Typography level="body-md" fontWeight={500}>
                 {contact.name}
@@ -60,10 +61,10 @@ function SideChat({ selectedRecipientId, setSelectedRecipientId }) {
                 {timeAgo(message.date)}
               </Typography>
             </Box>
-            <Typography level="body-sm">
-              {text.length < maxTextLength ? text : text.substring(0, maxTextLength) + "..."}
+            <Typography level="body-sm" noWrap>
+              {text}
             </Typography>
-          </Box>
+          </ListItemContent>
         </ListItemButton>
 
       </>
@@ -71,7 +72,7 @@ function SideChat({ selectedRecipientId, setSelectedRecipientId }) {
   }
 
   return (
-    <Box className="h-full" sx={{ backgroundColor: '#f9f9f9', px: 2 }}>
+    <Box className="h-full" sx={{ backgroundColor: '#f9f9f9', px: 2, width: '300px' }}>
       <Typography level="h2" sx={{ p: 1 }}>
         Chats
       </Typography>

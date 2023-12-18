@@ -75,6 +75,8 @@ function ViewDoctors() {
     );
 
     specialties = [...new Set(data.map((doctor) => doctor.specialty))];
+
+    console.log("Specialties", specialties);
   }
 
   return (

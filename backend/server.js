@@ -121,6 +121,9 @@ io.on("connection", (socket) => {
     const { recipient } = message;
     const recipientSocketId = activeUsers[recipient];
 
+    console.log(`activeUsers in send_message = ${JSON.stringify(activeUsers, null, 2)}`);
+
+
     if (recipientSocketId) {
       socket.to(recipientSocketId).emit("receive_message", message);
     }

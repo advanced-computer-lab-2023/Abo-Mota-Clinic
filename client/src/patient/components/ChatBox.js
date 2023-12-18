@@ -29,16 +29,21 @@ function ChatBox({ socket, selectedRecipientId }) {
   };
 
   useEffect(() => {
+    // disable older event listener
+    socket.off("receive_message");
+
+    // register new event listener with new selectedRecipientId
     socket.on("receive_message", (data) => {
 
-      setMessages((prevMessages) => {
-        // prevMessages[prevMessages.length - 1].showTime = false;
-        const newMessages = [...prevMessages, data];
-        return newMessages;
-      });
+      if (data.sender === selectedRecipientId || data.sender === loggedInUser._id)
+        setMessages((prevMessages) => {
+          // prevMessages[prevMessages.length - 1].showTime = false;
+          const newMessages = [...prevMessages, data];
+          return newMessages;
+        });
     });
 
-  }, [socket]);
+  }, [socket, selectedRecipientId]);
 
   useEffect(() => {
     if (!isFetchingUser) {
@@ -95,6 +100,7 @@ function ChatBox({ socket, selectedRecipientId }) {
       });
 
     sendMessage(message);
+
   };
 
   const RecipientHeader = ({ recipientName }) => {

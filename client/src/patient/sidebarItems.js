@@ -1,4 +1,6 @@
-import { FaUserMd, FaCalendarCheck, FaNotesMedical, FaUsers, FaBoxOpen, FaWallet,FaHome } from 'react-icons/fa';
+import { FaUserMd, FaCalendarCheck, FaNotesMedical, FaUsers, FaBoxOpen, FaWallet, FaHome } from 'react-icons/fa';
+import { IoChatbubblesSharp } from "react-icons/io5";
+
 import { createElement } from 'react';
 const items = [
   {
@@ -43,6 +45,13 @@ const items = [
     label: 'View my Wallet',
     to: 'wallet',
   },
+  {
+    key: '7',
+    icon: <IoChatbubblesSharp />,
+    label: 'Chat',
+    to: 'chat',
+  }
+
 ].map(item => ({
   ...item,
   icon: createElement(item.icon.type),
