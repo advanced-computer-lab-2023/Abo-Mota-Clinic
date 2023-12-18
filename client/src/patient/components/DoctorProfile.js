@@ -61,7 +61,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
       const dateSplit = key.split("/");
       const timings = formattedAppointments[key];
       return (
-        <Box>
+        <Box >
           <Typography level="body-lg" sx={{ marginBottom: 1.5 }}>
             {`${getDayName(key)}, ${getMonthName(key)} ${dateSplit[1]}`}
           </Typography>
@@ -104,7 +104,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
 
   return (
     <Box
-      className="ml-12 mt-5"
+      className="pl-12 pt-5 pr-12 pb-10"
       sx={{
         width: "100%",
         position: "relative",
@@ -231,16 +231,15 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
             </TabList>
             <TabPanel value={0}>
               <Typography level="body-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lectus sapien,
-                ullamcorper et tincidunt ut, dignissim sit amet risus. Duis vitae augue cursus,
-                tempus enim id, lacinia sapien. Phasellus tristique felis porttitor, volutpat ante
-                eu, maximus tellus. Curabitur dignissim nunc nec ullamcorper fringilla. Pellentesque
-                suscipit congue ante quis ornare. Quisque sit amet pellentesque risus. In eu commodo
-                sapien, a vestibulum quam. In viverra augue et erat faucibus gravida. Vestibulum
-                volutpat tempor lacus eu consequat. Nullam mollis condimentum finibus. Integer
-                hendrerit tellus vel ex sodales, eu convallis turpis tempus. Praesent id turpis vel
-                arcu volutpat aliquet sit amet malesuada lectus. Phasellus feugiat condimentum mi,
-                id fermentum dui euismod sit amet.
+              {`Dr. ${name} is a highly respected and experienced ${specialty}. With 20 years in the medical field, 
+              Dr. ${name} has dedicated their career to providing exemplary care and treatment to patients, specializing in
+              ${specialty}. At ${affiliation}, where Dr. ${name} currently practices, 
+              they are not only recognized for their surgical skills but also for their innovative approaches to 
+              complex medical cases. Dr. [Last Name]'s philosophy of care is rooted in a patient-centered approach, 
+              believing that effective treatment goes beyond medical procedures and involves understanding and responding to 
+              the unique needs and concerns of each patient. This philosophy extends to their commitment to continuous learning and 
+              staying abreast of the latest advancements in their field, 
+              ensuring that their patients receive the most up-to-date and evidence-based care.`}
               </Typography>
             </TabPanel>
             {/* <TabPanel value={1}>
@@ -296,7 +295,20 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
                 </Sheet>
               </Box>
             </TabPanel> */}
-            <TabPanel value={1}>reviews</TabPanel>
+            <TabPanel value={1}>
+            <Typography level="body-sm">
+              { `Dr. ${name} has consistently received high praise from patients for their exceptional care and expertise. 
+              One patient remarked, 'Dr. ${name}'s ability to explain complex medical conditions in understandable terms made a
+             huge difference for me. Their empathy and attentiveness made my treatment journey much less daunting.' Another patient shared,
+              'I am profoundly grateful for the skilled surgery performed by Dr. ${name}. Their precision and expertise were evident in 
+              my quick recovery and minimal discomfort.' Additionally, several patients have highlighted Dr. ${name}'s 
+              compassionate bedside manner, with comments like, 'Dr. ${name} not only excels in their medical specialty but 
+              also truly cares about their patients' well-being. They took the time to answer all my questions and provided reassurance 
+              throughout my treatment.' The recurring themes in these testimonials are Dr. ${name}'s deep medical knowledge, 
+              patient-centered approach, and ability to create a trusting and caring environment. These qualities have not only 
+              earned them an excellent reputation among their peers but also a place of high regard in the hearts of their patients. `}
+            </Typography>
+            </TabPanel>
           </Tabs>
         </CardContent>
       </Card>

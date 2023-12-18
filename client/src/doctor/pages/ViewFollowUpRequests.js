@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, Link as RouterLink } from "react-router-dom";
 import "@fontsource/inter";
 import "react-dropdown/style.css";
 import DatePickerMaterialUI from "../components/DatePickerMaterialUI";
@@ -11,6 +11,9 @@ import { isAfter, isSameDay, isBefore, set, parseISO } from "date-fns";
 import { DatePicker, Space } from "antd";
 import FollowUpRequestsCard from "../components/FollowUpRequestsCard";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
+import Breadcrumbs from "@mui/joy/Breadcrumbs";
+import { Typography } from "@mui/joy";
+
 const { RangePicker } = DatePicker;
 
 function ViewFollowUpRequests() {
@@ -95,6 +98,12 @@ function ViewFollowUpRequests() {
     <div className="mx-auto w-full mr-2">
       {!isFetching && (
         <div className="ml-20 flex flex-col space-y-4 mr-20">
+          <Breadcrumbs aria-label="breadcrumbs" className="mb-2 mt-5">
+            <Link component={RouterLink} color="neutral" to="../">
+              Home
+            </Link>
+            <Typography>Requests</Typography>
+          </Breadcrumbs>
           <div className="flex justify-between items-center space-x-4 w-full mt-10">
             <RangePicker onChange={handleDateRange} format={"MM/DD/YYYY"} />
 

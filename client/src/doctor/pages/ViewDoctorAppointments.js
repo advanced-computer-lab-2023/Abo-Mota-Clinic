@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link , Link as RouterLink } from "react-router-dom";
 import "@fontsource/inter";
 import "react-dropdown/style.css";
 import DatePickerMaterialUI from "../components/DatePickerMaterialUI";
@@ -11,8 +11,10 @@ import SearchBar from "../../patient/components/SearchBar";
 import { isAfter, isSameDay, isBefore, set, parseISO } from "date-fns";
 import { Autocomplete } from "@mui/joy";
 import FormControl from "@mui/joy/FormControl";
+import Breadcrumbs from "@mui/joy/Breadcrumbs";
 import CircularProgress from "@mui/joy/CircularProgress";
 import AppointmentCard from "../components/AppointmentCard";
+import { Typography } from "@mui/joy";
 import { DatePicker, Space } from "antd";
 const { RangePicker } = DatePicker;
 
@@ -75,6 +77,12 @@ function ViewDoctorAppointments({ socket }) {
     <div className="mx-auto">
       {!isFetching && (
         <div className="ml-20 flex flex-col space-y-4 mr-20">
+          <Breadcrumbs aria-label="breadcrumbs" className="mb-2 mt-5">
+          <Link component={RouterLink} color="neutral" to="../">
+            Home
+          </Link>
+          <Typography>Appointments</Typography>
+        </Breadcrumbs>
           <div className="flex justify-between items-center space-x-4 w-full mt-10">
             <RangePicker onChange={handleDateRange} format={"MM/DD/YYYY"} />
 

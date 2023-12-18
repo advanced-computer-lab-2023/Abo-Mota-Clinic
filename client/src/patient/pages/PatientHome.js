@@ -212,7 +212,7 @@ function PatientHome() {
 
           </div>
 
-          <div className="ml-8 mt-5 mb-2 border-1">
+          <div className="ml-8 mt-3 mb-20 border-1">
             <AccordionGroup
               sx={{
                 maxWidth: 700,
