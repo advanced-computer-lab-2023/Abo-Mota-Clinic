@@ -1,11 +1,12 @@
 import * as React from 'react';
 import List from '@mui/material/List';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Typography as JoyTypography, Divider } from '@mui/joy';
 import MessageItem from './MessageItem';
 import Typography from '@mui/material/Typography';
 export default function MessagesList({messages}) {
-  const navigate = Navigate();
+  
+  const navigate = useNavigate();
     
   let content = messages.map((message, index) => {
     return  <>
@@ -28,8 +29,8 @@ export default function MessagesList({messages}) {
         {content}
         </List>
         <div className="flex justify-end cursor-pointer" onClick={() => {navigate("chat/")}}>
-        {messages.length> 0 && <Typography variant="body2" color="text.secondary"> View All Messages</Typography>}
-      </div>
+          {messages.length > 0 && <Typography variant="body2" color="text.secondary"> View All Messages</Typography>}
+        </div>
     </div>
   );
 }
