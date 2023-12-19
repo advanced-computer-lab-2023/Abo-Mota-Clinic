@@ -8,9 +8,9 @@ export default function MessagesList({ messages }) {
 
   const navigate = useNavigate();
 
-  let content = messages.map((message, index) => {
+  let content = messages.map((data, index) => {
     return <>
-      <MessageItem message={message} key={index} />
+      <MessageItem message={data.message} sender={data.senderData} key={index} />
       {messages.length > 1 && <Divider sx={{ opacity: '50%' }} />}
     </>
   });

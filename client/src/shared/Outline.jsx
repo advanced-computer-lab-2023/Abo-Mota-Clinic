@@ -18,7 +18,7 @@ import {
 import CustomFooter from "./Components/Footer";
 import NotificationList from "./Components/NotificationList";
 import MessagesList from "./Components/MessagesList";
-
+import {Badge} from '@mui/joy';
 import { CircularProgress } from "@mui/joy";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -36,6 +36,7 @@ const Outline = ({ items, navBarItems, socket }) => {
   const [notifications, setNotifications] = useState([]);
   const [notifCount, setNotifCount] = useState(0);
   const [messages, setMessages] = useState([]);
+  const [messageCount, setMessageCount] = useState(0);
 
   console.log("NOTIF COUNT", notifCount);
 
@@ -75,13 +76,16 @@ const Outline = ({ items, navBarItems, socket }) => {
           ...prev,
         ]);
 
-      setNotifCount(notifCount + 1);
+      setNotifCount(prevCount => prevCount + 1);
     };
 
     const handleReceiveMessage = (data) => {
-      const { message } = data;
-      if (!isFetchingUser && message.recipient === loggedInUser._id.toString())
-        setMessages((prevMessages) => [message, ...prevMessages]);
+      const { message , senderData } = data;
+      if (!isFetchingUser && message.recipient === loggedInUser._id.toString()){
+        setMessages((prevMessages) => [{message, senderData}, ...prevMessages]);
+        setMessageCount(prevCount => prevCount + 1); 
+
+      }
       console.log(message);
     };
 
@@ -216,30 +220,25 @@ const Outline = ({ items, navBarItems, socket }) => {
             />
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-            {socket && (
-              <PopOver
-                logo={
-                  <MessageOutlined
-                    style={{ fontSize: "16px", cursor: "pointer" }}
-                  />
-                }
+          <Badge badgeContent={messageCount} showZero={false} size="sm" color="danger">
+              {socket && <PopOver
+                logo={<MessageOutlined style={{ fontSize: '18px', cursor: 'pointer' }} />}
                 content={messageContent}
                 placement="bottom"
                 trigger="click"
-              />
-            )}
-            {socket && (
-              <PopOver
-                logo={
-                  <BellOutlined
-                    style={{ fontSize: "16px", cursor: "pointer" }}
-                  />
-                }
-                content={notificationContent}
-                placement="bottomLeft"
-                trigger="click"
-              />
-            )}
+              />}
+            </Badge>
+            
+            <Badge badgeContent={notifCount} showZero={false} size="sm" color="danger">
+              {socket && <PopOver
+              logo={<BellOutlined style={{ fontSize: '18px', cursor: 'pointer' }} />}
+              content={notificationContent}
+              placement="bottom"
+              trigger="click"
+            />}
+
+            </Badge>
+
             <PopOver
               logo={
                 <UserOutlined style={{ fontSize: "16px", cursor: "pointer" }} />
