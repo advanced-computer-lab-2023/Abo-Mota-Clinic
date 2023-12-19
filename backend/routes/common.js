@@ -1,5 +1,5 @@
 const express = require("express");
-const { sendMessage, getMessages, getLoggedIn, sendEmailNotif, getNotifications, sendNotification, getRecipient, getContactedUsers, nil, getUser } = require("../controllers/commonController");
+const { sendMessage, getMessages, getLoggedIn, sendEmailNotif, getNotifications, sendNotification, getContact, getContactedUsers, nil, getUser, readMessage } = require("../controllers/commonController");
 const router = express.Router();
 require("dotenv").config();
 
@@ -17,12 +17,14 @@ router.post('/send-email', authorize, sendEmailNotif);
 
 router.get("/loggedIn", authorize, getLoggedIn);
 
-router.get("/recipient", authorize, getRecipient);
+router.get("/contact", authorize, getContact);
 
 router.get("/contacts", authorize, getContactedUsers);
 
 router.post("/nil", authorize, nil);
 
 router.get("/user", authorize, getUser);
+
+router.post("/readMessage", authorize, readMessage);
 
 module.exports = router;
