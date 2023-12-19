@@ -78,7 +78,8 @@ const Outline = ({ items, navBarItems, socket }) => {
       setNotifCount(notifCount + 1);
     };
 
-    const handleReceiveMessage = (message) => {
+    const handleReceiveMessage = (data) => {
+      const { message } = data;
       if (!isFetchingUser && message.recipient === loggedInUser._id.toString())
         setMessages((prevMessages) => [message, ...prevMessages]);
       console.log(message);
