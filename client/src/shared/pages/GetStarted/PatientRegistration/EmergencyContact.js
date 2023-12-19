@@ -5,48 +5,40 @@ const EmergencyContact = ({ formik }) => {
   return (
     <div className="space-y-4">
       <Input
-        label="Emergency Contact First Name*"
-        type="text"
-        name="emergencyContactFirstName"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.emergencyContactFirstName}
-        placeholder="Enter first name"
-        error={formik.touched.emergencyContactFirstName && formik.errors.emergencyContactFirstName}
-      />
+              label='First Name*'
+              type='text'
+              id='emergencyContactFirstName'
+              error={formik.errors.emergencyContactFirstName}
+              touch={formik.touched.emergencyContactFirstName}
+              {...formik.getFieldProps("emergencyContactFirstName")}
+            />
 
-      <Input
-        label="Emergency Contact Last Name*"
-        type="text"
-        name="emergencyContactLastName"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.emergencyContactLastName}
-        placeholder="Enter last name"
-        error={formik.touched.emergencyContactLastName && formik.errors.emergencyContactLastName}
-      />
+        <Input
+              label='Last Name*'
+              type='text'
+              id='emergencyContactLastName'
+              error={formik.errors.emergencyContactLastName}
+              touch={formik.touched.emergencyContactLastName}
+              {...formik.getFieldProps("emergencyContactLastName")}
+            />  
 
-      <Input
-        label="Emergency Contact Phone Number*"
-        type="tel"
-        name="emergencyContactMobileNumber"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.emergencyContactMobileNumber}
-        placeholder="Enter phone number"
-        error={formik.touched.emergencyContactMobileNumber && formik.errors.emergencyContactMobileNumber}
-      />
+<Input
+              label='Phone number*'
+              type='tel'
+              id='emergencyContactMobileNumber'
+              error={formik.errors.emergencyContactMobileNumber}
+              touch={formik.touched.emergencyContactMobileNumber}
+              {...formik.getFieldProps("emergencyContactMobileNumber")}
+            />
 
-      <Input
-        label="Relationship to Patient*"
-        type="text"
-        name="emergencyContactRelation"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.emergencyContactRelation}
-        placeholder="Enter your relationship"
-        error={formik.touched.emergencyContactRelation && formik.errors.emergencyContactRelation}
-      />
+<Input
+              label='Contact Relation*'
+              type='text'
+              id='emergencyContactRelation'
+              error={formik.errors.emergencyContactRelation}
+              touch={formik.touched.emergencyContactRelation}
+              {...formik.getFieldProps("emergencyContactRelation")}
+            />  
     </div>
   );
 };

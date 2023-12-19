@@ -176,7 +176,7 @@ const Outline = ({ items, navBarItems, socket }) => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["4"]}
+          defaultSelectedKeys={["0"]}
           items={items.map((item) => ({
             ...item,
             icon: createElement(item.icon.type),

@@ -5,15 +5,13 @@ const AccountSetup = ({ formik }) => {
   return (
     <div className="space-y-4">
       <Input
-        label="Username*"
-        type="text"
-        name="userName"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.userName}
-        placeholder="Choose a username"
-        error={formik.touched.userName && formik.errors.userName}
-      />
+              label='Username*'
+              type='text'
+              id='userName'
+              error={formik.errors.userName}
+              touch={formik.touched.userName}
+              {...formik.getFieldProps("userName")}
+            />
       <Input
               label='Email*'
               type='text'
@@ -23,26 +21,21 @@ const AccountSetup = ({ formik }) => {
               {...formik.getFieldProps("email")}
             />
       <Input
-        label="Password*"
-        type="password"
-        name="password"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.password}
-        placeholder="Enter a password"
-        error={formik.touched.password && formik.errors.password}
-      />
-
-      <Input
-        label="Confirm Password*"
-        type="password"
-        name="confirmPassword"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.confirmPassword}
-        placeholder="Confirm your password"
-        error={formik.touched.confirmPassword && formik.errors.confirmPassword}
-      />
+              label='Password*'
+              type='password'
+              id='password'
+              error={formik.errors.password}
+              touch={formik.touched.password}
+              {...formik.getFieldProps("password")}
+            />
+            <Input
+              label='Confirm Password*'
+              type='password'
+              id='confirmPassword'
+              error={formik.errors.confirmPassword}
+              touch={formik.touched.confirmPassword}
+              {...formik.getFieldProps("confirmPassword")}
+            />
     </div>
   );
 };

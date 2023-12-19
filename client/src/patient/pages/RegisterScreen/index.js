@@ -65,7 +65,7 @@ const RegisterScreen = () => {
       {(formik) => (
         <form onSubmit={formik.handleSubmit}>
           <div className='form-container'>
-            <Input
+          <Input
               label='Email*'
               type='text'
               id='email'

@@ -31,7 +31,7 @@ import ViewPatientFamilyAppointments from "./patient/pages/ViewPatientFamilyAppo
 // Doctor
 import ViewDoctorAppointments from "./doctor/pages/ViewDoctorAppointments";
 import ViewDoctorPatients from "./doctor/pages/ViewDoctorPatients";
-import EditMyProfile from "./doctor/pages/EditMyProfile";
+
 import RegisterForm from "./doctor/pages/RegisterForm";
 import ViewPatientInfo from "./doctor/pages/ViewPatientInfo";
 import HealthPackages from "./patient/pages/HealthPackages";
@@ -40,7 +40,7 @@ import DoctorHome from "./doctor/pages/DoctorHome";
 import FreeSlotsAppointments from "./doctor/pages/FreeSlotsAppointments";
 import PatientFollowUp from "./doctor/pages/PatientFollowUp";
 import Contract from "./doctor/pages/Contract";
-import Notification from "./doctor/components/Notification";
+import DoctorProfile from './doctor/pages/Profile/Profile';
 import ViewPrescriptionsDoctor from "./doctor/pages/ViewPrescriptionsDoctor";
 import ViewFollowUpRequests from "./doctor/pages/ViewFollowUpRequests";
 // login
@@ -87,7 +87,7 @@ function App() {
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
             <Route path="chat/:recipient?" element={<Chat socket={socket} />} />
-            <Route path="profile/subscription" element={<Subscription />} />
+            <Route path="subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
             <Route path="notifications" element={<Notifications />} />
           </Route>
@@ -105,12 +105,13 @@ function App() {
             <Route path="patients" element={<ViewDoctorPatients />} />
             <Route path="FreeSlotsAppointments" element={<FreeSlotsAppointments />} />
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
-            <Route path="profile" element={<EditMyProfile />} />
+            <Route path="profile" element={<DoctorProfile />} />
             <Route path="" element={<DoctorHome/>}/>
             <Route path="chat/:recipient?" element={<Chat socket={socket} />} />
             <Route path="registerForm" element={<RegisterForm />} />
             <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
             <Route path="patients/patientInfo/:idx/video" element={<VideoChat />} />
+            
             <Route
               path="patients/patientInfo/:idx/prescriptions"
               element={<ViewPrescriptionsDoctor />}
