@@ -318,6 +318,10 @@ const patientApi = createApi({
       }),
 
       fetchFamilyMemberAppointments: builder.query({
+        providesTags: (result, error, data) => {
+          
+          return ["patientAppointments"];
+        },
         query: () => {
           return {
             url: "/familyAppointments",

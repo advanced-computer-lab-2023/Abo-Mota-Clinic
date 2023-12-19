@@ -22,6 +22,7 @@ function PrescriptionAccordion({ medicines, idx, ...rest }) {
   const handleToggle = () => {
     setExpanded(!expanded);
   }
+  console.log("lebito "+patient.pharmacyPatient);
 
   return (
     <div ref={pdfRef}>

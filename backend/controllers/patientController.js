@@ -1056,7 +1056,9 @@ const getFamilyMemberAppointments = async (req, res) => {
 			patient: { $in: familyMembers },
 			$or: [
 				{ status: "upcoming" },
-				{ status: "rescheduled" }
+				{ status: "rescheduled" },
+				{status: "cancelled"}
+				
 			]
 		}).populate("doctor")
 			.populate("patient");
