@@ -1,32 +1,114 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import ChatBox from './ChatBox';
-import SideChat from './SideChat';
-import { Box, Divider, Typography } from '@mui/joy'
+import ChatBox from '../components/ChatBox';
+import SideChat from '../components/SideChat';
+import { Box, Divider } from '@mui/joy'
 import { useParams } from 'react-router-dom';
-import { useFetchContactsDetailsQuery } from '../../store';
+import { useFetchLoggedInQuery, useReadMessageMutation } from '../../store';
 import chatIcons from "../../shared/assets/chat_icons.png"
+import { Typography } from '@mui/joy';
+
 
 function Chat({ socket }) {
 
-  const { recipient } = useParams();
-  const { data: contactsDetails, isLoading: isLoadingContactsDetails, isFetching: isFetchingContactsDetails, isError: isErrorContactsDetails } = useFetchContactsDetailsQuery();
-  const [selectedRecipientId, setSelectedRecipientId] = useState(recipient);
-  const [isFirstTimeChat, setIsFirstTimeChat] = useState(false);
+  const { contact } = useParams();
+  const [selectedRecipientId, setSelectedRecipientId] = useState(contact);
+  const [contactsDetails, setContactsDetails] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const { data: loggedInUser, isFetching: isFetchingUser, isError } = useFetchLoggedInQuery();
+  const [readMessage] = useReadMessageMutation();
 
   useEffect(() => {
-    if(contactsDetails)
-      setIsFirstTimeChat(contactsDetails.every(contact => contact._id !== recipient));
-  }, [isFetchingContactsDetails])
+    if (!isFetchingUser) {
+      console.log(`Emitting user connection with id ${loggedInUser._id}`);
+      socket.emit("user_connected", loggedInUser._id);
+    }
+  }, [isFetchingUser]);
 
-  if (isLoadingContactsDetails) {
-    return <div>Loading...</div>;
-  }
-  
+  const handleUpdateContactsDetails = (data) => {
+
+    setContactsDetails(prevContactsDetails => {
+      const { message, senderData, recipientData } = data;
+      const detailsIndex = prevContactsDetails.findIndex(details =>
+        details.contact._id === message.sender || details.contact._id === message.recipient
+      );
+
+      let newContactsDetails;
+      let read;
+      // Logged in user is the sender => must be inside the chat box
+      if (loggedInUser._id === message.sender) read = true;
+      // Logged in user is the recipient, but is on selectedRecipient => must be inside the side chat
+      else if (message.sender === selectedRecipientId) {
+        read = true;
+        setTimeout(() => {
+          readMessage({ contact: selectedRecipientId });
+        }, 1000);
+      }
+      else read = false;
+
+
+      if (detailsIndex !== -1) {
+        // Update existing contact details
+        newContactsDetails = prevContactsDetails.map((details, index) =>
+          index === detailsIndex ? { ...details, message, read } : details
+        );
+
+      } else {
+        // Add new contact details
+        const newDetails = {
+          contact: message.sender === loggedInUser._id ? recipientData : senderData,
+          message,
+          read
+        };
+
+        newContactsDetails = [...prevContactsDetails, newDetails];
+      }
+
+      // Sort the updated contacts details
+      return newContactsDetails.sort((a, b) => new Date(b.message.date) - new Date(a.message.date));
+    });
+  };
+
+  const handleUpdateMessages = (data) => {
+    const { message } = data;
+
+    if (message.sender === selectedRecipientId || message.sender === loggedInUser._id) {
+      setMessages((prevMessages) => {
+        const newMessages = [...prevMessages, message];
+        return newMessages;
+      });
+    }
+  };
+
+  useEffect(() => {
+    // Define the event handler
+    const handleMessageReceive = (data) => {
+
+      console.log("Received message in socket = ", data);
+
+      handleUpdateContactsDetails(data);
+      handleUpdateMessages(data);
+    };
+
+    // Add the event listener
+    socket.on("receive_message", handleMessageReceive);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      socket.off("receive_message", handleMessageReceive);
+    };
+  }, [socket, selectedRecipientId]); // Dependencies
+
+
   return (
-    <Box className="h-full flex flex-row" style={{borderTop: "1.5px solid #cccccc"}}>
-      <Box className="flex flex-row h-full">
-        <SideChat selectedRecipientId={selectedRecipientId} setSelectedRecipientId={setSelectedRecipientId} />
+    <Box className="h-full flex" style={{ borderTop: "1.5px solid #cccccc" }}>
+      <Box className="h-full bg-blue-100">
+        <SideChat
+          contactsDetails={contactsDetails}
+          setContactsDetails={setContactsDetails}
+          selectedRecipientId={selectedRecipientId}
+          setSelectedRecipientId={setSelectedRecipientId}
+        />
       </Box>
 
       <Divider orientation='vertical' />
@@ -36,7 +118,10 @@ function Chat({ socket }) {
           selectedRecipientId
             ? <ChatBox
               socket={socket}
-              selectedRecipientId={selectedRecipientId} />
+              selectedRecipientId={selectedRecipientId}
+              messages={messages}
+              setMessages={setMessages}
+            />
             : (
               <Box>
                 <img style={{ height: '23em', width: '23em' }} src={chatIcons} alt="chat icons" />
@@ -52,10 +137,3 @@ function Chat({ socket }) {
 }
 
 export default Chat;
-
-
-// clinic patient -> <- doctor: 10/10
-// doctor -> <- pharmacist: 10/10
-// pharmacy patient -> <- pharmacist: 10/10
-
-// only show messages for the selected recipient

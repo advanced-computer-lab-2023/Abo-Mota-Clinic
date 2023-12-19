@@ -1,23 +1,35 @@
 import React from 'react'
-import { Input, Box, Avatar, Typography, Divider } from '@mui/joy'
+import { Input, Box, Avatar, Typography, Divider, Skeleton } from '@mui/joy'
 import { useState, useEffect, useRef } from 'react';
 import { IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { IoVideocamOutline } from "react-icons/io5";
-import { useFetchLoggedInQuery, useSendMessageMutation, useFetchMessagesQuery, useFetchRecipientQuery, useFetchContactsQuery } from '../../store';
+import { useFetchLoggedInQuery, useSendMessageMutation, useFetchMessagesQuery, useFetchContactQuery, useInvalidateContactDetailsMutation } from '../../store';
 import convertToCairoTime from '../functions/convertToCairoTime';
+import { FaStaffSnake } from "react-icons/fa6";
 
-function ChatBox({ socket, selectedRecipientId }) {
+import ChatBoxSkeleton from './ChatBoxSkeleton';
+
+
+function ChatBox({
+  socket,
+  selectedRecipientId,
+  messages,
+  setMessages,
+}) {
 
   const ref = useRef(null);
 
   const [sendMessage] = useSendMessageMutation();
-  const [messages, setMessages] = useState([]);
+  // const [messages, setMessages] = useState([]);
   const [messageContent, setMessageContent] = useState("");
 
-  const { data: recipientData, isFetching: isFetchingRecipient, isError: isErrorRecipient } = useFetchRecipientQuery(selectedRecipientId);
+  const { data: contactData, isFetching: isFetchingContact, isError: isErrorContact } = useFetchContactQuery(selectedRecipientId);
   const { data: loggedInUser, isFetching: isFetchingUser, isError } = useFetchLoggedInQuery();
   const { data: messagesData, isLoading: isLoadingMessages, isFetching: isFetchingMessages, isError: isErrorMessages } = useFetchMessagesQuery(selectedRecipientId);
+
+  const PHARMA_SERVICE_ID = process.env.REACT_APP_PHARMA_SERVICE_ID;
+
 
   const scrollToBottom = () => {
     if (ref.current) {
@@ -28,29 +40,7 @@ function ChatBox({ socket, selectedRecipientId }) {
     }
   };
 
-  useEffect(() => {
-    // disable older event listener
-    socket.off("receive_message");
-
-    // register new event listener with new selectedRecipientId
-    socket.on("receive_message", (data) => {
-
-      if (data.sender === selectedRecipientId || data.sender === loggedInUser._id)
-        setMessages((prevMessages) => {
-          // prevMessages[prevMessages.length - 1].showTime = false;
-          const newMessages = [...prevMessages, data];
-          return newMessages;
-        });
-    });
-
-  }, [socket, selectedRecipientId]);
-
-  useEffect(() => {
-    if (!isFetchingUser) {
-      socket.emit("user_connected", loggedInUser._id);
-    }
-  }, [isFetchingUser]);
-
+  // load messages state initially from db
   useEffect(() => {
     if (!isFetchingMessages) {
       if (messagesData) {
@@ -60,10 +50,6 @@ function ChatBox({ socket, selectedRecipientId }) {
   }, [isFetchingMessages, selectedRecipientId]);
 
   useEffect(() => scrollToBottom());
-
-  if (isFetchingUser || isLoadingMessages || isFetchingRecipient) {
-    return <div>Loading...</div>;
-  }
 
 
   const onSendMessage = async () => {
@@ -82,41 +68,46 @@ function ChatBox({ socket, selectedRecipientId }) {
       date: new Date(),
     }
 
-    // if (ref.current) {
-    //   ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    //   console.log("About to scroll to: ", ref.current);
-    // }
     setTimeout(() => {
       scrollToBottom()
     }, 100);
 
-    // scrollToElement();
+    console.log(`Contact Data in message emission, ${JSON.stringify(contactData, null, 2)}`);
 
     await socket.emit(
       "send_message",
       {
         message,
-        isRelayToPharmacy: recipientData.recipientType.toLowerCase() === "pharmacist"
+        senderData: loggedInUser,
+        recipientData: contactData,
+        isRelayToPharmacy: contactData.userType.toLowerCase() === "pharmacist"
       });
 
     sendMessage(message);
-
   };
 
-  const RecipientHeader = ({ recipientName }) => {
+  const RecipientHeader = ({ contact }) => {
     return (
-      <Box className="pl-4 py-2 bg-white" sx={{ borderBottom: '1px solid #cccccc' }}>
+      <Box className="pl-4 py-3 bg-white" sx={{ borderBottom: '1px solid #cccccc' }}>
         <Box className="flex justify-between items-center ">
           <Box className="flex items-center">
-            <Avatar color='warning' className="mr-3"> {recipientName[0]} </Avatar>
+            {/* <Avatar color='warning' className="mr-3"> {recipientName[0]} </Avatar> */}
+
+            {
+              contact._id === PHARMA_SERVICE_ID ?
+                <Avatar color="primary" className="mr-3"><FaStaffSnake style={{ fontSize: '1.5em' }} /> </Avatar>
+                :
+                <Avatar color="primary" className="mr-3">{contact.name[0]}</Avatar>
+            }
+
             <Typography level="body-lg" fontWeight={500}>
-              {recipientName}
+              {contact.name}
             </Typography>
           </Box>
 
-          <Box className="mr-5">
+          {/* <Box className="mr-5">
             <IconButton><IoVideocamOutline /></IconButton>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
 
@@ -124,14 +115,17 @@ function ChatBox({ socket, selectedRecipientId }) {
   }
 
   return (
-    <>
+    isFetchingUser || isLoadingMessages || isFetchingContact ? <ChatBoxSkeleton />
+      :
       <Box className='grow flex flex-col h-full' sx={{ position: 'relative' }}>
-        <RecipientHeader recipientName={recipientData.name} />
+        <RecipientHeader contact={contactData} />
 
         <Box className="grow chatbox h-full overflow-auto" sx={{ height: '5px', px: '2em' }}>
           {/* <ScrollToBottom style={{ overflowY: 'scroll'}}> */}
           {
-            messages.map(({ sender, content, date }, i) => {
+
+            messages.map((message, i) => {
+              const { sender, content, date } = message;
 
               const fromMe = sender === loggedInUser._id;
               const containerClassName = fromMe ? "chat chat-end" : "chat chat-start";
@@ -181,7 +175,6 @@ function ChatBox({ socket, selectedRecipientId }) {
         </Box>
 
       </Box >
-    </>
   )
 }
 

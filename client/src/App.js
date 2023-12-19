@@ -87,7 +87,7 @@ function App() {
             />
             <Route path="healthPackages" element={<HealthPackages />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="chat/:recipient?" element={<Chat socket={socket} />} />
+            <Route path="chat/:contact?" element={<Chat socket={socket} />} />
             <Route path="profile/subscription" element={<Subscription />} />
             <Route path="healthPackages/:idx" element={<PackagePaymentWrapper />} />
             <Route path="notifications" element={<Notifications />} />
@@ -108,7 +108,7 @@ function App() {
             <Route path="appointments/PatientFollowUp/" element={<PatientFollowUp />} />
             <Route path="profile" element={<EditMyProfile />} />
             <Route path="" element={<DoctorHome/>}/>
-            <Route path="chat/:recipient?" element={<Chat socket={socket} />} />
+            <Route path="chat/:contact?" element={<Chat socket={socket} />} />
             <Route path="registerForm" element={<RegisterForm />} />
             <Route path="patients/patientInfo/:idx" element={<ViewPatientInfo />} />
             <Route path="patients/patientInfo/:idx/video" element={<VideoChat />} />

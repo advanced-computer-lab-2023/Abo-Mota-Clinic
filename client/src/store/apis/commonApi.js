@@ -27,9 +27,7 @@ const commonApi = createApi({
       }),
 
       sendMessage: builder.mutation({
-        invalidatesTags: (result, error, p) => {
-          return ["contactsDetails"];
-        },
+
         query: (data) => {
           return {
             url: "/message",
@@ -40,29 +38,22 @@ const commonApi = createApi({
       }),
 
       fetchMessages: builder.query({
-        // providesTags: (result, error) => {
-        //   const tags = result.map((p) => {
-        //     return { type: "Package", id: p._id };
-        //   });
-        //   tags.push({ type: "Package", id: 123 });
-        //   return tags;
-        // },
-        providesTags: (result, error, recipient) => {
+        providesTags: (result, error, contact) => {
           return ["messages"];
         },
 
-        query: (recipient) => {
+        query: (contact) => {
           return {
-            url: `/message?recipient=${recipient}`,
+            url: `/message?contact=${contact}`,
             method: "GET",
           };
         },
       }),
 
-      fetchRecipient: builder.query({
-        query: (recipientId) => {
+      fetchContact: builder.query({
+        query: (contact) => {
           return {
-            url: `/recipient?recipientId=${recipientId}`,
+            url: `/contact?contact=${contact}`,
             method: "GET",
           };
         },
@@ -132,6 +123,17 @@ const commonApi = createApi({
           };
         },
       }),
+
+      readMessage: builder.mutation({
+        query: (data) => {
+          return {
+            url: "/readMessage",
+            body: data,
+            method: "POST",
+          };
+        }
+      }),
+
     }
   },
 });
@@ -147,6 +149,7 @@ export const {
   useSendEmailMutation,
   useInvalidateMessagesMutation,
   useFetchUserQuery,
+  useReadMessageMutation,
 } = commonApi;
 
 export { commonApi };
