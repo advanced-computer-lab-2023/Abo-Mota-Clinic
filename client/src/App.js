@@ -8,6 +8,7 @@ import Admin from "./admin/Admin";
 import Packages from "./admin/pages/Packages";
 import Applications from "./admin/pages/Applications";
 import ManageUsers from "./admin/pages/ManageUsers";
+import ChangePasswordPage from "./admin/pages/ChangePasswordPage";
 
 // Patient
 import ViewPatientAppointments from "./patient/pages/ViewPatientAppointments";
@@ -126,7 +127,7 @@ function App() {
             <Route path="applications" element={<Applications />} />
             <Route path="packages" element={<Packages />} />
             <Route path="manageUsers" element={<ManageUsers />} />
-            <Route path="changePassword" element={<PasswordSection />} />
+            <Route path="changePassword" element={<ChangePasswordPage />} />
           </Route>
         </Route>
       </Routes>

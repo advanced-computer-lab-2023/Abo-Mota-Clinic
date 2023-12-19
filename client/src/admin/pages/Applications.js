@@ -11,7 +11,7 @@ function Applications() {
     renderedData = <div>Loading.....</div>;
   }
 
-  return <div className="flex flex-wrap">{renderedData}</div>;
+  return <div className="flex flex-wrap pl-20 pt-10">{renderedData}</div>;
 }
 
 export default Applications;
