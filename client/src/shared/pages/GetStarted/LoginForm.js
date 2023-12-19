@@ -1,4 +1,3 @@
-import KimoButton from "../../Components/KimoButton";
 import { useEffect, useState } from "react";
 import Input from "../../Components/InputField";
 import logo from "../../../shared/assets/logo.png";
@@ -73,6 +72,7 @@ export default function LoginForm(){
             dispatch(login({ role: "admin" })); // Dispatch login action with role
             navigate("/admin");
           }
+          window.location.reload();
           resetForm({ values: "" });
         } catch (error) {
           console.error("Failed to login:", error);
@@ -133,7 +133,7 @@ return (
         </div>
         <h2 className="text-center text-2xl font-bold text-gray-700 mb-6">Login</h2>
         {UserForm}
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-4 space-y-3 sm:space-y-0">
+        <div className="flex flex-col sm:flex-row justify-center items-center mt-4 space-y-3 sm:space-y-0">
           <button
             className="text-sm text-indigo-600 hover:underline"
             onClick={() => setForgetPassword(true)}>
@@ -181,9 +181,6 @@ const UserSchema = yup.object().shape({
       .required("Please enter a valid username"),
     password: yup
       .string()
-      .min(8, "Password must be at least 8 characters long")
-      .matches(/[a-zA-Z]/, "Password must contain at least one letter")
-      .matches(/[0-9]/, "Password must contain at least one number")
       .required("Please enter a valid password"),
   });
 

@@ -49,7 +49,7 @@ function FileUploadSection({ files, medicalHistory }) {
           </div>
         ))}
         {medicalHistory && <div className="mt-4">
-          <Button isFilled={false} htmlFor="file-upload" >
+          <Button isFilled={false} htmlFor="file-upload"  onClick={() => document.getElementById('file-upload').click()}>
             Upload Files
           </Button>
           <input id="file-upload" type="file" className="hidden" onChange={handleFileUpload} multiple />

@@ -6,10 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 function  PersonalInfoSection({patient})
 {
-  const navigate = useNavigate();
-  const handleViewSubscription = ()=>{
-    navigate('./Subscription'); 
-  }
+  
+  
 
   const formattedDate = new Date(patient.dob).toLocaleDateString('en-GB', {
     day: '2-digit', 
@@ -19,7 +17,7 @@ function  PersonalInfoSection({patient})
 
 
   let profilePicture = Picture
-  if(patient.gender=='male')
+  if(patient.gender==='male')
     profilePicture = Picture2;
     return ( 
       
@@ -45,11 +43,6 @@ function  PersonalInfoSection({patient})
         <div className="flex-1 min-w-0 text-center">
           <p className="text-lg font-medium text-gray-900">{patient.name}</p>
           <p className="text-sm text-gray-500 truncate">{patient.email}</p>
-        </div>
-        <div className='mt-2'>
-          <Button   type='primary'onClick={handleViewSubscription}>
-            View Subscription
-          </Button>
         </div>
       </div>
             <div className="col-span-1 md:col-span-2">

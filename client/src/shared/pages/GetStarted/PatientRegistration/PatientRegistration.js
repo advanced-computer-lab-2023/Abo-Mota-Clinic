@@ -108,8 +108,10 @@ const steps = [
                 {currentStep === steps.length - 1 && (
         <Button
             type='secondary'
-            className={ `bg-green-500 text-white ${!formik.isValid || formik.isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={ `bg-green-500 text-white ${ formik.isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={() => {
+              console.log(formik.errors);
+              console.log(formik.values);
               formik.handleSubmit();}}>
           Submit
         </Button>

@@ -1,4 +1,4 @@
-import KimoButton from "../../Components/KimoButton";
+import Button from "../../Components/Button";
 import { useEffect, useState } from "react";
 import Input from "../../Components/InputField";
 import logo from "../../../shared/assets/logo.png";
@@ -101,7 +101,7 @@ const LoginForm = () => {
                 <LoadingIndicator />
               ) : (
                 // <Link to='medicine'>
-                <KimoButton type='submit'>Log in</KimoButton>
+                <Button type='submit'>Log in</Button>
               )
               // </Link>
             }

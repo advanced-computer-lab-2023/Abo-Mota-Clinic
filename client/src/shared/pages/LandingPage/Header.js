@@ -98,7 +98,7 @@ function Card(){
   }
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
-      <h3 className="text-lg text-blue-900 font-semibold mb-4">Meet Our Doctors</h3>
+      <h3 className="text-lg text-blue-900 font-semibold mb-4">Meet Our Doctor</h3>
       <div className="space-y-4">
         {/* Doctor profile example */}
         <div className="flex items-center">

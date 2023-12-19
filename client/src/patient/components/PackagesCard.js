@@ -5,19 +5,29 @@ import TwoButtonModal from "../../shared/Components/TwoButtonModal";
 import { cardClasses } from "@mui/material";
 import { useCancelMyPackageMutation } from "../../store";
 import { useCancelMyFamilyPackageMutation } from "../../store";
+import gold from "../../shared/assets/gold.png";
+import silver from '../../shared/assets/silver.png';
+import titanium from '../../shared/assets/titanium.png';
+
 
 const colorSchemes = {
-    basic: {
-        background: 'bg-blue-200', 
+    bronze: {
+        backgroundImage:silver ,
+        background: 'bg-blue-200',
+        backgroundSize: 'cover', 
         buttonBg: 'bg-blue-600', 
         buttonText: 'text-white',
     },
     titanium: {
+        backgroundImage: titanium,
+        backgroundSize: 'cover',
         background: 'bg-yellow-200', 
         buttonBg: 'bg-yellow-600', 
         buttonText: 'text-white', 
     },
-    premium: {
+    gold: {
+        backgroundImage:gold,
+        backgroundSize: 'cover',
         background: 'bg-green-200',
         buttonBg: 'bg-green-600',
         buttonText: 'text-white',
@@ -35,28 +45,25 @@ const colorSchemes = {
     
     export default function PackageCard({ data }) {
     
-    console.log(data);
+    
     const [isFlipped, setIsFlipped] = useState(false);
     const handleFlip = () => setIsFlipped(!isFlipped);
-    
     const colors = colorSchemes[data.package.name.toLowerCase()] || colorSchemes.basic; 
-    
     const [open, setOpen] = useState(false);
     const [cancelMyPackage,results] = useCancelMyPackageMutation();
     const [cancelFamilyPackage,result]= useCancelMyFamilyPackageMutation();
+
     const handleOpen = () => {
         setOpen(true);
     };
-    
-      const handleClose = () => {
+    const handleClose = () =>{
         setOpen(false);
-      };
+    };
       
     
-      const cardClasses = ` overflow-hidden shadow-lg m-4 ${colors.background} flex flex-col items-center space-y-2 p-4 w-full h-full box-border transform-style: preserve-3d;`;
-
+    const cardClasses = `overflow-hidden shadow-lg rounded-lg m-4 flex flex-col items-center space-y-2 p-4 w-full h-full box-border preserve-3d`;
     const hasName = !!data.name;
-
+    
     const flipCardComponent = (
         <ReactFlipCard 
             isFlipped={isFlipped}
@@ -70,9 +77,7 @@ const colorSchemes = {
             backComponent={<Back data={data} handleOpen={handleOpen} cardClasses={cardClasses}/>}/>
     );
     const nonFlipCardComponent = (
-        <div style={containerStyles}>
-                <Back data={data} handleOpen={handleOpen} cardClasses={cardClasses}/>
-        </div>
+        <div style={containerStyles}><Back data={data} handleOpen={handleOpen} cardClasses={cardClasses}/></div>
     );
 
     const handleClickLogic =()=>{
@@ -99,8 +104,14 @@ const colorSchemes = {
 
     
 
-    function Back({data,handleOpen, cardClasses})
+    function Back({data, handleOpen, cardClasses, })
     {
+        const colors = colorSchemes[data.package.name.toLowerCase()] || colorSchemes.bronze;
+        const cardStyle = {
+        backgroundImage: `url(${colors.backgroundImage})`,
+        backgroundSize: 'cover',
+        
+        };
         const formattedDate = new Date(data.endDate).toLocaleDateString('en-GB', {
             day: '2-digit', 
             month: '2-digit', 
@@ -112,8 +123,7 @@ const colorSchemes = {
         {
             content = `Expires on: ${formattedDate}`
             status='Unsubscribed';
-        }
-            
+        } 
         else if (data.status==='cancelled')
         {
             const formattedDate = new Date(data.cancelDate).toLocaleDateString('en-GB', {
@@ -126,8 +136,7 @@ const colorSchemes = {
         }
             
         
-        
-        return  <div className={cardClasses}>
+        return  <div style={cardStyle} className={cardClasses}>
         <h3 className="font-bold text-xl mb-2">{data.package.name}</h3>
         <p className="text-3xl font-bold">${data.package.pricePerYear}</p>
         <span className="py-1 px-3 rounded-full text-sm font-semibold text-gray-700">
@@ -135,27 +144,27 @@ const colorSchemes = {
         </span>
         <div className="text-center mb-4">
         <div className="my-2">
-        {data.package.pharmacyDiscount > 0 ? (
-            <span className="font-normal text-green-600">✓ {data.package.pharmacyDiscount*100}% discount on all pharmacy products</span>
-        ) : (
-            <span className="font-normal text-red-500">✕ No discount on pharmacy products</span>
-        )}
+            {data.package.pharmacyDiscount > 0 ? (
+                <span className="font-normal text-black">✓ {data.package.pharmacyDiscount*100}% discount on all pharmacy products</span>
+            ) : (
+                <span className="font-normal text-red-500">✕ No discount on pharmacy products</span>
+            )}
         </div>
         <div className="my-2">
-        {data.package.familyDiscount > 0 ? (
-            <span className="font-normal text-green-600">✓ {data.package.familyDiscount*100}% discount for your family</span>
-        ) : (
-            <span className="font-normal text-red-500">✕ No family discount</span>
-        )}
+            {data.package.familyDiscount > 0 ? (
+                <span className="font-normal text-black">✓ {data.package.familyDiscount*100}% discount for your family</span>
+            ) : (
+                <span className="font-normal text-red-500">✕ No family discount</span>
+            )}
         </div>
         <div className="my-2">
-        {data.package.doctorDiscount > 0 ? (
-            <span className="font-normal text-green-600">✓ {data.package.doctorDiscount*100}% discount on doctor appointments</span>
-        ) : (
-            <span className="font-normal text-red-500">✕ No discount on doctor appointments</span>
-        )}
+            {data.package.doctorDiscount > 0 ? (
+                <span className="font-normal text-black">✓ {data.package.doctorDiscount*100}% discount on doctor appointments</span>
+            ) : (
+                <span className="font-normal text-red-500">✕ No discount on doctor appointments</span>
+            )}
         </div>
-        </div>
+    </div>
         
         <div className="text-center text-sm font-semibold">
         <strong>{status}</strong> <br/>{content}    
@@ -163,14 +172,21 @@ const colorSchemes = {
         {(status==='Cancelled')||<Button type="danger" 
         onClick={handleOpen}>
         CANCEL
-        </Button>}
+        </Button>
+        }
         
         </div>
     }
 
     function Front({ data, onFlip, cardClasses }) {
+        const colors = colorSchemes[data.package.name.toLowerCase()] || colorSchemes.bronze;
+        const cardStyle = {
+        backgroundImage: `url(${colors.backgroundImage})`,
+        backgroundSize: 'cover',
+        // ... other necessary styles
+        };
         return(
-            <div className={`${cardClasses} flex flex-col justify-center items-center h-full`}>
+            <div style={cardStyle} className={`${cardClasses} flex flex-col justify-center items-center h-full`}>
                 <h3 className="font-bold text-2xl mb-2  ">{data.name}'s Package</h3>
                 <p className="text-lg text-center mb-4 text-gray-600">
                     Tap to view more info

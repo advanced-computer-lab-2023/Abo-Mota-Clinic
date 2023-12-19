@@ -8,7 +8,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
-import PopOver from "./Components/Popover";
+import PopOver from "./Components/PopOver";
 import Logo from "./assets/logo.png";
 import {
   useLogoutMutation,
@@ -176,7 +176,7 @@ const Outline = ({ items, navBarItems, socket }) => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["4"]}
+          defaultSelectedKeys={["0"]}
           items={items.map((item) => ({
             ...item,
             icon: createElement(item.icon.type),

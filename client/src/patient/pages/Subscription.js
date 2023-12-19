@@ -24,18 +24,11 @@ export default function Subscription() {
     
            
     const packages = familyPackages
-    .filter(familyPackage => familyPackage.package )
+    .filter(familyPackage => familyPackage.package&& familyPackage.status !== 'cancelled' )
 
     .map(familyPackage => <PackageCard data={familyPackage} />);
 
     
-    // console.log(familyPackages
-    //     .filter(familyPackage => familyPackage.package !== null));
-    
-
-    //
-
-    //
     return (
             <section style={{  maxWidth: '1536px', width: '100%' }} 
             className="mx-auto my-8  p-4 space-y-8 border-2 border-gray-300 rounded-lg ">
