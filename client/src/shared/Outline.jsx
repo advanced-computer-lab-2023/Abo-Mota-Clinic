@@ -235,7 +235,7 @@ const Outline = ({ items, navBarItems, socket }) => {
                   />
                 }
                 content={notificationContent}
-                placement="bottom"
+                placement="bottomLeft"
                 trigger="click"
               />
             )}
