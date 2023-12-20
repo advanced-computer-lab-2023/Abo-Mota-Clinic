@@ -76,7 +76,7 @@ const Outline = ({ items, navBarItems, socket }) => {
           ...prev,
         ]);
 
-      setNotifCount(prevCount => prevCount + 1);
+      setNotifCount(notifCount+1);
     };
 
     const handleReceiveMessage = (data) => {
@@ -90,7 +90,7 @@ const Outline = ({ items, navBarItems, socket }) => {
     };
 
     // Attach the event listener
-    if (!socket) return;
+    if (!socket|| !isFetching) return;
     socket.on("receive_notification_booked", handleReceiveNotification);
     socket.on(
       "receive_notification_cancelled_by_patient",

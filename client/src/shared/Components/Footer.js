@@ -1,6 +1,6 @@
 import { FaPhone, FaEnvelope, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 
-const Footer = () => {
+const Footer = ({onAboutClick}) => {
     return (
       <footer className="bg-blue-900 text-white">
         <div className="container mx-auto px-6 py-10">
@@ -29,8 +29,8 @@ const Footer = () => {
 <div className="px-6 w-full lg:w-1/4 mb-8">
   <h5 className="text-xl font-bold mb-4">Department</h5>
   <ul className="list-none">
-    <li className="mb-2">
-      <a href="/about-us" className="text-sm text-gray-300 hover:text-white transition-colors duration-300">About us</a>
+    <li onClick={onAboutClick} className="mb-2">
+      <a  className="text-sm text-gray-300 hover:text-white transition-colors duration-300">About us</a>
     </li>
     <li className="mb-2">
       <a href="/how-it-works" className="text-sm text-gray-300 hover:text-white transition-colors duration-300">How it works</a>
@@ -41,9 +41,7 @@ const Footer = () => {
     <li className="mb-2">
       <a href="/privacy-policy" className="text-sm text-gray-300 hover:text-white transition-colors duration-300">Privacy and policy</a>
     </li>
-    <li className="mb-2">
-      <a href="/contact" className="text-sm text-gray-300 hover:text-white transition-colors duration-300">Contact</a>
-    </li>
+    
   </ul>
 </div>
 

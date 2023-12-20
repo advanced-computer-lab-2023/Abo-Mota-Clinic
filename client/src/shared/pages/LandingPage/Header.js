@@ -9,10 +9,10 @@ import { IoPlayCircleOutline } from "react-icons/io5";
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
 import { GiHealthNormal } from "react-icons/gi";
 import {useNavigate} from 'react-router-dom';
-const Header = () => {
+const Header = ({ onAboutClick, onServicesClick, onTestimonialsClick, onFooterClick }) => {
 
   const handlePlayVideoClick= ()=>{
-
+    window.open('https://www.youtube.com/watch?v=QoShonI1yq4', '_blank');
   }
   const handleLogInClick=()=>{
     navigate('/login');
@@ -35,11 +35,11 @@ const Header = () => {
         {/* Centered Navigation */}
           <nav className="flex-1">
     <ul className="flex justify-center space-x-4 text-white">
-      <li className="hover:text-blue-300 cursor-pointer">Home</li>
-      <li className="hover:text-blue-300 cursor-pointer">About</li>
-      <li className="hover:text-blue-300 cursor-pointer">Department</li>
-      <li className="hover:text-blue-300 cursor-pointer">Blog</li>
-      <li className="hover:text-blue-300 cursor-pointer">Contact</li>
+    <li className="hover:text-blue-300 cursor-pointer">Home</li>
+      <li onClick={onAboutClick} className="hover:text-blue-300 cursor-pointer">About</li>
+      <li onClick={onServicesClick} className="hover:text-blue-300 cursor-pointer">Services</li>
+      <li onClick={onTestimonialsClick} className="hover:text-blue-300 cursor-pointer">Blog</li>
+      <li onClick={onFooterClick} className="hover:text-blue-300 cursor-pointer">Contact</li>
     </ul>
   </nav>
 
@@ -98,7 +98,7 @@ function Card(){
   }
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
-      <h3 className="text-lg text-blue-900 font-semibold mb-4">Meet Our Doctor</h3>
+      <h3 className="text-lg text-blue-900 font-semibold mb-4">Meet Our Doctors</h3>
       <div className="space-y-4">
         {/* Doctor profile example */}
         <div className="flex items-center">

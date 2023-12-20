@@ -72,7 +72,7 @@ export default function LoginForm(){
             dispatch(login({ role: "admin" })); // Dispatch login action with role
             navigate("/admin");
           }
-          window.location.reload();
+         // window.location.reload();
           resetForm({ values: "" });
         } catch (error) {
           console.error("Failed to login:", error);
