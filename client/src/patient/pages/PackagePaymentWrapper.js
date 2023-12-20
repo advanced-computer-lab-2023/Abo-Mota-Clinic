@@ -103,6 +103,17 @@ function PackagePaymentWrapper() {
         message: "Payment unsuccessful",
       });
     },
+
+    backNav: [
+      {
+        "label": "Home",
+        "to": "/patient/"
+      },
+      {
+        "label": "Health Packages",
+        "to": "/patient/healthPackages"
+      }
+    ]
   };
 
   return (

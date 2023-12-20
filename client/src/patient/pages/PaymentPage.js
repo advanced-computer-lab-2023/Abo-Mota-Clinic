@@ -1,4 +1,4 @@
-import { Box, Typography, Divider, Button, Card } from "@mui/joy";
+import { Box, Typography, Divider, Button, Card, Breadcrumbs, Link } from "@mui/joy";
 
 // HOOKS
 import { useState } from "react";
@@ -19,7 +19,7 @@ import { useFetchFamilyMembersQuery, useFetchPatientQuery } from "../../store";
 import LoadingIndicator from "../../shared/Components/LoadingIndicator";
 import UserSelectionModal from "../components/UserSelectionModal";
 import { TextField } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 function PaymentPage({
   items,
@@ -31,6 +31,7 @@ function PaymentPage({
   usersState,
   isSubscribing,
   socket,
+  backNav
 }) {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const { selectedUser, setSelectedUser } = usersState;
@@ -67,7 +68,23 @@ function PaymentPage({
 
   return (
     <Box className="mt-15 space-y-5">
-      <Box sx={{ py: 2 }}>
+      {
+        backNav && (
+          <Breadcrumbs aria-label="breadcrumbs">
+            {
+              backNav.map(nav => {
+                return (
+                  <Link component={RouterLink} color="neutral" to={nav.to}>
+                    {nav.label}
+                  </Link>
+                )
+              })
+            }
+            <Typography>Payment</Typography>
+          </Breadcrumbs>
+        )
+      }
+      <Box sx={{ py: 0 }}>
         <Typography level="h1" sx={{ ml: -0.5 }}>
           Checkout
         </Typography>
