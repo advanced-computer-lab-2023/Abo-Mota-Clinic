@@ -957,16 +957,16 @@ Check out our API Documentation on Postman by clicking [here](https://documenter
 - **Controller**: `getLoggedIn`
   - Retrieves currently logged-in user's details.
 
-#### Get Recipient
+#### Get Contact
 
-- **Endpoint**: `GET /api/common/recipient`
-- **Description**: Retrieves recipient details.
-- **Controller**: `getRecipient`
-  - Fetches details of a specified recipient based on ID.
+- **Endpoint**: `GET /api/common/contact`
+- **Description**: Retrieves a contact's details.
+- **Controller**: `getContact`
+  - Fetches details of a specified contact based on ID.
 - **Query Parameters**:
   | Parameter | Type | Description |
   |--------------|--------|---------------------------|
-  | `recipientId`| string | ID of the recipient |
+  | `contact`| string | ID of the contact |
 
 #### Get Contacted Users
 
