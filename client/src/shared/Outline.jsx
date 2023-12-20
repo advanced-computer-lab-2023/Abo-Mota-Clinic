@@ -79,6 +79,30 @@ const Outline = ({ items, navBarItems, socket }) => {
       setNotifCount(notifCount+1);
     };
 
+    // Attach the event listener
+    if (!socket) return;
+    socket.on("receive_notification_booked", handleReceiveNotification);
+    socket.on(
+      "receive_notification_cancelled_by_patient",
+      handleReceiveNotification
+    );
+    socket.on(
+      "receive_notification_cancelled_by_doctor",
+      handleReceiveNotification
+    );
+    socket.on(
+      "receive_notification_rescheduled_by_patient",
+      handleReceiveNotification
+    );
+    socket.on(
+      "receive_notification_rescheduled_by_doctor",
+      handleReceiveNotification
+    );
+
+
+  }, [socket]);
+
+  useEffect(() => {
     const handleReceiveMessage = (data) => {
       const { message , senderData } = data;
       if (!isFetchingUser && message.recipient === loggedInUser._id.toString()){
@@ -90,26 +114,13 @@ const Outline = ({ items, navBarItems, socket }) => {
     };
 
     // Attach the event listener
-    if (!socket|| !isFetching) return;
-    socket.on("receive_notification_booked", handleReceiveNotification);
-    socket.on(
-      "receive_notification_cancelled_by_patient",
-      handleReceiveNotification
-    );
-    socket.on(
-      "receive_notification_cancelled_by_doctor",
-      handleReceiveNotification
-    );
+    if (!socket) return;
     socket.on("receive_message", handleReceiveMessage);
-    socket.on(
-      "receive_notification_rescheduled_by_patient",
-      handleReceiveNotification
-    );
-    socket.on(
-      "receive_notification_rescheduled_by_doctor",
-      handleReceiveNotification
-    );
+  
+
   }, [socket, isFetchingUser]);
+
+
 
   // Function to handle menu item click
   const onMenuClick = (e) => {
