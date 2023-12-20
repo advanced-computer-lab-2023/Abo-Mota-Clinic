@@ -233,7 +233,7 @@ const Outline = ({ items, navBarItems, socket }) => {
               {socket && <PopOver
               logo={<BellOutlined style={{ fontSize: '18px', cursor: 'pointer' }} />}
               content={notificationContent}
-              placement="bottom"
+              placement="bottomLeft"
               trigger="click"
             />}
 

@@ -18,14 +18,15 @@ export default function ViewPrescriptions() {
 
   console.log(data);
 
-  let content;
+  
   let doctorNames = [];
 
   if (isFetching || isFetchingPatient) {
-    content = <div> Loading ... </div>
+    return  <div> Loading ... </div>
   } else if (error || isErrorPatient) {
-    content = <div> Error ... </div>
-  } else {
+    return  <div> Error ... </div>
+  } 
+    let content;
     let filteredData = filter(data, config);
 
     filteredData = filteredData.filter((pres) => {
@@ -45,7 +46,7 @@ export default function ViewPrescriptions() {
     });
 
     doctorNames = [...new Set(data.map((pres) => pres.doctor.name))];
-  }
+  
 
   return (
     <div className="ml-20 mr-20 mt-10">
