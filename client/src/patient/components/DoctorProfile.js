@@ -235,7 +235,7 @@ const DoctorProfile = ({ _id, name, specialty, rate, educationalBackground, affi
               Dr. ${name} has dedicated their career to providing exemplary care and treatment to patients, specializing in
               ${specialty}. At ${affiliation}, where Dr. ${name} currently practices, 
               they are not only recognized for their surgical skills but also for their innovative approaches to 
-              complex medical cases. Dr. [Last Name]'s philosophy of care is rooted in a patient-centered approach, 
+              complex medical cases. Dr. ${name}'s philosophy of care is rooted in a patient-centered approach, 
               believing that effective treatment goes beyond medical procedures and involves understanding and responding to 
               the unique needs and concerns of each patient. This philosophy extends to their commitment to continuous learning and 
               staying abreast of the latest advancements in their field, 

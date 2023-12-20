@@ -109,7 +109,32 @@ const Outline = ({ items, navBarItems, socket }) => {
       "receive_notification_rescheduled_by_doctor",
       handleReceiveNotification
     );
+
+    
+
+  }, [socket]);
+
+  useEffect(() => {
+    const handleReceiveMessage = (data) => {
+      const { message , senderData } = data;
+      if (!isFetchingUser && message.recipient === loggedInUser._id.toString()){
+        setMessages((prevMessages) => [{message, senderData}, ...prevMessages]);
+        setMessageCount(prevCount => prevCount + 1); 
+
+      }
+      console.log(message);
+    };
+
+    // Attach the event listener
+    if (!socket) return;
+    socket.on("receive_message", handleReceiveMessage);
+   
+
+    
+
   }, [socket, isFetchingUser]);
+
+
 
   // Function to handle menu item click
   const onMenuClick = (e) => {
