@@ -79,16 +79,6 @@ const Outline = ({ items, navBarItems, socket }) => {
       setNotifCount(prevCount => prevCount + 1);
     };
 
-    const handleReceiveMessage = (data) => {
-      const { message , senderData } = data;
-      if (!isFetchingUser && message.recipient === loggedInUser._id.toString()){
-        setMessages((prevMessages) => [{message, senderData}, ...prevMessages]);
-        setMessageCount(prevCount => prevCount + 1); 
-
-      }
-      console.log(message);
-    };
-
     // Attach the event listener
     if (!socket) return;
     socket.on("receive_notification_booked", handleReceiveNotification);
@@ -100,7 +90,6 @@ const Outline = ({ items, navBarItems, socket }) => {
       "receive_notification_cancelled_by_doctor",
       handleReceiveNotification
     );
-    socket.on("receive_message", handleReceiveMessage);
     socket.on(
       "receive_notification_rescheduled_by_patient",
       handleReceiveNotification
@@ -110,7 +99,6 @@ const Outline = ({ items, navBarItems, socket }) => {
       handleReceiveNotification
     );
 
-    
 
   }, [socket]);
 
@@ -128,9 +116,7 @@ const Outline = ({ items, navBarItems, socket }) => {
     // Attach the event listener
     if (!socket) return;
     socket.on("receive_message", handleReceiveMessage);
-   
-
-    
+  
 
   }, [socket, isFetchingUser]);
 
