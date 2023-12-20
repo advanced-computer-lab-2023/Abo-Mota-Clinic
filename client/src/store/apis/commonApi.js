@@ -73,7 +73,9 @@ const commonApi = createApi({
       }),
 
       sendNotification: builder.mutation({
-
+        invalidatesTags:(result, error, p)=>{
+          return ["notification"];
+        },
         query: (data) => {
           return {
             url: "/notification",
@@ -84,6 +86,9 @@ const commonApi = createApi({
       }),
 
       fetchNotification: builder.query({
+        providesTags:(result, error, contactIds)=>{
+          return ["notification"]
+        },
         query: () => {
           return {
             url: "/notifications",
