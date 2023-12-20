@@ -218,11 +218,27 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
                 >
                   <MoreVert />
                 </MenuButton>
+                
                 <Menu placement="bottom-start">
-                  <MenuItem onClick={() => setIsRescheduleModalOpen(true)}>Reschedule</MenuItem>
-                  <MenuItem onClick={() => setIsFollowUpModalOpen(true)}>Follow Up</MenuItem>
+                  <MenuItem
+                    disabled={status.toLowerCase() === "completed"}
+                    onClick={() => setIsRescheduleModalOpen(true)}>
+                    Reschedule
+                  </MenuItem>
+
+                  <MenuItem
+                    onClick={() => setIsFollowUpModalOpen(true)}>
+                    Follow Up
+                  </MenuItem>
+
                   <Divider />
-                  <MenuItem color="danger" onClick={handleShowModal}>Cancel</MenuItem>
+
+                  <MenuItem
+                    disabled={status.toLowerCase() === "completed"}
+                    color="danger"
+                    onClick={handleShowModal}>
+                    Cancel
+                  </MenuItem>
                 </Menu>
 
               </Dropdown>
@@ -265,7 +281,7 @@ function AppointmentCard({ sx, formattedDate, status, doctor, patient, socket, a
               aria-label="call" size="md"
               onClick={() => navigate(`../chat/${doctor._id}`)}
               // sx={{ my: 2, ml: 1, p: 2, borderRadius: '50%' }}
-              sx={{ height: '1em', p: 0.75, borderRadius: '50%'}}
+              sx={{ height: '1em', p: 0.75, borderRadius: '50%' }}
             >
               <BiChat fontSize={24} />
             </IconButton>

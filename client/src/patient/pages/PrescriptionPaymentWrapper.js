@@ -93,6 +93,17 @@ function PrescriptionPaymentWrapper() {
         message: "Prescription purchase unsuccessful",
       });
     },
+
+    backNav: [
+      {
+        to: "/patient/",
+        label: "Home",
+      },
+      {
+        to: "/patient/prescriptions",
+        label: "Prescriptions",
+      },
+    ],
   };
 
   return (
