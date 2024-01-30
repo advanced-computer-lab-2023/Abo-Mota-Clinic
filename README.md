@@ -65,9 +65,9 @@ Doctor
 </summary>
 
 <img width="1000" alt="login" src="./screenshots/doctor/appointments.png">
-<img width="1000" alt="login" src="./screenshots/doctor/contract.png">
+<!-- <img width="1000" alt="login" src="./screenshots/doctor/contract.png"> -->
 <img width="1000" alt="login" src="./screenshots/doctor/d1.png">
-<img width="1000" alt="login" src="./screenshots/doctor/d2.png">
+<!-- <img width="1000" alt="login" src="./screenshots/doctor/d2.png"> -->
 <img width="1000" alt="login" src="./screenshots/doctor/followup.png">
 <img width="1000" alt="login" src="./screenshots/doctor/freeslots.png">
 <img width="1000" alt="login" src="./screenshots/doctor/notif.png">

@@ -14,6 +14,8 @@ import { UserOutlined, SolutionOutlined, SmileOutlined } from '@ant-design/icons
 
 const { Step } = Steps;
 const PatientRegistration = () => {
+
+
   const [isLoading, setIsLoading] = useState(false);
   const [registerPatient, results] = useRegisterPatientMutation();
   const [isError, setIsError] = useState("");
@@ -37,6 +39,12 @@ const PatientRegistration = () => {
         relation: values.emergencyContactRelation,
       },
     };
+
+    setIsLoading(true);
+    await registerPatient(patient);
+    navigate('/');
+    setIsLoading(false);
+    console.log(results);
 }
 
   
@@ -108,7 +116,7 @@ const steps = [
                 {currentStep === steps.length - 1 && (
         <Button
             type='secondary'
-            className={ `bg-green-500 text-white ${ formik.isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={ `bg-green-500 text-white ${!formik.isValid || formik.isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={() => {
               console.log(formik.errors);
               console.log(formik.values);

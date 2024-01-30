@@ -42,8 +42,9 @@ io.on("connection", (socket) => {
 
   socket.on("send_notification_booked", ({ sender, receiver, contentDoctor, contentPatient }) => {
     const receiverSocket = activeUsers[receiver]; // get receiver socket id from activeUsers list
-    socket.to(receiverSocket).emit("receive_notification_booked", { contentDoctor, sender });
-    io.to(socket.id).emit("receive_notification_booked", { contentPatient, sender }); // send notification to sender as well
+    // const senderSocket = activeUsers[sender.patientId];
+    socket.to(receiverSocket).emit("receive_notification_booked", { contentDoctor, sender});
+    io.to(socket.id).emit("receive_notification_booked", { contentPatient, sender: sender}); // send notification to sender as well
 
   });
 
