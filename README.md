@@ -70,15 +70,22 @@ Doctor
 </h3>
 </summary>
 
-<img width="1000" alt="login" src="./screenshots/doctor/appointments.png">
-<!-- <img width="1000" alt="login" src="./screenshots/doctor/contract.png"> -->
 <img width="1000" alt="login" src="./screenshots/doctor/d1.png">
+<img width="1000" alt="login" src="./screenshots/doctor/profile.png">
+<img width="1000" alt="login" src="./screenshots/doctor/notif1.png">
+<img width="1000" alt="login" src="./screenshots/doctor/notif2.png">
+<img width="1000" alt="login" src="./screenshots/doctor/patients.png">
+<img width="1000" alt="login" src="./screenshots/doctor/patient_info1.png">
+<img width="1000" alt="login" src="./screenshots/doctor/patient_info2.png">
+<img width="1000" alt="login" src="./screenshots/doctor/prescription.png">
+<img width="1000" alt="login" src="./screenshots/doctor/appointments1.png">
+<img width="1000" alt="login" src="./screenshots/doctor/appointments2.png">
+<img width="1000" alt="login" src="./screenshots/doctor/wallet.png">
+<!-- <img width="1000" alt="login" src="./screenshots/doctor/contract.png"> -->
 <!-- <img width="1000" alt="login" src="./screenshots/doctor/d2.png"> -->
 <img width="1000" alt="login" src="./screenshots/doctor/followup.png">
 <img width="1000" alt="login" src="./screenshots/doctor/freeslots.png">
-<img width="1000" alt="login" src="./screenshots/doctor/notif.png">
-<img width="1000" alt="login" src="./screenshots/doctor/presc.png">
-<img width="1000" alt="login" src="./screenshots/doctor/wallet.png">
+<img width="1000" alt="login" src="./screenshots/doctor/chat.png">
 </details>
 
 <details>
