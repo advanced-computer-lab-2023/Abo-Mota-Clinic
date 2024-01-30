@@ -1,4 +1,10 @@
+
+
 # Abo Mota Clinic
+
+<p align="center">
+  <img width="250" alt="login" src="./client/src/shared/assets/logo.png">
+</p>
 
 ## Motivation
 
