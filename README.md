@@ -94,14 +94,27 @@ Doctor
 Patient
 </h3>
 </summary>
-<img width="1000" alt="login" src="./screenshots/patient/appointments.png">
-<img width="1000" alt="login" src="./screenshots/patient/d1.png">
-<img width="1000" alt="login" src="./screenshots/patient/d2.png">
+<img width="1000" alt="login" src="./screenshots/patient/home1.png">
+<img width="1000" alt="login" src="./screenshots/patient/home2.png">
+<img width="1000" alt="login" src="./screenshots/patient/profile.png">
+<img width="1000" alt="login" src="./screenshots/patient/subscriptions.png">
 <img width="1000" alt="login" src="./screenshots/patient/doctors.png">
 <img width="1000" alt="login" src="./screenshots/patient/dr1.png">
-<img width="1000" alt="login" src="./screenshots/patient/hp.png">
+<img width="1000" alt="login" src="./screenshots/patient/doctorProfile2.png">
+<img width="1000" alt="login" src="./screenshots/patient/appointment1.png">
+<img width="1000" alt="login" src="./screenshots/patient/appointment2.png">
+<img width="1000" alt="login" src="./screenshots/patient/appointment3.png">
+<img width="1000" alt="login" src="./screenshots/patient/payment1.png">
+<img width="1000" alt="login" src="./screenshots/patient/payment2.png">
+
+<img width="1000" alt="login" src="./screenshots/patient/appointments.png">
 <img width="1000" alt="login" src="./screenshots/patient/presc1.png">
 <img width="1000" alt="login" src="./screenshots/patient/presc2.png">
+<img width="1000" alt="login" src="./screenshots/patient/family.png">
+<img width="1000" alt="login" src="./screenshots/patient/hp.png">
+<img width="1000" alt="login" src="./screenshots/patient/chat.png">
+
+
 </details>
 
 <details>
