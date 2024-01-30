@@ -10,7 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import doctorPic from "../../shared/assets/doctor-pic.jpg";
+import doctorPic from "../../shared/assets/woman-doctor.jpg";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useHandleApplicationMutation } from "../../store";
@@ -94,7 +94,7 @@ export default function ApplicationCard({ data }) {
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            U
+            {data.name[0]}
           </Avatar>
         }
         title={data.email}

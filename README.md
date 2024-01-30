@@ -123,6 +123,7 @@ Patient
 </summary>
 <img width="1000" alt="login" src="./screenshots/admin/applications.png">
 <img width="1000" alt="login" src="./screenshots/admin/packages.png">
+<img width="1000" alt="login" src="./screenshots/admin/manage_users.png">
 </details>
 
 ## Tech Stack
